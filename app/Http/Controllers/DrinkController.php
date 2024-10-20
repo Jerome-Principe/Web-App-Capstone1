@@ -13,13 +13,21 @@ class DrinkController extends Controller
      */
     public function index()
     {
-        //
-        $drinks = Drink::all();
+        // Get all drinks to calculate the total price
+        $allDrinks = Drink::all();
 
         $totalPrice = 0;
+        foreach ($allDrinks as $drink) {
+            $drink->total = $drink->price * $drink->quantity;
+            $totalPrice += $drink->total;
+        }
+
+        // Paginate drinks for display (9 items per page)
+        $drinks = Drink::paginate(9);
+
+        // Calculate the total for each drink in the paginated data
         foreach ($drinks as $drink) {
             $drink->total = $drink->price * $drink->quantity;
-            $totalPrice = $totalPrice + $drink->total;
         }
 
         return view('inventory-drinks-list', compact('drinks', 'totalPrice'));
