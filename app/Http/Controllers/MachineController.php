@@ -12,7 +12,8 @@ class MachineController extends Controller
     public function index()
     {
         //
-        $machines = Machine::all();
+        $machines = Machine::paginate(9);
+
         return view('inventory-machines-list-add', compact('machines')); // Create a view for listing
     }
 
