@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 
 class MachineDefectController extends Controller
 {
-    /**
+    /** 
      * Display a listing of the resource.
      */
     public function index()
     {
-        $machineDefects = MachineDefect::with('machine')->get();
+        $machineDefects = MachineDefect::with('machine')->paginate(9);
         return view('inventory-machines-list-defect', compact('machineDefects'));
     }
 

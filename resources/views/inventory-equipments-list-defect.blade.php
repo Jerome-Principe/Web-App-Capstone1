@@ -29,7 +29,8 @@
 
             <div>
                 <div class="d-flex justify-content-end position-relative">
-                    <a href="/equipments/create" class="btn btn-primary px-4">Add New</a>
+                    <a href="/equipments/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                            aria-hidden="true"></i>Add New</a>
                 </div>
             </div>
 
@@ -50,7 +51,8 @@
                         <tbody>
                             @foreach($equipmentDefects as $index => $equipmentDefect)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $equipmentDefects->perPage() * ($equipmentDefects->currentPage() - 1) + $index + 1 }}
+                                    </td>
                                     <td>{{ $equipmentDefect->equipment->item_name }}</td>
                                     <td>{{ $equipmentDefect->quantity }}</td>
                                     <td>{{ $equipmentDefect->defect }}</td>
@@ -59,20 +61,43 @@
                                     <td>
 
                                         <a href="{{ route('equipments.edit', $equipmentDefect->id) }}"
-                                            class="btn btn-primary mx-2">Edit</a>
+                                            class="btn btn-primary"><i class="fa fa-pencil-square-o mx-1"
+                                                aria-hidden="true"></i>Update</a>
 
                                         <form action="{{ route('equipments.destroy', $equipmentDefect->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger mx-2"
-                                                onclick="return confirm('Are you sure you want to delete this equipment?')">Delete</button>
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this equipment?')"><i
+                                                    class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
                                         </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+
+                    <!-- Pagination links with Previous and Next buttons -->
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4">
+                            <li class="page-item {{ $equipmentDefects->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $equipmentDefects->previousPageUrl() }}"
+                                    tabindex="-1">Previous</a>
+                            </li>
+
+                            @foreach(range(1, $equipmentDefects->lastPage()) as $page)
+                                <li class="page-item {{ $page == $equipmentDefects->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $equipmentDefects->url($page) }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            <li class="page-item {{ !$equipmentDefects->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $equipmentDefects->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+
                 </div>
             </div>
         </div>

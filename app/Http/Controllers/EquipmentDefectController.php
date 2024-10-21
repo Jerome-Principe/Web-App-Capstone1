@@ -15,7 +15,7 @@ class EquipmentDefectController extends Controller
     public function index()
     {
         //
-        $equipmentDefects = EquipmentDefect::with('equipment')->get();
+        $equipmentDefects = EquipmentDefect::with('equipment')->paginate(9);
         return view('inventory-equipments-list-defect', compact('equipmentDefects'));
     }
 
