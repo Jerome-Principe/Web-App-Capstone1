@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-2">
         <div class="col">
             <div class="card-header">
                 <h2 class="display-6 text-center">View Supplement List</h2>
@@ -29,7 +29,8 @@
 
             <div>
                 <div class="d-flex justify-content-end position-relative">
-                    <a href="/supplements/create" class="btn btn-primary px-4">Add New</a>
+                    <a href="/supplements/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                            aria-hidden="true"></i>Add New</a>
                 </div>
             </div>
 
@@ -52,7 +53,7 @@
                         <tbody>
                             @foreach($supplements as $index => $supplement)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ ($supplements->currentPage() - 1) * $supplements->perPage() + $index + 1 }}</td>
                                     <td>{{ $supplement->name }}</td>
                                     <td>{{ $supplement->quantity }}</td>
                                     <td>{{ $supplement->price }}</td>
@@ -62,14 +63,16 @@
 
                                     <td>
                                         <a href="{{ route('supplements.edit', $supplement->id) }}"
-                                            class="btn btn-primary mx-2">Edit</a>
+                                            class="btn btn-primary"><i class="fa fa-pencil-square-o mx-1"
+                                                aria-hidden="true"></i>Update</a>
 
                                         <form action="{{ route('supplements.destroy', $supplement->id) }}" method="POST"
                                             style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger mx-2"
-                                                onclick="return confirm('Are you sure you want to delete this walk-in client?')">Delete
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this walk-in client?')"><i
+                                                    class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
                                             </button>
                                         </form>
                                     </td>
@@ -79,8 +82,29 @@
                     </table>
 
                     <div class="mt-3">
-                        <h5>Total Price : {{ $totalPrice }}</h5>
+                        <h5>Total Price = {{ $totalPrice }}</h5>
                     </div>
+
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <!-- Previous Button -->
+                            <li class="page-item {{ $supplements->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $supplements->previousPageUrl() }}">Previous</a>
+                            </li>
+
+                            <!-- Pagination Links -->
+                            @foreach ($supplements->getUrlRange(1, $supplements->lastPage()) as $page => $url)
+                                <li class="page-item {{ $page == $supplements->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            <!-- Next Button -->
+                            <li class="page-item {{ $supplements->hasMorePages() ? '' : 'disabled' }}">
+                                <a class="page-link" href="{{ $supplements->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
 
                 </div>
             </div>

@@ -22,6 +22,15 @@ class SupplementController extends Controller
             $totalPrice = $totalPrice + $supplement->total;
         }
 
+        // Paginate Supplements for display (9 items per page)
+        $supplements = Supplement::paginate(9);
+
+        // Calculate the total for each drink in the paginated data
+        foreach ($supplements as $supplement) {
+            $supplement->total = $supplement->price * $supplement->quantity;
+        }
+
+
         return view('inventory-supplements-list', compact('supplements', 'totalPrice'));
     }
 
