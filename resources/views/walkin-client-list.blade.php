@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-2">
         <div class="col">
             <div class="card-header">
                 <h2 class="display-6 text-center">View Walk-in Clients</h2>
@@ -29,7 +29,8 @@
 
             <div>
                 <div class="d-flex justify-content-end position-relative">
-                    <a href="/walkin" class="btn btn-primary px-4">Add New</a>
+                    <a href="/walkin" class="btn btn-primary px-2"><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add
+                        New</a>
                 </div>
             </div>
 
@@ -51,7 +52,8 @@
                         <tbody>
                             @foreach($walkins as $index => $walkin)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
+                                    <!-- Sequential numbering -->
+                                    <td>{{ $walkins->perPage() * ($walkins->currentPage() - 1) + $index + 1 }}</td>
                                     <td>{{ $walkin->lastname . ', ' . $walkin->firstname . ' ' . $walkin->middlename }}</td>
                                     <td>{{ $walkin->age }}</td>
                                     <td>{{ $walkin->amount }}</td>
@@ -59,13 +61,15 @@
                                     <td>{{ $walkin->date }}</td>
                                     <td>{{ $walkin->time }}</td>
                                     <td>
-                                        <a href="{{ route('walkins.edit', $walkin->id) }}" class="btn btn-primary">Edit</a>
+                                        <a href="{{ route('walkins.edit', $walkin->id) }}" class="btn btn-primary"><i
+                                                class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
                                         <form action="{{ route('walkins.destroy', $walkin->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this walk-in client?')">Delete
+                                                onclick="return confirm('Are you sure you want to delete this walk-in client?')">
+                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
                                             </button>
                                         </form>
                                     </td>
@@ -77,6 +81,28 @@
                     <div class="mt-3">
                         <h5>Total Amount : {{ $totalAmount }}</h5>
                     </div>
+
+                    <!-- Pagination links with Previous and Next buttons -->
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4">
+                            <!-- Show previous page button -->
+                            <li class="page-item {{ $walkins->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $walkins->previousPageUrl() }}" tabindex="-1">Previous</a>
+                            </li>
+
+                            <!-- Pagination elements -->
+                            @foreach(range(1, $walkins->lastPage()) as $page)
+                                <li class="page-item {{ $page == $walkins->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $walkins->url($page) }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            <!-- Show next page button -->
+                            <li class="page-item {{ !$walkins->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $walkins->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
 
                 </div>
             </div>

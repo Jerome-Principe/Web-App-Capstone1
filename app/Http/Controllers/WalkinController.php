@@ -13,19 +13,13 @@ class WalkinController extends Controller
      */
     public function index()
     {
-        //
-        $walkins = Walkin::all();
-
-        // Initialize total amount
-        $totalAmount = 0;
-
-        // Loop through all walk-ins and sum the amounts
-        foreach ($walkins as $walkin) {
-            $totalAmount += $walkin->amount;
-        }
+        // Paginate the walkins and sum the amounts
+        $walkins = Walkin::paginate(9); // Adjust the per-page count as needed
+        $totalAmount = Walkin::sum('amount'); // Get the total amount of all walk-ins
 
         return view('walkin-client-list', compact('walkins', 'totalAmount'));
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -3,8 +3,8 @@
 @section('content')
 
 <div class="container">
-    <div class="row mt-5">
-        <div class="col-lg-8 offset-md-2">
+    <div class="row mt-2">
+        <div class="col-lg-6 offset-md-2">
             <div class="card">
                 <div class="card-header">
                     <h3 class="title">Walkin-Client Update</h3>
