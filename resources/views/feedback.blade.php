@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-2">
         <div class="col">
             <div class="card-header">
                 <h2 class="display-6 text-center">Feedback Data</h2>
@@ -21,29 +21,52 @@
                             <th class="text-white">Action</th>
                         </tr>
 
-
-                        @for ($i = 0; $i < count($feedback); $i++)
+                        @foreach ($feedback as $index => $feedbacks)
                             <tr>
-                                <th>{{$i + 1}}</th>
-                                <td>{{$feedback[$i]->name}}</td>
-                                <td>{{$feedback[$i]->email}}</td>
-                                <td>{{$feedback[$i]->subject}}</td>
-                                <td>{{$feedback[$i]->message}}</td>
+                                <td>{{ $feedback->perPage() * ($feedback->currentPage() - 1) + $index + 1 }}</td>
+                                <td>{{ $feedbacks->name }}</td>
+                                <td>{{ $feedbacks->email }}</td>
+                                <td>{{ $feedbacks->subject }}</td>
+                                <td>{{ $feedbacks->message }}</td>
                                 <td>
-                                    <a href="/feedback/{{$feedback[$i]->id}}/edit" class="btn btn-primary mx-2">Edit</a>
-                                    <form action="{{ route('feedback.destroy', $feedback[$i]->id) }}" method="POST"
+                                    <a href="/feedback/{{ $feedbacks->id }}/edit" class="btn btn-primary"><i
+                                            class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
+                                    <form action="{{ route('feedback.destroy', $feedbacks->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mx-2"
-                                            onclick="return confirm('Are you sure you want to delete this feedback?')">Delete
+                                        <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Are you sure you want to delete this feedback?')">
+                                            <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
                                         </button>
                                     </form>
                                 </td>
                             </tr>
-                        @endfor
-
+                        @endforeach
                     </table>
+
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4">
+                            <!-- Previous Button -->
+                            <li class="page-item {{ $feedback->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $feedback->previousPageUrl() }}">Previous</a>
+                            </li>
+
+                            <!-- Pagination Links -->
+                            @foreach ($feedback->getUrlRange(1, $feedback->lastPage()) as $page => $url)
+                                <li class="page-item {{ $page == $feedback->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            <!-- Next Button -->
+                            <li class="page-item {{ $feedback->hasMorePages() ? '' : 'disabled' }}">
+                                <a class="page-link" href="{{ $feedback->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+
                 </div>
             </div>
         </div>

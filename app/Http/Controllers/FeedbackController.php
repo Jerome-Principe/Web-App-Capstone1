@@ -38,7 +38,7 @@ class FeedbackController extends Controller
     function feedback()
     {
 
-        $feedback = Feedback::all();
+        $feedback = Feedback::paginate(9);
 
         return view('feedback', compact('feedback'));
 
