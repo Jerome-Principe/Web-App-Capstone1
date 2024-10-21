@@ -10,6 +10,7 @@ use App\Http\Controllers\DrinkController;
 use App\Http\Controllers\MachineDefectController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\SupplementController;
+use App\Http\Controllers\AdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,3 +121,5 @@ Route::resource('machines', MachineController::class);
 
 route::resource('supplements', SupplementController::class);
 
+// Admin Users
+Route::resource('admin-users', AdminUserController::class);
