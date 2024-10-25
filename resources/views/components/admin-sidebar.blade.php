@@ -49,7 +49,10 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/announcement">View Announcement</a>
+                        <a href="/all-announcement">All Announcement</a>
+                    </li>
+                    <li>
+                        <a href="/create-announcement">Create Announcement</a>
                     </li>
                 </ul>
             </li>
@@ -145,6 +148,15 @@
                 <ul class="dropdown-menu sub-down">
                     <li>
                         <a href="/membership">View Membership</a>
+                    </li>
+                    <li>
+                        <a href="/membership-pendings">Pending Member</a>
+                    </li>
+                    <li>
+                        <a href="#">Member Info</a>
+                    </li>
+                    <li>
+                        <a href="#">Inactive Member</a>
                     </li>
                 </ul>
             </li>

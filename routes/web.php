@@ -10,6 +10,7 @@ use App\Http\Controllers\DrinkController;
 use App\Http\Controllers\MachineDefectController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\SupplementController;
+use App\Http\Controllers\MembershipPendingController;
 use App\Http\Controllers\AdminUserController;
 
 /*
@@ -37,9 +38,14 @@ Route::get('/learnmorebtn', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
-Route::get('/announcement', function () {
-    return view('announcement');
+Route::get('/create-announcement', function () {
+    return view('create-announcement');
 });
+
+Route::get('/all-announcement', function () {
+    return view('all-announcement');
+});
+
 Route::get('/appointment', function () {
     return view('appointment');
 });
@@ -66,12 +72,13 @@ Route::get('/transaction', function () {
 });
 
 
-// feedback
-Route::get('/feedback', [App\Http\Controllers\FeedbackController::class, 'feedback'])->name('feedback.index');
+// Add these routes in your routes/web.php
+Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback.index');
 Route::post('/submit', [FeedbackController::class, 'submit'])->name('FeedbackSubmit');
 Route::get('/feedback/{id}/edit', [FeedbackController::class, 'edit'])->name('feedback.edit');
-Route::post('/feedback/update/{id}', [FeedbackController::class, 'update'])->name('feedback.update');
+Route::put('/feedback/update/{id}', [FeedbackController::class, 'update'])->name('feedback.update'); // Updated
 Route::delete('/feedback/delete/{id}', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
+
 
 // Walkin-client
 Route::get('/walkin', [WalkinController::class, 'create']);
@@ -121,5 +128,12 @@ Route::resource('machines', MachineController::class);
 
 route::resource('supplements', SupplementController::class);
 
+
+//Membership
+Route::resource('membership-pendings', MembershipPendingController::class);
+Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');
+Route::post('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline'])->name('membership-pendings.decline');
+
 // Admin Users
 Route::resource('admin-users', AdminUserController::class);
+
