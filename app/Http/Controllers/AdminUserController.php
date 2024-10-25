@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Log;
 
@@ -18,7 +19,7 @@ class AdminUserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('admin-users-edit', compact('user'));
+        return view('admin-users-update', compact('user'));
     }
 
     // Update a specific user's data
@@ -27,11 +28,17 @@ class AdminUserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+
         $user->save();
 
         return redirect()->route('admin-users.index')->with('success', 'User updated successfully');
