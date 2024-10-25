@@ -10,148 +10,206 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
-    <!-- Link Custom Css File -->
-    <link rel="stylesheet" href="{{asset('assets/css/walkin-client.css')}}">
-
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <title>Add Walk-in Client</title>
 
-    <title>Walkin Client</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins';
+        }
+
+        body {
+            font-family: "Poppins";
+            height: 100vh;
+            width: 100%;
+            background-image: url('{{asset('assets/images/stronger.jpg')}}');
+            background-size: cover;
+            background-position: center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+            width: 650px;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 7px 7px 80px #000;
+            color: #fff;
+        }
+
+        .form-container header {
+            font-size: 2em;
+            text-align: left;
+            margin-bottom: 1.5em;
+            color: #fff;
+        }
+
+        label {
+            color: #fff;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            height: 45px;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            /* Center the buttons */
+            gap: 20px;
+            /* Add space between the buttons */
+            margin-top: 20px;
+        }
+
+        .back-btn,
+        .submit-btn {
+            width: 150px;
+            /* Set a fixed width for both buttons */
+            padding: 10px;
+            /* Adjust padding */
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+        }
+
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .submit-btn {
+            background-color: crimson;
+            color: white;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+
 </head>
 
 <body>
 
-    <div class="container">
+    <div class="form-container">
         <header>Walkin Clients</header>
+        <p><strong>Personal Details</strong></p>
 
-        <form action="{{route('walkin.store')}}" method="POST">
+        <form action="{{ route('walkin.store') }}" method="POST">
             @csrf
-            <div class="form first">
-                <div class="details personal">
-                    <span class="title"><b><i>Personal Details</i></b></span>
-                    <div class="fields">
-
-                        <div class="input-field">
-                            <label>Lastname</label>
-                            <input type="text" name="lastname" placeholder="Enter your surname" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Firstname</label>
-                            <input type="text" name="firstname" placeholder="Enter your firstname" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Middle name</label>
-                            <input type="text" name="middlename" placeholder="Enter your middle name" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Date</label>
-                            <input type="date" name="date" placeholder="Enter the date" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Time</label>
-                            <input type="time" name="time" placeholder="Enter the time" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Gender</label>
-                            <select name="gender" id="gender">
-                                <optgroup label="Option:">
-                                    <option value="gender" disabled selected>Sex</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Age</label>
-                            <input type="number" name="age" placeholder="Enter your age" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Address</label>
-                            <select name="city" id="city">
-                                <optgroup label="Option">
-                                    <option value="city" disabled selected>City</option>
-                                    <option value="Meycauayan">Meycauayan</option>
-                                    <option value="Marilao">Marilao</option>
-                                    <option value="Bocaue">Bocaue</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Province</label>
-                            <select name="province" id="province">
-                                <optgroup label="Option">
-                                    <option value="province" disabled selected>Province</option>
-                                    <option value="Bulacan">Bulacan</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Zip Code</label>
-                            <select name="zipcode" id="zipcode">
-                                <optgroup label="Option">
-                                    <option value="zipcode" disabled selected>Zip Code</option>
-                                    <option value="3018">3018</option>
-                                    <option value="3019">3019</option>
-                                    <option value="3020">3020</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Amount</label>
-                            <input type="number" name="amount" placeholder="Enter the amount" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Mode of Payment</label>
-                            <select name="payment" id="payment">
-                                <optgroup label="Select your option:">
-                                    <option value="payment" disabled selected>Payment Method</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Gcash">Gcash</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                    </div>
+            <div class="form-group">
+                <div>
+                    <label for="lastname">Lastname:</label>
+                    <input type="text" placeholder="Enter your surname" id="lastname" name="lastname" required>
                 </div>
-
-                @if(session('success'))
-                    <div class="custom-alert-message">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                alert.classList.add('fade-out');
-                            }
-                        }, 3000); // 3000ms = 3 seconds
-                    });
-                </script>
-
-                <button type="submit" class="nextBtn">
-                    <span class="btnText">SUBMIT</span>
-                </button>
-
+                <div>
+                    <label for="firstname">Firstname:</label>
+                    <input type="text" placeholder="Enter your firstname" id="firstname" name="firstname" required>
+                </div>
+                <div>
+                    <label for="middlename">Middle name:</label>
+                    <input type="text" placeholder="Enter your middle name" id="middlename" name="middlename" required>
+                </div>
+                <div>
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div>
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                <div>
+                    <label for="gender">Gender:</label>
+                    <select name="gender" id="gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="age">Age:</label>
+                    <input type="number" placeholder="Enter your age" id="age" name="age" required>
+                </div>
+                <div>
+                    <label for="city">City:</label>
+                    <select name="city" id="city">
+                        <option value="Meycauayan">Meycauayan</option>
+                        <option value="Marilao">Marilao</option>
+                        <option value="Bocaue">Bocaue</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="province">Province:</label>
+                    <select name="province" id="province">
+                        <option value="Bulacan">Bulacan</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="zipcode">Zip Code:</label>
+                    <select name="zipcode" id="zipcode">
+                        <option value="3018">3018</option>
+                        <option value="3019">3019</option>
+                        <option value="3020">3020</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="amount">Amount:</label>
+                    <input type="number" placeholder="Enter the amount" id="amount" name="amount" required>
+                </div>
+                <div>
+                    <label for="payment">Mode of Payment:</label>
+                    <select name="payment" id="payment">
+                        <option value="Cash">Cash</option>
+                        <option value="Gcash">Gcash</option>
+                    </select>
+                </div>
             </div>
-        </form>
 
+            <div class="buttons">
+                <a href="{{ url()->previous() }}" class="back-btn">Back</a>
+                <button type="submit" class="submit-btn">Submit</button>
+            </div>
+
+        </form>
     </div>
-    <br>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6Z5JfMFfQp1m49jWm8yNFf0/3pEj9/h6+6j5LLFujVnY" crossorigin="anonymous">
+        </script>
+
 </body>
 
 </html>
