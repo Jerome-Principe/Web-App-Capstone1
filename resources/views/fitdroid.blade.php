@@ -424,7 +424,8 @@
                         </div>
                         <div class="team_content">
                             <ul class="social">
-                                <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
+                                <li><a href="https://www.facebook.com/profile.php?id=100080285593213"><i
+                                            class="lni lni-facebook-filled"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-instagram-original"></i></a></li>
                             </ul>
@@ -443,7 +444,8 @@
                         </div>
                         <div class="team_content">
                             <ul class="social">
-                                <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
+                                <li><a href="https://www.facebook.com/ChronosTheGhost"><i
+                                            class="lni lni-facebook-filled"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-instagram-original"></i></a></li>
                             </ul>
@@ -465,7 +467,8 @@
                         </div>
                         <div class="team_content">
                             <ul class="social">
-                                <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
+                                <li><a href="https://www.facebook.com/jrastica"><i
+                                            class="lni lni-facebook-filled"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-instagram-original"></i></a></li>
                             </ul>
@@ -484,7 +487,8 @@
                         </div>
                         <div class="team_content">
                             <ul class="social">
-                                <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
+                                <li><a href="https://www.facebook.com/sheila.venturaaldecoa"><i
+                                            class="lni lni-facebook-filled"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-instagram-original"></i></a></li>
                             </ul>
@@ -822,10 +826,15 @@
                         <div class="footer_link mt-45">
                             <h4 class="footer_title">Quick Link</h4>
                             <ul class="link">
-                                <li><a href="javascript:void(0)">Home</a></li>
-                                <li><a href="javascript:void(0)">Courses</a></li>
-                                <li><a href="javascript:void(0)">About</a></li>
-                                <li><a href="javascript:void(0)">Schedules</a></li>
+                                <li><a href="#home">Home</a></li>
+                                <li><a href="#courses">Courses</a></li>
+                                <li><a href="#about">About</a></li>
+                                <li><a href="#team">Team</a></li>
+                                <li><a href="#about">About</a></li>
+                                <li><a href="#schedules">Schedules</a></li>
+                                <li><a href="#pricing">Pricing</a></li>
+                                <li><a href="#trainee">Trainee</a></li>
+                                <li><a href="#contact">Contact</a></li>
                             </ul>
                         </div>
                     </div>
@@ -833,7 +842,8 @@
                         <div class="footer_social mt-45">
                             <h4 class="footer_title">Follow Us On</h4>
                             <ul class="social">
-                                <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
+                                <li><a href="https://www.facebook.com/LIMITLESSROCKSTARS"><i
+                                            class="lni lni-facebook-filled"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-instagram-original"></i></a></li>
                             </ul>
@@ -888,11 +898,12 @@
     <script src="{{asset('assets/js/scrolling-nav.js')}}"></script>
 
     <script src="{{asset('assets/js/main.js')}}"></script>
-    <script defer=""
+    <!-- <script defer=""
         src="https://static.cloudflareinsights.com/beacon.min.js/vedd3670a3b1c4e178fdfb0cc912d969e1713874337387"
         data-cf-beacon="{"
         rayid":"88768c664fe1775a","r":1,"version":"2024.4.1","token":"9a6015d415bb4773a0bff22543062d3b"}"=""
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+    </script> -->
 
 
 </body>
