@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class PendingMembership extends Model
 {
     use HasFactory;
-    protected $fillable = ['firstname', 'lastname', 'email', 'password', 'status'];
+    protected $fillable = ['id', 'firstname', 'lastname', 'email', 'password', 'membership_plan', 'status'];
 }
