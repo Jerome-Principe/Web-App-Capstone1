@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CreateAccountController;
+use App\Http\Controllers\MobileCreateAccountController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +24,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/membership-pendings', [MembershipPendingController::class, 'index']);
+// API ------
+// routes sa api.php
+// gagawa controller
+// Test API in postman
+// yung routes mo laging may /api sa umpisa
+
+Route::get('/mobile/membership-pendings', [MembershipPendingController::class, 'mGetMembershipPending']);
+Route::post('/mobile/create-account', [MobileCreateAccountController::class, 'createAccount']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);

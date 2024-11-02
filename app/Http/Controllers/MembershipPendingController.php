@@ -45,6 +45,11 @@ class MembershipPendingController extends Controller
         return response()->json(['message' => 'Membership declined successfully']);
     }
 
+    public function mGetMembershipPending()
+    {
+        return PendingMembership::where('status', 'Pending')->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      */
