@@ -130,7 +130,7 @@ route::resource('supplements', SupplementController::class);
 
 
 //Membership
-Route::resource('membership-pendings', MembershipPendingController::class);
+Route::get('/membership-pendings', [MembershipPendingController::class, 'index'])->name('membership-pending-list');
 Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');
 Route::post('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline'])->name('membership-pendings.decline');
 

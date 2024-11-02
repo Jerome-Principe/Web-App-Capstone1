@@ -16,7 +16,6 @@ class MembershipPendingController extends Controller
         return view('membership-pending-list', compact('pendingMemberships'));
     }
 
-
     public function approve($id)
     {
         $membership = PendingMembership::find($id);
@@ -63,7 +62,15 @@ class MembershipPendingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        PendingMembership::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'status' => 'Pending',
+        ]);
+
+        return response()->json(['message' => 'Membership request created successfully'], 201);
     }
 
     /**
