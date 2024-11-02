@@ -31,7 +31,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // yung routes mo laging may /api sa umpisa
 
 Route::get('/mobile/membership-pendings', [MembershipPendingController::class, 'mGetMembershipPending']);
-Route::post('/mobile/create-account', [MobileCreateAccountController::class, 'createAccount']);
 Route::post('/mobile/create-account', [MembershipPendingController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
