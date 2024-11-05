@@ -147,7 +147,7 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/membership">View Membership</a>
+                        <a href="/membership-list">View Membership</a>
                     </li>
                     <li>
                         <a href="/membership-pendings">Pending Member</a>
