@@ -157,14 +157,15 @@
                     @foreach($equipmentDefects as $index => $equipmentDefect)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $equipmentDefect->id }}"
-                                    onchange="updateSelectionCount()" /></td>
+                                    onchange="updateSelectionCount()" />
+                            </td>
                             <td class="text-center">{{ $equipmentDefects->perPage() * ($equipmentDefects->currentPage() - 1) + $index + 1 }}</td>
                             <td class="text-center">{{ $equipmentDefect->equipment->item_name }}</td>
                             <td class="text-center">{{ $equipmentDefect->quantity }}</td>
                             <td class="text-center">{{ $equipmentDefect->defect }}</td>
                             <td class="text-center">{{ $equipmentDefect->date }}</td>
                             <td class="text-center">{{ $equipmentDefect->time }}</td>
-                            <td class="text-center">
+                            <td class="d-flex justify-content-center">
                                 <a href="{{ route('equipments.edit', $equipmentDefect->id) }}"
                                     class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o mx-1"
                                         aria-hidden="true"></i>Update</a>
@@ -172,7 +173,7 @@
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
+                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
                                         onclick="return confirm('Are you sure you want to delete this equipment?')"><i
                                             class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
                                 </form>

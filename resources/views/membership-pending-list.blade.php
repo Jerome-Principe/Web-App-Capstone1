@@ -161,7 +161,7 @@
                                 {{ Str::limit($membership->password, 10, '...') }}
                             </td>
                             <td class="text-center">{{ $membership->status }}</td>
-                            <td>
+                            <td class="d-flex justify-content-center">
                                 @if($membership->status === 'Pending')
                                     <form action="{{ route('membership-pendings.approve', $membership->id) }}" method="POST"
                                         style="display:inline;">
@@ -171,7 +171,7 @@
                                     <form action="{{ route('membership-pendings.decline', $membership->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                        <button type="submit" class="btn btn-danger btn-sm mx-1">Decline</button>
                                     </form>
                                 @else
                                     {{ $membership->status }}

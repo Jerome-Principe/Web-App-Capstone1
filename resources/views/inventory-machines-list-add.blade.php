@@ -164,7 +164,7 @@
                             <td class="text-center">{{ $machine->quantity }}</td>
                             <td class="text-center">{{ $machine->date }}</td>
                             <td class="text-center">{{ $machine->time }}</td>
-                            <td class="text-center">
+                            <td class="d-flex justify-content-center">
                                 <a href="{{ route('machines.edit', $machine->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
                                 </a>
@@ -173,7 +173,7 @@
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
+                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
                                         onclick="return confirm('Are you sure you want to delete this machine?')">
                                         <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
                                     </button>

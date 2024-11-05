@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Add Drinks List</title>
+    <title>Feedback</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -153,14 +153,14 @@
                             <td class="text-center">{{ $feedbacks->email }}</td>
                             <td class="text-center">{{ $feedbacks->subject }}</td>
                             <td class="text-center">{{ $feedbacks->message }}</td>
-                            <td class="text-center">
+                            <td class="d-flex justify-content-center">
                                 <a href="/feedback/{{ $feedbacks->id }}/edit" class="btn btn-sm btn-primary"><i
                                         class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
                                 <form action="{{ route('feedback.destroy', $feedbacks->id) }}" method="POST"
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
+                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
                                         onclick="return confirm('Are you sure you want to delete this feedback?')"><i
                                             class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
                                 </form>

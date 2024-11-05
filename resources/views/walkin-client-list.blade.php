@@ -162,14 +162,14 @@
                             <td class="text-center">{{ $walkin->payment }}</td>
                             <td class="text-center">{{ $walkin->date }}</td>
                             <td class="text-center">{{ $walkin->time }}</td>
-                            <td class="text-center">
+                            <td class="d-flex justify-content-center">
                                 <a href="{{ route('walkins.edit', $walkin->id) }}" class="btn btn-sm btn-primary"><i
                                         class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
                                 <form action="{{ route('walkins.destroy', $walkin->id) }}" method="POST"
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
+                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
                                         onclick="return confirm('Are you sure you want to delete this walk-in client?')"><i
                                             class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
                                 </form>

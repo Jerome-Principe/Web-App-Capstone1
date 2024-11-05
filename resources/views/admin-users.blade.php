@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Add Drinks List</title>
+    <title>Admin User</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -159,14 +159,14 @@
                             <td title="{{ $user->password }}">{{ Str::limit($user->password, 10, '...') }}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>{{ $user->updated_at }}</td>
-                            <td>
+                            <td class="d-flex justify-content-center">
                                 <a href="{{ route('admin-users.edit', $user->id) }}" class="btn btn-primary"><i
                                         class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
                                 <form action="{{ route('admin-users.destroy', $user->id) }}" method="POST"
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"
+                                    <button type="submit" class="btn btn-danger mx-1"
                                         onclick="return confirm('Are you sure you want to delete this user account?')"><i
                                             class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
                                 </form>
