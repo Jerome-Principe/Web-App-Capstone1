@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Pending Membership Approvals</title>
+    <title>Approved Memberships</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,19 +92,8 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Pending Membership Approvals</h1>
+            <h1>Membership List</h1>
         </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                setTimeout(function () {
-                    const alert = document.querySelector('.custom-alert-message');
-                    if (alert) {
-                        alert.classList.add('fade-out');
-                    }
-                }, 3000);
-            });
-        </script>
 
         <div class="filter-options">
             <div class="filter-links">
@@ -142,17 +131,16 @@
                         <th class="text-center">Email</th>
                         <th class="text-center">Password</th>
                         <th class="text-center">Status</th>
-                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($pendingMemberships as $index => $membership)
+                    @foreach($memberships as $index => $membership)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
                                     onchange="updateSelectionCount()" />
                             </td>
                             <td class="text-center">
-                                {{ ($pendingMemberships->currentPage() - 1) * $pendingMemberships->perPage() + $index + 1 }}
+                                {{ ($memberships->currentPage() - 1) * $memberships->perPage() + $index + 1 }}
                             </td>
                             <td class="text-center">{{ $membership->first_name }}</td>
                             <td class="text-center">{{ $membership->last_name }}</td>
@@ -161,28 +149,12 @@
                                 {{ Str::limit($membership->password, 10, '...') }}
                             </td>
                             <td class="text-center">{{ $membership->status }}</td>
-                            <td>
-                                @if($membership->status === 'Pending')
-                                    <form action="{{ route('membership-pendings.approve', $membership->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                                    </form>
-                                    <form action="{{ route('membership-pendings.decline', $membership->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm">Decline</button>
-                                    </form>
-                                @else
-                                    {{ $membership->status }}
-                                @endif
-                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
             <div class="mt-3">
-                {{ $pendingMemberships->links() }}
+                {{ $memberships->links() }}
             </div>
         </div>
     </div>
@@ -204,5 +176,4 @@
     </script>
 
 </body>
-
 @endsection

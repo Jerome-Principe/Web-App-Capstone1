@@ -12,7 +12,7 @@ class MembershipPendingController extends Controller
      */
     public function index()
     {
-        $pendingMemberships = PendingMembership::where('status', 'Pending')->get();
+        $pendingMemberships = PendingMembership::where('status', 'Pending')->paginate(10);
         return view('membership-pending-list', compact('pendingMemberships'));
     }
 
@@ -21,13 +21,13 @@ class MembershipPendingController extends Controller
         $membership = PendingMembership::find($id);
 
         if (!$membership) {
-            return response()->json(['message' => 'Membership not found'], 404);
+            return redirect()->back()->withErrors(['Membership not found']);
         }
 
         $membership->status = 'Approved';
         $membership->save();
 
-        return response()->json(['message' => 'Membership approved successfully']);
+        return redirect()->route('membership.list')->with('success', 'Membership approved successfully');
     }
 
     public function decline($id)
@@ -35,14 +35,21 @@ class MembershipPendingController extends Controller
         $membership = PendingMembership::find($id);
 
         if (!$membership) {
-            return response()->json(['message' => 'Membership not found'], 404);
+            return redirect()->back()->withErrors(['Membership not found']);
         }
 
         $membership->status = 'Declined';
         $membership->save();
 
-        return response()->json(['message' => 'Membership declined successfully']);
+        return redirect()->route('membership.list')->with('success', 'Membership declined successfully');
     }
+
+    public function listApproved()
+    {
+        $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])->paginate(10);
+        return view('membership-list', compact('memberships'));
+    }
+
 
     public function mGetMembershipPending()
     {
@@ -92,8 +99,15 @@ class MembershipPendingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyAll(Request $request)
     {
-        //
+        // Validate that selected IDs are provided
+        if ($request->has('selected') && is_array($request->input('selected'))) {
+            // Retrieve and delete the selected memberships
+            PendingMembership::whereIn('id', $request->input('selected'))->delete();
+            return back()->with('success', 'Selected memberships moved to trash successfully.');
+        }
+
+        return back()->with('error', 'No memberships selected.');
     }
 }

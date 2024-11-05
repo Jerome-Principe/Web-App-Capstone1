@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\PendingMembership;
 use Illuminate\Http\Request;
 
 class MobileCreateAccountController extends Controller
 {
     public function createAccount(Request $request)
     {
-        return User::create([
-            'name' => $request->first_name . ' ' . $request->lastname,
+        return PendingMembership::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),  // Encrypt the password
+            'status' => 'Pending'  // Default status as Pending
         ]);
-
     }
 }

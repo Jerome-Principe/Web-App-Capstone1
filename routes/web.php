@@ -61,9 +61,6 @@ Route::get('/inventory', function () {
 Route::get('/maintenance', function () {
     return view('maintenance');
 });
-Route::get('/membership', function () {
-    return view('membership');
-});
 Route::get('/our-team', function () {
     return view('our-team');
 });
@@ -130,9 +127,11 @@ route::resource('supplements', SupplementController::class);
 
 
 //Membership
+Route::get('/membership-list', [MembershipPendingController::class, 'listApproved'])->name('membership.list');
 Route::resource('membership-pendings', MembershipPendingController::class);
 Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');
 Route::post('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline'])->name('membership-pendings.decline');
+Route::post('/membership-pendings/destroy-all', [MembershipPendingController::class, 'destroyAll'])->name('membership-pendings.destroyAll');
 
 // Admin Users
 Route::resource('admin-users', AdminUserController::class);

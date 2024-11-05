@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('membership_plan');
+            $table->string('password');
             $table->string('status')->default('Pending');
             $table->timestamps();
         });
