@@ -10,6 +10,13 @@ class MobileCreateAccountController extends Controller
 {
     public function createAccount(Request $request)
     {
+        $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:pending_memberships,email',
+            'password' => 'required|min:6',
+        ]);
+
         return PendingMembership::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
