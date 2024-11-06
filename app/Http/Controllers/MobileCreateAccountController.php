@@ -14,7 +14,7 @@ class MobileCreateAccountController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
             'status' => 'Pending'
         ]);
     }
