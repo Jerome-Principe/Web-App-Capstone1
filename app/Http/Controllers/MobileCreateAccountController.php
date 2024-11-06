@@ -14,12 +14,11 @@ class MobileCreateAccountController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),  // Encrypt the password
-            'status' => 'Pending'  // Default status as Pending
+            'password' => bcrypt($request->password),
+            'status' => 'Pending'
         ]);
     }
 
-    // MobileCreateAccountController.php
     public function login(Request $request)
     {
         // Validate request
@@ -36,7 +35,6 @@ class MobileCreateAccountController extends Controller
         // Verify password
         if ($user && \Hash::check($request->password, $user->password)) {
             // Here you could return a token for API authentication
-            // Assuming you use Laravel Sanctum or JWT:
             $token = $user->createToken('MobileApp')->plainTextToken;
 
             return response()->json([
