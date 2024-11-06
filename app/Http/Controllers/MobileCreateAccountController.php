@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PendingMembership;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class MobileCreateAccountController extends Controller
