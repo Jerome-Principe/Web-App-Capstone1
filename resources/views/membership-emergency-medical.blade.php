@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Request For Membership</title>
+    <title>Emergency Contact / Medical Questionnaire</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,7 +95,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Request For Membership</h1>
+            <h1>Emergency Contact / Medical Questionnaire</h1>
         </div>
 
         <div class="filter-options">
