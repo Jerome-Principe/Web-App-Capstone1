@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\Models\RequestMembership;
+use Illuminate\Http\Request;
+
+class RequestMembershipController extends Controller
+{
+    //
+    public function index()
+    {
+        //
+        $memberships = RequestMembership::paginate(9);
+        return view('membership-request-list', compact('memberships'));
+    }
+    public function store(Request $request)
+    {
+        $membership = RequestMembership::create(
+            $request->all()
+        );
+        if (!$membership) {
+            return response()->json(['message' => 'Failed to create membership.'], 500);
+        }
+
+        return response()->json([
+            'message' => 'Membership created successfully!',
+            'membership' => $membership
+        ]);
+    }
+
+}

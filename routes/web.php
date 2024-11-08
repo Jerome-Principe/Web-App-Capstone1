@@ -12,6 +12,8 @@ use App\Http\Controllers\MachineController;
 use App\Http\Controllers\SupplementController;
 use App\Http\Controllers\MembershipPendingController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\RequestMembershipController;
+use App\Http\Controllers\MedicalFormController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +129,10 @@ route::resource('supplements', SupplementController::class);
 
 
 //Membership
+
+Route::get('/membership-request-list', [RequestMembershipController::class, 'index']);
+Route::get('/membership-emergency-medical', [MedicalFormController::class, 'index']);
+
 Route::get('/membership-list', [MembershipPendingController::class, 'listApproved'])->name('membership.list');
 Route::resource('membership-pendings', MembershipPendingController::class);
 Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');

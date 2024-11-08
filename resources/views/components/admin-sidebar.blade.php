@@ -147,13 +147,16 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
+                        <a href="/membership-pendings">Pending Membership</a>
+                    </li>
+                    <li>
                         <a href="/membership-list">View Membership</a>
                     </li>
                     <li>
-                        <a href="/membership-pendings">Pending Member</a>
+                        <a href="/membership-request-list">Membership Request</a>
                     </li>
                     <li>
-                        <a href="#">Member Info</a>
+                        <a href="/membership-emergency-medical">Emergency / Medical</a>
                     </li>
                     <li>
                         <a href="#">Inactive Member</a>
