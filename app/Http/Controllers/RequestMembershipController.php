@@ -28,17 +28,15 @@ class RequestMembershipController extends Controller
             'membership_type' => 'required|string',
         ]);
 
-        $membership = RequestMembership::create(
-            $request->all()
-        );
-        if (!$membership) {
-            return response()->json(['message' => 'Failed to create membership.'], 500);
+        try {
+            $membership = RequestMembership::create($request->all());
+            return response()->json(['message' => 'Membership created successfully!', 'membership' => $membership], 201);
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Error saving membership:', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Failed to create membership.', 'error' => $e->getMessage()], 500);
         }
 
-        return response()->json([
-            'message' => 'Membership created successfully!',
-            'membership' => $membership
-        ]);
     }
 
 }
