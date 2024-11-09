@@ -15,7 +15,8 @@ class MedicalFormController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        // Convert "yes"/"no" strings to boolean values
+
+        // List of boolean fields
         $booleanFields = [
             'heart_disease',
             'asthma',
@@ -40,10 +41,12 @@ class MedicalFormController extends Controller
 
         foreach ($booleanFields as $field) {
             if (isset($data[$field])) {
-                $data[$field] = strtolower($data[$field]) === 'yes' ? true : false;
+                // Handle boolean or string representation of boolean values
+                $data[$field] = filter_var($data[$field], FILTER_VALIDATE_BOOLEAN);
             }
         }
 
+        // Save the form data
         $form = MedicalForm::create($data);
 
         return response()->json($form, 201);
