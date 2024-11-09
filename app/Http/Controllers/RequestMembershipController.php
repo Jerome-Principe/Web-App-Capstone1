@@ -10,7 +10,7 @@ class RequestMembershipController extends Controller
     public function index()
     {
         //
-        $memberships = RequestMembership::paginate(9);
+        $memberships = RequestMembership::paginate(10);
         return view('membership-request-list', compact('memberships'));
     }
     public function store(Request $request)
