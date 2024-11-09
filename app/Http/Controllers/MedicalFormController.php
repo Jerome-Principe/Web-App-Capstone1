@@ -8,7 +8,7 @@ class MedicalFormController extends Controller
 {
     public function index()
     {
-        $medicalForms = MedicalForm::paginate(9);
+        $medicalForms = MedicalForm::paginate(10);
         return view('membership-emergency-medical', ['medicalForms' => $medicalForms]);
     }
 

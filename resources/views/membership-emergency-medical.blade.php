@@ -55,7 +55,7 @@
         }
 
         .table-container {
-            max-height: 400px;
+            max-height: 700px;
             overflow-y: auto;
             overflow-x: auto;
             white-space: nowrap;
