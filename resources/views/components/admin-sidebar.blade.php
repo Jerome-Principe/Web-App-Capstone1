@@ -159,7 +159,7 @@
                         <a href="/membership-emergency-medical">Emergency / Medical</a>
                     </li>
                     <li>
-                        <a href="#">Inactive Member</a>
+                        <a href="/membership-payment-list">Payment</a>
                     </li>
                 </ul>
             </li>
