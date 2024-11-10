@@ -1,4 +1,2 @@
-/storage/*
-!/storage/app/public
-/public/storage
-!/public/storage/.gitignore
+*
+!.gitignore
