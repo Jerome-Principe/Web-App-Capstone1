@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\MembershipPayment;
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Http\Request;
 
 class MembershipPaymentController extends Controller
