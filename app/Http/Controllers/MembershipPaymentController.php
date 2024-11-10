@@ -21,15 +21,14 @@ class MembershipPaymentController extends Controller
             'proof_of_payment_url' => 'required|url',
         ]);
 
-        $payment = new MembershipPayment();
-        $payment->gcash_number = $request->gcash_number;
-        $payment->account_name = $request->account_name;
-        $payment->reference_number = $request->reference_number;
-        $payment->proof_of_payment_url = $request->proof_of_payment_url;
-        $payment->save();
-
-        return response()->json(['message' => 'Payment submitted successfully'], 201);
+        // Save payment
+        // Handle exceptions for clearer debugging
+        try {
+            MembershipPayment::create($request->all());
+            return response()->json(['message' => 'Payment submitted successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
     }
-
 
 }
