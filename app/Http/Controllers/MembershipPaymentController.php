@@ -18,17 +18,20 @@ class MembershipPaymentController extends Controller
             'gcash_number' => 'required|string',
             'account_name' => 'required|string',
             'reference_number' => 'required|string|unique:membership_payments',
-            'proof_of_payment_url' => 'required|url',
+            'proof_of_payment' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Save payment
-        // Handle exceptions for clearer debugging
-        try {
-            MembershipPayment::create($request->all());
-            return response()->json(['message' => 'Payment submitted successfully'], 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 422);
-        }
+        $proofOfPaymentUrl = $request->file('proof_of_payment')->store('payment_proofs', 'public');
+
+        MembershipPayment::create([
+            'gcash_number' => $request->gcash_number,
+            'account_name' => $request->account_name,
+            'reference_number' => $request->reference_number,
+            'proof_of_payment_url' => asset('storage/' . $proofOfPaymentUrl),
+        ]);
+
+        return response()->json(['message' => 'Payment submitted successfully'], 201);
     }
+
 
 }
