@@ -21,13 +21,13 @@ class MembershipPaymentController extends Controller
             'proof_of_payment' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $proofOfPaymentUrl = $request->file('proof_of_payment')->store('payment_proofs', 'public');
+        $proofOfPaymentPath = $request->file('proof_of_payment')->store('payment_proofs', 'public');
 
         MembershipPayment::create([
             'gcash_number' => $request->gcash_number,
             'account_name' => $request->account_name,
             'reference_number' => $request->reference_number,
-            'proof_of_payment_url' => asset('storage/' . $proofOfPaymentUrl),
+            'proof_of_payment_url' => Storage::url($proofOfPaymentPath),
         ]);
 
         return response()->json(['message' => 'Payment submitted successfully'], 201);
