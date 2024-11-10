@@ -14,7 +14,7 @@ use App\Http\Controllers\MembershipPendingController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\RequestMembershipController;
 use App\Http\Controllers\MedicalFormController;
-
+use App\Http\Controllers\MembershipPaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -133,6 +133,8 @@ route::resource('supplements', SupplementController::class);
 Route::get('/membership-request-list', [RequestMembershipController::class, 'index']);
 Route::get('/membership-emergency-medical', [MedicalFormController::class, 'index']);
 
+Route::get('/membership-payment-list', [MembershipPaymentController::class, 'index']);
+
 Route::get('/membership-list', [MembershipPendingController::class, 'listApproved'])->name('membership.list');
 Route::resource('membership-pendings', MembershipPendingController::class);
 Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');
@@ -141,4 +143,3 @@ Route::post('/membership-pendings/destroy-all', [MembershipPendingController::cl
 
 // Admin Users
 Route::resource('admin-users', AdminUserController::class);
-

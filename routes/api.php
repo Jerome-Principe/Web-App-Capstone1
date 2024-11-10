@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MembershipPendingController;
 use App\Http\Controllers\RequestMembershipController;
 use App\Http\Controllers\MedicalFormController;
-
-
+use App\Http\Controllers\MembershipPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +35,9 @@ Route::post('/mobile/login', [MobileCreateAccountController::class, 'login']);
 
 Route::post('/mobile/memberships', [RequestMembershipController::class, 'store']);
 Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
+
+Route::post('/mobile/membership-payments', [MembershipPaymentController::class, 'store']);
+Route::get('/mobile/membership-payments', [MembershipPaymentController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
