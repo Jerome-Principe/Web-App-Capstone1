@@ -40,11 +40,12 @@ class MembershipPaymentController extends Controller
         // Fetch the proof image URL from the MembershipPayment model based on the ID
         $proof = MembershipPayment::find($id); // Use MembershipPayment instead of Proof
 
-        if (!$proof || !file_exists(public_path($proof->proof_of_payment_url))) {
+        if (!$proof || !file_exists(public_path('storage/' . $proof->proof_of_payment_url))) {
             return abort(404); // Return a 404 if the proof or image doesn't exist
         }
 
-        return response()->file(public_path($proof->proof_of_payment_url)); // Display the image
+        return response()->file(public_path('storage/' . $proof->proof_of_payment_url)); // Display the image
     }
+
 
 }
