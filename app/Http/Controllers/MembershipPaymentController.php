@@ -35,5 +35,16 @@ class MembershipPaymentController extends Controller
         return response()->json(['message' => 'Payment submitted successfully'], 201);
     }
 
+    public function viewProof($id)
+    {
+        // Fetch the proof image URL from the MembershipPayment model based on the ID
+        $proof = MembershipPayment::find($id); // Use MembershipPayment instead of Proof
+
+        if (!$proof || !file_exists(public_path($proof->proof_of_payment_url))) {
+            return abort(404); // Return a 404 if the proof or image doesn't exist
+        }
+
+        return response()->file(public_path($proof->proof_of_payment_url)); // Display the image
+    }
 
 }
