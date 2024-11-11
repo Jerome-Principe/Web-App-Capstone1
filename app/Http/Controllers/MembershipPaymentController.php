@@ -20,7 +20,7 @@ class MembershipPaymentController extends Controller
             'gcash_number' => 'required|string',
             'account_name' => 'required|string',
             'reference_number' => 'required|string|unique:membership_payments',
-            'proof_of_payment' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'proof_of_payment_url' => 'required|url'
         ]);
 
         $proofOfPaymentPath = $request->file('proof_of_payment')->store('payment_proofs', 'public');
@@ -29,7 +29,7 @@ class MembershipPaymentController extends Controller
             'gcash_number' => $request->gcash_number,
             'account_name' => $request->account_name,
             'reference_number' => $request->reference_number,
-            'proof_of_payment_url' => Storage::url($proofOfPaymentPath),
+            'proof_of_payment_url' => $request->proof_of_payment_url,
         ]);
 
         return response()->json(['message' => 'Payment submitted successfully'], 201);
