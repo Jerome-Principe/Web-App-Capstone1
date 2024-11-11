@@ -24,7 +24,6 @@ class MembershipPaymentController extends Controller
         ]);
 
         $proofOfPaymentPath = $request->file('proof_of_payment')->store('payment_proofs', 'public');
-        \Log::info('Proof of Payment Path: ' . $proofOfPaymentPath);
 
         MembershipPayment::create([
             'gcash_number' => $request->gcash_number,
