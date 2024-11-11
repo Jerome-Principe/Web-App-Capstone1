@@ -142,7 +142,7 @@
                             <td class="text-center">{{ $payment->account_name }}</td>
                             <td class="text-center">{{ $payment->reference_number }}</td>
                             <td class="text-center">
-                                <a href="{{ route('proof.view', ['id' => $proof->id]) }}" target="_blank">View Proof</a>
+                                <a href="{{ asset($payment->proof_of_payment_url) }}" target="_blank">View Proof</a>
                             </td>
                         </tr>
                     @endforeach

@@ -134,8 +134,6 @@ Route::get('/membership-request-list', [RequestMembershipController::class, 'ind
 Route::get('/membership-emergency-medical', [MedicalFormController::class, 'index']);
 
 Route::get('/membership-payment-list', [MembershipPaymentController::class, 'index']);
-Route::get('/proof/view/{id}', [MembershipPaymentController::class, 'viewProof'])->name('proof.view');
-
 
 Route::get('/membership-list', [MembershipPendingController::class, 'listApproved'])->name('membership.list');
 Route::resource('membership-pendings', MembershipPendingController::class);
