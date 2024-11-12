@@ -44,7 +44,7 @@ class MembershipPaymentController extends Controller
                 'gcash_number' => $request->gcash_number,
                 'account_name' => $request->account_name,
                 'reference_number' => $request->reference_number,
-                'proof_of_payment_url' => Storage::url($filePath), // Save URL for accessing the file
+                'proof_of_payment_url' => Storage::url('app/public' . $filePath), // Save URL for accessing the file
             ]);
 
             return response()->json([
