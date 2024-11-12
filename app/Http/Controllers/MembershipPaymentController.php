@@ -37,7 +37,7 @@ class MembershipPaymentController extends Controller
         if ($request->hasFile('proof_of_payment')) {
             $file = $request->file('proof_of_payment');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('app/public/public/proof_of_payments', $filename); // Store file in storage/app/public/proof_of_payments
+            $filePath = $file->storeAs('proof_of_payments', $filename); // Store file in storage/app/public/proof_of_payments
 
             // Save the new payment data
             $payment = MembershipPayment::create([
