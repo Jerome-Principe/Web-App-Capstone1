@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Storage;
 use App\Models\MembershipPayment;
 use Illuminate\Http\Request;
@@ -46,10 +47,12 @@ class MembershipPaymentController extends Controller
                 'proof_of_payment_url' => Storage::url($filePath), // Save URL for accessing the file
             ]);
 
-            return response()->json(['message' => 'Payment submitted successfully'], 201);
+            return response()->json([
+                'message' => 'Payment submitted successfully',
+                'proof_of_payment_url' => $payment->proof_of_payment_url,
+            ], 201);
         } else {
             return response()->json(['error' => 'Proof of payment is required'], 422);
         }
     }
-
 }
