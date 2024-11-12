@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\MembershipPayment;
 use Illuminate\Http\Request;
 
@@ -29,20 +29,27 @@ class MembershipPaymentController extends Controller
             'gcash_number' => 'required|string',
             'account_name' => 'required|string',
             'reference_number' => 'required|string|unique:membership_payments',
-            // Expecting the URL of the proof of payment
-            'proof_of_payment_url' => 'required|url',  // Expect a URL for the proof of payment
+            'proof_of_payment' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate file as an image
         ]);
 
-        // Create a new membership payment record
-        MembershipPayment::create([
-            'gcash_number' => $request->gcash_number,
-            'account_name' => $request->account_name,
-            'reference_number' => $request->reference_number,
-            // Store the URL of the uploaded proof of payment
-            'proof_of_payment_url' => $request->proof_of_payment_url,  // Save the URL directly
-        ]);
+        // Handle file upload
+        if ($request->hasFile('proof_of_payment')) {
+            $file = $request->file('proof_of_payment');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('public/proof_of_payments', $filename); // Store file in storage/app/public/proof_of_payments
 
-        // Return a success response
-        return response()->json(['message' => 'Payment submitted successfully'], 201);
+            // Save the new payment data
+            $payment = MembershipPayment::create([
+                'gcash_number' => $request->gcash_number,
+                'account_name' => $request->account_name,
+                'reference_number' => $request->reference_number,
+                'proof_of_payment_url' => Storage::url($filePath), // Save URL for accessing the file
+            ]);
+
+            return response()->json(['message' => 'Payment submitted successfully'], 201);
+        } else {
+            return response()->json(['error' => 'Proof of payment is required'], 422);
+        }
     }
+
 }
