@@ -25,7 +25,7 @@
                     <span class="icon-holder">
                         <i class="fa fa-user" aria-hidden="true"></i>
                     </span>
-                    <span class="title">Users</span>
+                    <span class="title">Admin</span>
                     <span class="arrow">
                         <i class="lni-chevron-right"></i>
                     </span>
@@ -33,7 +33,7 @@
                 <ul class="dropdown-menu sub-down">
 
                     <li>
-                        <a href="/admin-users">View Users</a>
+                        <a href="/admin-users">View Admin</a>
                     </li>
                 </ul>
             </li>

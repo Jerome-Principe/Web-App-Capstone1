@@ -26,4 +26,10 @@ class RequestMembership extends Model
         'gym_source',
         'membership_type',
     ];
+
+    // Relationship to PendingMembership
+    public function pendingMembership()
+    {
+        return $this->belongsTo(PendingMembership::class, 'membership_id');
+    }
 }

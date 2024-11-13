@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MedicalForm extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'emergency_contact',
         'relationship',
@@ -39,4 +40,10 @@ class MedicalForm extends Model
         'flexibility',
         'other_condition2',
     ];
+
+    // Relationship to PendingMembership
+    public function pendingMembership()
+    {
+        return $this->belongsTo(PendingMembership::class, 'membership_id');
+    }
 }

@@ -17,4 +17,22 @@ class PendingMembership extends Model
         'password',
         'status'
     ];
+
+    // Relationship to RequestMembership
+    public function requestMembership()
+    {
+        return $this->hasOne(RequestMembership::class, 'membership_id');
+    }
+
+    // Relationship to MedicalForm
+    public function medicalForm()
+    {
+        return $this->hasOne(MedicalForm::class, 'membership_id');
+    }
+
+    // Relationship to MembershipPayment
+    public function membershipPayments()
+    {
+        return $this->hasMany(MembershipPayment::class, 'membership_id');
+    }
 }

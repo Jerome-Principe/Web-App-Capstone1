@@ -8,10 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class MembershipPayment extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'gcash_number',
         'account_name',
         'reference_number',
         'proof_of_payment_url'
     ];
+
+    // Relationship to PendingMembership
+    public function pendingMembership()
+    {
+        return $this->belongsTo(PendingMembership::class, 'membership_id');
+    }
 }

@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('medical_forms', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('membership_id')->nullable()->default(null); // Foreign key for pending_memberships
             $table->string('emergency_contact');
             $table->string('relationship');
             $table->string('emergency_number');
@@ -46,6 +47,9 @@ return new class extends Migration {
             $table->string('other_condition2')->nullable();
 
             $table->timestamps();
+
+            // Define foreign key constraint
+            $table->foreign('membership_id')->references('id')->on('pending_memberships')->onDelete('cascade');
         });
     }
 
