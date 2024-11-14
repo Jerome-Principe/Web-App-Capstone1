@@ -31,6 +31,7 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu sub-down">
+
                     <li>
                         <a href="/admin-users">View Admin</a>
                     </li>
@@ -67,7 +68,13 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/appointment">View Appointment</a>
+                        <a href="/instructor-list">View Instructor</a>
+                    </li>
+                    <li>
+                        <a href="/appointment-pending-list">View Appointment</a>
+                    </li>
+                    <li>
+                        <a href="/appointment-list">View Appointment List</a>
                     </li>
                 </ul>
             </li>
@@ -146,10 +153,10 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/membership-list">View Membership</a>
+                        <a href="/membership-pendings">Pending Membership</a>
                     </li>
                     <li>
-                        <a href="/membership-pendings">Pending Membership</a>
+                        <a href="/membership-list">View Membership</a>
                     </li>
                     <li>
                         <a href="/membership-request-list">Membership Request</a>
