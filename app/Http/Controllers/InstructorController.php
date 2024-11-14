@@ -9,9 +9,9 @@ class InstructorController extends Controller
 {
     public function index()
     {
-
         $instructors = Instructor::all();
-        return response()->json($instructors, 200); // 200 OK status
+        return view('instructor-list', compact('instructors'));
+
     }
 
     public function store(Request $request)
