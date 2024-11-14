@@ -141,7 +141,6 @@
                         <th class="text-center">ID</th>
                         <th class="text-center">Username</th>
                         <th class="text-center">Email</th>
-                        <th class="text-center">Password</th>
                         <th class="text-center">Created At</th>
                         <th class="text-center">Updated At</th>
                         <th class="text-center">Actions</th>
@@ -156,7 +155,6 @@
                             <td>{{ $users->perPage() * ($users->currentPage() - 1) + $index + 1 }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td title="{{ $user->password }}">{{ Str::limit($user->password, 10, '...') }}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>{{ $user->updated_at }}</td>
                             <td class="d-flex justify-content-center">

@@ -140,7 +140,6 @@
                         <th class="text-center">First Name</th>
                         <th class="text-center">Last Name</th>
                         <th class="text-center">Email</th>
-                        <th class="text-center">Password</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
                     </tr>
@@ -157,9 +156,6 @@
                             <td class="text-center">{{ $membership->first_name }}</td>
                             <td class="text-center">{{ $membership->last_name }}</td>
                             <td class="text-center">{{ $membership->email }}</td>
-                            <td class="text-center" title="{{ $membership->password }}">
-                                {{ Str::limit($membership->password, 10, '...') }}
-                            </td>
                             <td class="text-center">{{ $membership->status }}</td>
                             <td class="d-flex justify-content-center">
                                 @if($membership->status === 'Pending')

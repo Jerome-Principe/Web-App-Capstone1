@@ -7,6 +7,7 @@ use App\Http\Controllers\MembershipPendingController;
 use App\Http\Controllers\RequestMembershipController;
 use App\Http\Controllers\MedicalFormController;
 use App\Http\Controllers\MembershipPaymentController;
+use App\Http\Controllers\PendingAppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,14 @@ Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
 
 Route::post('/mobile/membership-payments', [MembershipPaymentController::class, 'store']);
 Route::get('/mobile/membership-payments', [MembershipPaymentController::class, 'index']);
+
+
+Route::get('/appointments', [PendingAppointmentController::class, 'index']);
+Route::post('/mobile/appointments', [PendingAppointmentController::class, 'store']);
+Route::get('/appointments/{id}', [PendingAppointmentController::class, 'show']);
+Route::put('/appointments/{id}', [PendingAppointmentController::class, 'update']);
+Route::delete('/appointments/{id}', [PendingAppointmentController::class, 'destroy']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);

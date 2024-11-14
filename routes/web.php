@@ -15,6 +15,8 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\RequestMembershipController;
 use App\Http\Controllers\MedicalFormController;
 use App\Http\Controllers\MembershipPaymentController;
+use App\Http\Controllers\PendingAppointmentController;
+use App\Http\Controllers\InstructorController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,9 +50,6 @@ Route::get('/all-announcement', function () {
     return view('all-announcement');
 });
 
-Route::get('/appointment', function () {
-    return view('appointment');
-});
 Route::get('/attendance', function () {
     return view('attendance');
 });
@@ -105,6 +104,17 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+
+Route::get('/instructor-list', [InstructorController::class, 'index']);
+Route::post('/instructor-list', [InstructorController::class, 'store'])->name('instructors.store');
+
+Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
+Route::get('/appointment-list', [PendingAppointmentController::class, 'index']);
+
+Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointment-pending-list');
+Route::post('/appointments', [PendingAppointmentController::class, 'store'])->name('appointments.store');
+Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
+Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
 
 
 Route::get('/machine', function () {

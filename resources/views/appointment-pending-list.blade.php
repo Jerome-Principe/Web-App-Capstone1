@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Approved Memberships</title>
+    <title>Pending Appointment List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,7 +92,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Membership List</h1>
+            <h1>Pending Appointment List</h1>
         </div>
 
         <div class="filter-options">
@@ -102,12 +102,10 @@
             </div>
 
             <div>
-                <form method="POST" action="{{ route('membership-pendings.destroyAll') }}">
+                <form method="POST" action="{{ route('appointments.store') }}">
                     @csrf
-                    @method('DELETE')
                     <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                            onclick="return confirm('Are you sure you want to delete all selected memberships?')">
+                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;">
                             <i class="fa fa-trash"></i> Move to Trash
                         </button>
                         <form class="d-flex" role="search">
@@ -120,54 +118,63 @@
             </div>
         </div>
 
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
         <div class="table-container">
             <table class="table table-bordered text-center">
                 <thead>
                     <tr>
                         <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
-                        <th class="text-center">First Name</th>
-                        <th class="text-center">Last Name</th>
-                        <th class="text-center">Email</th>
+                        <th class="text-center">User</th>
+                        <th class="text-center">Instructor</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Time</th>
                         <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($memberships as $index => $membership)
+                    @foreach($appointments as $appointment)
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
-                                    onchange="updateSelectionCount()" />
+                            <td class="text-center"><input type="checkbox" name="selected[]"
+                                    value="{{ $appointment->id }}" />
                             </td>
+                            <td class="text-center">{{ $appointment->id }}</td>
+                            <td class="text-center">{{ $appointment->user->name ?? 'N/A' }}</td>
                             <td class="text-center">
-                                {{ ($memberships->currentPage() - 1) * $memberships->perPage() + $index + 1 }}
+                                {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
                             </td>
-                            <td class="text-center">{{ $membership->first_name }}</td>
-                            <td class="text-center">{{ $membership->last_name }}</td>
-                            <td class="text-center">{{ $membership->email }}</td>
-                            <td class="text-center">{{ $membership->status }}</td>
+                            <td class="text-center">{{ $appointment->selected_date }}</td>
+                            <td class="text-center">{{ $appointment->selected_time }}</td>
+                            <td class="text-center">{{ $appointment->status }}</td>
+                            <td class="text-center">
+                                <!-- Approve Form -->
+                                <form method="POST" action="{{ route('appointments.approve', $appointment->id) }}"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-success">Approve</button>
+                                </form>
+
+                                <!-- Decline Form -->
+                                <form method="POST" action="{{ route('appointments.decline', $appointment->id) }}"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-danger">Decline</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $memberships->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $memberships->previousPageUrl() }}" tabindex="-1">Previous</a>
-                    </li>
-
-                    @foreach(range(1, $memberships->lastPage()) as $page)
-                        <li class="page-item {{ $page == $memberships->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{$memberships->url($page) }}">{{ $page }}</a>
-                        </li>
-                    @endforeach
-
-                    <li class="page-item {{ !$memberships->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $memberships->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
-
         </div>
     </div>
 
