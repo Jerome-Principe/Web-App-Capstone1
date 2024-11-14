@@ -42,6 +42,7 @@ Route::post('/mobile/membership-payments', [MembershipPaymentController::class, 
 Route::get('/mobile/membership-payments', [MembershipPaymentController::class, 'index']);
 
 Route::post('/mobile/instructors', [InstructorController::class, 'store']);
+Route::get('/mobile/instructors', [InstructorController::class, 'index']);
 
 Route::get('/appointments', [PendingAppointmentController::class, 'index']);
 Route::post('/mobile/appointments', [PendingAppointmentController::class, 'store']);
