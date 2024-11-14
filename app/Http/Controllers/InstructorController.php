@@ -11,26 +11,26 @@ class InstructorController extends Controller
     {
         $instructors = Instructor::all();
         return view('instructor-list', compact('instructors'));
-
     }
 
     public function store(Request $request)
     {
-        // Validate the incoming data
-        $validated = $request->validate([
+        // Validate incoming request
+        $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'expertise' => 'nullable|string|max:255',
             'rates' => 'nullable|numeric',
         ]);
 
-        // Create the new instructor record
-        $instructor = Instructor::create($validated);
+        // Create new instructor
+        Instructor::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'expertise' => $request->expertise,
+            'rates' => $request->rates,
+        ]);
 
-        // Return a success response
-        return response()->json([
-            'message' => 'Instructor created successfully!',
-            'instructor' => $instructor,
-        ], 201); // 201 Created status code
+        return redirect()->back()->with('success', 'Instructor created successfully!');
     }
 }
