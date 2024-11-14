@@ -8,6 +8,7 @@ use App\Http\Controllers\RequestMembershipController;
 use App\Http\Controllers\MedicalFormController;
 use App\Http\Controllers\MembershipPaymentController;
 use App\Http\Controllers\PendingAppointmentController;
+use App\Http\Controllers\InstructorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,7 @@ Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
 Route::post('/mobile/membership-payments', [MembershipPaymentController::class, 'store']);
 Route::get('/mobile/membership-payments', [MembershipPaymentController::class, 'index']);
 
+Route::post('/mobile/instructors', [InstructorController::class, 'store']);
 
 Route::get('/appointments', [PendingAppointmentController::class, 'index']);
 Route::post('/mobile/appointments', [PendingAppointmentController::class, 'store']);

@@ -15,22 +15,21 @@ class InstructorController extends Controller
 
     public function store(Request $request)
     {
-        // Validate incoming request
-        $request->validate([
+        // Validate the incoming data
+        $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'expertise' => 'nullable|string|max:255',
             'rates' => 'nullable|numeric',
         ]);
 
-        // Create new instructor
-        Instructor::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'expertise' => $request->expertise,
-            'rates' => $request->rates,
-        ]);
+        // Create the new instructor record
+        $instructor = Instructor::create($validated);
 
-        return redirect()->back()->with('success', 'Instructor created successfully!');
+        // Return a success response
+        return response()->json([
+            'message' => 'Instructor created successfully!',
+            'instructor' => $instructor,
+        ], 201); // 201 Created status code
     }
 }
