@@ -7,10 +7,17 @@ use Illuminate\Http\Request;
 
 class InstructorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $instructors = Instructor::all();
-        return response()->json($instructors);
+
+        // Check if the request expects JSON
+        if ($request->wantsJson()) {
+            return response()->json($instructors);
+        }
+
+        // Otherwise, return the Blade view for web requests
+        return view('instructor-list', compact('instructors'));
     }
 
     public function store(Request $request)
