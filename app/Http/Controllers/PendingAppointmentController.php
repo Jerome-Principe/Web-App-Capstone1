@@ -9,9 +9,11 @@ class PendingAppointmentController extends Controller
 {
     public function index()
     {
-        $appointments = PendingAppointment::with(['instructor', 'user'])->get();
+        // Fetch only the appointments with status 'Pending'
+        $appointments = PendingAppointment::where('status', 'Pending')->with(['instructor', 'user'])->get();
         return view('appointment-pending-list', compact('appointments'));
     }
+
 
     public function store(Request $request)
     {
@@ -60,6 +62,7 @@ class PendingAppointmentController extends Controller
 
         return redirect()->route('appointments.index')->with('error', 'Appointment declined.');
     }
+
 
     public function appointmentList()
     {

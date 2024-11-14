@@ -109,7 +109,6 @@ Route::get('/instructor-list', [InstructorController::class, 'index']);
 Route::post('/instructor-list', [InstructorController::class, 'store'])->name('instructors.store');
 
 Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
-Route::get('/appointment-list', [PendingAppointmentController::class, 'index']);
 
 Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointment-pending-list');
 Route::post('/appointments', [PendingAppointmentController::class, 'store'])->name('appointments.store');

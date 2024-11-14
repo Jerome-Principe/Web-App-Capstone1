@@ -74,7 +74,7 @@
                         <a href="/appointment-pending-list">View Appointment</a>
                     </li>
                     <li>
-                        <a href="/appointment-list">View Appointment List</a>
+                        <a href="/appointments">View Appointment List</a>
                     </li>
                 </ul>
             </li>
