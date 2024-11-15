@@ -147,7 +147,7 @@
                                     value="{{ $appointment->id }}" />
                             </td>
                             <td class="text-center">{{ $appointment->id }}</td>
-                            <td class="text-center">{{ $appointment->user->name ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $appointment->pendingMembership->name ?? 'N/A' }}</td>
                             <td class="text-center">
                                 {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
                             </td>

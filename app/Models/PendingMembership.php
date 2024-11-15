@@ -35,4 +35,8 @@ class PendingMembership extends Model
     {
         return $this->hasMany(MembershipPayment::class, 'membership_id');
     }
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }
