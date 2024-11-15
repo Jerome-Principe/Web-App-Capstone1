@@ -57,15 +57,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $request) {
-    $user = \DB::table('mobile_users')->where('id', $request->user()->id)->first();
-
-    if (!$user) {
-        return response()->json(['error' => 'User not found'], 404);
-    }
-
     return response()->json([
-        'id' => $user->id,
-        'name' => $user->first_name . ' ' . $user->last_name,
-        'email' => $user->email,
+        'id' => $request->user()->id,
+        'name' => $request->user()->first_name . ' ' . $request->user()->last_name,
+        'email' => $request->user()->email,
     ]);
 });
