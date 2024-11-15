@@ -67,7 +67,7 @@ class PendingAppointmentController extends Controller
     public function appointmentList()
     {
         // Fetch the confirmed appointments (where status is confirmed)
-        $appointments = PendingAppointment::where('status', 'Confirmed')->with(['instructor', 'user'])->get();
+        $appointments = PendingAppointment::where('status', 'Confirmed')->with(['instructor', 'pendingMembership'])->get();
 
         return view('appointment-list', compact('appointments'));
     }
@@ -75,7 +75,7 @@ class PendingAppointmentController extends Controller
     public function show($id)
     {
         // Find appointment by ID
-        $appointment = PendingAppointment::with(['instructor', 'user'])->findOrFail($id);
+        $appointment = PendingAppointment::with(['instructor', 'pendingMembership'])->findOrFail($id);
         return response()->json($appointment);
     }
 
