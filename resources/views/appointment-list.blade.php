@@ -117,7 +117,7 @@
                 @foreach($appointments as $appointment)
                     <tr>
                         <td>{{ $appointment->id }}</td>
-                        <td>{{ $appointment->user->name ?? 'N/A' }}</td>
+                        <td>{{ $appointment->pendingMembership->name ?? 'N/A' }}</td>
                         <td>{{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}</td>
                         <td>{{ $appointment->selected_date }}</td>
                         <td>{{ $appointment->selected_time }}</td>
