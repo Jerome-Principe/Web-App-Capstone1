@@ -60,14 +60,15 @@ class PendingAppointmentController extends Controller
         $appointment->status = 'Cancelled';
         $appointment->save();
 
-        return redirect()->route('appointments.index')->with('error', 'Appointment declined.');
+        return redirect()->route('appointments.index')->with('success', 'Appointment declined successfully.');
     }
-
 
     public function appointmentList()
     {
-        // Fetch the confirmed appointments (where status is confirmed)
-        $appointments = PendingAppointment::where('status', 'Confirmed')->with(['instructor', 'pendingMembership'])->get();
+        // Fetch both confirmed and declined appointments
+        $appointments = PendingAppointment::whereIn('status', ['Confirmed', 'Cancelled'])
+            ->with(['instructor', 'pendingMembership'])
+            ->get();
 
         return view('appointment-list', compact('appointments'));
     }
