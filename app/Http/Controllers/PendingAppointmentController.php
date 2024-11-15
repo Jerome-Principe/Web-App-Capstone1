@@ -10,7 +10,7 @@ class PendingAppointmentController extends Controller
     public function index()
     {
         // Fetch only the appointments with status 'Pending'
-        $appointments = PendingAppointment::where('status', 'Pending')->with(['instructor', 'user'])->get();
+        $appointments = PendingAppointment::where('status', 'Pending')->with(['instructor', 'pendingMembership'])->get();
         return view('appointment-pending-list', compact('appointments'));
     }
 
