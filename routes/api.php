@@ -55,3 +55,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
     Route::put('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline']);
 });
+
+Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $request) {
+    return response()->json([
+        'id' => $request->user()->id,
+        'name' => $request->user()->first_name . ' ' . $request->user()->last_name,
+        'email' => $request->user()->email,
+    ]);
+});
