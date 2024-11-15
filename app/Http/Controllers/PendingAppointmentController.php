@@ -20,7 +20,7 @@ class PendingAppointmentController extends Controller
         // Validate the incoming request
         $request->validate([
             'instructor_id' => 'required|exists:instructors,id',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|exists:pending_memberships,id',  // Change to check pending_memberships table
             'selected_date' => 'required|date',
             'selected_time' => 'required',
             'status' => 'string|in:Pending,Confirmed,Cancelled',

@@ -23,8 +23,8 @@ class PendingAppointment extends Model
         return $this->belongsTo(Instructor::class);
     }
 
-    public function user()
+    public function pendingMembership()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(PendingMembership::class, 'user_id');
     }
 }
