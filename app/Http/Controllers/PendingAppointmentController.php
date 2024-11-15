@@ -20,30 +20,38 @@ class PendingAppointmentController extends Controller
         // Validate the incoming request
         $request->validate([
             'instructor_id' => 'required|exists:instructors,id',
-            'user_id' => 'required|exists:users,id',
             'selected_date' => 'required|date',
             'selected_time' => 'required',
             'status' => 'string|in:Pending,Confirmed,Cancelled',
         ]);
 
-        // Create the appointment
         try {
-            $appointment = PendingAppointment::create($request->all());
+            // Get the authenticated user
+            $user = $request->user();
 
-            // Respond with the created appointment as JSON
+            // Create the appointment
+            $appointment = PendingAppointment::create([
+                'instructor_id' => $request->input('instructor_id'),
+                'user_id' => $user->id, // Use the authenticated user's ID
+                'selected_date' => $request->input('selected_date'),
+                'selected_time' => $request->input('selected_time'),
+                'status' => $request->input('status', 'Pending'),
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Appointment created successfully.',
-                'data' => $appointment
+                'data' => $appointment,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create appointment.',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
+
 
     public function approve($id)
     {
