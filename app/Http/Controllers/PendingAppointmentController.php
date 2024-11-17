@@ -57,7 +57,7 @@ class PendingAppointmentController extends Controller
     public function decline($id)
     {
         $appointment = PendingAppointment::findOrFail($id);
-        $appointment->status = 'Decline';
+        $appointment->status = 'Declined';
         $appointment->save();
 
         return redirect()->route('appointments.index')->with('success', 'Appointment declined successfully.');
