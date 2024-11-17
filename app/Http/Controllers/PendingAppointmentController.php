@@ -67,7 +67,7 @@ class PendingAppointmentController extends Controller
     public function appointmentList()
     {
         // Fetch both confirmed and declined appointments
-        $appointments = PendingAppointment::whereIn('status', ['Approved', 'Decline'])
+        $appointments = PendingAppointment::whereIn('status', ['Confirmed', 'Cancelled'])
             ->with(['instructor', 'pendingMembership'])
             ->get();
 
