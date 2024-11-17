@@ -9,9 +9,19 @@ class PendingAppointmentController extends Controller
 {
     public function index()
     {
-        // Fetch only the appointments with status 'Pending'
-        $appointments = PendingAppointment::where('status', 'Pending')->with(['instructor', 'pendingMembership'])->get();
-        return view('appointment-pending-list', compact('appointments'));
+        $user = auth()->user(); // Get the currently authenticated user
+
+        if (!$user) {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
+
+        // Fetch appointments for the logged-in user
+        $appointments = PendingAppointment::where('user_id', $user->id)
+            ->where('status', 'Pending')
+            ->with(['instructor', 'pendingMembership'])
+            ->get();
+
+        return response()->json($appointments);
     }
 
 
