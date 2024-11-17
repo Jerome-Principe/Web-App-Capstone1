@@ -48,7 +48,7 @@ class PendingAppointmentController extends Controller
     public function approve($id)
     {
         $appointment = PendingAppointment::findOrFail($id);
-        $appointment->status = 'Confirmed';
+        $appointment->status = 'Approved';
         $appointment->save();
 
         return redirect()->route('appointments.index')->with('success', 'Appointment approved successfully.');
@@ -66,7 +66,7 @@ class PendingAppointmentController extends Controller
     public function appointmentList()
     {
         // Fetch both confirmed and declined appointments
-        $appointments = PendingAppointment::whereIn('status', ['Confirmed', 'Declined'])
+        $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
             ->with(['instructor', 'pendingMembership'])
             ->get();
 
@@ -102,7 +102,7 @@ class PendingAppointmentController extends Controller
             'user_id' => 'exists:users,id',
             'selected_date' => 'date',
             'selected_time' => 'string',
-            'status' => 'string|in:Pending,Confirmed,Declined',
+            'status' => 'string|in:Pending,Approved,Declined',
         ]);
 
         // Find and update the appointment
