@@ -52,7 +52,7 @@ Route::delete('/appointments/{id}', [PendingAppointmentController::class, 'destr
 Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class, 'approve']);
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline']);
 
-Route::get('/appointments/search', [PendingAppointmentController::class, 'search']);
+Route::get('mobile/appointments/list', [PendingAppointmentController::class, 'list']);
 
 
 Route::middleware('auth:sanctum')->group(function () {

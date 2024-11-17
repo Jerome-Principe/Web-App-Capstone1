@@ -106,5 +106,18 @@ class PendingAppointmentController extends Controller
 
         return response()->json(['message' => 'Appointment deleted successfully']);
     }
+    public function list(Request $request)
+    {
+        // Optional filters can be applied via query parameters
+        $query = PendingAppointment::query();
+
+        if ($request->has('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        $appointments = $query->get();
+
+        return response()->json($appointments);
+    }
 
 }
