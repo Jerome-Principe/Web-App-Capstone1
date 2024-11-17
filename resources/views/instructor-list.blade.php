@@ -143,7 +143,7 @@
                             <td>{{ $instructor->first_name }}</td>
                             <td>{{ $instructor->last_name }}</td>
                             <td>{{ $instructor->expertise ?? 'N/A' }}</td>
-                            <td>${{ number_format($instructor->rates, 2) }}</td>
+                            <td>₱{{ number_format($instructor->rates, 2) }}</td>
                             <td>
                                 <a href="#" class="btn btn-sm btn-primary">Edit</a>
                                 <a href="#" class="btn btn-sm btn-danger">Delete</a>
