@@ -23,7 +23,7 @@ class PendingAppointmentController extends Controller
             'user_id' => 'required|exists:pending_memberships,id',  // Change to check pending_memberships table
             'selected_date' => 'required|date',
             'selected_time' => 'required',
-            'status' => 'string|in:Pending,Approved,Decline',
+            'status' => 'string|in:Pending,Approved,Declined',
         ]);
 
         // Create the appointment
