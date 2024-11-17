@@ -103,7 +103,7 @@ class PendingAppointmentController extends Controller
             'user_id' => 'exists:users,id',
             'selected_date' => 'date',
             'selected_time' => 'string',
-            'status' => 'string|in:Pending,Confirmed,Cancelled',
+            'status' => 'string|in:Pending,Approved,Declined',
         ]);
 
         // Find and update the appointment
