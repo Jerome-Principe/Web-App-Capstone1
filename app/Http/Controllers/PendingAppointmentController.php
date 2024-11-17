@@ -23,7 +23,7 @@ class PendingAppointmentController extends Controller
             'user_id' => 'required|exists:pending_memberships,id',  // Change to check pending_memberships table
             'selected_date' => 'required|date',
             'selected_time' => 'required',
-            'status' => 'string|in:Pending,Confirmed,Cancelled',
+            'status' => 'string|in:Pending,Approved,Declined',
         ]);
 
         // Create the appointment
@@ -48,7 +48,7 @@ class PendingAppointmentController extends Controller
     public function approve($id)
     {
         $appointment = PendingAppointment::findOrFail($id);
-        $appointment->status = 'Confirmed';
+        $appointment->status = 'Approved';
         $appointment->save();
 
         return redirect()->route('appointments.index')->with('success', 'Appointment approved successfully.');
@@ -57,7 +57,7 @@ class PendingAppointmentController extends Controller
     public function decline($id)
     {
         $appointment = PendingAppointment::findOrFail($id);
-        $appointment->status = 'Cancelled';
+        $appointment->status = 'Declined';
         $appointment->save();
 
         return redirect()->route('appointments.index')->with('success', 'Appointment declined successfully.');
