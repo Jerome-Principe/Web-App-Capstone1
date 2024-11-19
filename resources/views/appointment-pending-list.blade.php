@@ -56,6 +56,7 @@
 
         .table-container {
             overflow-x: auto;
+            white-space: nowrap;
         }
 
         table {
@@ -136,6 +137,10 @@
                         <th class="text-center">Instructor</th>
                         <th class="text-center">Date</th>
                         <th class="text-center">Time</th>
+                        <th class="text-center">Payment Method</th>
+                        <th class="text-center">GCash Account Name</th>
+                        <th class="text-center">GCash Account Number</th>
+                        <th class="text-center">Proof of Payment</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
                     </tr>
@@ -153,23 +158,33 @@
                             </td>
                             <td class="text-center">{{ $appointment->selected_date }}</td>
                             <td class="text-center">{{ $appointment->selected_time }}</td>
+                            <td class="text-center">{{ $appointment->payment_method }}</td>
+                            <td class="text-center">{{ $appointment->gcash_account_name ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
+                            <td class="text-center">
+                                @if($appointment->proof_of_payment)
+                                    <a href="{{ asset($appointment->proof_of_payment) }}" target="_blank">View</a>
+                                @else
+                                    N/A
+                                @endif
+                            </td>
                             <td class="text-center">{{ $appointment->status }}</td>
                             <td class="text-center">
-                                <!-- Approve Form -->
-                                <form method="POST" action="{{ route('appointments.approve', $appointment->id) }}"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-success">Approve</button>
-                                </form>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Approve Form -->
+                                    <form method="POST" action="{{ route('appointments.approve', $appointment->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-success">Approve</button>
+                                    </form>
 
-                                <!-- Decline Form -->
-                                <form method="POST" action="{{ route('appointments.decline', $appointment->id) }}"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-danger">Decline</button>
-                                </form>
+                                    <!-- Decline Form -->
+                                    <form method="POST" action="{{ route('appointments.decline', $appointment->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-danger">Decline</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -190,7 +205,7 @@
         function updateSelectionCount() {
             const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
+            document.getElementById('select-all-link').innerText = All(${ count });
         }
     </script>
 

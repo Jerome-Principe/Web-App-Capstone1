@@ -13,10 +13,17 @@ return new class extends Migration {
         Schema::create('pending_appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('instructor_id')->constrained('instructors')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('pending_memberships')->onDelete('cascade'); // Now referencing pending_memberships
+            $table->foreignId('user_id')->constrained('pending_memberships')->onDelete('cascade'); // Referencing pending_memberships
             $table->string('selected_date');
             $table->string('selected_time');
+
+            // Payment details
+            $table->string('payment_method');
+            $table->string('gcash_account_name')->nullable();
+            $table->string('gcash_account_number')->nullable();
+            $table->string('proof_of_payment')->nullable();
             $table->string('status')->default('Pending');
+
             $table->timestamps();
         });
     }

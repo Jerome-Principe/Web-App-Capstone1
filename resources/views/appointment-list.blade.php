@@ -110,6 +110,10 @@
                     <th>Instructor</th>
                     <th>Date</th>
                     <th>Time</th>
+                    <th>Payment Method</th>
+                    <th>GCash Account Name</th>
+                    <th>GCash Account Number</th>
+                    <th>Proof of Payment</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -117,10 +121,20 @@
                 @foreach($appointments as $appointment)
                     <tr>
                         <td>{{ $appointment->id }}</td>
-                        <td>{{ $appointment->pendingMembership->name}}</td>
+                        <td>{{ $appointment->pendingMembership->name }}</td>
                         <td>{{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}</td>
                         <td>{{ $appointment->selected_date }}</td>
                         <td>{{ $appointment->selected_time }}</td>
+                        <td>{{ $appointment->payment_method }}</td>
+                        <td>{{ $appointment->gcash_account_name ?? 'N/A' }}</td>
+                        <td>{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
+                        <td>
+                            @if($appointment->proof_of_payment)
+                                <a href="{{ asset($appointment->proof_of_payment) }}" target="_blank">View</a>
+                            @else
+                                N/A
+                            @endif
+                        </td>
                         <td>{{ $appointment->status }}</td>
                     </tr>
                 @endforeach

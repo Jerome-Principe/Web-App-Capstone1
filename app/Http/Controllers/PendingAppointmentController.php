@@ -4,43 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\PendingAppointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PendingAppointmentController extends Controller
 {
     public function index()
     {
         // Fetch only the appointments with status 'Pending'
-        $appointments = PendingAppointment::where('status', 'Pending')->with(['instructor', 'pendingMembership'])->get();
+        $appointments = PendingAppointment::where('status', 'Pending')
+            ->with(['instructor', 'pendingMembership'])
+            ->get();
         return view('appointment-pending-list', compact('appointments'));
     }
-
 
     public function store(Request $request)
     {
         // Validate the incoming request
         $request->validate([
             'instructor_id' => 'required|exists:instructors,id',
-            'user_id' => 'required|exists:pending_memberships,id',  // Change to check pending_memberships table
+            'user_id' => 'required|exists:pending_memberships,id',  // Check pending_memberships table
             'selected_date' => 'required|date',
             'selected_time' => 'required',
+            'payment_method' => 'nullable|string',
+            'gcash_account_name' => 'nullable|string|max:255',
+            'gcash_account_number' => 'nullable|string|max:20',
+            'proof_of_payment' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:2048', // Accept image or PDF
             'status' => 'string|in:Pending,Approved,Declined',
         ]);
 
-        // Create the appointment
         try {
-            $appointment = PendingAppointment::create($request->all());
+            $data = $request->all();
 
-            // Respond with the created appointment as JSON
+            // Handle proof of payment upload if exists
+            if ($request->hasFile('proof_of_payment')) {
+                $data['proof_of_payment'] = $request->file('proof_of_payment')->store('proofs', 'public');
+            }
+
+            // Create the appointment
+            $appointment = PendingAppointment::create($data);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Appointment created successfully.',
-                'data' => $appointment
+                'data' => $appointment,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create appointment.',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
@@ -99,26 +111,64 @@ class PendingAppointmentController extends Controller
         // Validate the request
         $request->validate([
             'instructor_id' => 'exists:instructors,id',
-            'user_id' => 'exists:users,id',
+            'user_id' => 'exists:pending_memberships,id',
             'selected_date' => 'date',
             'selected_time' => 'string',
+            'payment_method' => 'nullable|string',
+            'gcash_account_name' => 'nullable|string|max:255',
+            'gcash_account_number' => 'nullable|string|max:20',
+            'proof_of_payment' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:2048', // Accept image or PDF
             'status' => 'string|in:Pending,Approved,Declined',
         ]);
 
-        // Find and update the appointment
-        $appointment = PendingAppointment::findOrFail($id);
-        $appointment->update($request->all());
+        try {
+            $appointment = PendingAppointment::findOrFail($id);
+            $data = $request->all();
 
-        return response()->json($appointment);
+            // Handle proof of payment upload if exists
+            if ($request->hasFile('proof_of_payment')) {
+                // Delete old file if exists
+                if ($appointment->proof_of_payment) {
+                    Storage::disk('public')->delete($appointment->proof_of_payment);
+                }
+                $data['proof_of_payment'] = $request->file('proof_of_payment')->store('proofs', 'public');
+            }
+
+            $appointment->update($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Appointment updated successfully.',
+                'data' => $appointment,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update appointment.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function destroy($id)
     {
-        // Find and delete the appointment
-        $appointment = PendingAppointment::findOrFail($id);
-        $appointment->delete();
+        try {
+            $appointment = PendingAppointment::findOrFail($id);
 
-        return response()->json(['message' => 'Appointment deleted successfully']);
+            // Delete proof of payment if exists
+            if ($appointment->proof_of_payment) {
+                Storage::disk('public')->delete($appointment->proof_of_payment);
+            }
+
+            $appointment->delete();
+
+            return response()->json(['message' => 'Appointment deleted successfully']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete appointment.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
-
 }

@@ -14,6 +14,10 @@ class PendingAppointment extends Model
         'user_id',
         'selected_date',
         'selected_time',
+        'payment_method',
+        'gcash_account_name',
+        'gcash_account_number',
+        'proof_of_payment',
         'status',
     ];
 
