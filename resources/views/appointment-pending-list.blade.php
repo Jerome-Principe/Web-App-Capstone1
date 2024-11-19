@@ -163,7 +163,9 @@
                             <td class="text-center">{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
                             <td class="text-center">
                                 @if($appointment->proof_of_payment)
-                                    <a href="{{ Storage::url($appointment->proof_of_payment) }}" target="_blank">View</a>
+                                    <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
+                                        target="_blank">View
+                                    </a>
                                 @else
                                     N/A
                                 @endif
