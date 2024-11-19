@@ -17,6 +17,7 @@ use App\Http\Controllers\MedicalFormController;
 use App\Http\Controllers\MembershipPaymentController;
 use App\Http\Controllers\PendingAppointmentController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\CancelledAppointmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -115,6 +116,7 @@ Route::post('/appointments', [PendingAppointmentController::class, 'store'])->na
 Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
 
+Route::get('/cancelled', [CancelledAppointmentController::class, 'index']);
 
 Route::get('/machine', function () {
     return view('inventory-machine');

@@ -9,6 +9,7 @@ use App\Http\Controllers\MedicalFormController;
 use App\Http\Controllers\MembershipPaymentController;
 use App\Http\Controllers\PendingAppointmentController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\CancelledAppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,7 @@ Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class,
 
 Route::get('mobile/appointments/list', [PendingAppointmentController::class, 'list']);
 
+Route::post('mobile/cancelled', [CancelledAppointmentController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
