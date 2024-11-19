@@ -137,7 +137,6 @@
                         <th>Time</th>
                         <th>Payment Method</th>
                         <th>Reason</th>
-                        <th>Cancelled At</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -149,7 +148,6 @@
                             <td>{{ $appointment->selected_time }}</td>
                             <td>{{ $appointment->payment_method }}</td>
                             <td>{{ $appointment->reason }}</td>
-                            <td>{{ $appointment->created_at }}</td>
                         </tr>
                     @endforeach
                 </tbody>
