@@ -131,27 +131,53 @@
             <table class="table table-bordered text-center">
                 <thead>
                     <tr>
-                        <th>User ID</th>
-                        <th>Instructor Name</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Payment Method</th>
-                        <th>Reason</th>
+                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                        <th class="text-center">User ID</th>
+                        <th class="text-center">Instructor Name</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Time</th>
+                        <th class="text-center">Payment Method</th>
+                        <th class="text-center">Reason</th>
+                        <th class="text-center">Cancelled At</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($cancelledAppointments as $appointment)
                         <tr>
-                            <td>{{ $appointment->user_id }}</td>
-                            <td>{{ $appointment->instructor_name }}</td>
-                            <td>{{ $appointment->selected_date }}</td>
-                            <td>{{ $appointment->selected_time }}</td>
-                            <td>{{ $appointment->payment_method }}</td>
-                            <td>{{ $appointment->reason }}</td>
+                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }}"
+                                    onchange="updateSelectionCount()" />
+                            </td>
+                            <td class="text-center">
+                                {{ ($cancelledAppointments->currentPage() - 1) * $cancelledAppointments->perPage() + $loop->index + 1 }}
+                            </td>
+                            <td class="text-center">{{ $appointment->instructor_name }}</td>
+                            <td class="text-center">{{ $appointment->selected_date }}</td>
+                            <td class="text-center">{{ $appointment->selected_time }}</td>
+                            <td class="text-center">{{ $appointment->payment_method }}</td>
+                            <td class="text-center">{{ $appointment->reason }}</td>
+                            <td class="text-center">{{ $appointment->created_at }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item {{ $cancelledAppointments->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $cancelledAppointments->previousPageUrl() }}"
+                            tabindex="-1">Previous</a>
+                    </li>
+
+                    @foreach(range(1, $cancelledAppointments->lastPage()) as $page)
+                        <li class="page-item {{ $page == $cancelledAppointments->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $cancelledAppointments->url($page) }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+
+                    <li class="page-item {{ !$cancelledAppointments->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $cancelledAppointments->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 
@@ -167,7 +193,7 @@
         function updateSelectionCount() {
             const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = All(${ count });
+            document.getElementById('select-all-link').innerText = `All (${count})`;
         }
     </script>
 

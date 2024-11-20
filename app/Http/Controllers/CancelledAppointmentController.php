@@ -9,7 +9,7 @@ class CancelledAppointmentController extends Controller
 {
     public function index()
     {
-        $cancelledAppointments = CancelledAppointment::with('user')->get();
+        $cancelledAppointments = CancelledAppointment::with('user')->paginate(10);
 
         return view('appointment-cancelled', compact('cancelledAppointments'));
     }
