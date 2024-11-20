@@ -148,10 +148,12 @@
                 <tbody>
                     @foreach($appointments as $appointment)
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]"
-                                    value="{{ $appointment->id }}" />
+                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }}"
+                                    onchange="updateSelectionCount()" />
                             </td>
-                            <td class="text-center">{{ $appointment->id }}</td>
+                            <td class="text-center">
+                                {{ ($appointments->currentPage() - 1) * $appointments->perPage() + $loop->index + 1 }}
+                            </td>
                             <td class="text-center">{{ $appointment->pendingMembership->name ?? 'N/A' }}</td>
                             <td class="text-center">
                                 {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
@@ -192,6 +194,25 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item {{ $appointments->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $appointments->previousPageUrl() }}" tabindex="-1">Previous</a>
+                    </li>
+
+                    @foreach(range(1, $appointments->lastPage()) as $page)
+                        <li class="page-item {{ $page == $appointments->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $appointments->url($page) }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+
+                    <li class="page-item {{ !$appointments->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $appointments->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
     </div>
 
@@ -207,7 +228,7 @@
         function updateSelectionCount() {
             const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = All(${ count });
+            document.getElementById('select-all-link').innerText = `All (${count})`;
         }
     </script>
 
