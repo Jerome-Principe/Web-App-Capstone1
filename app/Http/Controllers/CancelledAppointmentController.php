@@ -17,7 +17,6 @@ class CancelledAppointmentController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the incoming request data
         $request->validate([
             'user_id' => 'required|integer',
             'instructor_name' => 'required|string|max:255',
@@ -28,26 +27,26 @@ class CancelledAppointmentController extends Controller
         ]);
 
         try {
-            // Convert the date to MySQL format (Y-m-d)
             $formattedDate = Carbon::createFromFormat('m/d/Y', $request->selected_date)->format('Y-m-d');
-
-            // Convert the time to MySQL format (H:i:s)
             $formattedTime = Carbon::createFromFormat('g:i:s A', $request->selected_time)->format('H:i:s');
 
-            // Create a new CancelledAppointment record
             $cancelledAppointment = new CancelledAppointment();
             $cancelledAppointment->user_id = $request->user_id;
             $cancelledAppointment->instructor_name = $request->instructor_name;
-            $cancelledAppointment->selected_date = $formattedDate; // Save reformatted date
-            $cancelledAppointment->selected_time = $formattedTime; // Save reformatted time
+            $cancelledAppointment->selected_date = $formattedDate;
+            $cancelledAppointment->selected_time = $formattedTime;
             $cancelledAppointment->payment_method = $request->payment_method;
             $cancelledAppointment->reason = $request->reason;
             $cancelledAppointment->save();
 
-            return response()->json(['message' => 'Cancellation submitted successfully.'], 200);
-        } catch (\Exception $e) {
-            // Return error response if something goes wrong
+            // Ensure response matches the frontend expectation
             return response()->json([
+                'status' => 'success',
+                'message' => 'Cancellation submitted successfully.'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
                 'message' => 'Error submitting cancellation.',
                 'exception' => $e->getMessage()
             ], 500);
