@@ -89,60 +89,130 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container">
-    <div class="header-section">
-        <h1>Appointment List</h1>
-    </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>Appointment List</h1>
+        </div>
 
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
-    <div class="table-container">
-        <table class="table table-bordered text-center">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Instructor</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Payment Method</th>
-                    <th>GCash Account Name</th>
-                    <th>GCash Account Number</th>
-                    <th>Proof of Payment</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($appointments as $appointment)
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+        <div class="filter-options">
+            <div class="filter-links">
+                <a href="#" id="select-all-link">All (0)</a>
+                <a href="#">Trashed (0)</a>
+            </div>
+
+            <div>
+                <form method="POST" action="#">
+                    @csrf
+                    @method('DELETE')
+                    <div class="d-flex align-items-center">
+                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
+                            onclick="return confirm('Are you sure you want to delete all selected memberships?')">
+                            <i class="fa fa-trash"></i> Move to Trash
+                        </button>
+                        <form class="d-flex" role="search">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                style="height: 35px;">
+                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-bordered text-center">
+                <thead>
                     <tr>
-                        <td>{{ $appointment->id }}</td>
-                        <td>{{ $appointment->pendingMembership->name }}</td>
-                        <td>{{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}</td>
-                        <td>{{ $appointment->selected_date }}</td>
-                        <td>{{ $appointment->selected_time }}</td>
-                        <td>{{ $appointment->payment_method }}</td>
-                        <td>{{ $appointment->gcash_account_name ?? 'N/A' }}</td>
-                        <td>{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
-                        <td>
-                            @if($appointment->proof_of_payment)
-                                <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
-                                    target="_blank">View
-                                </a>
-                            @else
-                                N/A
-                            @endif
-                        </td>
-                        <td>{{ $appointment->status }}</td>
+                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">User</th>
+                        <th class="text-center">Instructor</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Time</th>
+                        <th class="text-center">Payment Method</th>
+                        <th class="text-center">GCash Account Name</th>
+                        <th class="text-center">GCash Account Number</th>
+                        <th class="text-center">Proof of Payment</th>
+                        <th class="text-center">Status</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach($appointments as $appointment)
+                        <tr>
+                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }}"
+                                    onchange="updateSelectionCount()" /></td>
+                            <td class="text-center">
+                                {{ ($appointments->currentPage() - 1) * $appointments->perPage() + $loop->index + 1 }}
+                            </td>
+                            <td class="text-center">{{ $appointment->id }}</td>
+                            <td class="text-center">{{ $appointment->pendingMembership->name }}</td>
+                            <td class="text-center">
+                                {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
+                            </td>
+                            <td class="text-center">{{ $appointment->selected_date }}</td>
+                            <td class="text-center">{{ $appointment->selected_time }}</td>
+                            <td class="text-center">{{ $appointment->payment_method }}</td>
+                            <td class="text-center">{{ $appointment->gcash_account_name ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
+                            <td class="text-center">
+                                @if($appointment->proof_of_payment)
+                                    <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
+                                        target="_blank">View</a>
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td>{{ $appointment->status }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+
+            </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item {{ $appointments->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $appointments->previousPageUrl() }}" tabindex="-1">Previous</a>
+                    </li>
+
+                    @foreach(range(1, $appointments->lastPage()) as $page)
+                        <li class="page-item {{ $page == $appointments->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $appointments->url($page) }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+
+                    <li class="page-item {{ !$appointments->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $appointments->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
     </div>
-</div>
+    <script>
+        function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = source.checked;
+            });
+            updateSelectionCount();
+        }
+
+        function updateSelectionCount() {
+            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+            const count = checkboxes.length;
+            document.getElementById('select-all-link').innerText = `All (${count})`;
+        }
+    </script>
+</body>
 @endsection

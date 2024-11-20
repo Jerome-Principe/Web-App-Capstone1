@@ -80,7 +80,7 @@ class PendingAppointmentController extends Controller
         // Fetch both confirmed and declined appointments
         $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
             ->with(['instructor', 'pendingMembership'])
-            ->get();
+            ->paginate(10);
 
         return view('appointment-list', compact('appointments'));
     }
