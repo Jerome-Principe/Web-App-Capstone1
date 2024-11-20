@@ -56,7 +56,7 @@ Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class,
 Route::get('mobile/appointments/list', [PendingAppointmentController::class, 'list']);
 
 Route::post('mobile/cancelled', [CancelledAppointmentController::class, 'store']);
-Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'store']);
+Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'fetchCancelledAppointments']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
