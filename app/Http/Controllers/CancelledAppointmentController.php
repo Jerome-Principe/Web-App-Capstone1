@@ -31,12 +31,15 @@ class CancelledAppointmentController extends Controller
             // Convert the date to MySQL format (Y-m-d)
             $formattedDate = Carbon::createFromFormat('m/d/Y', $request->selected_date)->format('Y-m-d');
 
+            // Convert the time to MySQL format (H:i:s)
+            $formattedTime = Carbon::createFromFormat('g:i:s A', $request->selected_time)->format('H:i:s');
+
             // Create a new CancelledAppointment record
             $cancelledAppointment = new CancelledAppointment();
             $cancelledAppointment->user_id = $request->user_id;
             $cancelledAppointment->instructor_name = $request->instructor_name;
             $cancelledAppointment->selected_date = $formattedDate; // Save reformatted date
-            $cancelledAppointment->selected_time = $request->selected_time;
+            $cancelledAppointment->selected_time = $formattedTime; // Save reformatted time
             $cancelledAppointment->payment_method = $request->payment_method;
             $cancelledAppointment->reason = $request->reason;
             $cancelledAppointment->save();
