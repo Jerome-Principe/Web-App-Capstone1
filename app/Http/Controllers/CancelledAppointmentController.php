@@ -53,4 +53,15 @@ class CancelledAppointmentController extends Controller
         }
     }
 
+    public function fetchCancelledAppointments()
+    {
+        try {
+            $cancelledAppointments = CancelledAppointment::all(); // Or apply filters if needed
+            return response()->json($cancelledAppointments, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch canceled appointments', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
 }
