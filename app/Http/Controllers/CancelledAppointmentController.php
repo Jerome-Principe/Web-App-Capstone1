@@ -29,8 +29,8 @@ class CancelledAppointmentController extends Controller
 
         try {
             // Format date and time
-            $formattedDate = Carbon::createFromFormat('m-d-Y', $request->selected_date)->format('m-d-Y');
-            $formattedTime = Carbon::createFromFormat('H:i:s', $request->selected_time)->format('H:i:s');
+            $formattedDate = Carbon::createFromFormat('m-d-Y', $request->selected_date)->format('Y-m-d');
+            $formattedTime = Carbon::createFromFormat('g:i:s', $request->selected_time)->format('H:i:s');
 
             // Store appointment
             $cancelledAppointment = new CancelledAppointment();
