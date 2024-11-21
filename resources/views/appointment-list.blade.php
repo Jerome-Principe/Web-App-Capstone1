@@ -135,6 +135,7 @@
                     <tr>
                         <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
+                        <th class="text-center">User</th>
                         <th class="text-center">Instructor</th>
                         <th class="text-center">Date</th>
                         <th class="text-center">Time</th>
@@ -153,6 +154,7 @@
                             <td class="text-center">
                                 {{ ($appointments->currentPage() - 1) * $appointments->perPage() + $loop->index + 1 }}
                             </td>
+                            <td class="text-center">{{ $appointment->id }}</td>
                             <td class="text-center">{{ $appointment->pendingMembership->name }}</td>
                             <td class="text-center">
                                 {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
