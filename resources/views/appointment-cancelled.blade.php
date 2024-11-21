@@ -137,6 +137,7 @@
                         <th class="text-center">Date</th>
                         <th class="text-center">Time</th>
                         <th class="text-center">Payment Method</th>
+                        <th class="text-center">Proof of Payment</th>
                         <th class="text-center">Reason</th>
                         <th class="text-center">Cancelled At</th>
                     </tr>
@@ -154,6 +155,15 @@
                             <td class="text-center">{{ $appointment->selected_date }}</td>
                             <td class="text-center">{{ $appointment->selected_time }}</td>
                             <td class="text-center">{{ $appointment->payment_method }}</td>
+                            <td class="text-center">
+                                @if($appointment->proof_of_payment)
+                                    <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
+                                        target="_blank">View
+                                    </a>
+                                @else
+                                    N/A
+                                @endif
+                            </td>
                             <td class="text-center">{{ $appointment->reason }}</td>
                             <td class="text-center">{{ $appointment->created_at }}</td>
                         </tr>
