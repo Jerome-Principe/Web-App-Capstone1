@@ -23,7 +23,7 @@ class CancelledAppointmentController extends Controller
             'selected_date' => 'required|date_format:m/d/Y',
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
-            'proof_of_payment' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048', // Add file validation
+            'proof_of_payment' => 'required|string',
             'reason' => 'required|string|max:255',
         ]);
 
@@ -34,7 +34,6 @@ class CancelledAppointmentController extends Controller
             // Handle the file upload
             if ($request->hasFile('proof_of_payment')) {
                 $proofOfPayment = $request->file('proof_of_payment');
-                $proofPath = $proofOfPayment->store('public/proof_of_payments'); // Store the file in storage/app/public/proof_of_payments
             }
 
             $cancelledAppointment = new CancelledAppointment();
@@ -44,7 +43,7 @@ class CancelledAppointmentController extends Controller
             $cancelledAppointment->selected_time = $formattedTime;
             $cancelledAppointment->payment_method = $request->payment_method;
             $cancelledAppointment->reason = $request->reason;
-            $cancelledAppointment->proof_of_payment = $proofPath; // Save the file path
+            $cancelledAppointment->proof_of_payment = $proofOfPayment;
             $cancelledAppointment->save();
 
             return response()->json([
