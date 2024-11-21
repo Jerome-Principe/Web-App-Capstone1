@@ -150,16 +150,13 @@ class PendingAppointmentController extends Controller
         }
     }
 
+    // Add this method to delete an appointment in the PendingAppointmentController.php
     public function destroy($id)
     {
         try {
             $appointment = PendingAppointment::findOrFail($id);
 
-            // Delete proof of payment if exists
-            if ($appointment->proof_of_payment) {
-                Storage::disk('public')->delete($appointment->proof_of_payment);
-            }
-
+            // Delete the appointment data
             $appointment->delete();
 
             return response()->json(['message' => 'Appointment deleted successfully']);
