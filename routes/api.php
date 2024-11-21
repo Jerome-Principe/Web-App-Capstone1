@@ -49,7 +49,7 @@ Route::get('/appointments', [PendingAppointmentController::class, 'index']);
 Route::post('/mobile/appointments', [PendingAppointmentController::class, 'store']);
 Route::get('/appointments/{id}', [PendingAppointmentController::class, 'show']);
 Route::put('/appointments/{id}', [PendingAppointmentController::class, 'update']);
-Route::delete('/appointments/{id}', [PendingAppointmentController::class, 'destroy']);
+Route::delete('/mobile/appointments/{id}', [PendingAppointmentController::class, 'destroy']);
 Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class, 'approve']);
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline']);
 
