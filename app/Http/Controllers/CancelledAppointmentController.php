@@ -20,7 +20,7 @@ class CancelledAppointmentController extends Controller
         $request->validate([
             'user_id' => 'required|integer',
             'instructor_name' => 'required|string|max:255',
-            'selected_date' => 'required|date_format:Y-m-d',
+            'selected_date' => 'required|date_format:m-d-Y',
             'selected_time' => 'required|string',
             'payment_method' => 'required|string|max:255',
             'proof_of_payment' => 'required|string',
@@ -29,7 +29,7 @@ class CancelledAppointmentController extends Controller
 
         try {
             // Format date and time
-            $formattedDate = Carbon::createFromFormat('Y-m-d', $request->selected_date)->format('Y-m-d');
+            $formattedDate = Carbon::createFromFormat('m-d-Y', $request->selected_date)->format('m-d-Y');
             $formattedTime = Carbon::createFromFormat('H:i:s', $request->selected_time)->format('H:i:s');
 
             // Store appointment
