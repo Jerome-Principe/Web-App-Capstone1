@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->date('selected_date');
             $table->time('selected_time');
             $table->string('payment_method');
+            $table->string('proof_of_payment')->nullable();
             $table->string('reason');
             $table->timestamps();
 
