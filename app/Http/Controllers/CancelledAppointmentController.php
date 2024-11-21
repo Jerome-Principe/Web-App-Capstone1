@@ -23,6 +23,7 @@ class CancelledAppointmentController extends Controller
             'selected_date' => 'required|date_format:m/d/Y',
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
+            'proof_of_payment' => 'required|string|max:255',
             'reason' => 'required|string|max:255',
         ]);
 
@@ -30,12 +31,16 @@ class CancelledAppointmentController extends Controller
             $formattedDate = Carbon::createFromFormat('m/d/Y', $request->selected_date)->format('Y-m-d');
             $formattedTime = Carbon::createFromFormat('g:i:s A', $request->selected_time)->format('H:i:s');
 
+
+            $proofOfPaymentPath = $request->proof_of_payment;
+
             $cancelledAppointment = new CancelledAppointment();
             $cancelledAppointment->user_id = $request->user_id;
             $cancelledAppointment->instructor_name = $request->instructor_name;
             $cancelledAppointment->selected_date = $formattedDate;
             $cancelledAppointment->selected_time = $formattedTime;
             $cancelledAppointment->payment_method = $request->payment_method;
+            $cancelledAppointment->proof_of_payment = $proofOfPaymentPath;
             $cancelledAppointment->reason = $request->reason;
             $cancelledAppointment->save();
 
