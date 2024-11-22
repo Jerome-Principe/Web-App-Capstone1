@@ -9,7 +9,8 @@ class InstructorController extends Controller
 {
     public function index(Request $request)
     {
-        $instructors = Instructor::all();
+        // Use pagination instead of fetching all records
+        $instructors = Instructor::paginate(10); // Adjust the number per page as needed
 
         // Check if the request expects JSON
         if ($request->wantsJson()) {
@@ -19,6 +20,7 @@ class InstructorController extends Controller
         // Otherwise, return the Blade view for web requests
         return view('instructor-list', compact('instructors'));
     }
+
 
     public function store(Request $request)
     {
