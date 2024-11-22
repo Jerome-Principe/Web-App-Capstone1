@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Instructor List</title>
     <style>
         body {
@@ -82,6 +81,10 @@
             font-size: 12px;
             color: gray;
         }
+
+        .modal {
+            z-index: 1055;
+        }
     </style>
 </head>
 
@@ -93,13 +96,14 @@
     <div class="container">
         <div class="header-section">
             <h1>Instructor List</h1>
-
             <!-- Button to trigger modal -->
-            <div class="d-flex justify-content-end position-relative">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#addInstructorModal">
-                    <i class="fa fa-plus mx-1" aria-hidden="true"></i> Add New Instructor
-                </button>
+            <div>
+                <div class="d-flex justify-content-end position-relative">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#addInstructorModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>
+                        Add New Instructor
+                    </button>
+                </div>
             </div>
 
             @if(session('success'))
@@ -120,11 +124,34 @@
             </script>
         </div>
 
+        <div class="filter-options">
+            <div class="filter-links">
+                <a href="#" id="select-all-link">All (0)</a>
+                <a href="#">Trashed (0)</a>
+            </div>
+
+            <div>
+                @csrf
+                @method('DELETE')
+                <div class="d-flex align-items-center">
+                    <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
+                        onclick="return confirm('Are you sure you want to delete all this equipment?')"><i
+                            class="fa fa-trash"></i> Move to Trash</button>
+                    <form class="d-flex" role="search">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                            style="height: 35px;">
+                        <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Instructor List Table -->
-        <div class="table-container mt-4">
+        <div class="table-container">
             <table class="table table-bordered text-center">
                 <thead>
                     <tr>
+                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
                         <th class="text-center">First Name</th>
                         <th class="text-center">Last Name</th>
@@ -136,12 +163,17 @@
                 <tbody>
                     @foreach($instructors as $instructor)
                         <tr>
-                            <td>{{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}</td>
-                            <td>{{ $instructor->first_name }}</td>
-                            <td>{{ $instructor->last_name }}</td>
-                            <td>{{ $instructor->expertise ?? 'N/A' }}</td>
-                            <td>₱{{ number_format($instructor->rates, 2) }}</td>
-                            <td>
+                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
+                                    onchange="updateSelectionCount()" />
+                            </td>
+                            <td class="text-center">
+                                {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
+                            </td>
+                            <td class="text-center">{{ $instructor->first_name }}</td>
+                            <td class="text-center">{{ $instructor->last_name }}</td>
+                            <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
+                            <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
+                            <td class="text-center">
                                 <a href="#" class="btn btn-sm btn-primary">Edit</a>
                                 <a href="#" class="btn btn-sm btn-danger">Delete</a>
                             </td>
@@ -150,22 +182,24 @@
                 </tbody>
             </table>
 
-            <!-- Pagination -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center mt-4">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center mt-4 mb-4">
                     <li class="page-item {{ $instructors->onFirstPage() ? 'disabled' : '' }}">
                         <a class="page-link" href="{{ $instructors->previousPageUrl() }}" tabindex="-1">Previous</a>
                     </li>
+
                     @foreach(range(1, $instructors->lastPage()) as $page)
                         <li class="page-item {{ $page == $instructors->currentPage() ? 'active' : '' }}">
                             <a class="page-link" href="{{ $instructors->url($page) }}">{{ $page }}</a>
                         </li>
                     @endforeach
+
                     <li class="page-item {{ !$instructors->hasMorePages() ? 'disabled' : '' }}">
                         <a class="page-link" href="{{ $instructors->nextPageUrl() }}">Next</a>
                     </li>
                 </ul>
             </nav>
+
         </div>
     </div>
 
