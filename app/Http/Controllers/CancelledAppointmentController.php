@@ -23,32 +23,31 @@ class CancelledAppointmentController extends Controller
             'selected_date' => 'required|date_format:m/d/Y',
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
+            'proof_of_payment' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:2048', // Accept image or PDF
             'reason' => 'required|string|max:255',
         ]);
 
         try {
-            $formattedDate = Carbon::createFromFormat('m/d/Y', $request->selected_date)->format('Y-m-d');
-            $formattedTime = Carbon::createFromFormat('g:i:s A', $request->selected_time)->format('H:i:s');
+            $data = $request->all();
 
-            $cancelledAppointment = new CancelledAppointment();
-            $cancelledAppointment->user_id = $request->user_id;
-            $cancelledAppointment->instructor_name = $request->instructor_name;
-            $cancelledAppointment->selected_date = $formattedDate;
-            $cancelledAppointment->selected_time = $formattedTime;
-            $cancelledAppointment->payment_method = $request->payment_method;
-            $cancelledAppointment->reason = $request->reason;
-            $cancelledAppointment->save();
+            // Handle proof of payment upload if exists
+            if ($request->hasFile('proof_of_payment')) {
+                $data['proof_of_payment'] = $request->file('proof_of_payment')->store('proofs', 'public');
+            }
 
-            // Ensure response matches the frontend expectation
+            // Create the appointment
+            $appointment = CancelledAppointment::create($data);
+
             return response()->json([
-                'status' => 'success',
-                'message' => 'Cancellation submitted successfully.'
-            ], 200);
+                'success' => true,
+                'message' => 'Appointment created successfully.',
+                'data' => $appointment,
+            ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Error submitting cancellation.',
-                'exception' => $e->getMessage()
+                'success' => false,
+                'message' => 'Failed to create appointment.',
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
