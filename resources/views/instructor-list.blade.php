@@ -93,38 +93,35 @@
     <div class="container">
         <div class="header-section">
             <h1>Instructor List</h1>
-        </div>
 
-        <!-- Form to Add New Instructor -->
-        <div class="mb-4">
-            <h3>Add New Instructor</h3>
-            <form action="{{ route('instructors.store') }}" method="POST">
-                @csrf
-                <div class="form-group mb-2">
-                    <label for="first_name">First Name</label>
-                    <input type="text" name="first_name" id="first_name" class="form-control" required>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" name="last_name" id="last_name" class="form-control" required>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="expertise">Expertise</label>
-                    <input type="text" name="expertise" id="expertise" class="form-control">
-                </div>
-                <div class="form-group mb-2">
-                    <label for="rates">Rates</label>
-                    <input type="number" step="0.01" name="rates" id="rates" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Add Instructor</button>
-            </form>
+            <!-- Button to trigger modal -->
+            <div class="d-flex justify-content-end position-relative">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#addInstructorModal">
+                    <i class="fa fa-plus mx-1" aria-hidden="true"></i> Add New Instructor
+                </button>
+            </div>
+
             @if(session('success'))
-                <div class="alert alert-success mt-2">{{ session('success') }}</div>
+                <div class="custom-alert-message">
+                    {{ session('success') }}
+                </div>
             @endif
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(function () {
+                        const alert = document.querySelector('.custom-alert-message');
+                        if (alert) {
+                            alert.classList.add('fade-out');
+                        }
+                    }, 3000);
+                });
+            </script>
         </div>
 
         <!-- Instructor List Table -->
-        <div class="table-container">
+        <div class="table-container mt-4">
             <table class="table table-bordered text-center">
                 <thead>
                     <tr>
@@ -139,7 +136,7 @@
                 <tbody>
                     @foreach($instructors as $instructor)
                         <tr>
-                            <td>{{ $instructor->id }}</td>
+                            <td>{{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}</td>
                             <td>{{ $instructor->first_name }}</td>
                             <td>{{ $instructor->last_name }}</td>
                             <td>{{ $instructor->expertise ?? 'N/A' }}</td>
@@ -152,6 +149,61 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item {{ $instructors->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $instructors->previousPageUrl() }}" tabindex="-1">Previous</a>
+                    </li>
+                    @foreach(range(1, $instructors->lastPage()) as $page)
+                        <li class="page-item {{ $page == $instructors->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $instructors->url($page) }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+                    <li class="page-item {{ !$instructors->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $instructors->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Add Instructor Modal -->
+    <div class="modal fade" id="addInstructorModal" tabindex="-1" aria-labelledby="addInstructorModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addInstructorModalLabel">Add New Instructor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('instructors.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group mb-2">
+                            <label for="first_name">First Name</label>
+                            <input type="text" name="first_name" id="first_name" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="expertise">Expertise</label>
+                            <input type="text" name="expertise" id="expertise" class="form-control">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="rates">Rates</label>
+                            <input type="number" step="0.01" name="rates" id="rates" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Instructor</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>
