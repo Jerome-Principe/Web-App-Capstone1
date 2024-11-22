@@ -32,12 +32,7 @@ class CancelledAppointmentController extends Controller
             $formattedDate = Carbon::createFromFormat('m/d/Y', $request->selected_date)->format('Y-m-d');
             $formattedTime = Carbon::createFromFormat('g:i:s A', $request->selected_time)->format('H:i:s');
 
-            // Handle proof of payment upload if exists
-            if ($request->hasFile('proof_of_payment')) {
-                $data['proof_of_payment'] = $request->file('proof_of_payment')->store('proofs', 'public');
-            }
-
-            $path = $request->file('proof_of_payment')->store('proof_of_payments', 'public');
+            $path = $request->file('proof_of_payment')->store('proofs', 'public');
 
             $cancelledAppointment = new CancelledAppointment();
             $cancelledAppointment->user_id = $request->user_id;
