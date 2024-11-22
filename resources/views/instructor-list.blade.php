@@ -207,4 +207,30 @@
         </div>
     </div>
 </body>
+
+<script>
+    function toggleSelectAll(source) {
+        const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = source.checked;
+        });
+        updateSelectionCount();
+    }
+
+    function updateSelectionCount() {
+        const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+        const count = checkboxes.length;
+        document.getElementById('select-all-link').innerText = `All (${count})`;
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var modalElement = document.getElementById('addInstructorModal');
+        if (modalElement) {
+            new bootstrap.Modal(modalElement);
+        }
+    });
+</script>
+
 @endsection
