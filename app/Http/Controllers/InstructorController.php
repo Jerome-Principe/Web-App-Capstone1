@@ -9,7 +9,7 @@ class InstructorController extends Controller
 {
     public function index(Request $request)
     {
-        $instructors = Instructor::paginate(10); // Adjust the number of items per page as needed
+        $instructors = Instructor::all();
 
         // Check if the request expects JSON
         if ($request->wantsJson()) {
