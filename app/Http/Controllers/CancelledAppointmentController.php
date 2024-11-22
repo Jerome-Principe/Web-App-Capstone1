@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\CancelledAppointment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 class CancelledAppointmentController extends Controller
 {
@@ -13,9 +12,6 @@ class CancelledAppointmentController extends Controller
     {
         $cancelledAppointments = CancelledAppointment::with('user')->paginate(10);
 
-        foreach ($cancelledAppointments as $appointment) {
-            dd(Storage::url($appointment->proof_of_payment)); // Debugging the URL
-        }
         return view('appointment-cancelled', compact('cancelledAppointments'));
     }
 
@@ -29,11 +25,14 @@ class CancelledAppointmentController extends Controller
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
             'reason' => 'required|string|max:255',
+            'proof_of_payment' => 'required|file|mimes:jpg,jpeg,png,pdf|max:10240'
         ]);
 
         try {
             $formattedDate = Carbon::createFromFormat('m/d/Y', $request->selected_date)->format('Y-m-d');
             $formattedTime = Carbon::createFromFormat('g:i:s A', $request->selected_time)->format('H:i:s');
+
+            $path = $request->file('proof_of_payment')->store('proof_of_payments', 'public');
 
             $cancelledAppointment = new CancelledAppointment();
             $cancelledAppointment->user_id = $request->user_id;
@@ -41,6 +40,7 @@ class CancelledAppointmentController extends Controller
             $cancelledAppointment->selected_date = $formattedDate;
             $cancelledAppointment->selected_time = $formattedTime;
             $cancelledAppointment->payment_method = $request->payment_method;
+            $cancelledAppointment->proof_of_payment = $path;  // Save the file path to the database
             $cancelledAppointment->reason = $request->reason;
             $cancelledAppointment->save();
 
