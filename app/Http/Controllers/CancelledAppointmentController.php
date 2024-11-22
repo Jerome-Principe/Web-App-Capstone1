@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\CancelledAppointment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 class CancelledAppointmentController extends Controller
 {
     public function index()
     {
         $cancelledAppointments = CancelledAppointment::with('user')->paginate(10);
 
+        foreach ($cancelledAppointments as $appointment) {
+            dd(Storage::url($appointment->proof_of_payment)); // Debugging the URL
+        }
         return view('appointment-cancelled', compact('cancelledAppointments'));
     }
 
