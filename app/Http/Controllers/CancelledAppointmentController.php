@@ -23,7 +23,7 @@ class CancelledAppointmentController extends Controller
             'selected_date' => 'required|date_format:m/d/Y',
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
-            'proof_of_payment' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:2048', // Accept image or PDF
+            'proof_of_payment' => 'required|string|max:255', // Accept image or PDF
             'reason' => 'required|string|max:255',
         ]);
 
