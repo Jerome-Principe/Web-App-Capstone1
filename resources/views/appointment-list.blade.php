@@ -166,7 +166,8 @@
                             <td class="text-center">
                                 @if($appointment->proof_of_payment)
                                     <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
-                                        target="_blank">View</a>
+                                        target="_blank">View
+                                    </a>
                                 @else
                                     N/A
                                 @endif

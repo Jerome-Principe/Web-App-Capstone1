@@ -156,7 +156,9 @@
                             <td class="text-center">{{ $appointment->selected_time }}</td>
                             <td class="text-center">{{ $appointment->payment_method }}</td>
                             <td class="text-center">
-                                <a href="{{ Storage::url($appointment->proof_of_payment) }}" target="_blank">View</a>
+                                <a href="{{ asset('storage/app/public/' . $appointment->proof_of_payment) }}"
+                                    target="_blank">View
+                                </a>
                             </td>
                             <td class="text-center">{{ $appointment->reason }}</td>
                             <td class="text-center">{{ $appointment->created_at }}</td>

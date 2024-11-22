@@ -23,6 +23,7 @@ class CancelledAppointmentController extends Controller
             'selected_date' => 'required|date_format:m/d/Y',
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
+            'proof_of_payment' => 'required|string',
             'reason' => 'required|string|max:255',
         ]);
 
@@ -36,6 +37,7 @@ class CancelledAppointmentController extends Controller
             $cancelledAppointment->selected_date = $formattedDate;
             $cancelledAppointment->selected_time = $formattedTime;
             $cancelledAppointment->payment_method = $request->payment_method;
+            $cancelledAppointment->proof_of_payment = $request->proof_of_payment;
             $cancelledAppointment->reason = $request->reason;
             $cancelledAppointment->save();
 
