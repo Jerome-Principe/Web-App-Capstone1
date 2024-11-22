@@ -15,6 +15,7 @@ class CancelledAppointment extends Model
         'selected_date',
         'selected_time',
         'payment_method',
+        'proof_of_payment',
         'reason',
     ];
 
