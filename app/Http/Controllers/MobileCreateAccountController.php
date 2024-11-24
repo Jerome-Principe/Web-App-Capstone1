@@ -49,11 +49,17 @@ class MobileCreateAccountController extends Controller
 
     public function logout(Request $request)
     {
-        // Revoke the current user's token
+        // Check if the user is authenticated
+        if (!$request->user()) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        // Log the current token
+        \Log::info('User logging out:', ['user' => $request->user()]);
+
+        // Delete the current token
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Logged out successfully'
-        ], 200);
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
 }
