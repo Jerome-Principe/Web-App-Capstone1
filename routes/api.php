@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/mobile/membership-pendings', [MembershipPendingController::class, 'mGetMembershipPending']);
 Route::post('/mobile/create-account', [MobileCreateAccountController::class, 'createAccount']);
 Route::post('/mobile/login', [MobileCreateAccountController::class, 'login']);
+Route::post('/mobile/logout', [MobileCreateAccountController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::post('/mobile/memberships', [RequestMembershipController::class, 'store']);
 Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
