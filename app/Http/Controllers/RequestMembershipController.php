@@ -39,4 +39,13 @@ class RequestMembershipController extends Controller
 
     }
 
+    public function show($id)
+    {
+        $membership = RequestMembership::find($id); // Find by ID or use any logic to retrieve a specific membership
+        if (!$membership) {
+            return response()->json(['message' => 'Membership not found'], 404);
+        }
+        return response()->json($membership);
+    }
+
 }
