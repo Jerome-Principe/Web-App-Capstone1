@@ -48,4 +48,19 @@ class RequestMembershipController extends Controller
         return response()->json($membership);
     }
 
+    public function getUserMembership(Request $request)
+    {
+        // Get the authenticated user
+        $user = $request->user();
+
+        // Find the membership linked to this user
+        $membership = RequestMembership::where('membership_id', $user->id)->first();
+
+        if (!$membership) {
+            return response()->json(['message' => 'Membership not found'], 404);
+        }
+
+        return response()->json($membership, 200);
+    }
+
 }
