@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PendingMembership;
+use App\Models\RequestMembership;
 
 class MembershipPendingController extends Controller
 {
@@ -70,4 +71,16 @@ class MembershipPendingController extends Controller
 
         return back()->with('error', 'No memberships selected.');
     }
+
+    public function show($id)
+    {
+        $membership = RequestMembership::find($id);
+
+        if (!$membership) {
+            return response()->json(['error' => 'Membership not found'], 404);
+        }
+
+        return response()->json($membership);
+    }
+
 }
