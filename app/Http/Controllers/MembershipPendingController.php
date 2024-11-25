@@ -8,7 +8,7 @@ use App\Models\PendingMembership;
 class MembershipPendingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the pending memberships.
      */
     public function index()
     {
@@ -16,95 +16,55 @@ class MembershipPendingController extends Controller
         return view('membership-pending-list', compact('pendingMemberships'));
     }
 
+    /**
+     * Approve a pending membership.
+     */
     public function approve($id)
     {
-        $membership = PendingMembership::find($id);
+        $membership = PendingMembership::findOrFail($id);
+        $membership->update(['status' => 'Approved']);
 
-        if (!$membership) {
-            return redirect()->back()->withErrors(['Membership not found']);
-        }
-
-        $membership->status = 'Approved';
-        $membership->save();
-
-        return redirect()->route('membership.list')->with('success', 'Membership approved successfully');
+        return redirect()->route('membership.list')
+            ->with('success', 'Membership approved successfully.');
     }
 
+    /**
+     * Decline a pending membership.
+     */
     public function decline($id)
     {
-        $membership = PendingMembership::find($id);
+        $membership = PendingMembership::findOrFail($id);
+        $membership->update(['status' => 'Declined']);
 
-        if (!$membership) {
-            return redirect()->back()->withErrors(['Membership not found']);
-        }
-
-        $membership->status = 'Declined';
-        $membership->save();
-
-        return redirect()->route('membership.list')->with('success', 'Membership declined successfully');
+        return redirect()->route('membership.list')
+            ->with('success', 'Membership declined successfully.');
     }
 
+    /**
+     * List all approved and declined memberships.
+     */
     public function listApproved()
     {
         $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])->paginate(10);
         return view('membership-list', compact('memberships'));
     }
 
-
+    /**
+     * Fetch pending memberships for API.
+     */
     public function mGetMembershipPending()
     {
         return PendingMembership::where('status', 'Pending')->get();
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Bulk delete selected memberships.
      */
     public function destroyAll(Request $request)
     {
-        // Validate that selected IDs are provided
-        if ($request->has('selected') && is_array($request->input('selected'))) {
-            // Retrieve and delete the selected memberships
-            PendingMembership::whereIn('id', $request->input('selected'))->delete();
+        $selectedIds = $request->input('selected', []);
+        if (!empty($selectedIds)) {
+            PendingMembership::whereIn('id', $selectedIds)->delete();
             return back()->with('success', 'Selected memberships moved to trash successfully.');
         }
 

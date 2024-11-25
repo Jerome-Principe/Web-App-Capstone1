@@ -15,28 +15,38 @@ class PendingMembership extends Model
         'last_name',
         'email',
         'password',
-        'status'
+        'status',
     ];
 
-    // Relationship to RequestMembership
+    /**
+     * Relationship: RequestMembership.
+     */
     public function requestMembership()
     {
         return $this->hasOne(RequestMembership::class, 'membership_id');
     }
 
-    // Relationship to MedicalForm
+    /**
+     * Relationship: MedicalForm.
+     */
     public function medicalForm()
     {
         return $this->hasOne(MedicalForm::class, 'membership_id');
     }
 
-    // Relationship to MembershipPayment
+    /**
+     * Relationship: MembershipPayment.
+     */
     public function membershipPayments()
     {
         return $this->hasMany(MembershipPayment::class, 'membership_id');
     }
+
+    /**
+     * Get full name attribute.
+     */
     public function getNameAttribute()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return "{$this->first_name} {$this->last_name}";
     }
 }

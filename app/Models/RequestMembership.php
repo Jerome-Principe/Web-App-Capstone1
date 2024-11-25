@@ -10,6 +10,7 @@ class RequestMembership extends Model
     use HasFactory;
 
     protected $fillable = [
+        'membership_id',
         'first_name',
         'last_name',
         'middle_name',
@@ -27,7 +28,9 @@ class RequestMembership extends Model
         'membership_type',
     ];
 
-    // Relationship to PendingMembership
+    /**
+     * Relationship: PendingMembership.
+     */
     public function pendingMembership()
     {
         return $this->belongsTo(PendingMembership::class, 'membership_id');
