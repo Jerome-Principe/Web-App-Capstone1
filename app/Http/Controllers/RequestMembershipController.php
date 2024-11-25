@@ -7,21 +7,11 @@ use Illuminate\Http\Request;
 class RequestMembershipController extends Controller
 {
     //
-    public function index(Request $request)
+    public function index()
     {
-        $userId = $request->query('user_id');
-
-        if (!$userId) {
-            return response()->json(['message' => 'User ID is required'], 400);
-        }
-
-        $membership = RequestMembership::where('membership_id', $userId)->first();
-
-        if (!$membership) {
-            return response()->json(['message' => 'No matching membership found'], 404);
-        }
-
-        return response()->json($membership);
+        //
+        $memberships = RequestMembership::with('pendingMembership')->paginate(10);
+        return view('membership-request-list', compact('memberships'));
     }
     public function store(Request $request)
     {
