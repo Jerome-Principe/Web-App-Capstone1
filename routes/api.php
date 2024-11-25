@@ -39,7 +39,7 @@ Route::post('/mobile/logout', [MobileCreateAccountController::class, 'logout'])-
 
 Route::post('/mobile/memberships', [RequestMembershipController::class, 'store']);
 Route::get('/mobile/memberships', [RequestMembershipController::class, 'index']);
-Route::get('/mobile/memberships/{id}', [RequestMembershipController::class, 'show']);
+Route::get('/mobile/memberships/{id}', [RequestMembershipController::class, 'index']);
 
 Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
 
