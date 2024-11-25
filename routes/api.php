@@ -38,6 +38,7 @@ Route::post('/mobile/login', [MobileCreateAccountController::class, 'login']);
 Route::post('/mobile/logout', [MobileCreateAccountController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::post('/mobile/memberships', [RequestMembershipController::class, 'store']);
+Route::get('/mobile/memberships', [RequestMembershipController::class, 'index']);
 Route::get('/mobile/memberships/{id}', [RequestMembershipController::class, 'show']);
 
 Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
