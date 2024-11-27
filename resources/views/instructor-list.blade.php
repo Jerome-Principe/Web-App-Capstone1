@@ -155,7 +155,9 @@
                         <th class="text-center">ID</th>
                         <th class="text-center">First Name</th>
                         <th class="text-center">Last Name</th>
+                        <th class="text-center">Contact Number</th>
                         <th class="text-center">Expertise</th>
+                        <th class="text-center">Session</th>
                         <th class="text-center">Rates</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -171,7 +173,9 @@
                             </td>
                             <td class="text-center">{{ $instructor->first_name }}</td>
                             <td class="text-center">{{ $instructor->last_name }}</td>
+                            <td class="text-center">{{ $instructor->contact_number }}</td>
                             <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $instructor->session }}</td>
                             <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
                             <td class="text-center">
                                 <a href="#" class="btn btn-sm btn-primary">Edit</a>
@@ -224,8 +228,16 @@
                             <input type="text" name="last_name" id="last_name" class="form-control" required>
                         </div>
                         <div class="form-group mb-2">
+                            <label for="contact_number">Contact Number</label>
+                            <input type="text" name="contact_number" id="contact_number" class="form-control">
+                        </div>
+                        <div class="form-group mb-2">
                             <label for="expertise">Expertise</label>
                             <input type="text" name="expertise" id="expertise" class="form-control">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="session">Session</label>
+                            <input type="text" name="session" id="session" class="form-control">
                         </div>
                         <div class="form-group mb-2">
                             <label for="rates">Rates</label>

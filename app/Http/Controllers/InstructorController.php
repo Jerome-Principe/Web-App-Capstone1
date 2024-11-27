@@ -21,14 +21,15 @@ class InstructorController extends Controller
         return view('instructor-list', compact('instructors'));
     }
 
-
     public function store(Request $request)
     {
         // Validate incoming request
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:15',
             'expertise' => 'nullable|string|max:255',
+            'session' => 'nullable|string|max:255',
             'rates' => 'nullable|numeric',
         ]);
 
@@ -36,7 +37,9 @@ class InstructorController extends Controller
         Instructor::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'contact_number' => $request->contact_number,
             'expertise' => $request->expertise,
+            'session' => $request->session,
             'rates' => $request->rates,
         ]);
 
