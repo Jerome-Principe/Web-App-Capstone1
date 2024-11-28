@@ -9,8 +9,8 @@ class MealPlanController extends Controller
 {
     public function index()
     {
-        $mealPlans = MealPlan::all();
-        return response()->json($mealPlans);
+        $mealPlans = MealPlan::paginate(10);
+        return view('meal-plan', compact('mealPlans'));
     }
 
     public function store(Request $request)
