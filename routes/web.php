@@ -18,6 +18,7 @@ use App\Http\Controllers\MembershipPaymentController;
 use App\Http\Controllers\PendingAppointmentController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\CancelledAppointmentController;
+use App\Http\Controllers\MealPlanController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -117,6 +118,9 @@ Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class,
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
 
 Route::get('/cancelled', [CancelledAppointmentController::class, 'index']);
+
+//Meal-plan
+Route::resource('meal-plan', MealPlanController::class);
 
 Route::get('/machine', function () {
     return view('inventory-machine');

@@ -10,7 +10,7 @@ use App\Http\Controllers\MembershipPaymentController;
 use App\Http\Controllers\PendingAppointmentController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\CancelledAppointmentController;
-
+use App\Http\Controllers\MealPlanController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -60,6 +60,9 @@ Route::get('mobile/appointments/list', [PendingAppointmentController::class, 'li
 
 Route::post('mobile/cancelled', [CancelledAppointmentController::class, 'store']);
 Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'fetchCancelledAppointments']);
+
+Route::get('/meal-plan', [MealPlanController::class, 'index']);
+Route::post('/meal-plan', [MealPlanController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);

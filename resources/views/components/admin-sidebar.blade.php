@@ -147,6 +147,22 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="#">
                     <span class="icon-holder">
+                        <i class="fa fa-cutlery" aria-hidden="true"></i>
+                    </span>
+                    <span class="title">Meal Plan</span>
+                    <span class="arrow">
+                        <i class="lni-chevron-right"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu sub-down">
+                    <li>
+                        <a href="/meal-plan">View Weight Loss Plan</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="#">
+                    <span class="icon-holder">
                         <i class="fa fa-user-plus" aria-hidden="true"></i>
                     </span>
                     <span class="title">Membership</span>
