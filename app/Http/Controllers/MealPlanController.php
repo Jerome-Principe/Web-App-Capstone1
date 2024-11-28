@@ -18,7 +18,6 @@ class MealPlanController extends Controller
         return view('meal-plan', compact('mealPlans'));
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
