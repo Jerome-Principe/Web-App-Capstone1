@@ -178,7 +178,7 @@
                             <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#editInstructorModal{{ $instructor->id }}">Edit
+                                    data-bs-target="#editInstructorModal{{ $instructor->id }}">Update
                                 </button>
                                 <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
                                     style="display:inline-block;">

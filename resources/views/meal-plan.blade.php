@@ -176,7 +176,7 @@
                             <td class="text-center">
                                 <!-- Edit Button -->
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#editMealPlanModal{{ $mealPlan->id }}">Edit</button>
+                                    data-bs-target="#editMealPlanModal{{ $mealPlan->id }}">Update</button>
 
                                 <!-- Delete Button (Form for DELETE request) -->
                                 <form action="{{ route('meal-plan.destroy', $mealPlan->id) }}" method="POST"
