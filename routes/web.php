@@ -107,8 +107,8 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 
-Route::get('/instructor-list', [InstructorController::class, 'index']);
-Route::post('/instructor-list', [InstructorController::class, 'store'])->name('instructors.store');
+//Instructors
+Route::resource('instructors', InstructorController::class);
 
 Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
 

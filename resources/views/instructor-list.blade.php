@@ -166,8 +166,7 @@
                     @foreach($instructors as $instructor)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
-                                    onchange="updateSelectionCount()" />
-                            </td>
+                                    onchange="updateSelectionCount()" /></td>
                             <td class="text-center">
                                 {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
                             </td>
@@ -178,8 +177,16 @@
                             <td class="text-center">{{ $instructor->session }}</td>
                             <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-primary">Edit</a>
-                                <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#editInstructorModal{{ $instructor->id }}">Edit
+                                </button>
+                                <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
+                                    style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this instructor?')">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -216,42 +223,99 @@
                     <h5 class="modal-title" id="addInstructorModalLabel">Add New Instructor</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('instructors.store') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-group mb-2">
+                <div class="modal-body">
+                    <form action="{{ route('instructors.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
                             <label for="first_name">First Name</label>
                             <input type="text" name="first_name" id="first_name" class="form-control" required>
                         </div>
-                        <div class="form-group mb-2">
+                        <div class="mb-3">
                             <label for="last_name">Last Name</label>
                             <input type="text" name="last_name" id="last_name" class="form-control" required>
                         </div>
-                        <div class="form-group mb-2">
+                        <div class="mb-3">
                             <label for="contact_number">Contact Number</label>
                             <input type="text" name="contact_number" id="contact_number" class="form-control">
                         </div>
-                        <div class="form-group mb-2">
+                        <div class="mb-3">
                             <label for="expertise">Expertise</label>
                             <input type="text" name="expertise" id="expertise" class="form-control">
                         </div>
-                        <div class="form-group mb-2">
+                        <div class="mb-3">
                             <label for="session">Session</label>
                             <input type="text" name="session" id="session" class="form-control">
                         </div>
-                        <div class="form-group mb-2">
+                        <div class="mb-3">
                             <label for="rates">Rates</label>
                             <input type="number" step="0.01" name="rates" id="rates" class="form-control">
                         </div>
-                    </div>
-                    <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Add Instructor</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal for Editing Instructor -->
+    @foreach($instructors as $instructor)
+        <div class="modal fade" id="editInstructorModal{{ $instructor->id }}" tabindex="-1"
+            aria-labelledby="editInstructorModalLabel{{ $instructor->id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editInstructorModalLabel">Edit Instructor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('instructors.update', $instructor->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <!-- Form fields -->
+
+                            <input type="hidden" name="id" value="{{ $instructor->id }}">
+                            <div class="mb-3">
+                                <label for="edit_first_name" class="form-label">First Name</label>
+                                <input type="text" name="first_name" id="edit_first_name" class="form-control"
+                                    value="{{ $instructor->first_name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_last_name" class="form-label">Last Name</label>
+                                <input type="text" name="last_name" id="edit_last_name" class="form-control"
+                                    value="{{ $instructor->last_name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_contact_number" class="form-label">Contact Number</label>
+                                <input type="text" name="contact_number" id="edit_contact_number" class="form-control"
+                                    value="{{ $instructor->contact_number }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_expertise" class="form-label">Expertise</label>
+                                <input type="text" name="expertise" id="edit_expertise" class="form-control"
+                                    value="{{ $instructor->expertise }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_session" class="form-label">Expertise</label>
+                                <input type="text" name="session" id="edit_session" class="form-control"
+                                    value="{{ $instructor->session }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_rates" class="form-label">Rates</label>
+                                <input type="text" name="rates" id="edit_rates" class="form-control"
+                                    value="{{ $instructor->rates }}" required>
+                            </div>
+
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
 </body>
 
 <script>

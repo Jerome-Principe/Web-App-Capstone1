@@ -68,7 +68,7 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/instructor-list">View Instructor</a>
+                        <a href="instructors">View Instructor</a>
                     </li>
                     <li>
                         <a href="/appointments">View Appointment List</a>

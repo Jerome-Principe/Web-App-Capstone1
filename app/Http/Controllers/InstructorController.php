@@ -45,4 +45,35 @@ class InstructorController extends Controller
 
         return redirect()->back()->with('success', 'Instructor created successfully!');
     }
+
+    public function edit($id)
+    {
+        $instructor = Instructor::findOrFail($id);
+        return view('instructor-list', compact('instructor'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:15',
+            'expertise' => 'nullable|string|max:255',
+            'session' => 'nullable|string|max:255',
+            'rates' => 'nullable|numeric',
+        ]);
+
+        $instructor = Instructor::findOrFail($id);
+        $instructor->update($request->all());
+
+        return redirect()->route('instructors.index')->with('success', 'Instructor updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $instructor = Instructor::findOrFail($id);
+        $instructor->delete();
+
+        return redirect()->route('instructors.index')->with('success', 'Instructor deleted successfully!');
+    }
 }
