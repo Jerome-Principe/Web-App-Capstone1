@@ -127,16 +127,22 @@
         <div class="filter-options">
             <div class="filter-links">
                 <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
+                <a href="{{ route('instructors.trashed') }}">Trashed
+                    ({{ App\Models\Instructor::onlyTrashed()->count() }})
+                </a>
             </div>
 
             <div>
                 @csrf
                 @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                        onclick="return confirm('Are you sure you want to delete all this equipment?')"><i
-                            class="fa fa-trash"></i> Move to Trash</button>
+                    <form action="{{ route('instructors.moveToTrash') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="selected" id="selectedIds">
+                        <button type="submit" class="btn btn-light border mx-2">
+                            <i class="fa fa-trash"></i> Move to Trash
+                        </button>
+                    </form>
                     <form class="d-flex" role="search">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                             style="height: 35px;">
@@ -166,7 +172,8 @@
                     @foreach($instructors as $instructor)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
-                                    onchange="updateSelectionCount()" /></td>
+                                    onchange="updateSelectionCount()" />
+                            </td>
                             <td class="text-center">
                                 {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
                             </td>
@@ -319,19 +326,40 @@
 </body>
 
 <script>
-    function toggleSelectAll(source) {
+    // Add the toggleSelectAll function
+    function toggleSelectAll(checkbox) {
         const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = source.checked;
+        checkboxes.forEach(function (item) {
+            item.checked = checkbox.checked;
         });
         updateSelectionCount();
     }
 
+    // Update the selection count when checkboxes are toggled
     function updateSelectionCount() {
-        const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-        const count = checkboxes.length;
-        document.getElementById('select-all-link').innerText = `All (${count})`;
+        const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+        const count = selectedCheckboxes.length;
+
+        // Update the "All (count)" link text
+        const allLink = document.getElementById('select-all-link');
+        allLink.textContent = `All (${count})`;
+
+        // Update the selected IDs field to be submitted with the form
+        const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
+        document.getElementById('selectedIds').value = selectedIds.join(',');
     }
+
+    // Add the event listener for the "All (0)" link click
+    document.getElementById('select-all-link').addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent the default link behavior
+        const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
+
+        // Toggle the "Select All" checkbox and update the count
+        const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
+        selectAllCheckbox.checked = isChecked;
+        toggleSelectAll(selectAllCheckbox);
+    });
+
 </script>
 
 <script>

@@ -76,4 +76,47 @@ class InstructorController extends Controller
 
         return redirect()->route('instructors.index')->with('success', 'Instructor deleted successfully!');
     }
+    public function moveToTrash(Request $request)
+    {
+        // Get selected instructor IDs from the form
+        $instructorIds = explode(',', $request->input('selected'));
+
+        // Move instructors to trash
+        Instructor::whereIn('id', $instructorIds)->delete();
+
+        return redirect()->route('instructors.index')->with('success', 'Selected instructors moved to trash.');
+    }
+
+    public function trashed()
+    {
+        $trashedInstructors = Instructor::onlyTrashed()->paginate(10); // Use pagination
+        return view('trashed-instructors', compact('trashedInstructors'));
+
+    }
+    public function restoreBulk(Request $request)
+    {
+
+        // Retrieve the selected instructor IDs from the form
+        $instructorIds = explode(',', $request->input('selected'));
+
+        // Restore the selected instructors
+        Instructor::onlyTrashed()->whereIn('id', $instructorIds)->restore();
+
+        return redirect()->route('instructors.index')->with('success', 'Instructors restored successfully.');
+    }
+    public function restore($id)
+    {
+        $instructor = Instructor::onlyTrashed()->findOrFail($id);
+        $instructor->restore();
+
+        return redirect()->route('instructors.index')->with('success', 'Instructor restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $instructor = Instructor::onlyTrashed()->findOrFail($id);
+        $instructor->forceDelete();
+
+        return redirect()->route('instructors.trashed')->with('success', 'Instructor permanently deleted.');
+    }
 }

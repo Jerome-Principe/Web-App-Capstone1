@@ -107,8 +107,18 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 
-//Instructors
+// Instructors
 Route::resource('instructors', InstructorController::class);
+// Move to trash
+Route::post('/instructors/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('instructors.moveToTrash');
+// Trashed instructors
+Route::get('/trashed-instructors', [InstructorController::class, 'trashed'])->name('instructors.trashed');
+// Restore instructor
+Route::post('/instructors/{id}/restore', [InstructorController::class, 'restore'])->name('instructors.restore');
+// Force delete instructor
+Route::delete('/instructors/{id}/force-delete', [InstructorController::class, 'forceDelete'])->name('instructors.forceDelete');
+// Restore bulk instructor
+Route::post('/instructors/restore-bulk', [InstructorController::class, 'restoreBulk'])->name('instructors.restore.bulk');
 
 Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
 
