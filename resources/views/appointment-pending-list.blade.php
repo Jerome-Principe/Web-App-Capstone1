@@ -232,7 +232,6 @@
         </nav>
 
     </div>
-    </div>
 
     <script>
         // Toggle select all checkboxes
