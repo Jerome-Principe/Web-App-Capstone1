@@ -235,40 +235,39 @@
     </div>
 
     <script>
-        function toggleSelectAll(source) {
+        // Toggle select all checkboxes
+        function toggleSelectAll(checkbox) {
             const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = source.checked;
-            });
+            checkboxes.forEach(item => item.checked = checkbox.checked);
             updateSelectionCount();
         }
 
+        // Update selected count and hidden input value
         function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-
-        const selectedIds = [];
-
-        function toggleSelectAll(source) {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach((checkbox) => {
-                checkbox.checked = source.checked;
-                if (source.checked) {
-                    selectedIds.push(checkbox.value);
-                } else {
-                    selectedIds.length = 0;
-                }
-            });
+            const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+            const count = selectedCheckboxes.length;
+            document.getElementById('select-all-link').textContent = `All (${count})`;
+            const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
             document.getElementById('selectedIds').value = selectedIds.join(',');
+            console.log(selectedIds.join(',')); // Log selected IDs to debug
         }
+        // Add functionality for the "All (0)" link click
+        document.getElementById('select-all-link').addEventListener('click', function (e) {
+            e.preventDefault();
+            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
+            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
+            selectAllCheckbox.checked = isChecked;
+            toggleSelectAll(selectAllCheckbox);
+        });
 
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const ids = Array.from(checkboxes).map((checkbox) => checkbox.value.trim());
-            document.getElementById('selectedIds').value = ids.join(',');
-        }
+        // Ensure the form doesn't submit if no appointments are selected
+        document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
+            const selectedIds = document.getElementById('selectedIds').value;
+            if (!selectedIds) {
+                alert('Please select at least one appointments to restore.');
+                e.preventDefault(); // Prevent form submission
+            }
+        });
     </script>
 </body>
 @endsection
