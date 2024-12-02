@@ -185,10 +185,27 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
 
-        <!-- Pagination Controls -->
-        {{ $trashedInstructors->links() }}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center mt-4 mb-4">
+                    <li class="page-item {{ $trashedInstructors->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedInstructors->previousPageUrl() }}"
+                            tabindex="-1">Previous</a>
+                    </li>
+
+                    @foreach(range(1, $trashedInstructors->lastPage()) as $page)
+                        <li class="page-item {{ $page == $trashedInstructors->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $trashedInstructors->url($page) }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+
+                    <li class="page-item {{ !$trashedInstructors->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedInstructors->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
     </div>
 </body>
 
