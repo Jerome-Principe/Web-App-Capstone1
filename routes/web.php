@@ -128,7 +128,6 @@ Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class,
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
 
 Route::prefix('appointments')->group(function () {
-    Route::get('/', [PendingAppointmentController::class, 'index'])->name('appointments.index');
     Route::post('/move-to-trash', [PendingAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
     Route::get('/trashed', [PendingAppointmentController::class, 'trashed'])->name('appointments.trashed');
     Route::post('/restore-bulk', [PendingAppointmentController::class, 'restoreBulk'])->name('appointments.restore.bulk');
