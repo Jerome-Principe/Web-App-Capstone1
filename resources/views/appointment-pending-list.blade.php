@@ -94,126 +94,144 @@
     <div class="container">
         <div class="header-section">
             <h1>Pending Appointment List</h1>
+
+            @if(session('success'))
+                <div class="custom-alert-message">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(function () {
+                        const alert = document.querySelector('.custom-alert-message');
+                        if (alert) {
+                            alert.classList.add('fade-out');
+                        }
+                    }, 3000);
+                });
+            </script>
         </div>
 
         <div class="filter-options">
             <div class="filter-links">
                 <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
+                <a href="{{route('appointments.trashed')}}">Trashed
+                    ({{App\Models\PendingAppointment::onlyTrashed()->count()}})
+                </a>
             </div>
 
             <div>
-                <form method="POST" action="{{ route('appointments.store') }}">
-                    @csrf
-                    <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;">
-                            <i class="fa fa-trash"></i> Move to Trash
-                        </button>
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
-                    </div>
-                </form>
+                @csrf
+                @method('DELETE')
+                <div class="d-flex align-items-center">
+                    <form action="{{ route('appointments.moveToTrash') }}" method="POST">
+                        @csrf
+                        <div class="d-flex align-items-center">
+                            <input type="hidden" name="selected" id="selectedIds">
+                            <button type="submit" class="btn btn-light border mx-2">
+                                <i class="fa fa-trash"></i> Move to Trash
+                            </button>
+                    </form>
+
+                    <form class="d-flex" role="search">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                            style="height: 35px;">
+                        <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                    </form>
+                </div>
+
             </div>
         </div>
+    </div>
 
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
-        <div class="table-container">
-            <table class="table table-bordered text-center">
-                <thead>
+    <div class="table-container">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">User</th>
+                    <th class="text-center">Instructor</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Time</th>
+                    <th class="text-center">Payment Method</th>
+                    <th class="text-center">GCash Account Name</th>
+                    <th class="text-center">GCash Account Number</th>
+                    <th class="text-center">Proof of Payment</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($appointments as $appointment)
                     <tr>
-                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">User</th>
-                        <th class="text-center">Instructor</th>
-                        <th class="text-center">Date</th>
-                        <th class="text-center">Time</th>
-                        <th class="text-center">Payment Method</th>
-                        <th class="text-center">GCash Account Name</th>
-                        <th class="text-center">GCash Account Number</th>
-                        <th class="text-center">Proof of Payment</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Action</th>
+                        <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }}"
+                                onchange="updateSelectionCount()" />
+                        </td>
+                        <td class="text-center">
+                            {{ ($appointments->currentPage() - 1) * $appointments->perPage() + $loop->index + 1 }}
+                        </td>
+                        <td class="text-center">{{ $appointment->pendingMembership->name ?? 'N/A' }}</td>
+                        <td class="text-center">
+                            {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
+                        </td>
+                        <td class="text-center">{{ $appointment->selected_date }}</td>
+                        <td class="text-center">{{ $appointment->selected_time }}</td>
+                        <td class="text-center">{{ $appointment->payment_method }}</td>
+                        <td class="text-center">{{ $appointment->gcash_account_name ?? 'N/A' }}</td>
+                        <td class="text-center">{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
+                        <td class="text-center">
+                            @if($appointment->proof_of_payment)
+                                <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
+                                    target="_blank">View
+                                </a>
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                        <td class="text-center">{{ $appointment->status }}</td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <!-- Approve Form -->
+                                <form method="POST" action="{{ route('appointments.approve', $appointment->id) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-success">Approve</button>
+                                </form>
+
+                                <!-- Decline Form -->
+                                <form method="POST" action="{{ route('appointments.decline', $appointment->id) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-danger">Decline</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach($appointments as $appointment)
-                        <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }}"
-                                    onchange="updateSelectionCount()" />
-                            </td>
-                            <td class="text-center">
-                                {{ ($appointments->currentPage() - 1) * $appointments->perPage() + $loop->index + 1 }}
-                            </td>
-                            <td class="text-center">{{ $appointment->pendingMembership->name ?? 'N/A' }}</td>
-                            <td class="text-center">
-                                {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
-                            </td>
-                            <td class="text-center">{{ $appointment->selected_date }}</td>
-                            <td class="text-center">{{ $appointment->selected_time }}</td>
-                            <td class="text-center">{{ $appointment->payment_method }}</td>
-                            <td class="text-center">{{ $appointment->gcash_account_name ?? 'N/A' }}</td>
-                            <td class="text-center">{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
-                            <td class="text-center">
-                                @if($appointment->proof_of_payment)
-                                    <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
-                                        target="_blank">View
-                                    </a>
-                                @else
-                                    N/A
-                                @endif
-                            </td>
-                            <td class="text-center">{{ $appointment->status }}</td>
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <!-- Approve Form -->
-                                    <form method="POST" action="{{ route('appointments.approve', $appointment->id) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="btn btn-success">Approve</button>
-                                    </form>
+                @endforeach
+            </tbody>
+        </table>
 
-                                    <!-- Decline Form -->
-                                    <form method="POST" action="{{ route('appointments.decline', $appointment->id) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="btn btn-danger">Decline</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center mt-4 mb-4">
+                <li class="page-item {{ $appointments->onFirstPage() ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $appointments->previousPageUrl() }}" tabindex="-1">Previous</a>
+                </li>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4 mb-4">
-                    <li class="page-item {{ $appointments->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $appointments->previousPageUrl() }}" tabindex="-1">Previous</a>
+                @foreach(range(1, $appointments->lastPage()) as $page)
+                    <li class="page-item {{ $page == $appointments->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $appointments->url($page) }}">{{ $page }}</a>
                     </li>
+                @endforeach
 
-                    @foreach(range(1, $appointments->lastPage()) as $page)
-                        <li class="page-item {{ $page == $appointments->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $appointments->url($page) }}">{{ $page }}</a>
-                        </li>
-                    @endforeach
+                <li class="page-item {{ !$appointments->hasMorePages() ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $appointments->nextPageUrl() }}">Next</a>
+                </li>
+            </ul>
+        </nav>
 
-                    <li class="page-item {{ !$appointments->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $appointments->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
-
-        </div>
+    </div>
     </div>
 
     <script>
@@ -230,7 +248,27 @@
             const count = checkboxes.length;
             document.getElementById('select-all-link').innerText = `All (${count})`;
         }
-    </script>
 
+        const selectedIds = [];
+
+        function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = source.checked;
+                if (source.checked) {
+                    selectedIds.push(checkbox.value);
+                } else {
+                    selectedIds.length = 0;
+                }
+            });
+            document.getElementById('selectedIds').value = selectedIds.join(',');
+        }
+
+        function updateSelectionCount() {
+            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+            const ids = Array.from(checkboxes).map((checkbox) => checkbox.value.trim());
+            document.getElementById('selectedIds').value = ids.join(',');
+        }
+    </script>
 </body>
 @endsection

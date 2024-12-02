@@ -168,4 +168,51 @@ class PendingAppointmentController extends Controller
             ], 500);
         }
     }
+    public function moveToTrash(Request $request)
+    {
+        $appointmentIds = explode(',', $request->input('selected', ''));
+
+        if (empty($appointmentIds)) {
+            return redirect()->route('appointments.index')->with('error', 'No appointments selected to move to trash.');
+        }
+
+        // Soft delete selected appointments
+        PendingAppointment::whereIn('id', $appointmentIds)->delete();
+
+        return redirect()->route('appointments.index')->with('success', 'Selected pending appointments moved to trash.');
+    }
+
+
+    public function trashed()
+    {
+        $trashedAppointments = PendingAppointment::onlyTrashed()->paginate(10); // Use pagination
+        return view('trashed-appointment-pending-list', compact('trashedAppointments'));
+
+    }
+    public function restoreBulk(Request $request)
+    {
+
+        // Retrieve the selected Appointments IDs from the form
+        $appointmentIds = explode(',', $request->input('selected'));
+
+        // Restore the selected appointments
+        PendingAppointment::onlyTrashed()->whereIn('id', $appointmentIds)->restore();
+
+        return redirect()->route('appointments.index')->with('success', 'Appointments restored successfully.');
+    }
+    public function restore($id)
+    {
+        $appointment = PendingAppointment::onlyTrashed()->findOrFail($id);
+        $appointment->restore();
+
+        return redirect()->route('appointments.index')->with('success', 'Appointments restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $appointment = PendingAppointment::onlyTrashed()->findOrFail($id);
+        $appointment->forceDelete();
+
+        return redirect()->route('appointments.trashed')->with('success', 'Appointments permanently deleted.');
+    }
 }

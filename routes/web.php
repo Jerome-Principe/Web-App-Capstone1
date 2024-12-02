@@ -127,6 +127,15 @@ Route::post('/appointments', [PendingAppointmentController::class, 'store'])->na
 Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
 
+Route::prefix('appointments')->group(function () {
+    Route::get('/', [PendingAppointmentController::class, 'index'])->name('appointments.index');
+    Route::post('/move-to-trash', [PendingAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
+    Route::get('/trashed', [PendingAppointmentController::class, 'trashed'])->name('appointments.trashed');
+    Route::post('/restore-bulk', [PendingAppointmentController::class, 'restoreBulk'])->name('appointments.restore.bulk');
+    Route::post('/restore/{id}', [PendingAppointmentController::class, 'restore'])->name('appointments.restore');
+    Route::delete('/force-delete/{id}', [PendingAppointmentController::class, 'forceDelete'])->name('appointments.forceDelete');
+});
+
 Route::get('/cancelled', [CancelledAppointmentController::class, 'index']);
 
 //Meal-plan
