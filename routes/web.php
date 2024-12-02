@@ -122,12 +122,12 @@ Route::post('/instructors/restore-bulk', [InstructorController::class, 'restoreB
 
 Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
 
+Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointment-pending-list');
 Route::post('/appointments', [PendingAppointmentController::class, 'store'])->name('appointments.store');
 Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
 
 Route::prefix('appointments')->group(function () {
-    Route::get('/', [PendingAppointmentController::class, 'index'])->name('appointments.index');
     Route::post('/move-to-trash', [PendingAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
     Route::get('/trashed', [PendingAppointmentController::class, 'trashed'])->name('appointments.trashed');
     Route::post('/restore-bulk', [PendingAppointmentController::class, 'restoreBulk'])->name('appointments.restore.bulk');
