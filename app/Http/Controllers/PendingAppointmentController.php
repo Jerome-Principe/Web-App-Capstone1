@@ -198,14 +198,14 @@ class PendingAppointmentController extends Controller
         // Restore the selected appointments
         PendingAppointment::onlyTrashed()->whereIn('id', $appointmentIds)->restore();
 
-        return redirect()->route('appointments.index')->with('success', 'Appointments restored successfully.');
+        return redirect()->route('appointment-pending-list')->with('success', 'Appointments restored successfully.');
     }
     public function restore($id)
     {
         $appointment = PendingAppointment::onlyTrashed()->findOrFail($id);
         $appointment->restore();
 
-        return redirect()->route('appointments.index')->with('success', 'Appointments restored successfully.');
+        return redirect()->route('appointment-pending-list')->with('success', 'Appointments restored successfully.');
     }
 
     public function forceDelete($id)

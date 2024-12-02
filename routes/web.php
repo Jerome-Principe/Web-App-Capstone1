@@ -120,8 +120,8 @@ Route::delete('/instructors/{id}/force-delete', [InstructorController::class, 'f
 // Restore bulk instructor
 Route::post('/instructors/restore-bulk', [InstructorController::class, 'restoreBulk'])->name('instructors.restore.bulk');
 
-Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
 
+Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
 Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointment-pending-list');
 Route::post('/appointments', [PendingAppointmentController::class, 'store'])->name('appointments.store');
 Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
