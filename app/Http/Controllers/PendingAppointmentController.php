@@ -179,7 +179,7 @@ class PendingAppointmentController extends Controller
         // Soft delete selected appointments
         PendingAppointment::whereIn('id', $appointmentIds)->delete();
 
-        return redirect()->route('appointments.index')->with('success', 'Selected pending appointments moved to trash.');
+        return redirect()->route('appointments.trashed')->with('success', 'Selected pending appointments moved to trash.');
     }
 
 
