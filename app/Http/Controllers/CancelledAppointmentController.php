@@ -20,7 +20,7 @@ class CancelledAppointmentController extends Controller
         $request->validate([
             'user_id' => 'required|integer',
             'instructor_name' => 'required|string|max:255',
-            'selected_date' => 'required|date_format:m/d/Y',  // Ensure this matches m/d/Y format
+            'selected_date' => 'required|string', // Accept string to handle single-digit dates
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
             'proof_of_payment' => 'required|string',
@@ -28,9 +28,11 @@ class CancelledAppointmentController extends Controller
         ]);
 
         try {
-            // Ensure the date and time are formatted correctly for the database
-            $formattedDate = Carbon::createFromFormat('m/d/Y', $request->selected_date)->format('Y-m-d');
-            $formattedTime = Carbon::createFromFormat('g:i:s A', $request->selected_time)->format('H:i:s');
+            // Parse and format the date to Y-m-d
+            $formattedDate = Carbon::parse($request->selected_date)->format('Y-m-d');
+
+            // Parse and format the time to H:i:s
+            $formattedTime = Carbon::createFromFormat('g:i A', $request->selected_time)->format('H:i:s');
 
             // Save the cancellation record
             $cancelledAppointment = new CancelledAppointment();
