@@ -8,18 +8,18 @@ use Illuminate\Support\Facades\Storage;
 
 class PendingAppointmentController extends Controller
 {
+    // Display the list of pending appointments with pagination
     public function index()
     {
-        // Fetch only the appointments with status 'Pending'
         $appointments = PendingAppointment::where('status', 'Pending')
             ->with(['instructor', 'pendingMembership'])
             ->paginate(10);
         return view('appointment-pending-list', compact('appointments'));
     }
 
+    // Store a new appointment and validate the incoming request
     public function store(Request $request)
     {
-        // Validate the incoming request
         $request->validate([
             'instructor_id' => 'required|exists:instructors,id',
             'user_id' => 'required|exists:pending_memberships,id',  // Check pending_memberships table
@@ -57,6 +57,7 @@ class PendingAppointmentController extends Controller
         }
     }
 
+    // Approve a pending appointment
     public function approve($id)
     {
         $appointment = PendingAppointment::findOrFail($id);
@@ -66,6 +67,7 @@ class PendingAppointmentController extends Controller
         return redirect()->route('appointments.index')->with('success', 'Appointment approved successfully.');
     }
 
+    // Decline a pending appointment
     public function decline($id)
     {
         $appointment = PendingAppointment::findOrFail($id);
@@ -75,9 +77,9 @@ class PendingAppointmentController extends Controller
         return redirect()->route('appointments.index')->with('success', 'Appointment declined successfully.');
     }
 
+    // Display the list of confirmed and declined appointments
     public function appointmentList()
     {
-        // Fetch both confirmed and declined appointments
         $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
             ->with(['instructor', 'pendingMembership'])
             ->paginate(10);
@@ -85,16 +87,16 @@ class PendingAppointmentController extends Controller
         return view('appointment-list', compact('appointments'));
     }
 
+    // Show a specific appointment by ID
     public function show($id)
     {
-        // Find appointment by ID
         $appointment = PendingAppointment::with(['instructor', 'pendingMembership'])->findOrFail($id);
         return response()->json($appointment);
     }
 
+    // List appointments with optional filters via query parameters
     public function list(Request $request)
     {
-        // Optional filters can be applied via query parameters
         $query = PendingAppointment::query();
 
         if ($request->has('status')) {
@@ -106,9 +108,9 @@ class PendingAppointmentController extends Controller
         return response()->json($appointments);
     }
 
+    // Update a specific appointment
     public function update(Request $request, $id)
     {
-        // Validate the request
         $request->validate([
             'instructor_id' => 'exists:instructors,id',
             'user_id' => 'exists:pending_memberships,id',
@@ -150,64 +152,52 @@ class PendingAppointmentController extends Controller
         }
     }
 
-    // Add this method to delete an appointment in the PendingAppointmentController.php
-    public function destroy($id)
-    {
-        try {
-            $appointment = PendingAppointment::findOrFail($id);
-
-            // Delete the appointment data
-            $appointment->delete();
-
-            return response()->json(['message' => 'Appointment deleted successfully']);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete appointment.',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
+    // Move selected appointments to trash (soft delete)
     public function moveToTrash(Request $request)
     {
         $appointmentIds = explode(',', $request->input('selected', ''));
 
         if (empty($appointmentIds)) {
-            return redirect()->route('appointments.index')->with('error', 'No appointments selected to move to trash.');
+            return redirect()->route('appointments.index')->with('error', 'No appointments selected.');
         }
 
-        // Soft delete selected appointments
-        PendingAppointment::whereIn('id', $appointmentIds)->delete();
+        try {
+            PendingAppointment::whereIn('id', $appointmentIds)->delete();
 
-        return redirect()->route('appointments.trashed')->with('success', 'Selected pending appointments moved to trash.');
+            return redirect()->route('appointments.index')->with('success', 'Selected appointments moved to trash.');
+        } catch (\Exception $e) {
+            return redirect()->route('appointments.index')->with('error', 'Failed to move appointments to trash.');
+        }
     }
 
-
+    // Display trashed appointments
     public function trashed()
     {
         $trashedAppointments = PendingAppointment::onlyTrashed()->paginate(10); // Use pagination
         return view('trashed-appointment-pending-list', compact('trashedAppointments'));
-
     }
+
+    // Restore selected bulk appointments from trash
     public function restoreBulk(Request $request)
     {
-
-        // Retrieve the selected Appointments IDs from the form
         $appointmentIds = explode(',', $request->input('selected'));
 
         // Restore the selected appointments
         PendingAppointment::onlyTrashed()->whereIn('id', $appointmentIds)->restore();
 
-        return redirect()->route('appointment-pending-list')->with('success', 'Appointments restored successfully.');
+        return redirect()->route('appointments.index')->with('success', 'Appointments restored successfully.');
     }
+
+    // Restore a single appointment from trash
     public function restore($id)
     {
         $appointment = PendingAppointment::onlyTrashed()->findOrFail($id);
         $appointment->restore();
 
-        return redirect()->route('appointment-pending-list')->with('success', 'Appointments restored successfully.');
+        return redirect()->route('appointments.index')->with('success', 'Appointments restored successfully.');
     }
 
+    // Permanently delete a single appointment from trash
     public function forceDelete($id)
     {
         $appointment = PendingAppointment::onlyTrashed()->findOrFail($id);
