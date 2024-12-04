@@ -83,11 +83,11 @@ class CancelledAppointmentController extends Controller
     // Display trashed appointments
     public function trashed()
     {
-
-        $trashedAppointments = CancelledAppointment::onlyTrashed()->paginate(10); // Use pagination
+        $trashedCancelledAppointments = CancelledAppointment::onlyTrashed()->paginate(10);
 
         return view('trashed-appointment-cancelled', compact('trashedCancelledAppointments'));
     }
+
 
     // Restore selected bulk appointments from trash
     public function restoreBulk(Request $request)
