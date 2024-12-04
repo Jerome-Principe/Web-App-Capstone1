@@ -132,7 +132,7 @@ Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class,
 // Appointments Move to Trash and Restore Routes
 Route::prefix('appointments')->group(function () {
     Route::post('/move-to-trash', [PendingAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
-    Route::get('/trashed', [PendingAppointmentController::class, 'trashed'])->name('appointments.trashed');
+    Route::get('/trashed-appointment-pending-list', [PendingAppointmentController::class, 'trashed'])->name('appointments.trashed');
     Route::post('/restore-bulk', [PendingAppointmentController::class, 'restoreBulk'])->name('appointments.restore.bulk');
     Route::post('/restore/{id}', [PendingAppointmentController::class, 'restore'])->name('appointments.restore');
     Route::delete('/force-delete/{id}', [PendingAppointmentController::class, 'forceDelete'])->name('appointments.forceDelete');
