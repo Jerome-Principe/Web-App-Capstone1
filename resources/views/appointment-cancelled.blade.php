@@ -27,7 +27,6 @@
 
         .header-section {
             display: flex;
-            justify-content: flex-start;
             align-items: center;
             margin-bottom: 20px;
         }
@@ -56,7 +55,6 @@
 
         .table-container {
             overflow-x: auto;
-            white-space: nowrap;
         }
 
         table {
@@ -99,33 +97,27 @@
         <div class="filter-options">
             <div class="filter-links">
                 <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
+                <a href="{{ route('appointments.trashed') }}">Trashed
+                    ({{ App\Models\CancelledAppointment::onlyTrashed()->count() }})
+                </a>
             </div>
 
-            <div>
-                <form method="POST" action="#">
+            <div class="d-flex align-items-center">
+                <form action="{{ route('appointments.moveToTrash') }}" method="POST" class="d-flex align-items-center">
                     @csrf
-                    <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;">
-                            <i class="fa fa-trash"></i> Move to Trash
-                        </button>
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
-                    </div>
+                    <input type="hidden" name="selected" id="selectedIds">
+                    <button type="submit" class="btn btn-light border mx-2">
+                        <i class="fa fa-trash"></i> Move to Trash
+                    </button>
+                </form>
+
+                <form class="d-flex" role="search">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                        style="height: 35px;">
+                    <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
                 </form>
             </div>
         </div>
-
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
 
         <div class="table-container">
             <table class="table table-bordered text-center">
@@ -146,11 +138,10 @@
                     @foreach ($cancelledAppointments as $appointment)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }}"
-                                    onchange="updateSelectionCount()" />
-                            </td>
+                                    onchange="updateSelectionCount()" /></td>
                             <td class="text-center">
                                 {{ ($cancelledAppointments->currentPage() - 1) * $cancelledAppointments->perPage() + $loop->index + 1 }}
-                            </td>
+                            </td class="text-center">
                             <td class="text-center">{{ $appointment->instructor_name }}</td>
                             <td class="text-center">{{ $appointment->selected_date }}</td>
                             <td class="text-center">{{ $appointment->selected_time }}</td>
@@ -166,42 +157,40 @@
                     @endforeach
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4 mb-4">
-                    <li class="page-item {{ $cancelledAppointments->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $cancelledAppointments->previousPageUrl() }}"
-                            tabindex="-1">Previous</a>
-                    </li>
-
-                    @foreach(range(1, $cancelledAppointments->lastPage()) as $page)
-                        <li class="page-item {{ $page == $cancelledAppointments->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $cancelledAppointments->url($page) }}">{{ $page }}</a>
-                        </li>
-                    @endforeach
-
-                    <li class="page-item {{ !$cancelledAppointments->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $cancelledAppointments->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center mt-4 mb-4">
+                <li class="page-item {{ $cancelledAppointments->onFirstPage() ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $cancelledAppointments->previousPageUrl() }}"
+                        tabindex="-1">Previous</a>
+                </li>
+
+                @foreach (range(1, $cancelledAppointments->lastPage()) as $page)
+                    <li class="page-item {{ $page == $cancelledAppointments->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $cancelledAppointments->url($page) }}">{{ $page }}</a>
+                    </li>
+                @endforeach
+
+                <li class="page-item {{ !$cancelledAppointments->hasMorePages() ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $cancelledAppointments->nextPageUrl() }}">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <script>
         function toggleSelectAll(source) {
             const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = source.checked;
-            });
+            checkboxes.forEach(checkbox => checkbox.checked = source.checked);
             updateSelectionCount();
         }
 
         function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
+            const count = document.querySelectorAll('input[name="selected[]"]:checked').length;
             document.getElementById('select-all-link').innerText = `All (${count})`;
         }
     </script>
-
 </body>
+
 @endsection

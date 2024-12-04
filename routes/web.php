@@ -137,7 +137,12 @@ Route::prefix('appointments')->group(function () {
     Route::delete('/force-delete/{id}', [PendingAppointmentController::class, 'forceDelete'])->name('appointments.forceDelete');
 });
 
-Route::get('/cancelled', [CancelledAppointmentController::class, 'index']);
+Route::get('/cancelled', [CancelledAppointmentController::class, 'index'])->name('appointments.cancelled');
+Route::post('/cancelled/move-to-trash', [CancelledAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
+Route::get('/cancelled/trashed', [CancelledAppointmentController::class, 'trashed'])->name('appointments.trashed');
+Route::post('/cancelled/restore-bulk', [CancelledAppointmentController::class, 'restoreBulk'])->name('appointments.restoreBulk');
+Route::post('/cancelled/{id}/restore', [CancelledAppointmentController::class, 'restore'])->name('appointments.restore');
+Route::delete('/cancelled/{id}/force-delete', [CancelledAppointmentController::class, 'forceDelete'])->name('appointments.forceDelete');
 
 //Meal-plan
 Route::resource('meal-plan', MealPlanController::class);
