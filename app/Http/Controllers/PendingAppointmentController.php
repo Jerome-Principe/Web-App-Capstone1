@@ -205,4 +205,19 @@ class PendingAppointmentController extends Controller
 
         return redirect()->route('appointments.trashed')->with('success', 'Appointments permanently deleted.');
     }
+    // Method to handle the delete request
+    public function destroy($id)
+    {
+        // Find the appointment by ID
+        $appointment = PendingAppointment::find($id);
+
+        if (!$appointment) {
+            return response()->json(['message' => 'Appointment not found'], 404);
+        }
+
+        // Delete the appointment
+        $appointment->delete();
+
+        return response()->json(['message' => 'Appointment successfully deleted'], 200);
+    }
 }

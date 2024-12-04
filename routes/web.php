@@ -123,6 +123,7 @@ Route::post('/instructors/restore-bulk', [InstructorController::class, 'restoreB
 
 Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
 Route::post('appointments/moveToTrash', [PendingAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
+Route::delete('/appointments/{id}', [PendingAppointmentController::class, 'destroy']);
 
 Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointment-pending-list');
 Route::post('/appointments', [PendingAppointmentController::class, 'store'])->name('appointments.store');
