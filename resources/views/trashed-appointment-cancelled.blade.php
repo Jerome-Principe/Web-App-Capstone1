@@ -167,13 +167,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($trashedAppointments as $appointment)
+                    @foreach($trashedCancelledAppointments as $appointment)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }} "
                                     onchange="updateSelectionCount()">
                             </td>
                             <td class="text-center">
-                                {{ ($trashedAppointments->currentPage() - 1) * $trashedAppointments->perPage() + $loop->index + 1 }}
+                                {{ ($trashedCancelledAppointments->currentPage() - 1) * $trashedCancelledAppointments->perPage() + $loop->index + 1 }}
                             </td>
                             <td class="text-center">{{ $appointment->instructor_name }}</td>
                             <td class="text-center">{{ $appointment->selected_date }}</td>
@@ -207,19 +207,19 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center mt-4 mb-4">
-                    <li class="page-item {{ $trashedAppointments->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $trashedAppointments->previousPageUrl() }}"
+                    <li class="page-item {{ $trashedCancelledAppointments->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedCancelledAppointments->previousPageUrl() }}"
                             tabindex="-1">Previous</a>
                     </li>
 
-                    @foreach(range(1, $trashedAppointments->lastPage()) as $page)
-                        <li class="page-item {{ $page == $trashedAppointments->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $trashedAppointments->url($page) }}">{{ $page }}</a>
+                    @foreach(range(1, $trashedCancelledAppointments->lastPage()) as $page)
+                        <li class="page-item {{ $page == $trashedCancelledAppointments->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $trashedCancelledAppointments->url($page) }}">{{ $page }}</a>
                         </li>
                     @endforeach
 
-                    <li class="page-item {{ !$trashedAppointments->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $trashedAppointments->nextPageUrl() }}">Next</a>
+                    <li class="page-item {{ !$trashedCancelledAppointments->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedCancelledAppointments->nextPageUrl() }}">Next</a>
                     </li>
                 </ul>
             </nav>
