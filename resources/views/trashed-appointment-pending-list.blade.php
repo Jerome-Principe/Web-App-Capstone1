@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Trashed Appointments</title>
+    <title>Trashed Appointment List / Pending Appointments</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -96,7 +96,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Trashed Appointments</h1>
+            <h1>Trashed Appointment List / Pending Appointments</h1>
 
             @if(session('success'))
                 <div class="custom-alert-message">
