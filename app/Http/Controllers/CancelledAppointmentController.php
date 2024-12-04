@@ -86,7 +86,7 @@ class CancelledAppointmentController extends Controller
 
         $trashedAppointments = CancelledAppointment::onlyTrashed()->paginate(10); // Use pagination
 
-        return view('trashed-appointment-cancelled', compact('trashedAppointments'));
+        return view('trashed-appointment-cancelled', compact('trashedCancelledAppointments'));
     }
 
     // Restore selected bulk appointments from trash
