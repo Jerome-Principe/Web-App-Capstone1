@@ -132,8 +132,9 @@
                 <a href="#" id="select-all-link">All (0)</a>
 
                 <!-- Link to view trashed appointments -->
-                <a href="{{ route('appointments.trashed') }}">Trashed
-                    ({{ App\Models\PendingAppointment::onlyTrashed()->count() }})</a>
+                <a href="{{ route('appointments.pending.trashed') }}">Trashed
+                    ({{ App\Models\PendingAppointment::onlyTrashed()->count() }})
+                </a>
             </div>
 
             <div>

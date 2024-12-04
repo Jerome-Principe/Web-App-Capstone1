@@ -116,8 +116,8 @@
         <div class="filter-options">
             <div class="filter-links">
                 <a href="#" id="select-all-link">All (0)</a>
-                <a href="{{route('appointments.trashed')}}">Trashed
-                    ({{App\Models\PendingAppointment::onlyTrashed()->count()}})
+                <a href="{{ route('appointments.pending.trashed') }}">Trashed
+                    ({{ App\Models\PendingAppointment::onlyTrashed()->count() }})
                 </a>
             </div>
 

@@ -97,13 +97,14 @@
         <div class="filter-options">
             <div class="filter-links">
                 <a href="#" id="select-all-link">All (0)</a>
-                <a href="{{ route('appointments.trashed') }}">Trashed
+                <a href="{{ route('appointments.cancelled.trashed') }}">Trashed
                     ({{ App\Models\CancelledAppointment::onlyTrashed()->count() }})
                 </a>
             </div>
 
             <div class="d-flex align-items-center">
-                <form action="{{ route('appointments.moveToTrash') }}" method="POST" class="d-flex align-items-center">
+                <form action="{{ route('appointments.cancelled.moveToTrash') }}" method="POST"
+                    class="d-flex align-items-center">
                     @csrf
                     <input type="hidden" name="selected" id="selectedIds">
                     <button type="submit" class="btn btn-light border mx-2">
@@ -180,16 +181,40 @@
     </div>
 
     <script>
-        function toggleSelectAll(source) {
+        // Toggle select all checkboxes
+        function toggleSelectAll(checkbox) {
             const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(checkbox => checkbox.checked = source.checked);
+            checkboxes.forEach(item => item.checked = checkbox.checked);
             updateSelectionCount();
         }
 
+        // Update selected count and hidden input value
         function updateSelectionCount() {
-            const count = document.querySelectorAll('input[name="selected[]"]:checked').length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
+            const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+            const count = selectedCheckboxes.length;
+            document.getElementById('select-all-link').textContent = `All (${count})`;
+            const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
+            document.getElementById('selectedIds').value = selectedIds.join(',');
+            console.log(selectedIds.join(',')); // Log selected IDs to debug
         }
+
+        // Add functionality for the "All (0)" link click
+        document.getElementById('select-all-link').addEventListener('click', function (e) {
+            e.preventDefault();
+            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
+            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
+            selectAllCheckbox.checked = isChecked;
+            toggleSelectAll(selectAllCheckbox);
+        });
+
+        // Ensure the form doesn't submit if no appointments are selected
+        document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
+            const selectedIds = document.getElementById('selectedIds').value;
+            if (!selectedIds) {
+                alert('Please select at least one appointments to restore.');
+                e.preventDefault(); // Prevent form submission
+            }
+        });
     </script>
 </body>
 

@@ -121,7 +121,7 @@
         <div class="filter-options">
             <div class="filter-links">
                 <a href="#" id="select-all-link">All (0)</a>
-                <a href="{{ route('appointments.trashed') }}">Trashed
+                <a href="{{ route('appointments.pending.trashed') }}">Trashed
                     ({{App\Models\PendingAppointment::onlyTrashed()->count()}})
                 </a>
             </div>
@@ -131,7 +131,8 @@
                 @method('DELETE')
                 <div class="d-flex align-items-center">
                     <!-- Button to restore selected appointments -->
-                    <form action="{{ route('appointments.restore.bulk') }}" method="POST" id="restore-selected-form">
+                    <form action="{{ route('appointments.pending.restore.bulk') }}" method="POST"
+                        id="restore-selected-form">
                         @csrf
                         <input type="hidden" name="selected" id="selectedIds">
                         <button type="submit" class="btn btn-success mx-2">
@@ -198,11 +199,13 @@
                             <td class="text-center">{{ $appointment->status }}</td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
-                                    <form action="{{ route('appointments.restore', $appointment->id) }}" method="POST">
+                                    <form action="{{ route('appointments.pending.restore', $appointment->id) }}"
+                                        method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-success btn-sm">Restore</button>
                                     </form>
-                                    <form action="{{ route('appointments.forceDelete', $appointment->id) }}" method="POST">
+                                    <form action="{{ route('appointments.pending.forceDelete', $appointment->id) }}"
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm"

@@ -68,4 +68,72 @@ class CancelledAppointmentController extends Controller
             return response()->json(['error' => 'Failed to fetch canceled appointments', 'message' => $e->getMessage()], 500);
         }
     }
+
+    // Move selected appointments to trash (soft delete)
+    public function moveToTrash(Request $request)
+    {
+        $selectedIds = explode(',', $request->input('selected')); // Parse the selected IDs
+        if (!empty($selectedIds)) {
+            CancelledAppointment::whereIn('id', $selectedIds)->delete(); // Soft delete the selected appointments
+            return redirect()->route('appointments.cancelled') // Correct route name
+                ->with('success', 'Selected appointments moved to trash.'); // Success message
+        }
+
+        return redirect()->back()->with('error', 'No appointments selected.'); // Error message if no IDs are selected
+    }
+
+    // Display trashed appointments
+    public function trashed()
+    {
+
+        $trashedAppointments = CancelledAppointment::onlyTrashed()->paginate(10); // Use pagination
+
+        return view('trashed-appointment-cancelled', compact('trashedAppointments'));
+    }
+
+    // Restore selected bulk appointments from trash
+    public function restoreBulk(Request $request)
+    {
+        $appointmentIds = explode(',', $request->input('selected'));
+
+        if (empty($appointmentIds)) {
+            return back()->with('error', 'Please select at least one appointment to restore.');
+        }
+
+        try {
+            // Restore the selected appointments
+            CancelledAppointment::onlyTrashed()->whereIn('id', $appointmentIds)->restore();
+
+            // Redirect to the cancelled appointments page with a success message
+            return redirect()->route('appointments.cancelled')->with('success', 'Selected appointments restored successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to restore selected appointments.');
+        }
+    }
+
+    // Restore a single appointment from trash
+    public function restore($id)
+    {
+        try {
+            $appointment = CancelledAppointment::onlyTrashed()->findOrFail($id);
+            $appointment->restore();
+
+            return redirect()->route('appointments.cancelled')->with('success', 'Appointment restored successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to restore the appointment.');
+        }
+    }
+
+    // Permanently delete a single appointment from trash
+    public function forceDelete($id)
+    {
+        try {
+            $appointment = CancelledAppointment::onlyTrashed()->findOrFail($id);
+            $appointment->forceDelete();
+
+            return redirect()->route('appointments.cancelled')->with('success', 'Appointment permanently deleted.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to permanently delete the appointment.');
+        }
+    }
 }
