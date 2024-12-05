@@ -122,7 +122,7 @@ Route::post('/instructors/restore-bulk', [InstructorController::class, 'restoreB
 
 // Pending Appointments Routes
 Route::prefix('appointments')->group(function () {
-    Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointments.pendingList');
+    Route::get('/', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
     Route::post('/store', [PendingAppointmentController::class, 'store'])->name('appointments.store');
     Route::patch('/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
     Route::patch('/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
