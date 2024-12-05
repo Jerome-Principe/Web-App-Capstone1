@@ -71,10 +71,10 @@
                         <a href="instructors">View Instructor</a>
                     </li>
                     <li>
-                        <a href="/appointments">View Appointment List</a>
+                        <a href="/appointments.index">View Appointment List</a>
                     </li>
                     <li>
-                        <a href="/appointment-pending-list">Pending Appointment</a>
+                        <a href="/appointments.pending-list">Pending Appointment</a>
                     </li>
                     <li>
                         <a href="/cancelled">Cancelled Appointment</a>
