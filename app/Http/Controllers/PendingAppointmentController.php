@@ -109,15 +109,12 @@ class PendingAppointmentController extends Controller
     // List appointments with optional filters via query parameters
     public function list(Request $request)
     {
-        $query = PendingAppointment::query();
+        $appointments = PendingAppointment::where('status', 'Pending')->get();
 
-        if ($request->has('status')) {
-            $query->where('status', $request->input('status'));
-        }
-
-        $appointments = $query->get();
-
-        return response()->json($appointments);
+        return response()->json([
+            'success' => true,
+            'appointments' => $appointments,
+        ]);
     }
 
     // Update a specific appointment
