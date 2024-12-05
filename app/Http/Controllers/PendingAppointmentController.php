@@ -84,7 +84,7 @@ class PendingAppointmentController extends Controller
             ->with(['instructor', 'pendingMembership'])
             ->paginate(10);
 
-        return view('appointment-list', compact('appointments'));
+        return view('appointment-pending-list', compact('appointments'));
     }
 
     // Show a specific appointment by ID
