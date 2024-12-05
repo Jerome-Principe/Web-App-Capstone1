@@ -210,14 +210,20 @@ class PendingAppointmentController extends Controller
     // Method to handle the delete request
     public function destroy($id)
     {
-        // Find the appointment by ID
-        $appointment = PendingAppointment::find($id);
+        // Find the appointment by ID, including trashed ones if needed
+        $appointment = PendingAppointment::withTrashed()->find($id);
 
         if (!$appointment) {
-            $appointment->delete();
             return response()->json(['message' => 'Appointment not found'], 404);
         }
 
-        return response()->json(['message' => 'Appointment successfully deleted'], 200);
+        try {
+            // Force delete the appointment
+            $appointment->forceDelete();
+
+            return response()->json(['message' => 'Appointment successfully deleted'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete the appointment', 'error' => $e->getMessage()], 500);
+        }
     }
 }
