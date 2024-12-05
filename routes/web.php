@@ -120,10 +120,10 @@ Route::delete('/instructors/{id}/force-delete', [InstructorController::class, 'f
 // Restore bulk instructor
 Route::post('/instructors/restore-bulk', [InstructorController::class, 'restoreBulk'])->name('instructors.restore.bulk');
 
-// Pending Appointments Routes
+// Pending Appointments Routes appointment-pending-list
 Route::prefix('appointments')->group(function () {
-    Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
-    Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointment-pending-list');
+    Route::get('/appointments-pending-list', [PendingAppointmentController::class, 'appointmentList'])->name('appointment-pending-list');
+    Route::get('/appointment-list', [PendingAppointmentController::class, 'index'])->name('appointments.index');
     Route::post('/store', [PendingAppointmentController::class, 'store'])->name('appointments.store');
     Route::patch('/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
     Route::patch('/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
