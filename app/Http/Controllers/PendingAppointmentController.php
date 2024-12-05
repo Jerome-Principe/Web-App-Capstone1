@@ -214,11 +214,9 @@ class PendingAppointmentController extends Controller
         $appointment = PendingAppointment::find($id);
 
         if (!$appointment) {
+            $appointment->delete();
             return response()->json(['message' => 'Appointment not found'], 404);
         }
-
-        // Delete the appointment
-        $appointment->delete();
 
         return response()->json(['message' => 'Appointment successfully deleted'], 200);
     }
