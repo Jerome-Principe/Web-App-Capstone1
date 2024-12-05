@@ -74,7 +74,7 @@
                         <a href="/appointments">View Appointment List</a>
                     </li>
                     <li>
-                        <a href="/appointments">Pending Appointment</a>
+                        <a href="/appointment-pending-list">Pending Appointment</a>
                     </li>
                     <li>
                         <a href="/cancelled">Cancelled Appointment</a>
