@@ -108,7 +108,7 @@ require __DIR__ . '/auth.php';
 
 
 // Instructors
-Route::resource('instructors', InstructorController::class);
+Route::resource('/instructors', InstructorController::class);
 // Move to trash
 Route::post('/instructors/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('instructors.moveToTrash');
 // Trashed instructors
