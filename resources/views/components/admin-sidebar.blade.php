@@ -71,7 +71,7 @@
                         <a href="instructors">View Instructor</a>
                     </li>
                     <li>
-                        <a href="/appointment-list">View Appointment List</a>
+                        <a href="/appointments">View Appointment List</a>
                     </li>
                     <li>
                         <a href="/appointment-pending-list">Pending Appointment</a>
