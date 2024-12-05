@@ -121,15 +121,13 @@ Route::delete('/instructors/{id}/force-delete', [InstructorController::class, 'f
 Route::post('/instructors/restore-bulk', [InstructorController::class, 'restoreBulk'])->name('instructors.restore.bulk');
 
 // Pending Appointments Routes
-Route::get('/appointments', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
-Route::post('appointments/moveToTrash', [PendingAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
-Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointment-pending-list');
-Route::post('/appointments', [PendingAppointmentController::class, 'store'])->name('appointments.store');
-Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
-Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
-
-// Pending Appointments Move to Trash and Restore Routes
 Route::prefix('appointments')->group(function () {
+    Route::get('/', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
+    Route::post('/store', [PendingAppointmentController::class, 'store'])->name('appointments.store');
+    Route::patch('/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
+    Route::patch('/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
+
+    // Trash and Restore Routes
     Route::post('/move-to-trash', [PendingAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
     Route::get('/trashed', [PendingAppointmentController::class, 'trashed'])->name('appointments.pending.trashed');
     Route::post('/restore-bulk', [PendingAppointmentController::class, 'restoreBulk'])->name('appointments.pending.restore.bulk');
@@ -138,12 +136,16 @@ Route::prefix('appointments')->group(function () {
 });
 
 // Cancelled Appointments Routes
-Route::get('/cancelled', [CancelledAppointmentController::class, 'index'])->name('appointments.cancelled');
-Route::post('/cancelled/move-to-trash', [CancelledAppointmentController::class, 'moveToTrash'])->name('appointments.cancelled.moveToTrash');
-Route::get('/cancelled/trashed', [CancelledAppointmentController::class, 'trashed'])->name('appointments.cancelled.trashed');
-Route::post('/cancelled/restore-bulk', [CancelledAppointmentController::class, 'restoreBulk'])->name('appointments.cancelled.restore.bulk');
-Route::post('/cancelled/{id}/restore', [CancelledAppointmentController::class, 'restore'])->name('appointments.cancelled.restore');
-Route::delete('/cancelled/{id}/force-delete', [CancelledAppointmentController::class, 'forceDelete'])->name('appointments.cancelled.forceDelete');
+Route::prefix('cancelled')->group(function () {
+    Route::get('/', [CancelledAppointmentController::class, 'index'])->name('appointments.cancelled');
+    Route::post('/store', [CancelledAppointmentController::class, 'store'])->name('appointments.cancelled.store');
+    Route::post('/move-to-trash', [CancelledAppointmentController::class, 'moveToTrash'])->name('appointments.cancelled.moveToTrash');
+    Route::get('/trashed', [CancelledAppointmentController::class, 'trashed'])->name('appointments.cancelled.trashed');
+    Route::post('/restore-bulk', [CancelledAppointmentController::class, 'restoreBulk'])->name('appointments.cancelled.restore.bulk');
+    Route::post('/restore/{id}', [CancelledAppointmentController::class, 'restore'])->name('appointments.cancelled.restore');
+    Route::delete('/force-delete/{id}', [CancelledAppointmentController::class, 'forceDelete'])->name('appointments.cancelled.forceDelete');
+});
+
 
 //Meal-plan
 Route::resource('meal-plan', MealPlanController::class);
