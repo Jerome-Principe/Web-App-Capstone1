@@ -57,7 +57,6 @@ Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class,
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline']);
 
 Route::get('mobile/appointments/list', [PendingAppointmentController::class, 'list']);
-Route::patch('mobile/appointments/{appointment}/cancel', [PendingAppointmentController::class, 'cancel']);
 Route::post('mobile/cancelled', [CancelledAppointmentController::class, 'store']);
 Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'fetchCancelledAppointments']);
 

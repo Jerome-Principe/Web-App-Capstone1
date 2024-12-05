@@ -77,18 +77,6 @@ class PendingAppointmentController extends Controller
         return redirect()->route('appointments.index')->with('success', 'Appointment declined successfully.');
     }
 
-    public function cancel(Request $request, $appointmentId)
-    {
-        $appointment = PendingAppointment::findOrFail($appointmentId);
-
-        // Update the status to 'Cancelled' and save the reason
-        $appointment->status = 'Cancelled';
-        $appointment->cancellation_reason = $request->reason;
-        $appointment->save();
-
-        return response()->json(['status' => 'success', 'message' => 'Appointment canceled successfully.']);
-    }
-
     // Display the list of confirmed and declined appointments
     public function appointmentList()
     {
@@ -109,12 +97,15 @@ class PendingAppointmentController extends Controller
     // List appointments with optional filters via query parameters
     public function list(Request $request)
     {
-        $appointments = PendingAppointment::where('status', 'Pending')->get();
+        $query = PendingAppointment::query();
 
-        return response()->json([
-            'success' => true,
-            'appointments' => $appointments,
-        ]);
+        if ($request->has('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        $appointments = $query->get();
+
+        return response()->json($appointments);
     }
 
     // Update a specific appointment
