@@ -92,6 +92,23 @@
     <div class="container">
         <div class="header-section">
             <h1>Cancelled Appointment List</h1>
+
+            @if(session('success'))
+                <div class="custom-alert-message">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(function () {
+                        const alert = document.querySelector('.custom-alert-message');
+                        if (alert) {
+                            alert.classList.add('fade-out');
+                        }
+                    }, 3000);
+                });
+            </script>
         </div>
 
         <div class="filter-options">

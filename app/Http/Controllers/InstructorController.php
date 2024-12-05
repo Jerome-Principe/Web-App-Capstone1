@@ -102,14 +102,14 @@ class InstructorController extends Controller
         // Restore the selected instructors
         Instructor::onlyTrashed()->whereIn('id', $instructorIds)->restore();
 
-        return redirect()->route('instructors.index')->with('success', 'Instructors restored successfully.');
+        return redirect()->route('instructors.trashed')->with('success', 'Instructors restored successfully.');
     }
     public function restore($id)
     {
         $instructor = Instructor::onlyTrashed()->findOrFail($id);
         $instructor->restore();
 
-        return redirect()->route('instructors.index')->with('success', 'Instructor restored successfully.');
+        return redirect()->route('instructors.trashed')->with('success', 'Instructor restored successfully.');
     }
 
     public function forceDelete($id)

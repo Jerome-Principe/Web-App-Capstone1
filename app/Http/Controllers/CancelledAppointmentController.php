@@ -105,7 +105,7 @@ class CancelledAppointmentController extends Controller
             CancelledAppointment::onlyTrashed()->whereIn('id', $appointmentIds)->restore();
 
             // Redirect to the cancelled appointments page with a success message
-            return redirect()->route('appointments.cancelled')->with('success', 'Selected appointments restored successfully.');
+            return redirect()->route('appointments.cancelled.trashed')->with('success', 'Selected appointments restored successfully.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to restore selected appointments.');
         }
@@ -118,7 +118,7 @@ class CancelledAppointmentController extends Controller
             $appointment = CancelledAppointment::onlyTrashed()->findOrFail($id);
             $appointment->restore();
 
-            return redirect()->route('appointments.cancelled')->with('success', 'Appointment restored successfully.');
+            return redirect()->route('appointments.cancelled.trashed')->with('success', 'Appointment restored successfully.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to restore the appointment.');
         }
@@ -131,7 +131,7 @@ class CancelledAppointmentController extends Controller
             $appointment = CancelledAppointment::onlyTrashed()->findOrFail($id);
             $appointment->forceDelete();
 
-            return redirect()->route('appointments.cancelled')->with('success', 'Appointment permanently deleted.');
+            return redirect()->route('appointments.cancelled.trashed')->with('success', 'Appointment permanently deleted.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to permanently delete the appointment.');
         }

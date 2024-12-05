@@ -185,7 +185,7 @@ class PendingAppointmentController extends Controller
         // Restore the selected appointments
         PendingAppointment::onlyTrashed()->whereIn('id', $appointmentIds)->restore();
 
-        return redirect()->route('appointments.index')->with('success', 'Appointments restored successfully.');
+        return redirect()->route('appointments.pending.trashed')->with('success', 'Appointments restored successfully.');
     }
 
     // Restore a single appointment from trash
@@ -194,7 +194,7 @@ class PendingAppointmentController extends Controller
         $appointment = PendingAppointment::onlyTrashed()->findOrFail($id);
         $appointment->restore();
 
-        return redirect()->route('appointments.index')->with('success', 'Appointments restored successfully.');
+        return redirect()->route('appointments.pending.trashed')->with('success', 'Appointments restored successfully.');
     }
 
     // Permanently delete a single appointment from trash
@@ -203,8 +203,10 @@ class PendingAppointmentController extends Controller
         $appointment = PendingAppointment::onlyTrashed()->findOrFail($id);
         $appointment->forceDelete();
 
-        return redirect()->route('appointments.trashed')->with('success', 'Appointments permanently deleted.');
+        // Redirect to trashed list or any other appropriate route
+        return redirect()->route('appointments.pending.trashed')->with('success', 'Appointment permanently deleted.');
     }
+
     // Method to handle the delete request
     public function destroy($id)
     {
