@@ -746,7 +746,7 @@
                             <span class="line"></span>
                             <h3 class="title">GIVE US FEEDBACK</h3>
                         </div>
-                        <form action="{{route('FeedbackSubmit')}}" method="POST">
+                        <form action="{{route('feedback.submit')}}" method="POST">
                             @csrf
                             <div class="single_form">
                                 <input type="text" name="name" placeholder="Name" required>
@@ -781,7 +781,6 @@
                                     }, 3000); // 3000ms = 3 seconds
                                 });
                             </script>
-
                         </form>
                     </div>
                 </div>

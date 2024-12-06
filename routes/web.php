@@ -71,14 +71,16 @@ Route::get('/transaction', function () {
     return view('transaction');
 });
 
-
-// Add these routes in your routes/web.php
-Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback.index');
-Route::post('/submit', [FeedbackController::class, 'submit'])->name('FeedbackSubmit');
-Route::get('/feedback/{id}/edit', [FeedbackController::class, 'edit'])->name('feedback.edit');
-Route::put('/feedback/update/{id}', [FeedbackController::class, 'update'])->name('feedback.update'); // Updated
-Route::delete('/feedback/delete/{id}', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
-
+// Feedback routes
+Route::prefix('feedback')->name('feedback.')->group(function () {
+    Route::resource('/', FeedbackController::class)->except(['show']);
+    Route::post('/submit', [FeedbackController::class, 'submit'])->name('submit');
+    Route::post('/move-to-trash', [FeedbackController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::get('/trashed', [FeedbackController::class, 'trashed'])->name('trashed');
+    Route::post('/restore-bulk', [FeedbackController::class, 'restoreBulk'])->name('restoreBulk');
+    Route::post('/restore/{id}', [FeedbackController::class, 'restore'])->name('restore');
+    Route::delete('/force-delete/{id}', [FeedbackController::class, 'forceDelete'])->name('forceDelete');
+});
 
 // Walkin-client
 Route::get('/walkin', [WalkinController::class, 'create']);

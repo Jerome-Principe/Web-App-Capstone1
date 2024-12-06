@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use Illuminate\Http\Request;
-use DB;
 
 class FeedbackController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Display a paginated list of feedback
+    public function index()
+    {
+        $feedback = Feedback::paginate(9); // Retrieve 9 feedback entries per page
+        return view('feedback', compact('feedback')); // Return view with feedback data
+    }
 
+    // Submit a new feedback entry
     public function submit(Request $request)
     {
-        // Validate the form data
-
+        // Validate the incoming request data
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
@@ -23,7 +25,7 @@ class FeedbackController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Create a new feedback entry
+        // Create a new feedback entry in the database
         Feedback::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -31,89 +33,86 @@ class FeedbackController extends Controller
             'message' => $request->input('message'),
         ]);
 
-        // Redirect back with a success message
+        // Redirect back with success message
         return redirect()->back()->with('success', 'Feedback submitted successfully!');
     }
 
+    // Display feedback list (same as index function, could be merged)
     function feedback()
     {
-
-        $feedback = Feedback::paginate(9);
-
-        return view('feedback', compact('feedback'));
-
+        $feedback = Feedback::paginate(9); // Paginate feedback entries
+        return view('feedback', compact('feedback')); // Return view with feedback data
     }
 
-    public function index()
+    // Move selected feedback to trash (soft delete)
+    public function moveToTrash(Request $request)
     {
-        //
-        $feedback = Feedback::all(); // compact variable
-        return view('feedback', compact('feedback')); // view('bladefile', compact('variable'));
+        // Get the selected feedback IDs from the request
+        $selectedIds = explode(',', $request->input('selected'));
+
+        // Check if any feedback IDs are selected
+        if (!empty($selectedIds)) {
+            // Soft delete the selected feedback
+            Feedback::whereIn('id', $selectedIds)->delete();
+
+            // Redirect with success message
+            return redirect()->route('feedback.index')->with('success', 'Selected feedback moved to trash.');
+        }
+
+        // Redirect with error message if no feedback selected
+        return redirect()->back()->with('error', 'No feedback selected.');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Display trashed (soft deleted) feedback entries
+    public function trashed()
     {
-        //
+        // Retrieve trashed feedback entries with pagination
+        $trashedFeedback = Feedback::onlyTrashed()->paginate(10);
+        return view('trashed-feedback', compact('trashedFeedback')); // Return view with trashed feedback data
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Restore a single feedback entry from the trash
+    public function restore($id)
     {
-        //
+        // Find the trashed feedback entry by ID
+        $feedback = Feedback::onlyTrashed()->findOrFail($id);
+
+        // Restore the feedback entry
+        $feedback->restore();
+
+        // Redirect with success message
+        return redirect()->route('feedback.trashed')->with('success', 'Feedback restored successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Feedback $feedback)
+    // Restore multiple feedback entries from the trash
+    public function restoreBulk(Request $request)
     {
-        //
+        // Get the selected feedback IDs from the request
+        $ids = $request->input('selected');
+
+        // Check if any IDs are provided for restoration
+        if ($ids) {
+            // Restore the selected trashed feedback entries
+            Feedback::onlyTrashed()->whereIn('id', explode(',', $ids))->restore();
+
+            // Redirect with success message
+            return redirect()->route('feedback.trashed')->with('success', 'Selected feedback restored successfully!');
+        }
+
+        // Redirect with error message if no feedback selected
+        return redirect()->route('feedback.trashed')->with('error', 'No feedback selected for restoration.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    // Permanently delete a feedback entry from the trash
+    public function forceDelete($id)
     {
-        $data = Feedback::find($id);
-        return view('feedback-update', compact('data'));
+        // Find the trashed feedback entry by ID
+        $feedback = Feedback::onlyTrashed()->findOrFail($id);
 
-    }
+        // Permanently delete the feedback entry
+        $feedback->forceDelete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        //Update feedback
-        $data = Feedback::find($id);
-        $data->name = $request->input('name');
-        $data->email = $request->input('email');
-        $data->subject = $request->input('subject');
-        $data->message = $request->input('message');
-        $data->update();
-
-        return redirect()->route('feedback.index')->with('success', 'Feedback updated successfully!');
-
-
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-        $data = Feedback::find($id);
-        $data->delete();
-        return redirect()->route('feedback.index')->with('success', 'Feedback deleted successfully!');
-
-
+        // Redirect with success message
+        return redirect()->route('feedback.trashed')->with('success', 'Feedback permanently deleted!');
     }
 }

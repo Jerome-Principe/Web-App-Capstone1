@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Feedback</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Trashed Feedback Data</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,6 +55,7 @@
 
         .table-container {
             overflow-x: auto;
+            white-space: nowrap;
         }
 
         table {
@@ -77,6 +77,15 @@
         input[type="checkbox"] {
             margin: 0;
         }
+
+        .date-info {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .modal {
+            z-index: 1055;
+        }
     </style>
 </head>
 
@@ -87,7 +96,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Feedback Data</h1>
+            <h1>Trashed Feedback Data</h1>
 
             @if(session('success'))
                 <div class="custom-alert-message">
@@ -105,13 +114,15 @@
                     }, 3000);
                 });
             </script>
+
         </div>
 
+        <!-- Filter options -->
         <div class="filter-options">
             <div class="filter-links">
                 <a href="#" id="select-all-link">All (0)</a>
                 <a href="{{ route('feedback.trashed') }}">Trashed
-                    ({{ App\Models\Feedback::onlyTrashed()->count() }})
+                    ({{App\Models\Feedback::onlyTrashed()->count()}})
                 </a>
             </div>
 
@@ -119,17 +130,17 @@
                 @csrf
                 @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <!-- Form to move selected feedback to trash -->
-                    <form action="{{ route('feedback.moveToTrash') }}" method="POST">
+                    <!-- Button to restore selected Feedback -->
+                    <form action="{{ route('feedback.restoreBulk') }}" method="POST" id="restore-selected-form">
                         @csrf
                         <input type="hidden" name="selected" id="selectedIds">
-                        <button type="submit" class="btn btn-light border mx-2">
-                            <i class="fa fa-trash"></i> Move to Trash
+                        <button type="submit" class="btn btn-success mx-2">
+                            <i class="fa fa-undo"></i> Restore Selected
                         </button>
                     </form>
 
-                    <!-- Search Form -->
-                    <form class="d-flex" role="search" action="#" method="GET">
+                    <!-- Other actions (move to trash, search, etc.) -->
+                    <form class="d-flex" role="search">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                             style="height: 35px;">
                         <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
@@ -138,6 +149,7 @@
             </div>
         </div>
 
+        <!-- Table -->
         <div class="table-container">
             <table class="table table-bordered text-center">
                 <thead>
@@ -148,38 +160,60 @@
                         <th class="text-center">Email</th>
                         <th class="text-center">Subject</th>
                         <th class="text-center">Message</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($feedback as $index => $feedbacks)
+                    @foreach($trashedFeedback as $feedbacks)
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $feedbacks->id }}"
-                                    onchange="updateSelectionCount()" /></td>
-                            <td class="text-center">{{ $feedback->perPage() * ($feedback->currentPage() - 1) + $index + 1 }}
+                            <td class="text-center">
+                                <input type="checkbox" name="selected[]" value="{{ $feedbacks->id }}"
+                                    onchange="updateSelectionCount()">
+                            </td>
+                            <td class="text-center">
+                                {{ ($trashedFeedback->currentPage() - 1) * $trashedFeedback->perPage() + $loop->index + 1 }}
                             </td>
                             <td class="text-center">{{ $feedbacks->name }}</td>
                             <td class="text-center">{{ $feedbacks->email }}</td>
                             <td class="text-center">{{ $feedbacks->subject }}</td>
                             <td class="text-center">{{ $feedbacks->message }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form action="{{ route('feedback.restore', $feedbacks->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            <i class="fa fa-undo"></i> Restore
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('feedback.forceDelete', $feedbacks->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are you sure you want to permanently delete this feedback?')">
+                                            <i class="fa fa-trash"></i> Delete Permanently
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
 
             <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $feedback->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $feedback->previousPageUrl() }}" tabindex="-1">Previous</a>
+                <ul class="pagination justify-content-center mt-4 mb-4">
+                    <li class="page-item {{ $trashedFeedback->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedFeedback->previousPageUrl() }}" tabindex="-1">Previous</a>
                     </li>
 
-                    @foreach ($feedback->getUrlRange(1, $feedback->lastPage()) as $page => $url)
-                        <li class="page-item {{ $page == $feedback->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    @foreach(range(1, $trashedFeedback->lastPage()) as $page)
+                        <li class="page-item {{ $page == $trashedFeedback->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $trashedFeedback->url($page) }}">{{ $page }}</a>
                         </li>
                     @endforeach
 
-                    <li class="page-item {{ !$feedback->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $feedback->nextPageUrl() }}">Next</a>
+                    <li class="page-item {{ !$trashedFeedback->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedFeedback->nextPageUrl() }}">Next</a>
                     </li>
                 </ul>
             </nav>
@@ -223,7 +257,5 @@
         }
     });
 </script>
-
-</html>
 
 @endsection
