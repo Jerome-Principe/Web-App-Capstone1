@@ -3,43 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Walkin;
-
 use Illuminate\Http\Request;
 
 class WalkinController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Display a paginated list of walk-in clients with the total amount
     public function index()
     {
-        // Paginate the walkins and sum the amounts
-        $walkins = Walkin::paginate(9); // Adjust the per-page count as needed
-        $totalAmount = Walkin::sum('amount'); // Get the total amount of all walk-ins
+        $walkins = Walkin::paginate(9); // Paginate walk-ins (9 per page)
+        $totalAmount = Walkin::sum('amount'); // Calculate total amount of walk-ins
 
         return view('walkin-client-list', compact('walkins', 'totalAmount'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-        return view('walkin-client-create');
-
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-
+    // Store a new walk-in client in the database
     public function store(Request $request)
     {
-
-        //
+        // Validate incoming data
         $request->validate([
             'lastname' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
@@ -55,53 +35,100 @@ class WalkinController extends Controller
             'payment' => 'required|string|max:255',
         ]);
 
+        // Create the walk-in client
         Walkin::create($request->all());
+
+        // Redirect to the index with success message
         return redirect()->route('walkin.index')->with('success', 'Client information saved successfully.');
-
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Show the form to create a new walk-in client
+    public function create()
     {
-        //
+        return view('walkin-client-create');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Show the form to edit an existing walk-in client
     public function edit($id)
     {
-        //Edit walkin
-        $walkin = Walkin::find($id);
+        $walkin = Walkin::find($id); // Find the client by ID
         return view('walkin-client-update', compact('walkin'));
-
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Update an existing walk-in client's information
     public function update(Request $request, $id)
     {
-        //Update Walkin
-        $walkin = Walkin::find($id);
-        $walkin->update($request->all());
+        $walkin = Walkin::find($id); // Find the client by ID
+        $walkin->update($request->all()); // Update the client data
 
         return redirect()->route('walkin.index')->with('success', 'Walk-in client updated successfully.');
-
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Soft delete (move to trash) a walk-in client
     public function destroy(string $id)
     {
-        //
-        $walkin = Walkin::find($id);
-        $walkin->delete();
+        $walkin = Walkin::find($id); // Find the client by ID
+        $walkin->delete(); // Soft delete the client
 
         return redirect()->route('walkin.index')->with('success', 'Walk-in client deleted successfully.');
+    }
 
+    // Soft delete multiple walk-in clients (bulk move to trash)
+    public function moveToTrash(Request $request)
+    {
+        $selectedIds = explode(',', $request->input('selected')); // Parse selected IDs
+
+        if (!empty($selectedIds)) {
+            Walkin::whereIn('id', $selectedIds)->delete(); // Soft delete the selected clients
+            return redirect()->route('walkin.index')->with('success', 'Selected walk-in clients moved to trash.');
+        }
+
+        return redirect()->back()->with('error', 'No clients selected.');
+    }
+
+    // Display a list of soft-deleted (trashed) walk-in clients
+    public function trashed()
+    {
+        $trashedwalkins = Walkin::onlyTrashed()->paginate(10); // Paginate trashed clients
+        return view('trashed-walkin-client-list', compact('trashedwalkins'));
+    }
+
+    // Restore multiple trashed walk-in clients
+    public function restoreBulk(Request $request)
+    {
+        $walkinIds = explode(',', $request->input('selected')); // Parse selected IDs
+
+        if (empty($walkinIds)) {
+            return back()->with('error', 'Please select at least one client to restore.');
+        }
+
+        try {
+            Walkin::onlyTrashed()->whereIn('id', $walkinIds)->restore(); // Restore selected clients
+            return redirect()->route('walkins.trashed')->with('success', 'Selected walk-in clients restored successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to restore selected walk-in clients.');
+        }
+    }
+
+    // Restore a single trashed walk-in client
+    public function restore($id)
+    {
+        try {
+            $walkin = Walkin::onlyTrashed()->findOrFail($id); // Find the trashed client by ID
+            $walkin->restore(); // Restore the client
+
+            return redirect()->route('walkins.trashed')->with('success', 'Walk-in client restored successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to restore the walk-in client.');
+        }
+    }
+
+    // Permanently delete a trashed walk-in client
+    public function forceDelete($id)
+    {
+        $walkin = Walkin::onlyTrashed()->findOrFail($id); // Find the trashed client by ID
+        $walkin->forceDelete(); // Permanently delete the client
+
+        return redirect()->route('walkin.index')->with('success', 'Walk-in client permanently deleted.');
     }
 }

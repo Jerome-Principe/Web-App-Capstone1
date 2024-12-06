@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Add Walk-in Clients</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Trashed Walkin Clients</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,6 +55,7 @@
 
         .table-container {
             overflow-x: auto;
+            white-space: nowrap;
         }
 
         table {
@@ -77,8 +77,18 @@
         input[type="checkbox"] {
             margin: 0;
         }
+
+        .date-info {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .modal {
+            z-index: 1055;
+        }
     </style>
 </head>
+
 @extends('layouts.master')
 
 @section('content')
@@ -86,14 +96,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Walkin Clients</h1>
-            <div>
-                <div class="d-flex justify-content-end position-relative">
-                    <a href="/walkin" class="btn btn-primary px-2"><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add
-                        New
-                    </a>
-                </div>
-            </div>
+            <h1>Trashed Walkin Clients</h1>
 
             @if(session('success'))
                 <div class="custom-alert-message">
@@ -111,8 +114,10 @@
                     }, 3000);
                 });
             </script>
+
         </div>
 
+        <!-- Filter options -->
         <div class="filter-options">
             <div class="filter-links">
                 <a href="#" id="select-all-link">All (0)</a>
@@ -125,17 +130,17 @@
                 @csrf
                 @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <!-- Form to move selected walkins to trash -->
-                    <form action="{{ route('walkins.moveToTrash') }}" method="POST">
+                    <!-- Button to restore selected clients -->
+                    <form action="{{ route('walkins.restoreBulk') }}" method="POST" id="restore-selected-form">
                         @csrf
                         <input type="hidden" name="selected" id="selectedIds">
-                        <button type="submit" class="btn btn-light border mx-2">
-                            <i class="fa fa-trash"></i> Move to Trash
+                        <button type="submit" class="btn btn-success mx-2">
+                            <i class="fa fa-undo"></i> Restore Selected
                         </button>
                     </form>
 
-                    <!-- Search Form -->
-                    <form class="d-flex" role="search" action="#" method="GET">
+                    <!-- Other actions (move to trash, search, etc.) -->
+                    <form class="d-flex" role="search">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                             style="height: 35px;">
                         <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
@@ -144,6 +149,7 @@
             </div>
         </div>
 
+        <!-- Table -->
         <div class="table-container">
             <table class="table table-bordered text-center">
                 <thead>
@@ -160,12 +166,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($walkins as $index => $walkin)
+                    @foreach($trashedwalkins as $walkin)
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $walkin->id }}"
-                                    onchange="updateSelectionCount()" />
+                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $walkin->id }} "
+                                    onchange="updateSelectionCount()">
                             </td>
-                            <td class="text-center">{{ $walkins->perPage() * ($walkins->currentPage() - 1) + $index + 1 }}
+                            <td class="text-center">
+                                {{ ($trashedwalkins->currentPage() - 1) * $trashedwalkins->perPage() + $loop->index + 1 }}
                             </td>
                             <td class="text-center">
                                 {{ $walkin->lastname . ', ' . $walkin->firstname . ' ' . $walkin->middlename }}
@@ -175,41 +182,41 @@
                             <td class="text-center">{{ $walkin->payment }}</td>
                             <td class="text-center">{{ $walkin->date }}</td>
                             <td class="text-center">{{ $walkin->time }}</td>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route('walkins.edit', $walkin->id) }}" class="btn btn-sm btn-primary"><i
-                                        class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
-                                <form action="{{ route('walkins.destroy', $walkin->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                        onclick="return confirm('Are you sure you want to delete this walk-in client?')"><i
-                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form action="{{ route('walkins.restore', $walkin->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                    </form>
+                                    <form action="{{ route('walkins.forceDelete', $walkin->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to permanently delete?')">Delete
+                                            Permanently
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
 
-            <div class="mt-3">
-                <h5>Total Amount: {{ $totalAmount }}</h5>
-            </div>
-
             <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $walkins->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $walkins->previousPageUrl() }}" tabindex="-1">Previous</a>
+                <ul class="pagination justify-content-center mt-4 mb-4">
+                    <li class="page-item {{ $trashedwalkins->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedwalkins->previousPageUrl() }}" tabindex="-1">Previous</a>
                     </li>
 
-                    @foreach(range(1, $walkins->lastPage()) as $page)
-                        <li class="page-item {{ $page == $walkins->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $walkins->url($page) }}">{{ $page }}</a>
+                    @foreach(range(1, $trashedwalkins->lastPage()) as $page)
+                        <li class="page-item {{ $page == $trashedwalkins->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $trashedwalkins->url($page) }}">{{ $page }}</a>
                         </li>
                     @endforeach
 
-                    <li class="page-item {{ !$walkins->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $walkins->nextPageUrl() }}">Next</a>
+                    <li class="page-item {{ !$trashedwalkins->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedwalkins->nextPageUrl() }}">Next</a>
                     </li>
                 </ul>
             </nav>

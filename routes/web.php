@@ -82,13 +82,24 @@ Route::prefix('feedback')->name('feedback.')->group(function () {
     Route::delete('/force-delete/{id}', [FeedbackController::class, 'forceDelete'])->name('forceDelete');
 });
 
-// Walkin-client
-Route::get('/walkin', [WalkinController::class, 'create']);
-Route::get('/walkin-clients', [WalkinController::class, 'index'])->name('walkin.index');
-Route::post('/walkin/store', [WalkinController::class, 'store'])->name('walkin.store');
-Route::get('/walkins/{id}/edit', [WalkinController::class, 'edit'])->name('walkins.edit');
-Route::put('/walkins/{id}', [WalkinController::class, 'update'])->name('walkins.update');
-Route::delete('/walkins/{id}', [WalkinController::class, 'destroy'])->name('walkins.destroy');
+// Walk-in client routes
+Route::prefix('walkin')->group(function () {
+    Route::get('/', [WalkinController::class, 'create']);
+    Route::get('/clients', [WalkinController::class, 'index'])->name('walkin.index');
+    Route::post('/store', [WalkinController::class, 'store'])->name('walkin.store');
+    Route::get('/{id}/edit', [WalkinController::class, 'edit'])->name('walkins.edit');
+    Route::put('/{id}', [WalkinController::class, 'update'])->name('walkins.update');
+    Route::delete('/{id}', [WalkinController::class, 'destroy'])->name('walkins.destroy');
+});
+
+// Walk-in client trash-related routes
+Route::prefix('walkins')->group(function () {
+    Route::post('/move-to-trash', [WalkinController::class, 'moveToTrash'])->name('walkins.moveToTrash');
+    Route::get('/trashed', [WalkinController::class, 'trashed'])->name('walkins.trashed');
+    Route::post('/trashed/restore-bulk', [WalkinController::class, 'restoreBulk'])->name('walkins.restoreBulk');
+    Route::post('/{id}/restore', [WalkinController::class, 'restore'])->name('walkins.restore');
+    Route::delete('/{id}/force-delete', [WalkinController::class, 'forceDelete'])->name('walkins.forceDelete');
+});
 
 
 Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index']);

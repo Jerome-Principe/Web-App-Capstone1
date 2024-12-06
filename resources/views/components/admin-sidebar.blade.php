@@ -232,7 +232,7 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/walkin-clients">View Walkin Client</a>
+                        <a href="/walkin/clients">View Walkin Client</a>
                     </li>
                 </ul>
             </li>
