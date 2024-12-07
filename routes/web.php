@@ -164,17 +164,37 @@ Route::prefix('cancelled')->group(function () {
 //Meal-plan
 Route::resource('meal-plan', MealPlanController::class);
 
-Route::get('/machine', function () {
-    return view('inventory-machine');
+// Drinks routes
+Route::prefix('drinks')->name('drinks.')->group(function () {
+    // Main resource routes
+    Route::resource('/', DrinkController::class)
+        ->parameters(['' => 'drink'])
+        ->except(['show']);
+
+    // Additional routes
+    Route::get('/trashed', [DrinkController::class, 'trashed'])->name('trashed');
+    Route::post('/move-to-trash', [DrinkController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::post('/restore-bulk', [DrinkController::class, 'restoreBulk'])->name('restoreBulk');
+    Route::post('/restore/{id}', [DrinkController::class, 'restore'])->name('restore');
+    Route::delete('/force-delete/{id}', [DrinkController::class, 'forceDelete'])->name('forceDelete');
 });
 
-Route::get('/supplements', function () {
-    return view('inventory-supplements');
+// Supplements routes
+Route::prefix('supplements')->name('supplements.')->group(function () {
+    // Main resource routes
+    Route::resource('/', SupplementController::class)
+        ->parameters(['' => 'supplement'])
+        ->except(['show']);
+
+    // Additional routes
+    Route::get('/trashed', [SupplementController::class, 'trashed'])->name('trashed');
+    Route::post('/move-to-trash', [SupplementController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::post('/restore-bulk', [SupplementController::class, 'restoreBulk'])->name('restoreBulk');
+    Route::post('/restore/{id}', [SupplementController::class, 'restore'])->name('restore');
+    Route::delete('/force-delete/{id}', [SupplementController::class, 'forceDelete'])->name('forceDelete');
 });
 
 Route::resource('equipmentsadd', EquipmentController::class);
-
-Route::resource('drinks', DrinkController::class);
 
 Route::resource('equipments', EquipmentDefectController::class);
 
@@ -182,7 +202,6 @@ Route::resource('machine-defects', MachineDefectController::class);
 
 Route::resource('machines', MachineController::class);
 
-route::resource('supplements', SupplementController::class);
 
 
 //Membership

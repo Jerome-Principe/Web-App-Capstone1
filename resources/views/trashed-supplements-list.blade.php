@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Add Drinks List</title>
+    <title>Trashed Supplements List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,14 +87,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Drinks List</h1>
-            <div>
-                <div class="d-flex justify-content-end position-relative">
-                    <a href="/drinks/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                            aria-hidden="true"></i>Add New
-                    </a>
-                </div>
-            </div>
+            <h1>Trashed Supplements List</h1>
 
             @if(session('success'))
                 <div class="custom-alert-message">
@@ -116,12 +109,9 @@
 
         <div class="filter-options">
             <div class="filter-links">
-                <!-- Link to view all drinkss -->
                 <a href="#" id="select-all-link">All (0)</a>
-
-                <!-- Link to view all drinks-->
-                <a href="{{ route('drinks.trashed') }}">Trashed
-                    ({{ App\Models\Drink::onlyTrashed()->count() }})
+                <a href="{{ route('supplements.trashed') }}">Trashed
+                    ({{App\Models\Supplement::onlyTrashed()->count()}})
                 </a>
             </div>
 
@@ -129,12 +119,12 @@
                 @csrf
                 @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <!-- Form to move selected drinks to trash -->
-                    <form action="{{ route('drinks.moveToTrash') }}" method="POST">
+                    <!-- Button to restore selected supplements -->
+                    <form action="{{ route('supplements.restoreBulk') }}" method="POST" id="restore-selected-form">
                         @csrf
                         <input type="hidden" name="selected" id="selectedIds">
-                        <button type="submit" class="btn btn-light border mx-2">
-                            <i class="fa fa-trash"></i> Move to Trash
+                        <button type="submit" class="btn btn-success mx-2">
+                            <i class="fa fa-undo"></i> Restore Selected
                         </button>
                     </form>
 
@@ -154,7 +144,7 @@
                     <tr>
                         <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
-                        <th class="text-center">Drink Name</th>
+                        <th class="text-center">Supplement Name</th>
                         <th class="text-center">Quantity</th>
                         <th class="text-center">Price</th>
                         <th class="text-center">Total</th>
@@ -165,31 +155,34 @@
                 </thead>
 
                 <tbody>
-                    @foreach($drinks as $index => $drink)
+                    @foreach($trashedSupplements as $index => $supplement)
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $drink->id }}"
+                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $supplement->id }}"
                                     onchange="updateSelectionCount()" /></td>
                             <td class="text-center">
-                                {{ ($drinks->currentPage() - 1) * $drinks->perPage() + $loop->index + 1  }}
+                                {{ ($trashedSupplements->currentPage() - 1) * $trashedSupplements->perPage() + $index + 1 }}
                             </td>
-                            <td class="text-center">{{ $drink->item_name }}</td>
-                            <td class="text-center">{{ $drink->quantity }}</td>
-                            <td class="text-center">{{ $drink->price }}</td>
-                            <td class="text-center">{{ $drink->total }}</td>
-                            <td class="text-center">{{ $drink->date }}</td>
-                            <td class="text-center">{{ $drink->time }}</td>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route('drinks.edit', $drink->id) }}" class="btn btn-sm btn-primary"><i
-                                        class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
-                                <form action="{{ route('drinks.destroy', $drink->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                        onclick="return confirm('Are you sure you want to delete this drink?')"><i
-                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                    </button>
-                                </form>
+                            <td class="text-center">{{ $supplement->name }}</td>
+                            <td class="text-center">{{ $supplement->quantity }}</td>
+                            <td class="text-center">{{ $supplement->price }}</td>
+                            <td class="text-center">{{ $supplement->total }}</td>
+                            <td class="text-center">{{ $supplement->date }}</td>
+                            <td class="text-center">{{ $supplement->time }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form action="{{ route('supplements.restore', $supplement->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                    </form>
+                                    <form action="{{ route('supplements.forceDelete', $supplement->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to permanently delete?')">Delete
+                                            Permanently
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -202,18 +195,19 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $drinks->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $drinks->previousPageUrl() }}" tabindex="-1">Previous</a>
+                    <li class="page-item {{ $trashedSupplements->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedSupplements->previousPageUrl() }}"
+                            tabindex="-1">Previous</a>
                     </li>
 
-                    @foreach(range(1, $drinks->lastPage()) as $page)
-                        <li class="page-item {{ $page == $drinks->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $drinks->url($page) }}">{{ $page }}</a>
+                    @foreach(range(1, $trashedSupplements->lastPage()) as $page)
+                        <li class="page-item {{ $page == $trashedSupplements->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $trashedSupplements->url($page) }}">{{ $page }}</a>
                         </li>
                     @endforeach
 
-                    <li class="page-item {{ !$drinks->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $drinks->nextPageUrl() }}">Next</a>
+                    <li class="page-item {{ !$trashedSupplements->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedSupplements->nextPageUrl() }}">Next</a>
                     </li>
                 </ul>
             </nav>

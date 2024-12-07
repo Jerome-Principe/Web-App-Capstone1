@@ -3,20 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Drink;
-
 use Illuminate\Http\Request;
 
 class DrinkController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the drinks with their total prices.
      */
     public function index()
     {
-        // Get all drinks to calculate the total price
+        // Retrieve all drinks and calculate the total price for all
         $allDrinks = Drink::all();
-
         $totalPrice = 0;
+
         foreach ($allDrinks as $drink) {
             $drink->total = $drink->price * $drink->quantity;
             $totalPrice += $drink->total;
@@ -25,7 +24,7 @@ class DrinkController extends Controller
         // Paginate drinks for display (9 items per page)
         $drinks = Drink::paginate(9);
 
-        // Calculate the total for each drink in the paginated data
+        // Calculate the total for each paginated drink
         foreach ($drinks as $drink) {
             $drink->total = $drink->price * $drink->quantity;
         }
@@ -34,20 +33,18 @@ class DrinkController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new drink.
      */
     public function create()
     {
-        //
         return view('inventory-drinks-create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created drink in the database.
      */
     public function store(Request $request)
     {
-        //
         $request->validate([
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|integer',
@@ -61,43 +58,107 @@ class DrinkController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing a specific drink.
      */
     public function edit($id)
     {
-        //
         $drink = Drink::find($id);
         return view('inventory-drinks-update', compact('drink'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified drink in the database.
      */
     public function update(Request $request, Drink $drink)
     {
-        //
-
         $drink->update($request->all());
-
         return redirect()->route('drinks.index')->with('success', 'Drink updated successfully.');
-
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified drink from the database.
      */
     public function destroy(Drink $drink)
     {
-        //
         $drink->delete();
         return redirect()->route('drinks.index')->with('success', 'Drink deleted successfully.');
+    }
+
+    /**
+     * Move selected drinks to the trash (soft delete).
+     */
+    public function moveToTrash(Request $request)
+    {
+        $selectedIds = explode(',', $request->input('selected'));
+
+        if (!empty($selectedIds)) {
+            Drink::whereIn('id', $selectedIds)->delete();
+            return redirect()->route('drinks.index')->with('success', 'Selected drinks moved to trash.');
+        }
+
+        return redirect()->back()->with('error', 'No drinks selected.');
+    }
+
+    /**
+     * Display a list of trashed drinks.
+     */
+    public function trashed()
+    {
+        $trashedDrinks = Drink::onlyTrashed()->paginate(10);
+        $totalPrice = 0;
+
+        foreach ($trashedDrinks as $drink) {
+            $drink->total = $drink->price * $drink->quantity;
+            $totalPrice += $drink->total;
+        }
+
+        return view('trashed-drinks-list', compact('trashedDrinks', 'totalPrice'));
+    }
+
+    /**
+     * Restore selected drinks from the trash.
+     */
+    public function restoreBulk(Request $request)
+    {
+        $drinkIds = explode(',', $request->input('selected'));
+
+        if (empty($drinkIds)) {
+            return back()->with('error', 'Please select at least one drink to restore.');
+        }
+
+        try {
+            Drink::onlyTrashed()->whereIn('id', $drinkIds)->restore();
+            return redirect()->route('drinks.trashed')->with('success', 'Selected drinks restored successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to restore selected drinks.');
+        }
+    }
+
+    /**
+     * Restore a single drink from the trash.
+     */
+    public function restore($id)
+    {
+        try {
+            $drink = Drink::onlyTrashed()->findOrFail($id);
+            $drink->restore();
+            return redirect()->route('drinks.trashed')->with('success', 'Drink restored successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to restore the drink.');
+        }
+    }
+
+    /**
+     * Permanently delete a single drink from the trash.
+     */
+    public function forceDelete($id)
+    {
+        try {
+            $drink = Drink::onlyTrashed()->findOrFail($id);
+            $drink->forceDelete();
+            return redirect()->route('drinks.trashed')->with('success', 'Drink permanently deleted.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to permanently delete the drink.');
+        }
     }
 }

@@ -91,7 +91,8 @@
             <div>
                 <div class="d-flex justify-content-end position-relative">
                     <a href="/supplements/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                            aria-hidden="true"></i>Add New</a>
+                            aria-hidden="true"></i>Add New
+                    </a>
                 </div>
             </div>
 
@@ -115,17 +116,29 @@
 
         <div class="filter-options">
             <div class="filter-links">
+                <!-- Link to view all supplements -->
                 <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
+
+                <!-- Link to view all trashed supplements -->
+                <a href="{{ route('supplements.trashed') }}">Trashed
+                    ({{App\Models\Supplement::onlyTrashed()->count()}})
+                </a>
             </div>
 
             <div>
                 @csrf
                 @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                        onclick="return confirm('Are you sure you want to delete all selected supplements?')"><i
-                            class="fa fa-trash"></i> Move to Trash</button>
+                    <!-- Form to move selected supplements to trash -->
+                    <form action="{{ route('supplements.moveToTrash') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="selected" id="selectedIds">
+                        <button type="submit" class="btn btn-light border mx-2">
+                            <i class="fa fa-trash"></i> Move to Trash
+                        </button>
+                    </form>
+
+                    <!-- Search Form -->
                     <form class="d-flex" role="search">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                             style="height: 35px;">
@@ -205,26 +218,43 @@
             </nav>
         </div>
     </div>
-
-    <script>
-        // Select all checkboxes
-        function toggleSelectAll(source) {
-            checkboxes = document.getElementsByName('selected[]');
-            for (let i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = source.checked;
-            }
-            updateSelectionCount();
-        }
-
-        // Update the selection count
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-    </script>
-
 </body>
+<script>
+    // Toggle select all checkboxes
+    function toggleSelectAll(checkbox) {
+        const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+        checkboxes.forEach(item => item.checked = checkbox.checked);
+        updateSelectionCount();
+    }
+
+    // Update selected count and hidden input value
+    function updateSelectionCount() {
+        const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+        const count = selectedCheckboxes.length;
+        document.getElementById('select-all-link').textContent = `All (${count})`;
+        const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
+        document.getElementById('selectedIds').value = selectedIds.join(',');
+        console.log(selectedIds.join(',')); // Log selected IDs to debug
+    }
+
+    // Add functionality for the "All (0)" link click
+    document.getElementById('select-all-link').addEventListener('click', function (e) {
+        e.preventDefault();
+        const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
+        const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
+        selectAllCheckbox.checked = isChecked;
+        toggleSelectAll(selectAllCheckbox);
+    });
+
+    // Ensure the form doesn't submit if no appointments are selected
+    document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
+        const selectedIds = document.getElementById('selectedIds').value;
+        if (!selectedIds) {
+            alert('Please select at least one appointments to restore.');
+            e.preventDefault(); // Prevent form submission
+        }
+    });
+</script>
 
 </html>
 @endsection
