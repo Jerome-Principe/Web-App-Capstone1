@@ -112,23 +112,15 @@
         </script>
 
         <div class="filter-options">
-            <div class="filter-links">
-                <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
-            </div>
-
-            <div>
-                @csrf
-                @method('DELETE')
-                <div class="d-flex align-items-center">
-                    <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                        onclick="return confirm('Are you sure you want to delete all selected users?')"><i
-                            class="fa fa-trash"></i> Move to Trash</button>
-                    <form class="d-flex" role="search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                            style="height: 35px;">
-                        <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                    </form>
+            <div class="d-flex justify-content-between w-100">
+                <div class="ms-auto">
+                    <div class="d-flex align-items-center">
+                        <form class="d-flex" role="search">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                style="height: 35px;">
+                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
