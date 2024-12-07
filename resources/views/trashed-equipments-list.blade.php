@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Add Equipments List</title>
+    <title>Trashed Equipments List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,14 +92,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Equipments List</h1>
-            <div>
-                <div class="d-flex justify-content-end position-relative">
-                    <a href="/equipmentsAdd/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                            aria-hidden="true"></i>Add New
-                    </a>
-                </div>
-            </div>
+            <h1>Trashed Equipments List</h1>
 
             @if(session('success'))
                 <div class="custom-alert-message">
@@ -134,12 +127,12 @@
                 @csrf
                 @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <!-- Form to move selected drinks to trash -->
-                    <form action="{{ route('equipmentsAdd.moveToTrash') }}" method="POST">
+                    <!-- Button to restore selected equipments -->
+                    <form action="{{ route('equipmentsAdd.restoreBulk') }}" method="POST" id="restore-selected-form">
                         @csrf
                         <input type="hidden" name="selected" id="selectedIds">
-                        <button type="submit" class="btn btn-light border mx-2">
-                            <i class="fa fa-trash"></i> Move to Trash
+                        <button type="submit" class="btn btn-success mx-2">
+                            <i class="fa fa-undo"></i> Restore Selected
                         </button>
                     </form>
 
@@ -168,29 +161,31 @@
                 </thead>
 
                 <tbody>
-                    @foreach($equipments as $index => $equipment)
+                    @foreach($trashedEquipments as $index => $equipment)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $equipment->id }}"
                                     onchange="updateSelectionCount()" /></td>
                             <td class="text-center">
-                                {{ $equipments->perPage() * ($equipments->currentPage() - 1) + $index + 1 }}
+                                {{ $trashedEquipments->perPage() * ($trashedEquipments->currentPage() - 1) + $index + 1 }}
                             </td>
                             <td class="text-center">{{ $equipment->item_name }}</td>
                             <td class="text-center">{{ $equipment->quantity }}</td>
                             <td class="text-center">{{ $equipment->date }}</td>
                             <td class="text-center">{{ $equipment->time }}</td>
                             <td class="text-center">
-                                <a href="{{ route('equipmentsAdd.edit', $equipment->id) }}"
-                                    class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o mx-1"
-                                        aria-hidden="true"></i>Update</a>
-                                <form action="{{ route('equipmentsAdd.destroy', $equipment->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                        onclick="return confirm('Are you sure you want to delete this equipment?')"><i
-                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
-                                </form>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form action="{{ route('equipmentsAdd.restore', $equipment->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                    </form>
+                                    <form action="{{ route('equipmentsAdd.forceDelete', $equipment->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to permanently delete?')">Delete
+                                            Permanently</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -199,24 +194,26 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $equipments->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $equipments->previousPageUrl() }}" tabindex="-1">Previous</a>
+                    <li class="page-item {{ $trashedEquipments->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedEquipments->previousPageUrl() }}"
+                            tabindex="-1">Previous</a>
                     </li>
 
-                    @foreach(range(1, $equipments->lastPage()) as $page)
-                        <li class="page-item {{ $page == $equipments->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $equipments->url($page) }}">{{ $page }}</a>
+                    @foreach(range(1, $trashedEquipments->lastPage()) as $page)
+                        <li class="page-item {{ $page == $trashedEquipments->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $trashedEquipments->url($page) }}">{{ $page }}</a>
                         </li>
                     @endforeach
 
-                    <li class="page-item {{ !$equipments->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $equipments->nextPageUrl() }}">Next</a>
+                    <li class="page-item {{ !$trashedEquipments->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedEquipments->nextPageUrl() }}">Next</a>
                     </li>
                 </ul>
             </nav>
         </div>
     </div>
 </body>
+
 
 <script>
     // Toggle select all checkboxes

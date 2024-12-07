@@ -160,10 +160,6 @@ Route::prefix('cancelled')->group(function () {
     Route::delete('/force-delete/{id}', [CancelledAppointmentController::class, 'forceDelete'])->name('appointments.cancelled.forceDelete');
 });
 
-
-//Meal-plan
-Route::resource('meal-plan', MealPlanController::class);
-
 // Drinks routes
 Route::prefix('drinks')->name('drinks.')->group(function () {
     // Main resource routes
@@ -194,7 +190,20 @@ Route::prefix('supplements')->name('supplements.')->group(function () {
     Route::delete('/force-delete/{id}', [SupplementController::class, 'forceDelete'])->name('forceDelete');
 });
 
-Route::resource('equipmentsadd', EquipmentController::class);
+// EquipmentsAdd routes
+Route::prefix('equipmentsAdd')->name('equipmentsAdd.')->group(function () {
+    // Main resource routes
+    Route::resource('/', EquipmentController::class)
+        ->parameters(['' => 'equipments'])
+        ->except(['show']);
+
+    // Additional routes
+    Route::get('/trashed', [EquipmentController::class, 'trashed'])->name('trashed');
+    Route::post('/move-to-trash', [EquipmentController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::post('/restore-bulk', [EquipmentController::class, 'restoreBulk'])->name('restoreBulk');
+    Route::post('/restore/{id}', [EquipmentController::class, 'restore'])->name('restore');
+    Route::delete('/force-delete/{id}', [EquipmentController::class, 'forceDelete'])->name('forceDelete');
+});
 
 Route::resource('equipments', EquipmentDefectController::class);
 
@@ -202,6 +211,8 @@ Route::resource('machine-defects', MachineDefectController::class);
 
 Route::resource('machines', MachineController::class);
 
+//Meal-plan
+Route::resource('meal-plan', MealPlanController::class);
 
 
 //Membership

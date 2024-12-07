@@ -131,7 +131,7 @@
                         <a href="/supplements">Add Supplements</a>
                     </li>
                     <li>
-                        <a href="/equipmentsadd">Add Equipment</a>
+                        <a href="/equipmentsAdd">Add Equipment</a>
                     </li>
                     <li>
                         <a href="/machines">Add Machine</a>

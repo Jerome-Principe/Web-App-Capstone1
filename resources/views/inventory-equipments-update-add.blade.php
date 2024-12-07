@@ -146,7 +146,7 @@
     <div class="form-container">
         <header>Update Equipment Item</header>
 
-        <form action="{{ route('equipmentsadd.update', $equipment->id) }}" method="POST">
+        <form action="{{ route('equipmentsAdd.update', $equipment->id) }}" method="POST">
             @csrf
             @method('PUT')
 

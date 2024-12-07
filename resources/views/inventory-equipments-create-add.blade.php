@@ -149,7 +149,7 @@
     <div class="form-container">
         <header>Equipment Item</header>
 
-        <form action="{{ route('equipmentsadd.store') }}" method="POST">
+        <form action="{{ route('equipmentsAdd.store') }}" method="POST">
             @csrf
             <div class="form-group">
                 <div class="input-field">
