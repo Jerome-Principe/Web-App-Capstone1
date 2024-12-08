@@ -120,7 +120,7 @@
                 <!-- Link to view all trashed drinks -->
                 <a href="{{ route('equipments-defect.trashed') }}">Trashed
                     ({{ App\Models\EquipmentDefect::onlyTrashed()->count() }})
-                </a>>
+                </a>
             </div>
 
             <div>
