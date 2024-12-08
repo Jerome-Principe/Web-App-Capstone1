@@ -220,9 +220,35 @@ Route::prefix('machines')->name('machines.')->group(function () {
     Route::delete('/force-delete/{id}', [MachineController::class, 'forceDelete'])->name('forceDelete');
 });
 
-Route::resource('equipments', EquipmentDefectController::class);
+// Equipments Defect routes
+Route::prefix('equipments-defect')->name('equipments-defect.')->group(function () {
+    // Main resource routes
+    Route::resource('/', EquipmentDefectController::class)
+        ->parameters(['' => 'equipments-defect'])
+        ->except(['show']);
 
-Route::resource('machine-defects', MachineDefectController::class);
+    // Additional routes
+    Route::get('/trashed', [EquipmentDefectController::class, 'trashed'])->name('trashed');
+    Route::post('/move-to-trash', [EquipmentDefectController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::post('/restore-bulk', [EquipmentDefectController::class, 'restoreBulk'])->name('restoreBulk');
+    Route::post('/restore/{id}', [EquipmentDefectController::class, 'restore'])->name('restore');
+    Route::delete('/force-delete/{id}', [EquipmentDefectController::class, 'forceDelete'])->name('forceDelete');
+});
+
+// Machines Defect routes
+Route::prefix('machine-defects')->name('machine-defects.')->group(function () {
+    // Main resource routes
+    Route::resource('/', MachineDefectController::class)
+        ->parameters(['' => 'machine-defects'])
+        ->except(['show']);
+
+    // Additional routes
+    Route::get('/trashed', [MachineDefectController::class, 'trashed'])->name('trashed');
+    Route::post('/move-to-trash', [MachineDefectController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::post('/restore-bulk', [MachineDefectController::class, 'restoreBulk'])->name('restoreBulk');
+    Route::post('/restore/{id}', [MachineDefectController::class, 'restore'])->name('restore');
+    Route::delete('/force-delete/{id}', [MachineDefectController::class, 'forceDelete'])->name('forceDelete');
+});
 
 //Meal-plan
 Route::resource('meal-plan', MealPlanController::class);

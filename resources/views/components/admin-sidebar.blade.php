@@ -137,7 +137,7 @@
                         <a href="/machines">Add Machine</a>
                     </li>
                     <li>
-                        <a href="/equipments">Defect Equipment</a>
+                        <a href="/equipments-defect">Defect Equipment</a>
                     </li>
                     <li>
                         <a href="/machine-defects">Defect Machine</a>

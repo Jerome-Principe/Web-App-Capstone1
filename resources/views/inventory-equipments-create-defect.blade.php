@@ -147,7 +147,7 @@
     <div class="form-container">
         <header>Equipment Item Defect</header>
 
-        <form action="{{ route('equipments.store') }}" method="POST">
+        <form action="{{ route('equipments-defect.store') }}" method="POST">
             @csrf
             <div class="form-group">
                 <div class="input-field">

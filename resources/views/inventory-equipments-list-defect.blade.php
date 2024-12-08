@@ -95,8 +95,9 @@
             <h1>Defect Equipments List</h1>
             <div>
                 <div class="d-flex justify-content-end position-relative">
-                    <a href="/equipments/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                            aria-hidden="true"></i>Add New</a>
+                    <a href="/equipments-defect/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                            aria-hidden="true"></i>Add New
+                    </a>
                 </div>
             </div>
 
@@ -120,15 +121,29 @@
 
         <div class="filter-options">
             <div class="filter-links">
+                <!-- Link to view all equipment defects -->
                 <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
+
+                <!-- Link to view all trashed equipment defects -->
+                <a href="{{ route('equipments-defect.trashed') }}">Trashed
+                    ({{ App\Models\EquipmentDefect::onlyTrashed()->count() }})
+                </a>
             </div>
 
             <div>
+                @csrf
+                @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                        onclick="return confirm('Are you sure you want to delete all this equipment?')"><i
-                            class="fa fa-trash"></i> Move to Trash</button>
+                    <!-- Form to move selected equipment defects to trash -->
+                    <form action="{{ route('equipments-defect.moveToTrash') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="selected" id="selectedIds">
+                        <button type="submit" class="btn btn-light border mx-2">
+                            <i class="fa fa-trash"></i> Move to Trash
+                        </button>
+                    </form>
+
+                    <!-- Search Form -->
                     <form class="d-flex" role="search">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                             style="height: 35px;">
@@ -136,6 +151,7 @@
                     </form>
                 </div>
             </div>
+
         </div>
 
         <div class="table-container">
@@ -159,23 +175,27 @@
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $equipmentDefect->id }}"
                                     onchange="updateSelectionCount()" />
                             </td>
-                            <td class="text-center">{{ $equipmentDefects->perPage() * ($equipmentDefects->currentPage() - 1) + $index + 1 }}</td>
+                            <td class="text-center">
+                                {{ $equipmentDefects->perPage() * ($equipmentDefects->currentPage() - 1) + $index + 1 }}
+                            </td>
                             <td class="text-center">{{ $equipmentDefect->equipment->item_name }}</td>
                             <td class="text-center">{{ $equipmentDefect->quantity }}</td>
                             <td class="text-center">{{ $equipmentDefect->defect }}</td>
                             <td class="text-center">{{ $equipmentDefect->date }}</td>
                             <td class="text-center">{{ $equipmentDefect->time }}</td>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route('equipments.edit', $equipmentDefect->id) }}"
+                            <td class="text-center">
+                                <a href="{{ route('equipments-defect.edit', $equipmentDefect->id) }}"
                                     class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o mx-1"
-                                        aria-hidden="true"></i>Update</a>
-                                <form action="{{ route('equipments.destroy', $equipmentDefect->id) }}" method="POST"
+                                        aria-hidden="true"></i>Update
+                                </a>
+                                <form action="{{ route('equipments-defect.destroy', $equipmentDefect->id) }}" method="POST"
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger mx-1"
                                         onclick="return confirm('Are you sure you want to delete this equipment?')"><i
-                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
+                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -186,7 +206,8 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center mt-4">
                     <li class="page-item {{ $equipmentDefects->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $equipmentDefects->previousPageUrl() }}" tabindex="-1">Previous</a>
+                        <a class="page-link" href="{{ $equipmentDefects->previousPageUrl() }}"
+                            tabindex="-1">Previous</a>
                     </li>
 
                     @foreach(range(1, $equipmentDefects->lastPage()) as $page)
@@ -202,26 +223,44 @@
             </nav>
         </div>
     </div>
-
-    <script>
-        // Select all checkboxes
-        function toggleSelectAll(source) {
-            checkboxes = document.getElementsByName('selected[]');
-            for (let i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = source.checked;
-            }
-            updateSelectionCount();
-        }
-
-        // Update the selection count
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-    </script>
-
 </body>
+
+<script>
+    // Toggle select all checkboxes
+    function toggleSelectAll(checkbox) {
+        const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+        checkboxes.forEach(item => item.checked = checkbox.checked);
+        updateSelectionCount();
+    }
+
+    // Update selected count and hidden input value
+    function updateSelectionCount() {
+        const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+        const count = selectedCheckboxes.length;
+        document.getElementById('select-all-link').textContent = `All (${count})`;
+        const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
+        document.getElementById('selectedIds').value = selectedIds.join(',');
+        console.log(selectedIds.join(',')); // Log selected IDs to debug
+    }
+
+    // Add functionality for the "All (0)" link click
+    document.getElementById('select-all-link').addEventListener('click', function (e) {
+        e.preventDefault();
+        const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
+        const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
+        selectAllCheckbox.checked = isChecked;
+        toggleSelectAll(selectAllCheckbox);
+    });
+
+    // Ensure the form doesn't submit if no appointments are selected
+    document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
+        const selectedIds = document.getElementById('selectedIds').value;
+        if (!selectedIds) {
+            alert('Please select at least one appointments to restore.');
+            e.preventDefault(); // Prevent form submission
+        }
+    });
+</script>
 
 </html>
 @endsection

@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Defect Machines List</title>
+    <title>Trashed Defect Machines List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,15 +92,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Defect Machines List</h1>
-
-            <div>
-                <div class="d-flex justify-content-end position-relative">
-                    <a href="/machine-defects/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                            aria-hidden="true"></i>Add New
-                    </a>
-                </div>
-            </div>
+            <h1>Trashed Defect Machines List</h1>
 
             @if(session('success'))
                 <div class="custom-alert-message">
@@ -135,12 +127,12 @@
                 @csrf
                 @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <!-- Form to move selected machines defect to trash -->
-                    <form action="{{ route('machine-defects.moveToTrash') }}" method="POST">
+                    <!-- Button to restore selected machines -->
+                    <form action="{{ route('machine-defects.restoreBulk') }}" method="POST" id="restore-selected-form">
                         @csrf
                         <input type="hidden" name="selected" id="selectedIds">
-                        <button type="submit" class="btn btn-light border mx-2">
-                            <i class="fa fa-trash"></i> Move to Trash
+                        <button type="submit" class="btn btn-success mx-2">
+                            <i class="fa fa-undo"></i> Restore Selected
                         </button>
                     </form>
 
@@ -171,33 +163,33 @@
                 </thead>
 
                 <tbody>
-                    @foreach ($machineDefects as $index => $machineDefect)
+                    @foreach ($trashedMachineDefects as $index => $machineDefect)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]"
                                     value="{{ $machineDefect->id }}" onchange="updateSelectionCount()" /></td>
                             <td class="text-center">
-                                {{ $machineDefects->perPage() * ($machineDefects->currentPage() - 1) + $index + 1 }}
+                                {{ $trashedMachineDefects->perPage() * ($trashedMachineDefects->currentPage() - 1) + $index + 1 }}
                             </td>
                             <td class="text-center">{{ $machineDefect->machine->item_name }}</td>
                             <td class="text-center">{{ $machineDefect->quantity }}</td>
                             <td class="text-center">{{ $machineDefect->defect }}</td>
                             <td class="text-center">{{ $machineDefect->date }}</td>
                             <td class="text-center">{{ $machineDefect->time }}</td>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route('machine-defects.edit', $machineDefect->id) }}"
-                                    class="btn btn-sm btn-primary">
-                                    <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
-                                </a>
-
-                                <form action="{{ route('machine-defects.destroy', $machineDefect->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                        onclick="return confirm('Are you sure you want to delete this defect machine?')">
-                                        <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                    </button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form action="{{ route('machine-defects.restore', $machineDefect->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                    </form>
+                                    <form action="{{ route('machine-defects.forceDelete', $machineDefect->id) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to permanently delete?')">Delete
+                                            Permanently</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -206,18 +198,20 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $machineDefects->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $machineDefects->previousPageUrl() }}" tabindex="-1">Previous</a>
+                    <li class="page-item {{ $trashedMachineDefects->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedMachineDefects->previousPageUrl() }}"
+                            tabindex="-1">Previous
+                        </a>
                     </li>
 
-                    @foreach(range(1, $machineDefects->lastPage()) as $page)
-                        <li class="page-item {{ $page == $machineDefects->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $machineDefects->url($page) }}">{{ $page }}</a>
+                    @foreach(range(1, $trashedMachineDefects->lastPage()) as $page)
+                        <li class="page-item {{ $page == $trashedMachineDefects->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $trashedMachineDefects->url($page) }}">{{ $page }}</a>
                         </li>
                     @endforeach
 
-                    <li class="page-item {{ !$machineDefects->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $machineDefects->nextPageUrl() }}">Next</a>
+                    <li class="page-item {{ !$trashedMachineDefects->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedMachineDefects->nextPageUrl() }}">Next</a>
                     </li>
                 </ul>
             </nav>
