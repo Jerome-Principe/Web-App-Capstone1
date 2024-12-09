@@ -32,7 +32,7 @@ class PendingMembership extends Model
      */
     public function medicalForm()
     {
-        return $this->hasOne(MedicalForm::class, 'membership_id');
+        return $this->hasOne(MedicalForm::class, 'membership_id')->withDefault();
     }
 
     /**
