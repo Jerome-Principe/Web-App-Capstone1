@@ -32,7 +32,7 @@ class PendingMembership extends Model
      */
     public function medicalForm()
     {
-        return $this->hasOne(MedicalForm::class, 'membership_id')->withDefault()->onDelete('cascade');
+        return $this->hasOne(MedicalForm::class, 'membership_id');
     }
 
     /**
@@ -40,7 +40,7 @@ class PendingMembership extends Model
      */
     public function membershipPayments()
     {
-        return $this->hasMany(MembershipPayment::class, 'membership_id')->onDelete('cascade');
+        return $this->hasMany(MembershipPayment::class, 'membership_id');
     }
 
     /**
