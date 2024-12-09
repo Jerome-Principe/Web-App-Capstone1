@@ -258,10 +258,16 @@ Route::resource('meal-plan', MealPlanController::class);
 
 Route::get('/membership-request-list', [RequestMembershipController::class, 'index']);
 Route::get('/membership-emergency-medical', [MedicalFormController::class, 'index']);
-
 Route::get('/membership-payment-list', [MembershipPaymentController::class, 'index']);
 
-Route::get('/membership-list', [MembershipPendingController::class, 'listApproved'])->name('membership.list');
+Route::prefix('membership-pendings')->group(function () {
+    Route::get('/list', [MembershipPendingController::class, 'listApproved'])->name('membership.list');
+    Route::get('/trashed', [MembershipPendingController::class, 'trashed'])->name('membership-pendings.trashed');
+    Route::post('/move-to-trash', [MembershipPendingController::class, 'moveToTrash'])->name('membership-pendings.moveToTrash');
+    Route::post('/{id}/restore', [MembershipPendingController::class, 'restore'])->name('membership-pendings.restore');
+    Route::post('/restore-bulk', [MembershipPendingController::class, 'restoreBulk'])->name('membership-pendings.restoreBulk');
+    Route::delete('/force-delete/{id}', [MembershipPendingController::class, 'forceDelete'])->name('membership-pendings.forceDelete');
+});
 Route::resource('membership-pendings', MembershipPendingController::class);
 Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');
 Route::post('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline'])->name('membership-pendings.decline');

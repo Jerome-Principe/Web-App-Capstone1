@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Approved / Declined Memberships</title>
+    <title>Trashed Membership List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,7 +92,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Membership List</h1>
+            <h1>Trashed Membership List</h1>
 
             @if(session('success'))
                 <div class="custom-alert-message">
@@ -124,12 +124,13 @@
                 @csrf
                 @method('DELETE')
                 <div class="d-flex align-items-center">
-                    <!-- Form to move selected membership list to trash -->
-                    <form action="{{ route('membership-pendings.moveToTrash') }}" method="POST">
+                    <!-- Button to restore selected membership list -->
+                    <form action="{{ route('membership-pendings.restoreBulk') }}" method="POST"
+                        id="restore-selected-form">
                         @csrf
                         <input type="hidden" name="selected" id="selectedIds">
-                        <button type="submit" class="btn btn-light border mx-2">
-                            <i class="fa fa-trash"></i> Move to Trash
+                        <button type="submit" class="btn btn-success mx-2">
+                            <i class="fa fa-undo"></i> Restore Selected
                         </button>
                     </form>
 
@@ -141,7 +142,6 @@
                     </form>
                 </div>
             </div>
-
         </div>
 
         <div class="table-container">
@@ -154,21 +154,40 @@
                         <th class="text-center">Last Name</th>
                         <th class="text-center">Email</th>
                         <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($memberships as $index => $membership)
+                    @foreach($trashedMemberships as $index => $membership)
                         <tr>
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
                                     onchange="updateSelectionCount()" />
                             </td>
                             <td class="text-center">
-                                {{ ($memberships->currentPage() - 1) * $memberships->perPage() + $index + 1 }}
+                                {{ ($trashedMemberships->currentPage() - 1) * $trashedMemberships->perPage() + $index + 1 }}
                             </td>
                             <td class="text-center">{{ $membership->first_name }}</td>
                             <td class="text-center">{{ $membership->last_name }}</td>
                             <td class="text-center">{{ $membership->email }}</td>
                             <td class="text-center">{{ $membership->status }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form action="{{ route('membership-pendings.restore', $membership->id) }}"
+                                        method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                    </form>
+                                    <form action="{{ route('membership-pendings.forceDelete', $membership->id) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to permanently delete?')">Delete
+                                            Permanently
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -176,18 +195,19 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $memberships->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $memberships->previousPageUrl() }}" tabindex="-1">Previous</a>
+                    <li class="page-item {{ $trashedMemberships->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedMemberships->previousPageUrl() }}" tabindex="-1">Previous
+                        </a>
                     </li>
 
-                    @foreach(range(1, $memberships->lastPage()) as $page)
-                        <li class="page-item {{ $page == $memberships->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{$memberships->url($page) }}">{{ $page }}</a>
+                    @foreach(range(1, $trashedMemberships->lastPage()) as $page)
+                        <li class="page-item {{ $page == $trashedMemberships->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{$trashedMemberships->url($page) }}">{{ $page }}</a>
                         </li>
                     @endforeach
 
-                    <li class="page-item {{ !$memberships->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $memberships->nextPageUrl() }}">Next</a>
+                    <li class="page-item {{ !$trashedMemberships->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $trashedMemberships->nextPageUrl() }}">Next</a>
                     </li>
                 </ul>
             </nav>

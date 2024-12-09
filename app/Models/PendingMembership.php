@@ -5,10 +5,11 @@ namespace App\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PendingMembership extends Model
 {
-    use HasFactory, HasApiTokens;
+    use HasFactory, SoftDeletes, HasApiTokens;
 
     protected $fillable = [
         'first_name',

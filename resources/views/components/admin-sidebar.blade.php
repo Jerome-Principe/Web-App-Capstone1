@@ -172,7 +172,7 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/membership-list">View Membership</a>
+                        <a href="/membership-pendings/list">View Membership</a>
                     </li>
                     <li>
                         <a href="/membership-pendings">Pending Membership</a>
