@@ -34,12 +34,7 @@ class MembershipPendingController extends Controller
     {
         $membership = PendingMembership::find($id);
 
-        if (!$membership) {
-            return redirect()->back()->withErrors(['Membership not found']);
-        }
-
-        $membership->status = 'Declined';
-        $membership->save();
+        $membership->delete();
 
         return redirect()->route('membership.list')->with('success', 'Membership declined successfully');
     }
