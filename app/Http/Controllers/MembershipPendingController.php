@@ -121,11 +121,6 @@ class MembershipPendingController extends Controller
     {
         try {
             $membership = PendingMembership::onlyTrashed()->findOrFail($id);
-
-            // Delete related data explicitly
-            $membership->medicalForm()->delete();
-            $membership->membershipPayments()->delete();
-
             $membership->forceDelete();
 
             return redirect()->route('membership-pendings.trashed')->with('success', 'Membership permanently deleted.');
