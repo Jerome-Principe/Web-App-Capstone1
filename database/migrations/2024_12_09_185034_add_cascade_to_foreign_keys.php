@@ -11,17 +11,23 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('medical_forms', function (Blueprint $table) {
+            // Drop the existing foreign key constraint
             $table->dropForeign(['membership_id']);
+
+            // Re-add the foreign key with ON DELETE CASCADE
             $table->foreign('membership_id')
                 ->references('id')->on('pending_memberships')
-                ->onDelete('cascade');
+                ->cascadeOnDelete(); // Proper method to apply ON DELETE CASCADE
         });
 
         Schema::table('membership_payments', function (Blueprint $table) {
+            // Drop the existing foreign key constraint
             $table->dropForeign(['membership_id']);
+
+            // Re-add the foreign key with ON DELETE CASCADE
             $table->foreign('membership_id')
                 ->references('id')->on('pending_memberships')
-                ->onDelete('cascade');
+                ->cascadeOnDelete(); // Proper method to apply ON DELETE CASCADE
         });
     }
 
@@ -31,17 +37,23 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('medical_forms', function (Blueprint $table) {
+            // Drop the ON DELETE CASCADE foreign key
             $table->dropForeign(['membership_id']);
+
+            // Add the previous foreign key without ON DELETE CASCADE
             $table->foreign('membership_id')
                 ->references('id')->on('pending_memberships')
-                ->onDelete('set null');
+                ->nullOnDelete(); // Adjust based on previous behavior
         });
 
         Schema::table('membership_payments', function (Blueprint $table) {
+            // Drop the ON DELETE CASCADE foreign key
             $table->dropForeign(['membership_id']);
+
+            // Add the previous foreign key without ON DELETE CASCADE
             $table->foreign('membership_id')
                 ->references('id')->on('pending_memberships')
-                ->onDelete('set null');
+                ->nullOnDelete(); // Adjust based on previous behavior
         });
     }
 };
