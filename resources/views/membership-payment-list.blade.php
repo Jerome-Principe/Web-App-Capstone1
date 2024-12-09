@@ -102,14 +102,10 @@
             </div>
 
             <div>
-                <form method="POST" action="{{ route('membership-pendings.destroyAll') }}">
+                <form method="POST" action="#">
                     @csrf
                     @method('DELETE')
                     <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                            onclick="return confirm('Are you sure you want to delete all selected memberships?')">
-                            <i class="fa fa-trash"></i> Move to Trash
-                        </button>
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">

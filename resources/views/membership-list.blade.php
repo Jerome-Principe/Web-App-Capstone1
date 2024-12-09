@@ -102,7 +102,7 @@
             </div>
 
             <div>
-                <form method="POST" action="{{ route('membership-pendings.destroyAll') }}">
+                <form method="POST" action="#">
                     @csrf
                     @method('DELETE')
                     <div class="d-flex align-items-center">
