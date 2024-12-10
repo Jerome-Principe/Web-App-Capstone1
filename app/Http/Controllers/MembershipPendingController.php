@@ -125,7 +125,7 @@ class MembershipPendingController extends Controller
 
             return redirect()->route('membership-pendings.trashed')->with('success', 'Membership permanently deleted.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to permanently delete the membership.');
+            return back()->with('error', 'Failed to permanently delete the membership.' . $e->getMessage());
         }
     }
 }
