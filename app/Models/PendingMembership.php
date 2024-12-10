@@ -58,23 +58,6 @@ class PendingMembership extends Model
         static::deleting(function ($pendingMembership) {
             // Handle soft deletion of related records
             if ($pendingMembership->requestMembership) {
-                $pendingMembership->requestMembership()->delete();
-            }
-
-            if ($pendingMembership->medicalForm) {
-                $pendingMembership->medicalForm()->delete();
-            }
-
-            if ($pendingMembership->membershipPayments) {
-                $pendingMembership->membershipPayments()->each(function ($payment) {
-                    $payment->delete();
-                });
-            }
-        });
-
-        static::forceDeleting(function ($pendingMembership) {
-            // Handle force deletion of related records
-            if ($pendingMembership->requestMembership) {
                 $pendingMembership->requestMembership()->forceDelete();
             }
 
