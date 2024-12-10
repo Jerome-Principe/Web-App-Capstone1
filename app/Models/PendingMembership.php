@@ -56,7 +56,7 @@ class PendingMembership extends Model
         parent::boot();
 
         static::deleting(function ($pendingMembership) {
-            // Force delete related records
+            // Delete related records when the membership is soft-deleted
             $pendingMembership->requestMembership()->forceDelete();
             $pendingMembership->medicalForm()->forceDelete();
             $pendingMembership->membershipPayments()->forceDelete();
