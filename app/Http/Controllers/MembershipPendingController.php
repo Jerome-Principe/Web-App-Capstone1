@@ -125,28 +125,21 @@ class MembershipPendingController extends Controller
         try {
             $membership = PendingMembership::onlyTrashed()->findOrFail($id);
 
-            // Delete related records explicitly if cascading delete is not working
-            $relatedRequestMembership = RequestMembership::where('membership_id', $membership->id)->first();
-            if ($relatedRequestMembership) {
-                $relatedRequestMembership->forceDelete();
-            }
+            // Delete related RequestMembership
+            RequestMembership::where('membership_id', $membership->id)->delete();
 
-            $relatedMedicalForms = MedicalForm::where('membership_id', $membership->id)->get();
-            foreach ($relatedMedicalForms as $medicalForm) {
-                $medicalForm->forceDelete();
-            }
+            // Delete related MedicalForm (if applicable)
+            MedicalForm::where('membership_id', $membership->id)->delete();
 
-            $relatedPayments = MembershipPayment::where('membership_id', $membership->id)->get();
-            foreach ($relatedPayments as $payment) {
-                $payment->forceDelete();
-            }
+            // Delete related MembershipPayment (if applicable)
+            MembershipPayment::where('membership_id', $membership->id)->delete();
 
-            // Now, force delete the main record
+            // Finally, delete the membership itself
             $membership->forceDelete();
 
-            return redirect()->route('membership-pendings.trashed')->with('success', 'Membership permanently deleted, including related records.');
+            return redirect()->route('membership-pendings.trashed')->with('success', 'Membership permanently deleted, along with related data.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to permanently delete the membership: ' . $e->getMessage());
+            return back()->with('error', 'Failed to permanently delete the membership and related data.' . $e->getMessage());
         }
     }
 }

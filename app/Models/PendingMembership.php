@@ -24,7 +24,7 @@ class PendingMembership extends Model
      */
     public function requestMembership()
     {
-        return $this->hasMany(RequestMembership::class, 'membership_id');
+        return $this->hasOne(RequestMembership::class, 'membership_id');
     }
 
     /**
@@ -32,7 +32,7 @@ class PendingMembership extends Model
      */
     public function medicalForm()
     {
-        return $this->hasMany(MedicalForm::class, 'membership_id');
+        return $this->hasOne(MedicalForm::class, 'membership_id');
     }
 
     /**
@@ -56,9 +56,10 @@ class PendingMembership extends Model
         parent::boot();
 
         static::deleting(function ($pendingMembership) {
-            $pendingMembership->requestMembership()->delete();
-            $pendingMembership->medicalForm()->delete();
-            $pendingMembership->membershipPayments()->delete();
+            // Force delete related records
+            $pendingMembership->requestMembership()->forceDelete();
+            $pendingMembership->medicalForm()->forceDelete();
+            $pendingMembership->membershipPayments()->forceDelete();
         });
     }
 }
