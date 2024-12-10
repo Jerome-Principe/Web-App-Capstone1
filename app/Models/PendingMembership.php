@@ -50,4 +50,16 @@ class PendingMembership extends Model
     {
         return "{$this->first_name} {$this->last_name}";
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($pendingMembership) {
+            // Force delete related records
+            $pendingMembership->requestMembership()->forceDelete();
+            $pendingMembership->medicalForm()->forceDelete();
+            $pendingMembership->membershipPayments()->forceDelete();
+        });
+    }
 }
