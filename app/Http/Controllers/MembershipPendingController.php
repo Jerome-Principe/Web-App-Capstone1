@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PendingMembership;
+use App\Models\RequestMembership;
+use App\Models\MedicalForm;
+use App\Models\MembershipPayment;
 
 class MembershipPendingController extends Controller
 {
@@ -121,11 +124,22 @@ class MembershipPendingController extends Controller
     {
         try {
             $membership = PendingMembership::onlyTrashed()->findOrFail($id);
+
+            // Delete related RequestMembership
+            RequestMembership::where('membership_id', $membership->id)->delete();
+
+            // Delete related MedicalForm (if applicable)
+            MedicalForm::where('membership_id', $membership->id)->delete();
+
+            // Delete related MembershipPayment (if applicable)
+            MembershipPayment::where('membership_id', $membership->id)->delete();
+
+            // Finally, delete the membership itself
             $membership->forceDelete();
 
-            return redirect()->route('membership-pendings.trashed')->with('success', 'Membership permanently deleted.');
+            return redirect()->route('membership-pendings.trashed')->with('success', 'Membership permanently deleted, along with related data.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to permanently delete the membership.' . $e->getMessage());
+            return back()->with('error', 'Failed to permanently delete the membership and related data.' . $e->getMessage());
         }
     }
 }
