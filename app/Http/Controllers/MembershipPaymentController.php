@@ -27,6 +27,7 @@ class MembershipPaymentController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
+            'membership_id' => 'required|exists:pending_memberships,id',
             'gcash_number' => 'required|string',
             'account_name' => 'required|string',
             'reference_number' => 'required|string|unique:membership_payments',
@@ -41,6 +42,7 @@ class MembershipPaymentController extends Controller
 
             // Save the new payment data
             $payment = MembershipPayment::create([
+                'membership_id' => $request->membership_id,
                 'gcash_number' => $request->gcash_number,
                 'account_name' => $request->account_name,
                 'reference_number' => $request->reference_number,
