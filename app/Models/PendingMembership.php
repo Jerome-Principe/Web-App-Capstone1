@@ -51,10 +51,15 @@ class PendingMembership extends Model
         return "{$this->first_name} {$this->last_name}";
     }
 
-    protected static function booted()
+    protected static function boot()
     {
-        static::deleting(function ($membership) {
-            \Log::info('Deleting membership: ' . $membership->id);
+        parent::boot();
+
+        static::deleting(function ($pendingMembership) {
+            // Delete related records when the membership is soft-deleted
+            $pendingMembership->requestMembership()->forceDelete();
+            $pendingMembership->medicalForm()->forceDelete();
+            $pendingMembership->membershipPayments()->forceDelete();
         });
     }
 }
