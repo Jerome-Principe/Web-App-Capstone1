@@ -122,16 +122,24 @@ class MembershipPendingController extends Controller
 
     public function forceDelete($id)
     {
-        // Find the pending membership
-        $membership = PendingMembership::withTrashed()->find($id);
+        try {
+            $membership = PendingMembership::onlyTrashed()->findOrFail($id);
 
-        if (!$membership) {
-            return response()->json(['message' => 'Membership not found'], 404);
+            // Delete related RequestMembership
+            RequestMembership::where('membership_id', $membership->id)->delete();
+
+            // Delete related MedicalForm (if applicable)
+            MedicalForm::where('membership_id', $membership->id)->delete();
+
+            // Delete related MembershipPayment (if applicable)
+            MembershipPayment::where('membership_id', $membership->id)->delete();
+
+            // Finally, delete the membership itself
+            $membership->forceDelete();
+
+            return redirect()->route('membership-pendings.trashed')->with('success', 'Membership permanently deleted, along with related data.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to permanently delete the membership and related data.' . $e->getMessage());
         }
-
-        // Deleting the membership will cascade delete associated data
-        $membership->forceDelete();
-
-        return response()->json(['message' => 'Membership and associated data deleted successfully'], 200);
     }
 }
