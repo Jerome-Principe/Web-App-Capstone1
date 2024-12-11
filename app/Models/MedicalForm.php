@@ -10,6 +10,7 @@ class MedicalForm extends Model
     use HasFactory;
 
     protected $fillable = [
+        'membership_id',
         'emergency_contact',
         'relationship',
         'emergency_number',
