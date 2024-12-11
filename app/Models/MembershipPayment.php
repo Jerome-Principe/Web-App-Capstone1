@@ -10,6 +10,7 @@ class MembershipPayment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'membership_id',
         'gcash_number',
         'account_name',
         'reference_number',
