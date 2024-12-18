@@ -358,41 +358,19 @@
                                 <select class="form-control" id="category{{ $mealPlan->id }}" name="category"
                                     onchange="updateTypeDropdownEdit('{{ $mealPlan->id }}')">
                                     <option value="">Select Category</option>
-                                    <option value="Meal Plan Guide" {{ $mealPlan->category == 'Meal Plan Guide' ? 'selected' : '' }}>
-                                        Meal Plan Guide
-                                    </option>
-                                    <option value="Workout Program" {{ $mealPlan->category == 'Workout Program' ? 'selected' : '' }}>
-                                        Workout Program
-                                    </option>
-                                    <option value="Exercise" {{ $mealPlan->category == 'Exercise' ? 'selected' : '' }}>
+                                    <option value="Meal Plan Guide" {{ $mealPlan->category === 'Meal Plan Guide' ? 'selected' : '' }}>Meal Plan Guide</option>
+                                    <option value="Workout Program" {{ $mealPlan->category === 'Workout Program' ? 'selected' : '' }}>Workout Program</option>
+                                    <option value="Exercise" {{ $mealPlan->category === 'Exercise' ? 'selected' : '' }}>
                                         Exercise
                                     </option>
                                 </select>
                             </div>
 
+                            <!-- Type -->
                             <div class="mb-3">
                                 <label for="type{{ $mealPlan->id }}" class="form-label">Type</label>
                                 <select class="form-control" id="type{{ $mealPlan->id }}" name="type">
-                                    <!-- Dynamically load types for editing -->
-                                    @if($mealPlan->category == 'Meal Plan Guide')
-                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning', 'High Intensity Training', 'Athletic Training', 'Circuit Crossfit', 'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing', 'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @elseif($mealPlan->category == 'Workout Program')
-                                        @foreach(['8 Weeks Fat Loss Workout for Beginners', '8 Weeks Muscle-Building Workout Program', '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split', '3 Days Push/Pull/Legs (PPL) Workout for Beginners'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @elseif($mealPlan->category == 'Exercise')
-                                        @foreach(['Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics', 'Core Strength Exercises'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @endif
+                                    <option value="">Select Type</option>
                                 </select>
                             </div>
 
@@ -445,6 +423,55 @@
             </div>
         </div>
     @endforeach
+
+    <script>
+        function updateTypeDropdownEdit(mealPlanId, preselectedType = "") {
+            const categoryDropdown = document.getElementById(`category${mealPlanId}`);
+            const typeDropdown = document.getElementById(`type${mealPlanId}`);
+            const selectedCategory = categoryDropdown.value;
+
+            // Clear current options
+            typeDropdown.innerHTML = '<option value="">Select Type</option>';
+
+            // Define options for each category
+            const options = {
+                'Meal Plan Guide': [
+                    'WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE',
+                    'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning',
+                    'High Intensity Training', 'Athletic Training', 'Circuit Crossfit',
+                    'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing',
+                    'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'
+                ],
+                'Workout Program': [
+                    '8 Weeks Fat Loss Workout for Beginners',
+                    '8 Weeks Muscle-Building Workout Program',
+                    '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split',
+                    '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
+                ],
+                'Exercise': [
+                    'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
+                    'Core Strength Exercises'
+                ]
+            };
+
+            // Populate options
+            if (options[selectedCategory]) {
+                options[selectedCategory].forEach(option => {
+                    const newOption = document.createElement('option');
+                    newOption.value = option;
+                    newOption.textContent = option;
+
+                    // Mark as selected if it matches the preselectedType
+                    if (option === preselectedType) {
+                        newOption.selected = true;
+                    }
+
+                    typeDropdown.appendChild(newOption);
+                });
+            }
+        }
+    </script>
+
 </body>
 
 <script>
