@@ -7,10 +7,21 @@ use Illuminate\Http\Request;
 
 class MealPlanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $mealPlans = MealPlan::paginate(10);
-        return view('meal-plan', compact('mealPlans'));
+        $query = MealPlan::query();
+
+        if ($request->has('category')) {
+            $query->where('category', $request->input('category'));
+        }
+
+        if ($request->has('type')) {
+            $query->where('type', $request->input('type'));
+        }
+
+        $mealPlans = $query->paginate(10);
+
+        return response()->json(['data' => $mealPlans]);
     }
 
     public function store(Request $request)
