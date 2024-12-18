@@ -424,54 +424,6 @@
         </div>
     @endforeach
 
-    <script>
-        function updateTypeDropdownEdit(mealPlanId, preselectedType = "") {
-            const categoryDropdown = document.getElementById(`category${mealPlanId}`);
-            const typeDropdown = document.getElementById(`type${mealPlanId}`);
-            const selectedCategory = categoryDropdown.value;
-
-            // Clear current options
-            typeDropdown.innerHTML = '<option value="">Select Type</option>';
-
-            // Define options for each category
-            const options = {
-                'Meal Plan Guide': [
-                    'WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE',
-                    'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning',
-                    'High Intensity Training', 'Athletic Training', 'Circuit Crossfit',
-                    'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing',
-                    'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'
-                ],
-                'Workout Program': [
-                    '8 Weeks Fat Loss Workout for Beginners',
-                    '8 Weeks Muscle-Building Workout Program',
-                    '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split',
-                    '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
-                ],
-                'Exercise': [
-                    'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
-                    'Core Strength Exercises'
-                ]
-            };
-
-            // Populate options
-            if (options[selectedCategory]) {
-                options[selectedCategory].forEach(option => {
-                    const newOption = document.createElement('option');
-                    newOption.value = option;
-                    newOption.textContent = option;
-
-                    // Mark as selected if it matches the preselectedType
-                    if (option === preselectedType) {
-                        newOption.selected = true;
-                    }
-
-                    typeDropdown.appendChild(newOption);
-                });
-            }
-        }
-    </script>
-
 </body>
 
 <script>
