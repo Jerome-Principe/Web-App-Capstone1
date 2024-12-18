@@ -417,8 +417,28 @@
 
                             <div class="mb-3">
                                 <label for="type{{ $mealPlan->id }}" class="form-label">Type</label>
-                                <select class="form-control" id="type{{ $mealPlan->id }}" name="type"
-                                    data-current-type="{{ $mealPlan->type }}">
+                                <select class="form-control" id="type{{ $mealPlan->id }}" name="type">
+                                    <!-- Dynamically load types for editing -->
+                                    @if($mealPlan->category == 'Meal Plan Guide')
+                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning', 'High Intensity Training', 'Athletic Training', 'Circuit Crossfit', 'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing', 'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'] as $type)
+                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
+                                                {{ $type }}
+                                            </option>
+                                        @endforeach
+                                    @elseif($mealPlan->category == 'Workout Program')
+                                        @foreach(['8 Weeks Fat Loss Workout for Beginners', '8 Weeks Muscle-Building Workout Program', '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split', '3 Days Push/Pull/Legs (PPL) Workout for Beginners'] as $type)
+                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
+                                                {{ $type }}
+                                            </option>
+                                        @endforeach
+                                    @elseif($mealPlan->category == 'Exercise')
+                                        @foreach(['Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics', 'Core Strength Exercises'] as $type)
+                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
+                                                {{ $type }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
                             </div>
 
                             <div class="mb-3">
