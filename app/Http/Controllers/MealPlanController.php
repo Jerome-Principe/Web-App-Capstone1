@@ -7,20 +7,17 @@ use Illuminate\Http\Request;
 
 class MealPlanController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $mealPlans = MealPlan::paginate(10);
-
-        if ($request->wantsJson()) {
-            return response()->json($mealPlans);
-        }
-
         return view('meal-plan', compact('mealPlans'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'category' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
             'day' => 'nullable|string',
             'breakfast' => 'nullable|string',
@@ -42,6 +39,8 @@ class MealPlanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'category' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
             'day' => 'nullable|string',
             'breakfast' => 'nullable|string',

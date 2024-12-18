@@ -54,7 +54,10 @@
         }
 
         .table-container {
+            max-height: 700px;
+            overflow-y: auto;
             overflow-x: auto;
+            white-space: nowrap;
         }
 
         table {
@@ -151,6 +154,8 @@
                     <tr>
                         <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
+                        <th class="text-center">Category</th>
+                        <th class="text-center">Type</th>
                         <th class="text-center">Guideline</th>
                         <th class="text-center">Day</th>
                         <th class="text-center">Breakfast</th>
@@ -168,6 +173,8 @@
                             <td class="text-center">
                                 {{ ($mealPlans->currentPage() - 1) * $mealPlans->perPage() + $loop->index + 1 }}
                             </td>
+                            <td class="text-center">{{ $mealPlan->category }}</td>
+                            <td class="text-center">{{ $mealPlan->type }}</td>
                             <td class="text-center">{{ $mealPlan->guideline }}</td>
                             <td class="text-center">{{ $mealPlan->day }}</td>
                             <td class="text-center">{{ $mealPlan->breakfast }}</td>
@@ -226,6 +233,24 @@
                 <div class="modal-body">
                     <form action="{{ route('meal-plan.store') }}" method="POST">
                         @csrf
+
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-control" id="category" name="category" onchange="updateTypeDropdown()">
+                                <option value="">Select Category</option>
+                                <option value="meal-plan-guide">Meal Plan Guide</option>
+                                <option value="workout-program">Workout Program</option>
+                                <option value="exercise">Exercise</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select class="form-control" id="type" name="type">
+                                <option value="">Select Type</option>
+                            </select>
+                        </div>
+
                         <div class="mb-3">
                             <label for="guideline" class="form-label">Guideline</label>
                             <input type="text" class="form-control" id="guideline" name="guideline"
@@ -249,19 +274,18 @@
                         <div class="mb-3">
                             <label for="breakfast" class="form-label">Breakfast</label>
                             <input type="text" class="form-control" id="breakfast" name="breakfast"
-                                placeholder="E.g., Grilled chicken">
+                                placeholder="E.g., Pandesal ">
                         </div>
 
                         <div class="mb-3">
                             <label for="lunch" class="form-label">Lunch</label>
                             <input type="text" class="form-control" id="lunch" name="lunch"
-                                placeholder="E.g., Grilled chicken">
+                                placeholder="E.g., Grilled meats">
                         </div>
 
                         <div class="mb-3">
                             <label for="dinner" class="form-label">Dinner</label>
-                            <input type="text" class="form-control" id="dinner" name="dinner"
-                                placeholder="E.g., Grilled chicken">
+                            <input type="text" class="form-control" id="dinner" name="dinner" placeholder="E.g., Adobo">
                         </div>
 
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -272,14 +296,56 @@
         </div>
     </div>
 
+    <!-- JavaScript for dynamic dropdown -->
+    <script>
+        function updateTypeDropdown() {
+            const category = document.getElementById('category').value;
+            const typeDropdown = document.getElementById('type');
+
+            // Clear current options
+            typeDropdown.innerHTML = '<option value="">Select Type</option>';
+
+            // Define options for each category
+            const options = {
+                'meal-plan-guide': [
+                    'WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE',
+                    'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning',
+                    'High Intensity Training', 'Athletic Training', 'Circuit Crossfit',
+                    'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing',
+                    'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'
+                ],
+                'workout-program': [
+                    '8 Weeks Fat Loss Workout for Beginners',
+                    '8 Weeks Muscle-Building Workout Program',
+                    '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split',
+                    '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
+                ],
+                'exercise': [
+                    'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
+                    'Core Strength Exercises'
+                ]
+            };
+
+            // Populate dropdown based on selected category
+            if (options[category]) {
+                options[category].forEach(option => {
+                    const newOption = document.createElement('option');
+                    newOption.value = option.toLowerCase().replace(/\s+/g, '-');
+                    newOption.textContent = option;
+                    typeDropdown.appendChild(newOption);
+                });
+            }
+        }
+    </script>
+
     <!-- Modal for Editing Meal Plan -->
     @foreach($mealPlans as $mealPlan)
         <div class="modal fade" id="editMealPlanModal{{ $mealPlan->id }}" tabindex="-1"
-            aria-labelledby="editMealPlanModalLabel{{ $mealPlan->id }}" aria-hidden="true">
+            aria-labelledby="editMealPlanModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editMealPlanModalLabel{{ $mealPlan->id }}">Edit Meal Plan</h5>
+                        <h5 class="modal-title" id="editMealPlanModalLabel">Edit Meal Plan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -288,14 +354,57 @@
                             @method('PUT')
 
                             <div class="mb-3">
-                                <label for="guideline" class="form-label">Guideline</label>
-                                <input type="text" class="form-control" id="guideline" name="guideline"
-                                    value="{{ old('guideline', $mealPlan->guideline) }}">
+                                <label for="category{{ $mealPlan->id }}" class="form-label">Category</label>
+                                <select class="form-control" id="category{{ $mealPlan->id }}" name="category"
+                                    onchange="updateTypeDropdownEdit('{{ $mealPlan->id }}')">
+                                    <option value="">Select Category</option>
+                                    <option value="meal-plan-guide" {{ $mealPlan->category == 'meal-plan-guide' ? 'selected' : '' }}>
+                                        Meal Plan Guide
+                                    </option>
+                                    <option value="workout-program" {{ $mealPlan->category == 'workout-program' ? 'selected' : '' }}>
+                                        Workout Program
+                                    </option>
+                                    <option value="exercise" {{ $mealPlan->category == 'exercise' ? 'selected' : '' }}>
+                                        Exercise
+                                    </option>
+                                </select>
                             </div>
 
                             <div class="mb-3">
-                                <label for="day" class="form-label">Day</label>
-                                <select class="form-control" id="day" name="day">
+                                <label for="type{{ $mealPlan->id }}" class="form-label">Type</label>
+                                <select class="form-control" id="type{{ $mealPlan->id }}" name="type">
+                                    <!-- Dynamically load types for editing -->
+                                    @if($mealPlan->category == 'meal-plan-guide')
+                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning', 'High Intensity Training', 'Athletic Training', 'Circuit Crossfit', 'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing', 'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'] as $type)
+                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
+                                                {{ $type }}
+                                            </option>
+                                        @endforeach
+                                    @elseif($mealPlan->category == 'workout-program')
+                                        @foreach(['8 Weeks Fat Loss Workout for Beginners', '8 Weeks Muscle-Building Workout Program', '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split', '3 Days Push/Pull/Legs (PPL) Workout for Beginners'] as $type)
+                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
+                                                {{ $type }}
+                                            </option>
+                                        @endforeach
+                                    @elseif($mealPlan->category == 'exercise')
+                                        @foreach(['Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics', 'Core Strength Exercises'] as $type)
+                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
+                                                {{ $type }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="guideline{{ $mealPlan->id }}" class="form-label">Guideline</label>
+                                <input type="text" class="form-control" id="guideline{{ $mealPlan->id }}" name="guideline"
+                                    value="{{ $mealPlan->guideline }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="day{{ $mealPlan->id }}" class="form-label">Day</label>
+                                <select class="form-control" id="day{{ $mealPlan->id }}" name="day">
                                     <option value="Monday" {{ $mealPlan->day == 'Monday' ? 'selected' : '' }}>Monday</option>
                                     <option value="Tuesday" {{ $mealPlan->day == 'Tuesday' ? 'selected' : '' }}>Tuesday
                                     </option>
@@ -311,25 +420,25 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="breakfast" class="form-label">Breakfast</label>
-                                <input type="text" class="form-control" id="breakfast" name="breakfast"
-                                    value="{{ old('breakfast', $mealPlan->breakfast) }}">
+                                <label for="breakfast{{ $mealPlan->id }}" class="form-label">Breakfast</label>
+                                <input type="text" class="form-control" id="breakfast{{ $mealPlan->id }}" name="breakfast"
+                                    value="{{ $mealPlan->breakfast }}">
                             </div>
 
                             <div class="mb-3">
-                                <label for="lunch" class="form-label">Lunch</label>
-                                <input type="text" class="form-control" id="lunch" name="lunch"
-                                    value="{{ old('lunch', $mealPlan->lunch) }}">
+                                <label for="lunch{{ $mealPlan->id }}" class="form-label">Lunch</label>
+                                <input type="text" class="form-control" id="lunch{{ $mealPlan->id }}" name="lunch"
+                                    value="{{ $mealPlan->lunch }}">
                             </div>
 
                             <div class="mb-3">
-                                <label for="dinner" class="form-label">Dinner</label>
-                                <input type="text" class="form-control" id="dinner" name="dinner"
-                                    value="{{ old('dinner', $mealPlan->dinner) }}">
+                                <label for="dinner{{ $mealPlan->id }}" class="form-label">Dinner</label>
+                                <input type="text" class="form-control" id="dinner{{ $mealPlan->id }}" name="dinner"
+                                    value="{{ $mealPlan->dinner }}">
                             </div>
 
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="submit" class="btn btn-primary">Update Meal Plan</button>
                         </form>
                     </div>
                 </div>

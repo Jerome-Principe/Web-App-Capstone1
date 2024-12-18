@@ -9,6 +9,8 @@ class MealPlan extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'category',
+        'type',
         'guideline',
         'day',
         'breakfast',

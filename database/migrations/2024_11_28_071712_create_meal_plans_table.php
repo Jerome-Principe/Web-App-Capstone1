@@ -12,11 +12,13 @@ return new class extends Migration {
     {
         Schema::create('meal_plans', function (Blueprint $table) {
             $table->id();
-            $table->string('guideline')->nullable(); // For general guidelines
-            $table->string('day')->nullable(); // Day of the week
-            $table->string('breakfast')->nullable(); // Breakfast
-            $table->string('lunch')->nullable(); // Lunch
-            $table->string('dinner')->nullable(); // Dinner
+            $table->string('category');
+            $table->string('type');
+            $table->string('guideline')->nullable();
+            $table->string('day')->nullable();
+            $table->string('breakfast')->nullable();
+            $table->string('lunch')->nullable();
+            $table->string('dinner')->nullable();
             $table->timestamps();
         });
     }
