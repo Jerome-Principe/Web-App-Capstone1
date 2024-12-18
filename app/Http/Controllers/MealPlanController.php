@@ -11,6 +11,7 @@ class MealPlanController extends Controller
     {
         $query = MealPlan::query();
 
+        // Apply filters if category and type are provided
         if ($request->has('category')) {
             $query->where('category', $request->input('category'));
         }
@@ -21,7 +22,13 @@ class MealPlanController extends Controller
 
         $mealPlans = $query->paginate(10);
 
-        return response()->json(['data' => $mealPlans]);
+        // Check if the request expects a view (web) or JSON (API)
+        if ($request->wantsJson()) {
+            return response()->json(['data' => $mealPlans]);
+        }
+
+        // For web requests, return the view
+        return view('meal-plan', compact('mealPlans'));
     }
 
     public function store(Request $request)
