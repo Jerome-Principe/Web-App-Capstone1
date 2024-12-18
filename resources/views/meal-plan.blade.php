@@ -236,7 +236,8 @@
 
                         <div class="mb-3">
                             <label for="category" class="form-label">Category</label>
-                            <select class="form-control" id="category" name="category" onchange="updateTypeDropdown()">
+                            <select class="form-control" id="category" name="category" onchange="updateTypeDropdown()"
+                                required>
                                 <option value="">Select Category</option>
                                 <option value="Meal Plan Guide">Meal Plan Guide</option>
                                 <option value="Workout Program">Workout Program</option>
@@ -246,7 +247,7 @@
 
                         <div class="mb-3">
                             <label for="type" class="form-label">Type</label>
-                            <select class="form-control" id="type" name="type">
+                            <select class="form-control" id="type" name="type" required>
                                 <option value="">Select Type</option>
                             </select>
                         </div>
@@ -401,7 +402,7 @@
                             <div class="mb-3">
                                 <label for="category{{ $mealPlan->id }}" class="form-label">Category</label>
                                 <select class="form-control" id="category{{ $mealPlan->id }}" name="category"
-                                    onchange="updateTypeDropdownEdit('{{ $mealPlan->id }}')">
+                                    onchange="updateTypeDropdownEdit('{{ $mealPlan->id }}')" required>
                                     <option value="">Select Category</option>
                                     <option value="Meal Plan Guide" {{ $mealPlan->category == 'Meal Plan Guide' ? 'selected' : '' }}>
                                         Meal Plan Guide
@@ -417,7 +418,7 @@
 
                             <div class="mb-3">
                                 <label for="type{{ $mealPlan->id }}" class="form-label">Type</label>
-                                <select class="form-control" id="type{{ $mealPlan->id }}" name="type">
+                                <select class="form-control" id="type{{ $mealPlan->id }}" name="type" required>
                                     <!-- Dynamically load types for editing -->
                                     @if($mealPlan->category == 'Meal Plan Guide')
                                         @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning', 'High Intensity Training', 'Athletic Training', 'Circuit Crossfit', 'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing', 'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'] as $type)
