@@ -330,7 +330,7 @@
             if (options[category]) {
                 options[category].forEach(option => {
                     const newOption = document.createElement('option');
-                    newOption.value = option.toLowerCase().replace(/\s+/g, '-');
+                    newOption.value = option;
                     newOption.textContent = option;
                     typeDropdown.appendChild(newOption);
                 });
