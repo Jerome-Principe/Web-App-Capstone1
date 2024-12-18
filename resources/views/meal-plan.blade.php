@@ -238,9 +238,9 @@
                             <label for="category" class="form-label">Category</label>
                             <select class="form-control" id="category" name="category" onchange="updateTypeDropdown()">
                                 <option value="">Select Category</option>
-                                <option value="meal-plan-guide">Meal Plan Guide</option>
-                                <option value="workout-program">Workout Program</option>
-                                <option value="exercise">Exercise</option>
+                                <option value="Meal Plan Guide">Meal Plan Guide</option>
+                                <option value="Workout Program">Workout Program</option>
+                                <option value="Exercise">Exercise</option>
                             </select>
                         </div>
 
