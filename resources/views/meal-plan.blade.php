@@ -307,20 +307,20 @@
 
             // Define options for each category
             const options = {
-                'meal-plan-guide': [
+                'Meal Plan Guide': [
                     'WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE',
                     'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning',
                     'High Intensity Training', 'Athletic Training', 'Circuit Crossfit',
                     'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing',
                     'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'
                 ],
-                'workout-program': [
+                'Workout Program': [
                     '8 Weeks Fat Loss Workout for Beginners',
                     '8 Weeks Muscle-Building Workout Program',
                     '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split',
                     '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
                 ],
-                'exercise': [
+                'Exercise': [
                     'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
                     'Core Strength Exercises'
                 ]
