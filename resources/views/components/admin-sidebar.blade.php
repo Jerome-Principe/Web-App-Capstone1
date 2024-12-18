@@ -156,7 +156,10 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/meal-plan">View Weight Loss Plan</a>
+                        <a href="/meal-plan">Meal Plan Default</a>
+                    </li>
+                    <li>
+                        <a href="#">Meal Plan Custom</a>
                     </li>
                 </ul>
             </li>

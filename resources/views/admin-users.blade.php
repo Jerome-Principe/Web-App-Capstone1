@@ -158,7 +158,8 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger mx-1"
                                         onclick="return confirm('Are you sure you want to delete this user account?')"><i
-                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
+                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
