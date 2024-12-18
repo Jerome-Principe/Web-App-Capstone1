@@ -336,6 +336,51 @@
                 });
             }
         }
+
+        function updateTypeDropdownEdit(mealPlanId) {
+            const category = document.getElementById('category' + mealPlanId).value;
+            const typeDropdown = document.getElementById('type' + mealPlanId);
+
+            // Clear current options
+            typeDropdown.innerHTML = '<option value="">Select Type</option>';
+
+            // Define options for each category
+            const options = {
+                'Meal Plan Guide': [
+                    'WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE',
+                    'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning',
+                    'High Intensity Training', 'Athletic Training', 'Circuit Crossfit',
+                    'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing',
+                    'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'
+                ],
+                'Workout Program': [
+                    '8 Weeks Fat Loss Workout for Beginners',
+                    '8 Weeks Muscle-Building Workout Program',
+                    '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split',
+                    '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
+                ],
+                'Exercise': [
+                    'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
+                    'Core Strength Exercises'
+                ]
+            };
+
+            // Populate dropdown based on selected category
+            if (options[category]) {
+                options[category].forEach(option => {
+                    const newOption = document.createElement('option');
+                    newOption.value = option;
+                    newOption.textContent = option;
+                    typeDropdown.appendChild(newOption);
+                });
+            }
+
+            // Set the current type value if it matches any of the options
+            const currentType = document.getElementById('type' + mealPlanId).dataset.currentType;
+            if (currentType && options[category].includes(currentType)) {
+                typeDropdown.value = currentType;
+            }
+        }
     </script>
 
     <!-- Modal for Editing Meal Plan -->
@@ -372,28 +417,8 @@
 
                             <div class="mb-3">
                                 <label for="type{{ $mealPlan->id }}" class="form-label">Type</label>
-                                <select class="form-control" id="type{{ $mealPlan->id }}" name="type">
-                                    <!-- Dynamically load types for editing -->
-                                    @if($mealPlan->category == 'Meal Plan Guide')
-                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning', 'High Intensity Training', 'Athletic Training', 'Circuit Crossfit', 'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing', 'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @elseif($mealPlan->category == 'Workout Program')
-                                        @foreach(['8 Weeks Fat Loss Workout for Beginners', '8 Weeks Muscle-Building Workout Program', '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split', '3 Days Push/Pull/Legs (PPL) Workout for Beginners'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @elseif($mealPlan->category == 'Exercise')
-                                        @foreach(['Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics', 'Core Strength Exercises'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @endif
-                                </select>
+                                <select class="form-control" id="type{{ $mealPlan->id }}" name="type"
+                                    data-current-type="{{ $mealPlan->type }}">
                             </div>
 
                             <div class="mb-3">
