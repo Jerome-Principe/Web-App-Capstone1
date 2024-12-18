@@ -358,9 +358,13 @@
                                 <select class="form-control" id="category{{ $mealPlan->id }}" name="category"
                                     onchange="updateTypeDropdownEdit('{{ $mealPlan->id }}')">
                                     <option value="">Select Category</option>
-                                    <option value="Meal Plan Guide" {{ $mealPlan->category === 'Meal Plan Guide' ? 'selected' : '' }}>Meal Plan Guide</option>
-                                    <option value="Workout Program" {{ $mealPlan->category === 'Workout Program' ? 'selected' : '' }}>Workout Program</option>
-                                    <option value="Exercise" {{ $mealPlan->category === 'Exercise' ? 'selected' : '' }}>
+                                    <option value="Meal Plan Guide" {{ $mealPlan->category == 'Meal Plan Guide' ? 'selected' : '' }}>
+                                        Meal Plan Guide
+                                    </option>
+                                    <option value="Workout Program" {{ $mealPlan->category == 'Workout Program' ? 'selected' : '' }}>
+                                        Workout Program
+                                    </option>
+                                    <option value="Exercise" {{ $mealPlan->category == 'Exercise' ? 'selected' : '' }}>
                                         Exercise
                                     </option>
                                 </select>
