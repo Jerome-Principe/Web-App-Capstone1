@@ -356,7 +356,7 @@
                             <div class="mb-3">
                                 <label for="category{{ $mealPlan->id }}" class="form-label">Category</label>
                                 <select class="form-control" id="category{{ $mealPlan->id }}" name="category"
-                                    onchange="updateTypeDropdownEdit('{{ $mealPlan->id }}')">
+                                    onchange="updateTypeDropdown('{{ $mealPlan->id }}')">
                                     <option value="">Select Category</option>
                                     <option value="Meal Plan Guide" {{ $mealPlan->category == 'Meal Plan Guide' ? 'selected' : '' }}>
                                         Meal Plan Guide
