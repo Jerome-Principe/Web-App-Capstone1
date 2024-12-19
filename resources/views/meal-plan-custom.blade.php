@@ -338,9 +338,9 @@
             }
         }
 
-        function updateTypeDropdownEdit(mealPlanId) {
-            const category = document.getElementById('category' + mealPlanId).value;
-            const typeDropdown = document.getElementById('type' + mealPlanId);
+        function updateTypeDropdownEdit(mealPlanCustomId) {
+            const category = document.getElementById('category' + mealPlanCustomId).value;
+            const typeDropdown = document.getElementById('type' + mealPlanCustomId);
 
             // Clear current options
             typeDropdown.innerHTML = '<option value="">Select Type</option>';
@@ -377,7 +377,7 @@
             }
 
             // Set the current type value if it matches any of the options
-            const currentType = document.getElementById('type' + mealPlanId).dataset.currentType;
+            const currentType = document.getElementById('type' + mealPlanCustomId).dataset.currentType;
             if (currentType && options[category].includes(currentType)) {
                 typeDropdown.value = currentType;
             }
