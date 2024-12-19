@@ -47,9 +47,15 @@ class MealPlanCustomController extends Controller
 
     public function edit($id)
     {
+        // Retrieve the specific meal plan custom data
+        $mealPlanCustom = MealPlanCustom::findOrFail($id);
+
+        // Get all users for the dropdown
         $users = User::all();
-        return view('meal-plan-custom-update', compact('mealPlanCustom'));
+
+        return view('meal-plan-custom-update', compact('mealPlanCustom', 'users'));
     }
+
 
     public function update(Request $request, $id)
     {

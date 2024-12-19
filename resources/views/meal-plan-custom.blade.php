@@ -237,19 +237,24 @@
                         @csrf
 
                         <div class="mb-3">
-                            <label for="category" class="form-label">User ID</label>
-                            <select class="form-control" id="User ID" name="User ID" onchange="updateTypeDropdown()">
-                                <option value="">Select User ID</option>
+                            <label for="user_id" class="form-label">User ID</label>
+                            <select name="user_id" class="form-control" required>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ $mealPlanCustom->user_id == $user->id ? 'selected' : '' }}>
+                                        {{ $user->name }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label for="user_id" class="form-label">User ID</label>
-                            <select class="form-control" id="user_id" name="user_id" onchange="updateAppointments()">
-                                <option value="">Select User ID</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->id }} - {{ $user->name }}</option>
-                                @endforeach
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-control" id="category" name="category" onchange="updateTypeDropdown()"
+                                required>
+                                <option value="">Select Category</option>
+                                <option value="Meal Plan Guide">Meal Plan Guide</option>
+                                <option value="Workout Program">Workout Program</option>
+                                <option value="Exercise">Exercise</option>
                             </select>
                         </div>
 
