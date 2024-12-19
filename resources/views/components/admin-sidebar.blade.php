@@ -159,7 +159,7 @@
                         <a href="/meal-plan">Meal Plan Default</a>
                     </li>
                     <li>
-                        <a href="#">Meal Plan Custom</a>
+                        <a href="/meal-plan-custom">Meal Plan Custom</a>
                     </li>
                 </ul>
             </li>

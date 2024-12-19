@@ -19,6 +19,7 @@ use App\Http\Controllers\PendingAppointmentController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\CancelledAppointmentController;
 use App\Http\Controllers\MealPlanController;
+use App\Http\Controllers\MealPlanCustomController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -252,7 +253,7 @@ Route::prefix('machine-defects')->name('machine-defects.')->group(function () {
 
 //Meal-plan
 Route::resource('meal-plan', MealPlanController::class);
-
+Route::resource('meal-plan-custom', MealPlanCustomController::class);
 
 //Membership
 
