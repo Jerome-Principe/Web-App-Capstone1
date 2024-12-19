@@ -19,9 +19,4 @@ class MealPlanCustom extends Model
         'lunch',
         'dinner',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }
