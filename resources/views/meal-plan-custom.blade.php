@@ -154,6 +154,7 @@
                     <tr>
                         <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
+                        <th class="text-center">User ID</th>
                         <th class="text-center">Category</th>
                         <th class="text-center">Type</th>
                         <th class="text-center">Guideline</th>
@@ -173,6 +174,7 @@
                             <td class="text-center">
                                 {{ ($mealPlansCustom->currentPage() - 1) * $mealPlansCustom->perPage() + $loop->index + 1 }}
                             </td>
+                            <td class="text-center">{{ $mealPlanCustom->user_id }}</td>
                             <td class="text-center">{{ $mealPlanCustom->category }}</td>
                             <td class="text-center">{{ $mealPlanCustom->type }}</td>
                             <td class="text-center">{{ $mealPlanCustom->guideline }}</td>
@@ -235,13 +237,19 @@
                         @csrf
 
                         <div class="mb-3">
-                            <label for="category" class="form-label">Category</label>
-                            <select class="form-control" id="category" name="category" onchange="updateTypeDropdown()"
-                                required>
-                                <option value="">Select Category</option>
-                                <option value="Meal Plan Guide">Meal Plan Guide</option>
-                                <option value="Workout Program">Workout Program</option>
-                                <option value="Exercise">Exercise</option>
+                            <label for="category" class="form-label">User ID</label>
+                            <select class="form-control" id="User ID" name="User ID" onchange="updateTypeDropdown()">
+                                <option value="">Select User ID</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="user_id" class="form-label">User ID</label>
+                            <select class="form-control" id="user_id" name="user_id" onchange="updateAppointments()">
+                                <option value="">Select User ID</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->id }} - {{ $user->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -299,6 +307,27 @@
 
     <!-- JavaScript for dynamic dropdown -->
     <script>
+
+        function updateAppointments() {
+            const userId = document.getElementById('user_id').value;
+            const appointmentDropdown = document.getElementById('appointment_id');
+            // Clear current options
+            appointmentDropdown.innerHTML = '<option value="">Select Appointment</option>';
+
+            if (userId) {
+                fetch(`/get-appointments/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.appointments.forEach(appointment => {
+                            const option = document.createElement('option');
+                            option.value = appointment.id;
+                            option.textContent = appointment.details;
+                            appointmentDropdown.appendChild(option);
+                        });
+                    });
+            }
+        }
+
         function updateTypeDropdown() {
             const category = document.getElementById('category').value;
             const typeDropdown = document.getElementById('type');
