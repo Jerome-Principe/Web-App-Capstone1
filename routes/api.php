@@ -11,6 +11,7 @@ use App\Http\Controllers\PendingAppointmentController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\CancelledAppointmentController;
 use App\Http\Controllers\MealPlanController;
+use App\Http\Controllers\MealPlanCustomController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -62,6 +63,9 @@ Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'fetchCan
 
 Route::get('/mobile/meal-plan', [MealPlanController::class, 'index']);
 Route::post('/mobile/meal-plan', [MealPlanController::class, 'store']);
+
+Route::get('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'index']);
+Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
