@@ -56,7 +56,6 @@ class MealPlanCustomController extends Controller
         return view('meal-plan-custom-update', compact('mealPlanCustom', 'users'));
     }
 
-
     public function update(Request $request, $id)
     {
         $request->validate([
