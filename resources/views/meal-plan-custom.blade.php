@@ -237,9 +237,11 @@
                         @csrf
 
                         <div class="mb-3">
-                            <label for="category" class="form-label">User ID</label>
-                            <select class="form-control" id="User ID" name="User ID" onchange="updateTypeDropdown()">
+                            <select class="form-control" name="user_id" id="user_id">
                                 <option value="">Select User ID</option>
+                                @foreach($approvedUsers as $userId)
+                                    <option value="{{ $userId }}">{{ $userId }}</option>
+                                @endforeach
                             </select>
                         </div>
 

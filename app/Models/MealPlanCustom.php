@@ -11,6 +11,7 @@ class MealPlanCustom extends Model
 
     protected $table = 'meal_plans_custom';
     protected $fillable = [
+        'user_id',
         'category',
         'type',
         'guideline',
@@ -19,4 +20,9 @@ class MealPlanCustom extends Model
         'lunch',
         'dinner',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(PendingAppointment::class, 'user_id');
+    }
 }

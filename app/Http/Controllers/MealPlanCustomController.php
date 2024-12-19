@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MealPlanCustom;
 use Illuminate\Http\Request;
+use App\Models\PendingAppointment;
 
 class MealPlanCustomController extends Controller
 {
@@ -11,6 +12,16 @@ class MealPlanCustomController extends Controller
     {
         $mealPlansCustom = MealPlanCustom::paginate(10);
         return view('meal-plan-custom', compact('mealPlansCustom'));
+    }
+
+    public function mealPlanCustomList()
+    {
+        $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
+
+        // Assuming MealPlanCustom is the model for the meal plan data
+        $mealPlansCustom = MealPlanCustom::paginate(10);
+
+        return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
     }
 
     public function store(Request $request)
