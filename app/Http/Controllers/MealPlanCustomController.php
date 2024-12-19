@@ -3,34 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\MealPlanCustom;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class MealPlanCustomController extends Controller
 {
-    // Constructor to handle authorization
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         $mealPlansCustom = MealPlanCustom::paginate(10);
         return view('meal-plan-custom', compact('mealPlansCustom'));
     }
 
-    // Show the form for creating a new meal plan
-    public function create()
-    {
-        $users = User::all();  // Get all users for the dropdown
-        return view('meal-plan-custom.create', compact('users'));
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
@@ -47,19 +32,13 @@ class MealPlanCustomController extends Controller
 
     public function edit($id)
     {
-        // Retrieve the specific meal plan custom data
         $mealPlanCustom = MealPlanCustom::findOrFail($id);
-
-        // Get all users for the dropdown
-        $users = User::all();
-
-        return view('meal-plan-custom-update', compact('mealPlanCustom', 'users'));
+        return view('meal-plan-custom-update', compact('mealPlanCustom'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
