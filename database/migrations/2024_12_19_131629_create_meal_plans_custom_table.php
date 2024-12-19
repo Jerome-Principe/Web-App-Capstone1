@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('meal_plans_custom', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('category');
             $table->string('type');
             $table->string('guideline')->nullable();
