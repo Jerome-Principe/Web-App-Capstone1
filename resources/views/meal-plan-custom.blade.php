@@ -384,7 +384,6 @@
         }
     </script>
 
-    <!-- Modal for Editing Meal Plan -->
     @foreach($mealPlansCustom as $mealPlanCustom)
         <div class="modal fade" id="editMealPlanModal{{ $mealPlanCustom->id }}" tabindex="-1"
             aria-labelledby="editMealPlanModalLabel" aria-hidden="true">
@@ -400,9 +399,9 @@
                             @method('PUT')
 
                             <div class="mb-3">
-                                <label for="category{{ $mealPlanCustom }}" class="form-label">Category</label>
-                                <select class="form-control" id="category{{ $mealPlanCustom }}" name="category"
-                                    onchange="updateTypeDropdownEdit('{{ $mealPlanCustom }}')" required>
+                                <label for="category{{ $mealPlanCustom->id }}" class="form-label">Category</label>
+                                <select class="form-control" id="category{{ $mealPlanCustom->id }}" name="category"
+                                    onchange="updateTypeDropdownEdit('{{ $mealPlanCustom->id }}')" required>
                                     <option value="">Select Category</option>
                                     <option value="Meal Plan Guide" {{ $mealPlanCustom->category == 'Meal Plan Guide' ? 'selected' : '' }}>
                                         Meal Plan Guide
@@ -419,33 +418,14 @@
                             <div class="mb-3">
                                 <label for="type{{ $mealPlanCustom->id }}" class="form-label">Type</label>
                                 <select class="form-control" id="type{{ $mealPlanCustom->id }}" name="type" required>
-                                    <!-- Dynamically load types for editing -->
-                                    @if($mealPlanCustom->category == 'Meal Plan Guide')
-                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning', 'High Intensity Training', 'Athletic Training', 'Circuit Crossfit', 'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing', 'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlanCustom->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @elseif($mealPlanCustom->category == 'Workout Program')
-                                        @foreach(['8 Weeks Fat Loss Workout for Beginners', '8 Weeks Muscle-Building Workout Program', '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split', '3 Days Push/Pull/Legs (PPL) Workout for Beginners'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlanCustom->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @elseif($mealPlanCustom->category == 'Exercise')
-                                        @foreach(['Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics', 'Core Strength Exercises'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlanCustom->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @endif
+                                    <option value="">Select Type</option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
-                                <label for="guideline{{ $mealPlanCustom->id }}" class="form-label">Guideline</label>
-                                <input type="text" class="form-control" id="guideline{{ $mealPlanCustom->id }}"
-                                    name="guideline" value="{{ $mealPlanCustom->guideline }}">
+                                <label for="guideline" class="form-label">Guideline</label>
+                                <input type="text" class="form-control" id="guideline" name="guideline"
+                                    value="{{ $mealPlanCustom->guideline }}">
                             </div>
 
                             <div class="mb-3">
@@ -472,31 +452,32 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="breakfast{{ $mealPlanCustom->id }}" class="form-label">Breakfast</label>
-                                <input type="text" class="form-control" id="breakfast{{ $mealPlanCustom->id }}"
-                                    name="breakfast" value="{{ $mealPlanCustom->breakfast }}">
+                                <label for="breakfast" class="form-label">Breakfast</label>
+                                <input type="text" class="form-control" id="breakfast" name="breakfast"
+                                    value="{{ $mealPlanCustom->breakfast }}">
                             </div>
 
                             <div class="mb-3">
-                                <label for="lunch{{ $mealPlanCustom->id }}" class="form-label">Lunch</label>
-                                <input type="text" class="form-control" id="lunch{{ $mealPlanCustom->id }}" name="lunch"
+                                <label for="lunch" class="form-label">Lunch</label>
+                                <input type="text" class="form-control" id="lunch" name="lunch"
                                     value="{{ $mealPlanCustom->lunch }}">
                             </div>
 
                             <div class="mb-3">
-                                <label for="dinner{{ $mealPlanCustom->id }}" class="form-label">Dinner</label>
-                                <input type="text" class="form-control" id="dinner{{ $mealPlanCustom->id }}" name="dinner"
+                                <label for="dinner" class="form-label">Dinner</label>
+                                <input type="text" class="form-control" id="dinner" name="dinner"
                                     value="{{ $mealPlanCustom->dinner }}">
                             </div>
 
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Update Meal Plan</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     @endforeach
+
 </body>
 
 <script>
