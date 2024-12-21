@@ -27,6 +27,9 @@ class MealPlanCustomController extends Controller
 
         $mealPlansCustom = $query->paginate(10);
 
+        // Fetch approved users
+        $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
+
         // Check if the request expects a JSON response (API) or a view (web)
         if ($request->wantsJson()) {
             return response()->json(['data' => $mealPlansCustom]);
