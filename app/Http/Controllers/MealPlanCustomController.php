@@ -39,6 +39,16 @@ class MealPlanCustomController extends Controller
         return view('meal-plan-custom', compact('mealPlansCustom'));
     }
 
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
+            view()->share('approvedUsers', $approvedUsers);
+
+            return $next($request);
+        });
+    }
+
     public function mealPlanCustomList()
     {
         $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
