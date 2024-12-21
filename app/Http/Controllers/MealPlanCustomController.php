@@ -43,7 +43,7 @@ class MealPlanCustomController extends Controller
         // Assuming MealPlanCustom is the model for the meal plan data
         $mealPlansCustom = MealPlanCustom::paginate(10);
 
-        return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
+        return view('meal-plan-custom-list', compact('mealPlansCustom', 'approvedUsers'));
     }
 
     public function store(Request $request)
