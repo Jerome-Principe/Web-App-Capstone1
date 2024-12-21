@@ -253,10 +253,8 @@ Route::prefix('machine-defects')->name('machine-defects.')->group(function () {
 
 //Meal-plan
 Route::resource('meal-plan', MealPlanController::class);
-Route::resource('meal-plan-custom', MealPlanCustomController::class)->names([
-    'index' => 'meal-plan-custom.index',
-]);
-Route::get('/meal-plan-custom', [MealPlanCustomController::class, 'mealPlanCustomList'])->name('meal-plan-custom.list');
+Route::resource('meal-plan-custom', MealPlanCustomController::class);
+Route::get('/meal-plan-custom/list', [MealPlanCustomController::class, 'mealPlanCustomList'])->name('meal-plan-custom.list');
 
 //Membership
 Route::get('/membership-request-list', [RequestMembershipController::class, 'index']);
