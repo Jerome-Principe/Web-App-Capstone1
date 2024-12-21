@@ -412,6 +412,18 @@
                             @method('PUT')
 
                             <div class="mb-3">
+                                <label for="user_id{{ $mealPlanCustom->id }}" class="form-label">User ID</label>
+                                <select class="form-control" name="user_id" id="user_id{{ $mealPlanCustom->id }}">
+                                    <option value="">Select User ID</option>
+                                    @foreach($approvedUsers as $userId)
+                                        <option value="{{ $userId }}" {{ $mealPlanCustom->user_id == $userId ? 'selected' : '' }}>
+                                            {{ $userId }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="category{{ $mealPlanCustom->id }}" class="form-label">Category</label>
                                 <select class="form-control" id="category{{ $mealPlanCustom->id }}" name="category"
                                     onchange="updateTypeDropdownEdit('{{ $mealPlanCustom->id }}')" required>
