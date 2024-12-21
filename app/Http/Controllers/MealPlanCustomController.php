@@ -62,6 +62,7 @@ class MealPlanCustomController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'user_id' => 'required|integer|exists:users,id',
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
@@ -85,6 +86,7 @@ class MealPlanCustomController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'user_id' => 'required|integer|exists:users,id',
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
