@@ -8,20 +8,32 @@ use App\Models\PendingAppointment;
 
 class MealPlanCustomController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $mealPlansCustom = MealPlanCustom::paginate(10);
+        $query = MealPlanCustom::query();
+
+        // Apply filters if user_id, category, or type are provided
+        if ($request->has('user_id') && $request->input('user_id') !== '') {
+            $query->where('user_id', $request->input('user_id'));
+        }
+
+        if ($request->has('category') && $request->input('category') !== '') {
+            $query->where('category', $request->input('category'));
+        }
+
+        if ($request->has('type') && $request->input('type') !== '') {
+            $query->where('type', $request->input('type'));
+        }
+
+        $mealPlansCustom = $query->paginate(10);
+
+        // Check if the request expects a JSON response (API) or a view (web)
+        if ($request->wantsJson()) {
+            return response()->json(['data' => $mealPlansCustom]);
+        }
+
+        // Return view for web-based requests
         return view('meal-plan-custom', compact('mealPlansCustom'));
-    }
-
-    public function mealPlanCustomList()
-    {
-        $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
-
-        // Assuming MealPlanCustom is the model for the meal plan data
-        $mealPlansCustom = MealPlanCustom::paginate(10);
-
-        return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
     }
 
     public function store(Request $request)
