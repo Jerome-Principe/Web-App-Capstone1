@@ -151,7 +151,7 @@
                                     onchange="updateSelectionCount()" />
                             </td>
                             <td class="text-center">
-                                {{ ($pendingMemberships->currentPage() - 1) * $pendingMemberships->perPage() + $index + 1 }}
+                                {{ $membership->id  }}
                             </td>
                             <td class="text-center">{{ $membership->first_name }}</td>
                             <td class="text-center">{{ $membership->last_name }}</td>
