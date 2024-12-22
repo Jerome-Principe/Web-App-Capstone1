@@ -6,6 +6,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class PendingMembership extends Model
 {
@@ -54,6 +55,11 @@ class PendingMembership extends Model
     protected static function boot()
     {
         parent::boot();
+
+        // Generate UUID before creating the model
+        static::creating(function ($model) {
+            $model->id = (string) Str::uuid();
+        });
 
         static::deleting(function ($pendingMembership) {
             // Delete related records when the membership is soft-deleted
