@@ -186,27 +186,16 @@
                             <!-- Checkbox for each appointment -->
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }} "
                                     onchange="updateSelectionCount()" /></td>
-                            <!-- Display Appointment ID -->
-                            <td class="text-center">
-                                {{ ($appointments->currentPage() - 1) * $appointments->perPage() + $loop->index + 1 }}
-                            </td>
-                            <!-- Display Appointment User -->
+                            <td class="text-center">{{ $appointment->id }}</td>
                             <td class="text-center">{{ $appointment->pendingMembership->name }}</td>
-                            <!-- Display Instructor's name -->
                             <td class="text-center">
                                 {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
                             </td>
-                            <!-- Display Selected Date -->
                             <td class="text-center">{{ $appointment->selected_date }}</td>
-                            <!-- Display Selected Time -->
                             <td class="text-center">{{ $appointment->selected_time }}</td>
-                            <!-- Display Payment Method -->
                             <td class="text-center">{{ $appointment->payment_method }}</td>
-                            <!-- Display GCash Account Name -->
                             <td class="text-center">{{ $appointment->gcash_account_name ?? 'N/A' }}</td>
-                            <!-- Display GCash Account Number -->
                             <td class="text-center">{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
-                            <!-- Display link to Proof of Payment -->
                             <td class="text-center">
                                 @if($appointment->proof_of_payment)
                                     <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
