@@ -174,7 +174,9 @@
                             <td class="text-center">
                                 {{ ($mealPlansCustom->currentPage() - 1) * $mealPlansCustom->perPage() + $loop->index + 1 }}
                             </td>
-                            <td class="text-center">{{ $mealPlanCustom->appointment->pendingMembership->name }}</td>
+                            <td class="text-center">
+                                {{ optional($appointment->pendingMembership)->name ?? 'N/A' }}
+                            </td>
                             <td class="text-center">{{ $mealPlanCustom->category }}</td>
                             <td class="text-center">{{ $mealPlanCustom->type }}</td>
                             <td class="text-center">{{ $mealPlanCustom->guideline }}</td>
@@ -240,8 +242,10 @@
                             <label for="user_id" class="form-label">User ID</label>
                             <select class="form-control" name="user_id" id="user_id">
                                 <option value="">Select User ID</option>
-                                @foreach($approvedUsers as $userId)
-                                    <option value="{{ $userId }}">{{ $userId }}</option>
+                                @foreach($approvedUsers as $user)
+                                    <option value="{{ $user->id }}">
+                                        {{ $user->name }} ({{ $user->email }})
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
