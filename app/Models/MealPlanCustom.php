@@ -21,19 +21,8 @@ class MealPlanCustom extends Model
         'dinner',
     ];
 
-    public function pendingMembership()
-    {
-        return $this->belongsTo(PendingMembership::class, 'user_id');
-    }
-
-    public function getUserNameAttribute()
-    {
-        return $this->pendingMembership ? $this->pendingMembership->name : 'N/A';
-    }
-
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(PendingAppointment::class, 'user_id');
     }
-
 }

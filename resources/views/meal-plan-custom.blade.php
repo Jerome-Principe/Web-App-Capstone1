@@ -154,7 +154,7 @@
                     <tr>
                         <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
-                        <th class="text-center">User Name</th>
+                        <th class="text-center">User ID</th>
                         <th class="text-center">Category</th>
                         <th class="text-center">Type</th>
                         <th class="text-center">Guideline</th>
@@ -174,9 +174,7 @@
                             <td class="text-center">
                                 {{ ($mealPlansCustom->currentPage() - 1) * $mealPlansCustom->perPage() + $loop->index + 1 }}
                             </td>
-                            <td class="text-center">
-                                {{ $mealPlanCustom->pendingMembership ? $mealPlanCustom->pendingMembership->name : 'N/A' }}
-                            </td>
+                            <td class="text-center">{{ $mealPlanCustom->user_id }}</td>
                             <td class="text-center">{{ $mealPlanCustom->category }}</td>
                             <td class="text-center">{{ $mealPlanCustom->type }}</td>
                             <td class="text-center">{{ $mealPlanCustom->guideline }}</td>
@@ -241,9 +239,9 @@
                         <div class="mb-3">
                             <label for="user_id" class="form-label">User ID</label>
                             <select class="form-control" name="user_id" id="user_id">
-                                <option value="">Select User Name</option>
-                                @foreach($mealPlansCustom as $mealPlanCustom)
-                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                <option value="">Select User ID</option>
+                                @foreach($approvedUsers as $userId)
+                                    <option value="{{ $userId }}">{{ $userId }}</option>
                                 @endforeach
                             </select>
                         </div>
