@@ -310,10 +310,10 @@
             const options = {
                 'Meal Plan Guide': [
                     'WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE',
-                    'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning',
-                    'High Intensity Training', 'Athletic Training', 'Circuit Crossfit',
-                    'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing',
-                    'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'
+                    'LOSS WEIGHT & BUILD MUSCLE', 'STRENGTH & CONDITIONING',
+                    'HIGH INTENSITY TRAINING', 'ATHLETIC TRAINING', 'CIRCUIT CROSSFIT',
+                    'WEIGHT TRAINING', 'BODY BUILDING', 'AEROBOXING', 'KICK BOXING',
+                    'TAEKWONDO', 'BOXING', 'CARDIO', 'WEIGHT LIFTING', 'ZUMBA', 'YOGA', 'POLE DANCING'
                 ],
                 'Workout Program': [
                     '8 Weeks Fat Loss Workout for Beginners',
@@ -349,10 +349,10 @@
             const options = {
                 'Meal Plan Guide': [
                     'WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE',
-                    'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning',
-                    'High Intensity Training', 'Athletic Training', 'Circuit Crossfit',
-                    'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing',
-                    'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'
+                    'LOSS WEIGHT & BUILD MUSCLE', 'STRENGTH & CONDITIONING',
+                    'HIGH INTENSITY TRAINING', 'ATHLETIC TRAINING', 'CIRCUIT CROSSFIT',
+                    'WEIGHT TRAINING', 'BODY BUILDING', 'AEROBOXING', 'KICK BOXING',
+                    'TAEKWONDO', 'BOXING', 'CARDIO', 'WEIGHT LIFTING', 'ZUMBA', 'YOGA', 'POLE DANCING'
                 ],
                 'Workout Program': [
                     '8 Weeks Fat Loss Workout for Beginners',
@@ -421,7 +421,7 @@
                                 <select class="form-control" id="type{{ $mealPlan->id }}" name="type" required>
                                     <!-- Dynamically load types for editing -->
                                     @if($mealPlan->category == 'Meal Plan Guide')
-                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'Strength & Conditioning', 'High Intensity Training', 'Athletic Training', 'Circuit Crossfit', 'Weight Training', 'Body Building', 'Aeroboxing', 'Kick Boxing', 'Taekwondo', 'Boxing', 'Cardio', 'Weight Lifting', 'Zumba', 'Yoga', 'Pole Dancing'] as $type)
+                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'STRENGTH & CONDITIONING', 'HIGH INTENSITY TRAINING', 'ATHLETIC TRAINING', 'CIRCUIT CROSSFIT', 'WEIGHT TRAINING', 'BODY BUILDING', 'AEROBOXING', 'KICK BOXING', 'TAEKWONDO', 'BOXING', 'CARDIO', 'WEIGHT LIFTING', 'ZUMBA', 'YOGA', 'POLE DANCING'] as $type)
                                             <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
                                                 {{ $type }}
                                             </option>
