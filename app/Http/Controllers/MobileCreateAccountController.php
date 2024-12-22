@@ -28,14 +28,6 @@ class MobileCreateAccountController extends Controller
             ], 422);
         }
 
-        // Check if the email already exists
-        $existingEmail = PendingMembership::where('email', $request->email)->first();
-        if ($existingEmail) {
-            return response()->json([
-                'message' => 'The email address is already registered.',
-            ], 409); // Conflict status code
-        }
-
         try {
             // Create a pending membership
             $membership = PendingMembership::create([
@@ -51,6 +43,9 @@ class MobileCreateAccountController extends Controller
                 'membership' => $membership,
             ], 201);
         } catch (\Exception $e) {
+            // Log the exception to help with debugging
+            \Log::error('Error creating account: ' . $e->getMessage());
+
             // Handle unexpected errors gracefully
             return response()->json([
                 'message' => 'An error occurred while creating the account. Please try again.',
