@@ -56,11 +56,6 @@ class PendingMembership extends Model
     {
         parent::boot();
 
-        // Generate UUID before creating the model
-        static::creating(function ($model) {
-            $model->id = (string) Str::uuid();
-        });
-
         static::deleting(function ($pendingMembership) {
             // Delete related records when the membership is soft-deleted
             $pendingMembership->requestMembership()->forceDelete();
