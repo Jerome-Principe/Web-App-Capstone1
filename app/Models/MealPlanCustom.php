@@ -25,4 +25,9 @@ class MealPlanCustom extends Model
     {
         return $this->belongsTo(PendingMembership::class, 'user_id');
     }
+
+    public function getUserNameAttribute()
+    {
+        return $this->pendingMembership ? $this->pendingMembership->name : 'N/A';
+    }
 }
