@@ -28,19 +28,35 @@ class MobileCreateAccountController extends Controller
             ], 422);
         }
 
-        // Create a pending membership
-        $membership = PendingMembership::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'status' => 'Pending',
-        ]);
+        // Check if the email already exists
+        $existingEmail = PendingMembership::where('email', $request->email)->first();
+        if ($existingEmail) {
+            return response()->json([
+                'message' => 'The email address is already registered.',
+            ], 409); // Conflict status code
+        }
 
-        return response()->json([
-            'message' => 'Account created successfully. Awaiting approval.',
-            'membership' => $membership,
-        ], 201);
+        try {
+            // Create a pending membership
+            $membership = PendingMembership::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'status' => 'Pending',
+            ]);
+
+            return response()->json([
+                'message' => 'Account created successfully. Awaiting approval.',
+                'membership' => $membership,
+            ], 201);
+        } catch (\Exception $e) {
+            // Handle unexpected errors gracefully
+            return response()->json([
+                'message' => 'An error occurred while creating the account. Please try again.',
+                'error' => $e->getMessage(),
+            ], 500); // Internal server error
+        }
     }
 
     // Handles user login
