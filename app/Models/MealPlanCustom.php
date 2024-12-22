@@ -30,4 +30,10 @@ class MealPlanCustom extends Model
     {
         return $this->pendingMembership ? $this->pendingMembership->name : 'N/A';
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

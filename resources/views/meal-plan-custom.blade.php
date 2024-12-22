@@ -243,14 +243,14 @@
                             <select class="form-control" name="user_id" id="user_id">
                                 <option value="">Select User Name</option>
                                 @foreach($approvedUsers as $user)
-                                    @if(is_object($user))
+                                    @if(isset($user->id) && isset($user->name))
                                         <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                     @else
                                         <option value="">{{ 'Invalid user data' }}</option>
                                     @endif
                                 @endforeach
-
                             </select>
+
                         </div>
 
                         <div class="mb-3">
