@@ -175,7 +175,7 @@
                                 {{ ($mealPlansCustom->currentPage() - 1) * $mealPlansCustom->perPage() + $loop->index + 1 }}
                             </td>
                             <td class="text-center">
-                                {{ optional($appointment->pendingMembership)->name ?? 'N/A' }}
+                                {{ $mealPlanCustom->pendingMembership ? $mealPlanCustom->pendingMembership->name : 'N/A' }}
                             </td>
                             <td class="text-center">{{ $mealPlanCustom->category }}</td>
                             <td class="text-center">{{ $mealPlanCustom->type }}</td>
