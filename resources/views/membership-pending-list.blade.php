@@ -150,9 +150,7 @@
                             <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
                                     onchange="updateSelectionCount()" />
                             </td>
-                            <td class="text-center">
-                                {{ $membership->id  }}
-                            </td>
+                            <td class="text-center">{{ $membership->id  }}</td>
                             <td class="text-center">{{ $membership->first_name }}</td>
                             <td class="text-center">{{ $membership->last_name }}</td>
                             <td class="text-center">{{ $membership->email }}</td>
