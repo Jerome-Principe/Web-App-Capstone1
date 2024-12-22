@@ -241,7 +241,7 @@
                         <div class="mb-3">
                             <label for="user_id" class="form-label">User ID</label>
                             <select class="form-control" name="user_id" id="user_id">
-                                <option value="">Select User ID</option>
+                                <option value="">Select User Name</option>
                                 @foreach($approvedUsers as $user)
                                     @if(is_object($user))
                                         <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
