@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PendingMembership;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MobileCreateAccountController extends Controller
 {
@@ -61,5 +62,26 @@ class MobileCreateAccountController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
+    }
+
+    public function validateEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => [
+                'required',
+                'email',
+                'exists:users,email', // Checks if the email exists in the 'users' table
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        return response()->json([
+            'message' => 'The email exists in the database!',
+        ]);
     }
 }
