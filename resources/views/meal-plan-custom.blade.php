@@ -154,7 +154,7 @@
                     <tr>
                         <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
-                        <th class="text-center">User ID</th>
+                        <th class="text-center">User Name</th>
                         <th class="text-center">Category</th>
                         <th class="text-center">Type</th>
                         <th class="text-center">Guideline</th>
@@ -174,7 +174,7 @@
                             <td class="text-center">
                                 {{ ($mealPlansCustom->currentPage() - 1) * $mealPlansCustom->perPage() + $loop->index + 1 }}
                             </td>
-                            <td class="text-center">{{ $mealPlanCustom->user_id }}</td>
+                            <td class="text-center">{{ $mealPlanCustom->appointment->pendingMembership->name }}</td>
                             <td class="text-center">{{ $mealPlanCustom->category }}</td>
                             <td class="text-center">{{ $mealPlanCustom->type }}</td>
                             <td class="text-center">{{ $mealPlanCustom->guideline }}</td>
