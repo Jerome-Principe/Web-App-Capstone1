@@ -418,8 +418,8 @@
                                 <select class="form-control" name="user_id" id="user_id{{ $mealPlanCustom->id }}">
                                     <option value="">Select User ID</option>
                                     @foreach($approvedUsers as $userId)
-                                        <option value="{{ $userId }}" {{ (old('user_id', $mealPlanCustom->user_id) == $userId) ? 'selected' : '' }}>
-                                            {{ $userName }}
+                                        <option value="{{ $userId }}" {{ $mealPlanCustom->user_id == $userId ? 'selected' : '' }}>
+                                            {{ $userId }}
                                         </option>
                                     @endforeach
                                 </select>
