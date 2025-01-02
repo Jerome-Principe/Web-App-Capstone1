@@ -154,7 +154,7 @@
                     <tr>
                         <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                         <th class="text-center">ID</th>
-                        <th class="text-center">User ID</th>
+                        <th class="text-center">User Name</th>
                         <th class="text-center">Category</th>
                         <th class="text-center">Type</th>
                         <th class="text-center">Guideline</th>
@@ -174,7 +174,7 @@
                             <td class="text-center">
                                 {{ ($mealPlansCustom->currentPage() - 1) * $mealPlansCustom->perPage() + $loop->index + 1 }}
                             </td>
-                            <td class="text-center">{{ $mealPlanCustom->user_id }}</td>
+                            <td class="text-center">{{ $mealPlanCustom->user->name ?? 'User Not Found' }}</td>
                             <td class="text-center">{{ $mealPlanCustom->category }}</td>
                             <td class="text-center">{{ $mealPlanCustom->type }}</td>
                             <td class="text-center">{{ $mealPlanCustom->guideline }}</td>
@@ -237,11 +237,13 @@
                         @csrf
 
                         <div class="mb-3">
-                            <label for="user_id" class="form-label">User ID</label>
+                            <label for="user_id" class="form-label">User Name</label>
                             <select class="form-control" name="user_id" id="user_id">
-                                <option value="">Select User ID</option>
-                                @foreach($approvedUsers as $userId)
-                                    <option value="{{ $userId }}">{{ $userId }}</option>
+                                <option value="">Select User</option>
+                                @foreach($approvedUsers as $userId => $userName)
+                                    <option value="{{ $userId }}" {{ old('user_id') == $userId ? 'selected' : '' }}>
+                                        {{ $userName }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

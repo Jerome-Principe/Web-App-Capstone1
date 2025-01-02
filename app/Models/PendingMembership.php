@@ -63,4 +63,9 @@ class PendingMembership extends Model
             $pendingMembership->membershipPayments()->forceDelete();
         });
     }
+
+    public function mealPlansCustom()
+    {
+        return $this->hasMany(MealPlanCustom::class, 'user_id');
+    }
 }

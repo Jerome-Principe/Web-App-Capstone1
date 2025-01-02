@@ -23,6 +23,6 @@ class MealPlanCustom extends Model
 
     public function user()
     {
-        return $this->belongsTo(PendingAppointment::class, 'user_id');
+        return $this->belongsTo(PendingMembership::class, 'user_id');
     }
 }
