@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\MealPlanCustom;
-use Illuminate\Http\Request;
 use App\Models\PendingAppointment;
+use Illuminate\Http\Request;
 
 class MealPlanCustomController extends Controller
 {
@@ -37,26 +37,6 @@ class MealPlanCustomController extends Controller
             });
 
         // Return view for web-based requests
-        return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
-    }
-
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
-            view()->share('approvedUsers', $approvedUsers);
-
-            return $next($request);
-        });
-    }
-
-    public function mealPlanCustomList()
-    {
-        $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
-
-        // Assuming MealPlanCustom is the model for the meal plan data
-        $mealPlansCustom = MealPlanCustom::paginate(10);
-
         return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
     }
 
