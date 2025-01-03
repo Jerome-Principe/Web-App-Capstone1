@@ -27,6 +27,15 @@ class MealPlanCustomController extends Controller
 
         $mealPlansCustom = $query->paginate(10);
 
+        // Fetch approved users
+        $approvedUsers = PendingAppointment::where('pending_appointments.status', 'Approved')
+            ->join('pending_memberships', 'pending_appointments.user_id', '=', 'pending_memberships.id')
+            ->select('pending_memberships.id as user_id', 'pending_memberships.first_name', 'pending_memberships.last_name')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->user_id => $item->first_name . ' ' . $item->last_name];
+            });
+
         // Return view for web-based requests
         return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
     }
