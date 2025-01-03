@@ -414,12 +414,12 @@
                             @method('PUT')
 
                             <div class="mb-3">
-                                <label for="user_id{{ $mealPlanCustom->id }}" class="form-label">User ID</label>
-                                <select class="form-control" name="user_id" id="user_id{{ $mealPlanCustom->id }}">
-                                    <option value="">Select User ID</option>
-                                    @foreach($approvedUsers as $userId)
-                                        <option value="{{ $userId }}" {{ $mealPlanCustom->user_id == $userId ? 'selected' : '' }}>
-                                            {{ $userId }}
+                                <label for="user_id {{ $mealPlanCustom->id }}" class="form-label">User Name</label>
+                                <select class="form-control" name="user_id" id="user_id">
+                                    <option value="">Select User</option>
+                                    @foreach($approvedUsers as $userId => $userName)
+                                        <option value="{{ $userId }}" {{ (old('user_id', $mealPlanCustom->user_id) == $userId) ? 'selected' : '' }}>
+                                            {{ $userName }}
                                         </option>
                                     @endforeach
                                 </select>
