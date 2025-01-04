@@ -30,7 +30,7 @@ class MealPlanCustomController extends Controller
             return response()->json(['data' => [], 'message' => 'No data found'], 200);
         }
 
-        return response()->json($mealPlansCustom, 200);
+        return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
     }
 
 
