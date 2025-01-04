@@ -10,9 +10,8 @@ class MealPlanCustomController extends Controller
 {
     public function index(Request $request)
     {
-        $query = MealPlanCustom::with('user'); // Eager-load user relationship
+        $query = MealPlanCustom::with('user');
 
-        // Apply filters if user_id, category, or type are provided
         if ($request->has('user_id') && $request->input('user_id') !== '') {
             $query->where('user_id', $request->input('user_id'));
         }
@@ -27,17 +26,11 @@ class MealPlanCustomController extends Controller
 
         $mealPlansCustom = $query->paginate(10);
 
-        // Fetch approved users
-        $approvedUsers = PendingAppointment::where('pending_appointments.status', 'Approved')
-            ->join('pending_memberships', 'pending_appointments.user_id', '=', 'pending_memberships.id')
-            ->select('pending_memberships.id as user_id', 'pending_memberships.first_name', 'pending_memberships.last_name')
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [$item->user_id => $item->first_name . ' ' . $item->last_name];
-            });
+        if ($mealPlansCustom->isEmpty()) {
+            return response()->json(['data' => [], 'message' => 'No data found'], 200);
+        }
 
-        // Return view for web-based requests
-        return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
+        return response()->json($mealPlansCustom, 200);
     }
 
 
