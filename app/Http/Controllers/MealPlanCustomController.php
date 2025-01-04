@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\MealPlanCustom;
+use App\Models\PendingAppointment;
 use Illuminate\Http\Request;
 
 class MealPlanCustomController extends Controller
 {
     public function index(Request $request)
     {
-        $query = MealPlanCustom::query();
+        $query = MealPlanCustom::with('user'); // Eager-load user relationship
 
         // Apply filters if user_id, category, or type are provided
         if ($request->has('user_id') && $request->input('user_id') !== '') {
@@ -26,19 +27,44 @@ class MealPlanCustomController extends Controller
 
         $mealPlansCustom = $query->paginate(10);
 
-        // Check if the request expects a JSON response (API) or a view (web)
-        if ($request->wantsJson()) {
-            return response()->json(['data' => $mealPlansCustom]);
-        }
+        // Fetch approved users
+        $approvedUsers = PendingAppointment::where('pending_appointments.status', 'Approved')
+            ->join('pending_memberships', 'pending_appointments.user_id', '=', 'pending_memberships.id')
+            ->select('pending_memberships.id as user_id', 'pending_memberships.first_name', 'pending_memberships.last_name')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->user_id => $item->first_name . ' ' . $item->last_name];
+            });
 
         // Return view for web-based requests
-        return view('meal-plan-custom', compact('mealPlansCustom'));
+        return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
+    }
+
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
+            view()->share('approvedUsers', $approvedUsers);
+
+            return $next($request);
+        });
+    }
+
+    public function mealPlanCustomList()
+    {
+        $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
+
+        // Assuming MealPlanCustom is the model for the meal plan data
+        $mealPlansCustom = MealPlanCustom::paginate(10);
+
+        return view('meal-plan-custom', compact('mealPlansCustom', 'approvedUsers'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|integer|exists:pending_memberships,id',
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
@@ -50,13 +76,19 @@ class MealPlanCustomController extends Controller
 
         MealPlanCustom::create($request->all());
 
-        return redirect()->back()->with('success', 'Custom meal plan item added successfully!');
+        return redirect()->back()->with('success', 'Meal plan Custom item added successfully!');
+    }
+
+    public function edit($id)
+    {
+        $mealPlanCustom = MealPlanCustom::with('user')->findOrFail($id);
+        return view('meal-plan-custom-update', compact('mealPlanCustom'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|integer|exists:pending_memberships,id',
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
@@ -69,7 +101,7 @@ class MealPlanCustomController extends Controller
         $mealPlanCustom = MealPlanCustom::findOrFail($id);
         $mealPlanCustom->update($request->all());
 
-        return redirect()->route('meal-plan-custom.index')->with('success', 'Custom meal plan updated successfully!');
+        return redirect()->route('meal-plan-custom.index')->with('success', 'Meal plan updated successfully!');
     }
 
     public function destroy($id)
@@ -77,6 +109,6 @@ class MealPlanCustomController extends Controller
         $mealPlanCustom = MealPlanCustom::findOrFail($id);
         $mealPlanCustom->delete();
 
-        return redirect()->route('meal-plan-custom.index')->with('success', 'Custom meal plan deleted successfully!');
+        return redirect()->route('meal-plan-custom.index')->with('success', 'Meal plan deleted successfully!');
     }
 }
