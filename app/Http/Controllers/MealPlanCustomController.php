@@ -60,7 +60,7 @@ class MealPlanCustomController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer|exists:pending_memberships,id',
+            'user_id' => 'required|exists:users,id',
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
@@ -72,7 +72,7 @@ class MealPlanCustomController extends Controller
 
         MealPlanCustom::create($request->all());
 
-        return redirect()->back()->with('success', 'Meal plan Custom item added successfully!');
+        return redirect()->back()->with('success', 'Custom meal plan item added successfully!');
     }
 
     public function edit($id)
@@ -84,7 +84,7 @@ class MealPlanCustomController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'user_id' => 'required|integer|exists:pending_memberships,id',
+            'user_id' => 'required|exists:users,id',
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
@@ -97,7 +97,7 @@ class MealPlanCustomController extends Controller
         $mealPlanCustom = MealPlanCustom::findOrFail($id);
         $mealPlanCustom->update($request->all());
 
-        return redirect()->route('meal-plan-custom.index')->with('success', 'Meal plan updated successfully!');
+        return redirect()->route('meal-plan-custom.index')->with('success', 'Custom meal plan updated successfully!');
     }
 
     public function destroy($id)
@@ -105,6 +105,6 @@ class MealPlanCustomController extends Controller
         $mealPlanCustom = MealPlanCustom::findOrFail($id);
         $mealPlanCustom->delete();
 
-        return redirect()->route('meal-plan-custom.index')->with('success', 'Meal plan deleted successfully!');
+        return redirect()->route('meal-plan-custom.index')->with('success', 'Custom meal plan deleted successfully!');
     }
 }
