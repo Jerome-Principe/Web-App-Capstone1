@@ -232,10 +232,12 @@
                     <h5 class="modal-title" id="addMealPlanModalLabel">Add New Meal Plan Custom</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
                     <form action="{{ route('meal-plan-custom.store') }}" method="POST">
                         @csrf
 
+                        <!-- User Details Section -->
                         <div class="mb-3">
                             <label for="user_id" class="form-label">User Name</label>
                             <select class="form-control" name="user_id" id="user_id">
@@ -248,6 +250,7 @@
                             </select>
                         </div>
 
+                        <!-- Category and Type Section -->
                         <div class="mb-3">
                             <label for="category" class="form-label">Category</label>
                             <select class="form-control" id="category" name="category" onchange="updateTypeDropdown()"
@@ -266,47 +269,82 @@
                             </select>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="guideline" class="form-label">Guideline</label>
-                            <input type="text" class="form-control" id="guideline" name="guideline"
-                                placeholder="E.g., Drink water">
+                        <!-- Collapsible Section for Details -->
+                        <div class="accordion" id="mealPlanAccordion">
+                            <!-- General Details -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingDetails">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseDetails" aria-expanded="true"
+                                        aria-controls="collapseDetails">
+                                        General Details
+                                    </button>
+                                </h2>
+                                <div id="collapseDetails" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingDetails">
+                                    <div class="accordion-body">
+                                        <div class="mb-3">
+                                            <label for="guideline" class="form-label">Guideline</label>
+                                            <input type="text" class="form-control" id="guideline" name="guideline"
+                                                placeholder="Guideline">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="day" class="form-label">Day</label>
+                                            <select class="form-control" id="day" name="day">
+                                                <option value="">Select Day</option>
+                                                <option value="Monday">Monday</option>
+                                                <option value="Tuesday">Tuesday</option>
+                                                <option value="Wednesday">Wednesday</option>
+                                                <option value="Thursday">Thursday</option>
+                                                <option value="Friday">Friday</option>
+                                                <option value="Saturday">Saturday</option>
+                                                <option value="Sunday">Sunday</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Meal Details -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingMeals">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseMeals" aria-expanded="false"
+                                        aria-controls="collapseMeals">
+                                        Meal Details
+                                    </button>
+                                </h2>
+                                <div id="collapseMeals" class="accordion-collapse collapse"
+                                    aria-labelledby="headingMeals">
+                                    <div class="accordion-body">
+                                        <div class="mb-3">
+                                            <label for="breakfast" class="form-label">Breakfast</label>
+                                            <input type="text" class="form-control" id="breakfast" name="breakfast"
+                                                placeholder="E.g., Pandesal ">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="lunch" class="form-label">Lunch</label>
+                                            <input type="text" class="form-control" id="lunch" name="lunch"
+                                                placeholder="E.g., Grilled meats">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="dinner" class="form-label">Dinner</label>
+                                            <input type="text" class="form-control" id="dinner" name="dinner"
+                                                placeholder="E.g., Adobo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="day" class="form-label">Day</label>
-                            <select class="form-control" id="day" name="day">
-                                <option value="">Select Day</option>
-                                <option value="Monday">Monday</option>
-                                <option value="Tuesday">Tuesday</option>
-                                <option value="Wednesday">Wednesday</option>
-                                <option value="Thursday">Thursday</option>
-                                <option value="Friday">Friday</option>
-                                <option value="Saturday">Saturday</option>
-                                <option value="Sunday">Sunday</option>
-                            </select>
+                        <!-- Modal Buttons -->
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Meal Plan</button>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="breakfast" class="form-label">Breakfast</label>
-                            <input type="text" class="form-control" id="breakfast" name="breakfast"
-                                placeholder="E.g., Pandesal ">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="lunch" class="form-label">Lunch</label>
-                            <input type="text" class="form-control" id="lunch" name="lunch"
-                                placeholder="E.g., Grilled meats">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="dinner" class="form-label">Dinner</label>
-                            <input type="text" class="form-control" id="dinner" name="dinner" placeholder="E.g., Adobo">
-                        </div>
-
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Meal Plan</button>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
@@ -408,58 +446,43 @@
                         <h5 class="modal-title" id="editMealPlanModalLabel">Edit Meal Plan Custom</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+
                     <div class="modal-body">
                         <form action="{{ route('meal-plan-custom.update', $mealPlanCustom->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
+                            <!-- User Details Section -->
                             <div class="mb-3">
-                                <label for="user_id {{ $mealPlanCustom->id }}" class="form-label">User Name</label>
-                                <select class="form-control" name="user_id" id="user_id">
+                                <label for="user_id{{ $mealPlanCustom->id }}" class="form-label">User Name</label>
+                                <select class="form-control" name="user_id" id="user_id{{ $mealPlanCustom->id }}">
                                     <option value="">Select User</option>
                                     @foreach($approvedUsers as $userId => $userName)
-                                        <option value="{{ $userId }}" {{ (old('user_id', $mealPlanCustom->user_id) == $userId) ? 'selected' : '' }}>
+                                        <option value="{{ $userId }}" {{ old('user_id', $mealPlanCustom->user_id) == $userId ? 'selected' : '' }}>
                                             {{ $userName }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
 
+                            <!-- Category and Type Section -->
                             <div class="mb-3">
                                 <label for="category{{ $mealPlanCustom->id }}" class="form-label">Category</label>
                                 <select class="form-control" id="category{{ $mealPlanCustom->id }}" name="category"
                                     onchange="updateTypeDropdownEdit('{{ $mealPlanCustom->id }}')" required>
                                     <option value="">Select Category</option>
-                                    <option value="Meal Plan Guide" {{ $mealPlanCustom->category == 'Meal Plan Guide' ? 'selected' : '' }}>
-                                        Meal Plan Guide
-                                    </option>
-                                    <option value="Workout Program" {{ $mealPlanCustom->category == 'Workout Program' ? 'selected' : '' }}>
-                                        Workout Program
-                                    </option>
+                                    <option value="Meal Plan Guide" {{ $mealPlanCustom->category == 'Meal Plan Guide' ? 'selected' : '' }}>Meal Plan Guide</option>
+                                    <option value="Workout Program" {{ $mealPlanCustom->category == 'Workout Program' ? 'selected' : '' }}>Workout Program</option>
                                     <option value="Exercise" {{ $mealPlanCustom->category == 'Exercise' ? 'selected' : '' }}>
-                                        Exercise
-                                    </option>
+                                        Exercise</option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
                                 <label for="type{{ $mealPlanCustom->id }}" class="form-label">Type</label>
                                 <select class="form-control" id="type{{ $mealPlanCustom->id }}" name="type" required>
-                                    <!-- Dynamically load types for editing -->
                                     @if($mealPlanCustom->category == 'Meal Plan Guide')
-                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT', 'BUILD ENDURANCE', 'LOSS WEIGHT & BUILD MUSCLE', 'STRENGTH & CONDITIONING', 'HIGH INTENSITY TRAINING', 'ATHLETIC TRAINING', 'CIRCUIT CROSSFIT', 'WEIGHT TRAINING', 'BODY BUILDING', 'AEROBOXING', 'KICK BOXING', 'TAEKWONDO', 'BOXING', 'CARDIO', 'WEIGHT LIFTING', 'ZUMBA', 'YOGA', 'POLE DANCING'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlanCustom->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @elseif($mealPlanCustom->category == 'Workout Program')
-                                        @foreach(['8 Weeks Fat Loss Workout for Beginners', '8 Weeks Muscle-Building Workout Program', '6 Days Push/Pull/Legs (PPL) Powerbuilding Workout Split', '3 Days Push/Pull/Legs (PPL) Workout for Beginners'] as $type)
-                                            <option value="{{ $type }}" {{ $mealPlanCustom->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
-                                    @elseif($mealPlanCustom->category == 'Exercise')
-                                        @foreach(['Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics', 'Core Strength Exercises'] as $type)
+                                        @foreach(['WEIGHT LOSS', 'BUILD MUSCLE', 'GAIN WEIGHT'] as $type)
                                             <option value="{{ $type }}" {{ $mealPlanCustom->type == $type ? 'selected' : '' }}>
                                                 {{ $type }}
                                             </option>
@@ -468,57 +491,85 @@
                                 </select>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="guideline" class="form-label">Guideline</label>
-                                <input type="text" class="form-control" id="guideline" name="guideline"
-                                    value="{{ $mealPlanCustom->guideline }}">
+                            <!-- Accordion for Details -->
+                            <div class="accordion" id="editMealPlanAccordion{{ $mealPlanCustom->id }}">
+                                <!-- General Details -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="editHeadingDetails{{ $mealPlanCustom->id }}">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#editCollapseDetails{{ $mealPlanCustom->id }}"
+                                            aria-expanded="true"
+                                            aria-controls="editCollapseDetails{{ $mealPlanCustom->id }}">
+                                            General Details
+                                        </button>
+                                    </h2>
+                                    <div id="editCollapseDetails{{ $mealPlanCustom->id }}"
+                                        class="accordion-collapse collapse show"
+                                        aria-labelledby="editHeadingDetails{{ $mealPlanCustom->id }}">
+                                        <div class="accordion-body">
+                                            <div class="mb-3">
+                                                <label for="guideline{{ $mealPlanCustom->id }}"
+                                                    class="form-label">Guideline</label>
+                                                <input type="text" class="form-control"
+                                                    id="guideline{{ $mealPlanCustom->id }}" name="guideline"
+                                                    value="{{ $mealPlanCustom->guideline }}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="day{{ $mealPlanCustom->id }}" class="form-label">Day</label>
+                                                <select class="form-control" id="day{{ $mealPlanCustom->id }}" name="day">
+                                                    <option value="Monday" {{ $mealPlanCustom->day == 'Monday' ? 'selected' : '' }}>Monday</option>
+                                                    <option value="Tuesday" {{ $mealPlanCustom->day == 'Tuesday' ? 'selected' : '' }}>Tuesday</option>
+                                                    <!-- Add other days -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Meal Details -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="editHeadingMeals{{ $mealPlanCustom->id }}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#editCollapseMeals{{ $mealPlanCustom->id }}"
+                                            aria-expanded="false"
+                                            aria-controls="editCollapseMeals{{ $mealPlanCustom->id }}">
+                                            Meal Details
+                                        </button>
+                                    </h2>
+                                    <div id="editCollapseMeals{{ $mealPlanCustom->id }}" class="accordion-collapse collapse"
+                                        aria-labelledby="editHeadingMeals{{ $mealPlanCustom->id }}">
+                                        <div class="accordion-body">
+                                            <div class="mb-3">
+                                                <label for="breakfast{{ $mealPlanCustom->id }}"
+                                                    class="form-label">Breakfast</label>
+                                                <input type="text" class="form-control"
+                                                    id="breakfast{{ $mealPlanCustom->id }}" name="breakfast"
+                                                    value="{{ $mealPlanCustom->breakfast }}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="lunch{{ $mealPlanCustom->id }}" class="form-label">Lunch</label>
+                                                <input type="text" class="form-control" id="lunch{{ $mealPlanCustom->id }}"
+                                                    name="lunch" value="{{ $mealPlanCustom->lunch }}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="dinner{{ $mealPlanCustom->id }}"
+                                                    class="form-label">Dinner</label>
+                                                <input type="text" class="form-control" id="dinner{{ $mealPlanCustom->id }}"
+                                                    name="dinner" value="{{ $mealPlanCustom->dinner }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="day{{ $mealPlanCustom->id }}" class="form-label">Day</label>
-                                <select class="form-control" id="day{{ $mealPlanCustom->id }}" name="day">
-                                    <option value="Monday" {{ $mealPlanCustom->day == 'Monday' ? 'selected' : '' }}>Monday
-                                    </option>
-                                    <option value="Tuesday" {{ $mealPlanCustom->day == 'Tuesday' ? 'selected' : '' }}>Tuesday
-                                    </option>
-                                    <option value="Wednesday" {{ $mealPlanCustom->day == 'Wednesday' ? 'selected' : '' }}>
-                                        Wednesday
-                                    </option>
-                                    <option value="Thursday" {{ $mealPlanCustom->day == 'Thursday' ? 'selected' : '' }}>
-                                        Thursday
-                                    </option>
-                                    <option value="Friday" {{ $mealPlanCustom->day == 'Friday' ? 'selected' : '' }}>Friday
-                                    </option>
-                                    <option value="Saturday" {{ $mealPlanCustom->day == 'Saturday' ? 'selected' : '' }}>
-                                        Saturday
-                                    </option>
-                                    <option value="Sunday" {{ $mealPlanCustom->day == 'Sunday' ? 'selected' : '' }}>Sunday
-                                    </option>
-                                </select>
+                            <!-- Buttons Section -->
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update Meal Plan</button>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="breakfast" class="form-label">Breakfast</label>
-                                <input type="text" class="form-control" id="breakfast" name="breakfast"
-                                    value="{{ $mealPlanCustom->breakfast }}">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="lunch" class="form-label">Lunch</label>
-                                <input type="text" class="form-control" id="lunch" name="lunch"
-                                    value="{{ $mealPlanCustom->lunch }}">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="dinner" class="form-label">Dinner</label>
-                                <input type="text" class="form-control" id="dinner" name="dinner"
-                                    value="{{ $mealPlanCustom->dinner }}">
-                            </div>
-
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
