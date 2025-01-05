@@ -11,26 +11,52 @@ class MealPlanCustomMobileController extends Controller
 {
     public function index(Request $request)
     {
-        $userId = $request->user_id;
+        $userId = $request->input('user_id');
+        $category = $request->input('category');
+        $type = $request->input('type');
 
-        // Check if the user has an approved appointment
-        $hasApprovedAppointment = PendingAppointment::where('user_id', $userId)
-            ->where('status', 'Approved')
-            ->exists();
+        // Base query for MealPlanCustom with filtering
+        $query = MealPlanCustom::query();
 
-        if ($hasApprovedAppointment) {
-            // Fetch custom meal plans for the user
-            $mealPlanCustom = MealPlanCustom::where('user_id', $userId)->get();
+        if ($userId) {
+            // Check if the user has an approved appointment
+            $hasApprovedAppointment = PendingAppointment::where('user_id', $userId)
+                ->where('status', 'Approved')
+                ->exists();
 
-            if ($mealPlanCustom->isNotEmpty()) {
-                return response()->json([
-                    'data' => $mealPlanCustom
-                ], 200);
+            if ($hasApprovedAppointment) {
+                $query->where('user_id', $userId);
             }
         }
 
-        // Fallback to default meal plans if no custom meal plans exist
-        $defaultMealPlans = MealPlan::get();
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        $mealPlanCustom = $query->get();
+
+        if ($mealPlanCustom->isNotEmpty()) {
+            return response()->json([
+                'data' => $mealPlanCustom
+            ], 200);
+        }
+
+        // Fallback to default meal plans with filtering
+        $defaultQuery = MealPlan::query();
+
+        if ($category) {
+            $defaultQuery->where('category', $category);
+        }
+
+        if ($type) {
+            $defaultQuery->where('type', $type);
+        }
+
+        $defaultMealPlans = $defaultQuery->get();
 
         return response()->json([
             'data' => $defaultMealPlans
