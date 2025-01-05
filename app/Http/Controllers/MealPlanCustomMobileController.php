@@ -4,25 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\MealPlanCustom;
 use App\Models\MealPlan;
+use App\Models\PendingAppointment;
 use Illuminate\Http\Request;
 
 class MealPlanCustomMobileController extends Controller
 {
     public function index(Request $request)
     {
-        $mealPlanCustom = MealPlanCustom::where('user_id', $request->user_id)->get();
+        $userId = $request->user_id;
 
-        $setMealPlan = null;
+        // Check if the user has an approved appointment
+        $hasApprovedAppointment = PendingAppointment::where('user_id', $userId)
+            ->where('status', 'Approved')
+            ->exists();
 
-        if ($mealPlanCustom) {
-            $setMealPlan = $mealPlanCustom;
-        } else {
-            $setMealPlan = MealPlan::get();
+        if ($hasApprovedAppointment) {
+            // Fetch custom meal plans for the user
+            $mealPlanCustom = MealPlanCustom::where('user_id', $userId)->get();
+
+            if ($mealPlanCustom->isNotEmpty()) {
+                return response()->json([
+                    'data' => $mealPlanCustom
+                ], 200);
+            }
         }
 
+        // Fallback to default meal plans if no custom meal plans exist
+        $defaultMealPlans = MealPlan::get();
+
         return response()->json([
-            'data' => $setMealPlan
+            'data' => $defaultMealPlans
         ], 200);
     }
-
 }
