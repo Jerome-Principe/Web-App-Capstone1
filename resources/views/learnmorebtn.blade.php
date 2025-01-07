@@ -39,10 +39,11 @@
             </p>
         </div>
 
-        <div class="section-title">
-            <div>
-                <h2>Explore Our Fitness Areas</h2>
-            </div>
+        <div class="center-content">
+            <h2>Explore Our Fitness Areas</h2>
+            <a href="/" class="btn back-btn">
+                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+            </a>
         </div>
 
         <div class="mainContainer">
