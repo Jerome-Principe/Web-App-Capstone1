@@ -170,9 +170,12 @@ body{
     background-color: #0056b3;
 }
 
-.section-title{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.section-title {
+    text-align: center;
+    margin-bottom: 20px; 
+}
 
+.description.text-center .back-btn {
+    display: inline-block; /* Ensure it's inline */
+    margin: 20px auto; /* Center-align with auto margins */
 }
