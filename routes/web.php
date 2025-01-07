@@ -37,7 +37,7 @@ Route::get('/', function () {
 Route::get('/readmorebtn', function () {
     return view('readmorebtn');
 });
-Route::get('/learnmorebtn', function () {
+Route::get('/learnmore', function () {
     return view('learnmorebtn');
 });
 
