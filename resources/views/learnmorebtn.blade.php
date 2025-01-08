@@ -80,6 +80,56 @@
                     </p>
                 </div>
             </div>
+
+
+            <div class="mycard">
+                <div class="cimg">
+                    <img src="{{asset('assets/images/lifestyle.jpg')}}">
+                </div>
+                <div class="cdetail">
+                    <h2>Happy Community</h2>
+                    <p>
+                        At Limitless Fitness Studio, we believe that a supportive and joyful community is the
+                        cornerstone of personal and collective growth.
+                        Our members are more than just fitness enthusiasts; they are friends, motivators, and
+                        cheerleaders for one another.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="mycard">
+                <div class="cimg">
+                    <img src="{{asset('assets/images/inclinepress.jpg')}}">
+                </div>
+                <div class="cdetail">
+                    <h2>Motivation</h2>
+                    <p>
+                        At Limitless Fitness Studio, we understand that motivation is the key to unlocking your
+                        full
+                        potential.
+                        Our community is built on the foundation of mutual encouragement and support, driving
+                        each
+                        member to reach their fitness goals and beyond.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="mycard">
+                <div class="cimg">
+                    <img src="{{asset('assets/images/GYM2.jpg')}}">
+                </div>
+                <div class="cdetail">
+                    <h2>Limitless</h2>
+                    <p>
+                        Positivity is contagious at Limitless Fitness Studio.
+                        Our community members cheer each other on, celebrate successes, and provide
+                        encouragement
+                        during challenges. Every achievement is recognized, and every effort is appreciated.
+                    </p>
+                </div>
+            </div>
         </div>
 
         <div class="description text-center my-5">
