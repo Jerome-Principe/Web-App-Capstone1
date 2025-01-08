@@ -127,32 +127,6 @@ body{
     text-align: center;
 }
 
-.description {
-    text-align: center;
-    margin: 30px auto;
-    width: 80%;
-    font-size: 16px;
-    line-height: 1.6;
-    position: relative;
-}
-
-
-.description .fa {
-    display: inline-block;
-    margin-top: 20px; /* Adds spacing above the button */
-    padding: 10px 30px;
-    background-color: #1e293b;
-    color: #fff;
-    font-size: 18px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: 0.3s ease-in-out;
-}
-
-.description .back-btn:hover {
-    background-color: #555;
-}
-
 /* Hover effect for card expansion */
 .container .mycard:hover .cimg img {
     transition: transform 0.5s ease;
