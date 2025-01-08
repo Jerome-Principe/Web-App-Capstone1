@@ -138,19 +138,17 @@ body{
 
 
 .description .back-btn {
-    display: inline-block;
     margin-top: 20px; 
-    padding: 10px 30px;
-    background-color: #1e293b;
-    color: #fff;
+    color: #000000;
     font-size: 18px;
     text-decoration: none;
     border-radius: 5px;
     transition: 0.3s ease-in-out;
+    border-radius: 100%;
 }
 
 .description .back-btn:hover {
-    background-color: #555;
+    background-color: #aaa9a9;
 }
 
 

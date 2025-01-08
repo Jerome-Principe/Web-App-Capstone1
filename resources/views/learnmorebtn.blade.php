@@ -154,7 +154,10 @@
                         inspires and uplifts.
                     </p>
 
-                    <a href="/" class="btn back-btn"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+                    <a href="/" class="btn back-btn">
+                        <i class="fa fa-arrow-circle-left fa-lg" aria-hidden="true"></i>
+                    </a>
+
                 </div>
             </div>
         </div>
