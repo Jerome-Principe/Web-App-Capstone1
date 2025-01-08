@@ -137,7 +137,7 @@ body{
 }
 
 
-.description .back-btn {
+.description .fa {
     display: inline-block;
     margin-top: 20px; /* Adds spacing above the button */
     padding: 10px 30px;
