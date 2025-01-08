@@ -38,16 +38,8 @@
                 well-known landmark that helps people find us.
             </p>
         </div>
-
-        <div class="section-title">
-            <div>
-                <h2>Explore Our Fitness Areas</h2>
-            </div>
-        </div>
         <div class="mainContainer">
-
             <div class="container">
-
                 <div class="mycard">
                     <div class="cimg">
                         <img src="{{asset('assets/images/machine2.jpg')}}">
@@ -55,8 +47,7 @@
                     <div class="cdetail">
                         <h2>Weight Training Area</h2>
                         <p>
-                            This area is where the weight training involves, using resistance whether it's
-                            bodyweight or
+                            This area is where the weight training involves, using resistance whether it's bodyweight or
                             dumbbells to perform exercises that challenge all muscle groups in the body.
                         </p>
                     </div>
@@ -104,11 +95,9 @@
                     <div class="cdetail">
                         <h2>Motivation</h2>
                         <p>
-                            At Limitless Fitness Studio, we understand that motivation is the key to unlocking your
-                            full
+                            At Limitless Fitness Studio, we understand that motivation is the key to unlocking your full
                             potential.
-                            Our community is built on the foundation of mutual encouragement and support, driving
-                            each
+                            Our community is built on the foundation of mutual encouragement and support, driving each
                             member to reach their fitness goals and beyond.
                         </p>
                     </div>
@@ -121,44 +110,14 @@
                         <h2>Limitless</h2>
                         <p>
                             Positivity is contagious at Limitless Fitness Studio.
-                            Our community members cheer each other on, celebrate successes, and provide
-                            encouragement
+                            Our community members cheer each other on, celebrate successes, and provide encouragement
                             during challenges. Every achievement is recognized, and every effort is appreciated.
                         </p>
                     </div>
                 </div>
-                <!-- Add this new section below the last "mycard" -->
-                <div class="description">
-                    <p>
-                        Limitless Fitness Studio is more than just a gym; it is a space that offers an extraordinary
-                        experience for individuals passionate about health and fitness. The facility boasts
-                        specialized
-                        areas designed to cater to every aspect of a comprehensive workout routine. From the weight
-                        training area, equipped with state-of-the-art machines and free weights, to the cardio
-                        section
-                        featuring treadmills and stationary bikes, every corner of the gym is optimized to help you
-                        achieve your fitness goals. The clean and secure locker rooms ensure a hassle-free
-                        environment,
-                        allowing members to focus entirely on their training sessions.
-                    </p>
-                    <p>
-                        Beyond the physical amenities, Limitless Fitness Studio shines as a vibrant and motivating
-                        community hub. Members come together in an atmosphere of positivity and encouragement,
-                        fostering
-                        connections that go beyond fitness. Whether you're pushing your limits in the incline press
-                        zone
-                        or engaging with like-minded individuals in the lifestyle and happiness spaces, the studio's
-                        inclusive culture ensures that every member feels supported and celebrated. At Limitless
-                        Fitness
-                        Studio, it’s not just about building stronger bodies; it's about creating a community that
-                        inspires and uplifts.
-                    </p>
-
-                    <a href="/" class="btn back-btn"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
-                </div>
+                <a href="/" class="back">Back</a>
             </div>
         </div>
-
     </div>
 </body>
 
