@@ -4,7 +4,7 @@
     font-family: "Poppins";
 }
 body{
-    flex:auto;
+    flex: auto;
 }
 .Header{
     text-align: center;
@@ -20,8 +20,6 @@ body{
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    margin: 100px;
-    padding: 50px;
 }
 .container .mycard{
     position: relative;
@@ -34,10 +32,10 @@ body{
     flex-direction: column;
     box-shadow: 0 3px 50px rgba(0,0,0,0.5);
     transition: 0.4s ease-in-out; 
-
+    overflow: hidden; /* Added to prevent content from overflowing */
 }
 .container .mycard:hover{
-    height: 460px; 
+    height: 460px; /* Expand the height on hover */
 }
 .container .mycard .cimg{
     position: relative;
@@ -84,7 +82,7 @@ body{
     margin-top: 15px;
     transition: 0.3s ease;
 }
-.back:hover{
+.container .back:hover{
     background-color: rgb(168, 167, 167);
 }
 .cbground{
@@ -106,6 +104,7 @@ body{
 }
 .cbground p{
     width: 1000px;
+    margin-bottom: 50px;
 }
 @media(max-width: 1000px){
     .cbground img{
@@ -126,4 +125,54 @@ body{
 
 .desc{
     text-align: center;
+}
+
+.description {
+    text-align: center;
+    margin: 30px auto;
+    width: 80%;
+    font-size: 16px;
+    line-height: 1.6;
+    position: relative;
+}
+
+
+.description .back-btn {
+    display: inline-block;
+    margin-top: 20px; /* Adds spacing above the button */
+    padding: 10px 30px;
+    background-color: #1e293b;
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: 0.3s ease-in-out;
+}
+
+.description .back-btn:hover {
+    background-color: #555;
+}
+
+/* Hover effect for card expansion */
+.container .mycard:hover .cimg img {
+    transition: transform 0.5s ease;
+    transform: scale(1.1); /* Slight zoom-in effect */
+}
+
+/* Styling for the back button */
+.container .back {
+    background-color: #007BFF;
+    font-size: 18px;
+    padding: 12px 25px;
+}
+
+.container .back:hover {
+    background-color: #0056b3;
+}
+
+.section-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
