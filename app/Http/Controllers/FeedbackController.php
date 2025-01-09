@@ -10,7 +10,7 @@ class FeedbackController extends Controller
     // Display a paginated list of feedback
     public function index()
     {
-        $feedback = Feedback::paginate(2); // Retrieve 9 feedback entries per page
+        $feedback = Feedback::paginate(2); // Retrieve 2 feedback entries per page
         return view('feedback', compact('feedback')); // Return view with feedback data
     }
 
