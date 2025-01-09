@@ -98,7 +98,7 @@
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Meal Plan List</h1>
+            <h1>Meal Plan Default List</h1>
             <!-- Button to trigger modal -->
             <div>
                 <div class="d-flex justify-content-end position-relative">
