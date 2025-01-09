@@ -322,7 +322,7 @@
                     '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
                 ],
                 'Exercise': [
-                    'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
+                    'Strength Training', 'Cardiovascular Exercises', 'Plyometrics',
                     'Core Strength Exercises'
                 ]
             };
@@ -361,7 +361,7 @@
                     '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
                 ],
                 'Exercise': [
-                    'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
+                    'Strength Training', 'Cardiovascular Exercises', 'Plyometrics',
                     'Core Strength Exercises'
                 ]
             };
@@ -433,7 +433,7 @@
                                             </option>
                                         @endforeach
                                     @elseif($mealPlan->category == 'Exercise')
-                                        @foreach(['Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics', 'Core Strength Exercises'] as $type)
+                                        @foreach(['Strength Training', 'Cardiovascular Exercises', 'Plyometrics', 'Core Strength Exercises'] as $type)
                                             <option value="{{ $type }}" {{ $mealPlan->type == $type ? 'selected' : '' }}>
                                                 {{ $type }}
                                             </option>

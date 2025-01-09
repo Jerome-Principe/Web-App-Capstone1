@@ -374,7 +374,7 @@
                     '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
                 ],
                 'Exercise': [
-                    'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
+                    'Strength Training', 'Cardiovascular Exercises', 'Plyometrics',
                     'Core Strength Exercises'
                 ]
             };
@@ -413,7 +413,7 @@
                     '3 Days Push/Pull/Legs (PPL) Workout for Beginners'
                 ],
                 'Exercise': [
-                    'Plyometrics Training', 'Cardiovascular Exercises', 'Plyometrics',
+                    'Strength Training', 'Cardiovascular Exercises', 'Plyometrics',
                     'Core Strength Exercises'
                 ]
             };
