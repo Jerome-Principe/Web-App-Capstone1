@@ -86,7 +86,6 @@ Route::prefix('feedback')->name('feedback.')->group(function () {
 // Walk-in client routes
 Route::prefix('walkin')->group(function () {
     Route::get('/filter', [WalkinController::class, 'filterByDate'])->name('walkin.filterByDate');
-    Route::get('/export-pdf', [WalkinController::class, 'exportPdfByDate'])->name('walkin.exportPdfByDate');
     Route::get('/', [WalkinController::class, 'create']);
     Route::get('/clients', [WalkinController::class, 'index'])->name('walkin.index');
     Route::post('/store', [WalkinController::class, 'store'])->name('walkin.store');
@@ -94,6 +93,8 @@ Route::prefix('walkin')->group(function () {
     Route::put('/{id}', [WalkinController::class, 'update'])->name('walkins.update');
     Route::delete('/{id}', [WalkinController::class, 'destroy'])->name('walkins.destroy');
 });
+
+Route::get('/walkin/export-pdf', [WalkinController::class, 'exportPdfByDate'])->name('walkin.exportPdfByDate');
 
 // Walk-in client trash-related routes
 Route::prefix('walkins')->group(function () {
