@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Walkin;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class WalkinController extends Controller
 {
@@ -131,4 +132,43 @@ class WalkinController extends Controller
 
         return redirect()->route('walkin.index')->with('success', 'Walk-in client permanently deleted.');
     }
+
+    public function filterByDate(Request $request)
+    {
+        $date = $request->input('date'); // Get the selected date
+        $walkins = Walkin::whereDate('date', $date)->paginate(9); // Filter walk-ins by date
+        $totalAmount = $walkins->sum('amount'); // Calculate the total amount
+        $totalNames = $walkins->count(); // Count the total number of names
+
+        return view('walkin-client-list', compact('walkins', 'totalAmount', 'totalNames', 'date'));
+    }
+    public function exportPdfByDate(Request $request)
+    {
+        // Retrieve date from request
+        $date = $request->input('date');
+
+        // Check if a date is provided; if not, fetch all records
+        if ($date) {
+            $walkins = Walkin::whereDate('date', $date)->get();
+        } else {
+            $walkins = Walkin::all(); // Get all records
+        }
+
+        // Calculate totals
+        $totalAmount = $walkins->sum('amount');
+        $totalNames = $walkins->count();
+
+        // Generate the PDF
+        $pdf = Pdf::loadView('walkin-client-pdf', [
+            'walkins' => $walkins,
+            'date' => $date ?? 'All Dates',
+            'totalAmount' => $totalAmount,
+            'totalNames' => $totalNames,
+        ]);
+
+        // Return the PDF for download
+        return $pdf->download('walkin-clients-report.pdf');
+    }
+
+
 }

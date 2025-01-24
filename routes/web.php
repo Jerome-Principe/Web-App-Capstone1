@@ -85,6 +85,8 @@ Route::prefix('feedback')->name('feedback.')->group(function () {
 
 // Walk-in client routes
 Route::prefix('walkin')->group(function () {
+    Route::get('/filter', [WalkinController::class, 'filterByDate'])->name('walkin.filterByDate');
+    Route::get('/export-pdf', [WalkinController::class, 'exportPdfByDate'])->name('walkin.exportPdfByDate');
     Route::get('/', [WalkinController::class, 'create']);
     Route::get('/clients', [WalkinController::class, 'index'])->name('walkin.index');
     Route::post('/store', [WalkinController::class, 'store'])->name('walkin.store');

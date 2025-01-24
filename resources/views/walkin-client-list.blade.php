@@ -77,6 +77,10 @@
         input[type="checkbox"] {
             margin: 0;
         }
+
+        .summary {
+            margin-top: 20px;
+        }
     </style>
 </head>
 @extends('layouts.master')
@@ -134,12 +138,22 @@
                         </button>
                     </form>
 
-                    <!-- Search Form -->
-                    <form class="d-flex" role="search" action="#" method="GET">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                            style="height: 35px;">
-                        <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                    </form>
+                    <!-- Date Filter Form -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <form id="date-filter-form" method="GET" action="{{ route('walkin.filterByDate') }}">
+                            <label for="date" class="form-label">Select Date:</label>
+                            <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                style="width: 200px;" required>
+                            <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                        </form>
+
+                        <!-- Export PDF by Date -->
+                        <form method="GET" action="{{ route('walkin.exportPdfByDate') }}">
+                            <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                            <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -193,7 +207,9 @@
             </table>
 
             <div class="mt-3">
-                <h5>Total Amount: {{ $totalAmount }}</h5>
+                <h5>Date Selected: {{ $date ?? 'All Dates' }}</h5>
+                <h5>Total Names: {{ $totalNames ?? $walkins->total() }}</h5>
+                <h5>Total Amount: {{ $totalAmount ?? 0 }}</h5>
             </div>
 
             <nav aria-label="Page navigation example">
@@ -252,6 +268,16 @@
             e.preventDefault(); // Prevent form submission
         }
     });
+
+    document.getElementById('date').addEventListener('change', function () {
+        document.getElementById('date-filter-form').submit();
+    });
+
+    document.getElementById('date').addEventListener('change', function () {
+        const pdfDateField = document.getElementById('pdf-date');
+        pdfDateField.value = this.value;
+    });
+
 </script>
 
 @endsection
