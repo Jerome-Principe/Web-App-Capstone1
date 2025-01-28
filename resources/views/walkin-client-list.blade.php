@@ -268,7 +268,14 @@
         }
     });
 
+    document.getElementById('date').addEventListener('change', function () {
+        document.getElementById('date-filter-form').submit();
+    });
 
+    document.getElementById('date').addEventListener('change', function () {
+        const pdfDateField = document.getElementById('pdf-date');
+        pdfDateField.value = this.value;
+    });
 
 </script>
 
