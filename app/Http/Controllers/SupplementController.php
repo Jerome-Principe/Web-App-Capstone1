@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplement;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SupplementController extends Controller
 {
@@ -13,21 +14,18 @@ class SupplementController extends Controller
      */
     public function index()
     {
-        // Retrieve all supplements to calculate the total price
-        $supplements = Supplement::all();
-
-        $totalPrice = 0;
-        foreach ($supplements as $supplement) {
-            $supplement->total = $supplement->price * $supplement->quantity;
-            $totalPrice += $supplement->total;
-        }
-
         // Paginate supplements (9 items per page)
         $supplements = Supplement::paginate(9);
 
-        // Add total calculation for the paginated data
+        // Compute total price
+        $totalPrice = 0;
+
         foreach ($supplements as $supplement) {
-            $supplement->total = $supplement->price * $supplement->quantity;
+            // Ensure attributes exist before accessing them
+            if (isset($supplement->price, $supplement->quantity)) {
+                $supplement->total = $supplement->price * $supplement->quantity;
+                $totalPrice += $supplement->total;
+            }
         }
 
         return view('inventory-supplements-list', compact('supplements', 'totalPrice'));
@@ -174,5 +172,57 @@ class SupplementController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to permanently delete the supplement.');
         }
+    }
+
+    public function filterByDate(Request $request)
+    {
+        $date = $request->input('date');
+
+        // Retrieve supplements filtered by date
+        $supplements = Supplement::whereDate('date', $date)->paginate(9);
+
+        // Compute total for each supplement
+        $totalPrice = 0;
+        foreach ($supplements as $supplement) {
+            if (isset($supplement->price, $supplement->quantity)) {
+                $supplement->total = $supplement->price * $supplement->quantity;
+                $totalPrice += $supplement->total;
+            }
+        }
+
+        return view('inventory-supplements-list', compact('supplements', 'totalPrice'));
+    }
+
+
+
+    public function exportPdfByDate(Request $request)
+    {
+        // Retrieve date from request
+        $date = $request->input('date');
+
+        // Check if a date is provided; if not, fetch all records
+        if ($date) {
+            $supplement = Supplement::whereDate('date', $date)->get();
+        } else {
+            $supplement = Supplement::all(); // Get all records
+        }
+
+        // Calculate totals
+        $totalAmount = $supplement->sum(function ($supp) {
+            return $supp->price * $supp->quantity;
+        });
+
+        $totalItemNames = $supplement->count();
+
+        // Generate the PDF
+        $pdf = Pdf::loadView('inventory-supplements-pdf', [
+            'supplements' => $supplement,
+            'date' => $date ?? 'All Dates',
+            'totalAmount' => $totalAmount,
+            'totalItemNames' => $totalItemNames,
+        ]);
+
+        // Return the PDF for download
+        return $pdf->download('inventory-supplements-report.pdf');
     }
 }
