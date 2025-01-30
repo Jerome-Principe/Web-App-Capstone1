@@ -39,7 +39,7 @@
 
 <body>
     <h1>Inventory Equipments List Report</h1>
-    <p>Date: {{ $date }}</p>
+    <p>Date: {{ $date ?? 'All Dates' }}</p>
 
     <table>
         <thead>
