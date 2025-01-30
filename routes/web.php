@@ -85,14 +85,16 @@ Route::prefix('feedback')->name('feedback.')->group(function () {
 
 // Walk-in client routes
 Route::prefix('walkin')->group(function () {
-    Route::get('/filter', [WalkinController::class, 'filterByDate'])->name('walkin.filterByDate');
-    Route::get('/export-pdf', [WalkinController::class, 'exportPdfByDate'])->name('walkin.exportPdfByDate');
     Route::get('/', [WalkinController::class, 'create']);
     Route::get('/clients', [WalkinController::class, 'index'])->name('walkin.index');
     Route::post('/store', [WalkinController::class, 'store'])->name('walkin.store');
     Route::get('/{id}/edit', [WalkinController::class, 'edit'])->name('walkins.edit');
     Route::put('/{id}', [WalkinController::class, 'update'])->name('walkins.update');
     Route::delete('/{id}', [WalkinController::class, 'destroy'])->name('walkins.destroy');
+
+    // Filter and Export routes
+    Route::get('/filter', [WalkinController::class, 'filterByDate'])->name('walkin.filterByDate');
+    Route::get('/export-pdf', [WalkinController::class, 'exportPdfByDate'])->name('walkin.exportPdfByDate');
 });
 
 // Walk-in client trash-related routes
@@ -197,8 +199,8 @@ Route::prefix('supplements')->name('supplements.')->group(function () {
     Route::delete('/force-delete/{id}', [SupplementController::class, 'forceDelete'])->name('forceDelete');
 
     // Filter and Export routes
-    Route::get('/supplements/filter', [SupplementController::class, 'filterByDate'])->name('filterByDate');
-    Route::get('/supplements/export-pdf', [SupplementController::class, 'exportPdfByDate'])->name('exportPdfByDate');
+    Route::get('/filter', [SupplementController::class, 'filterByDate'])->name('filterByDate');
+    Route::get('/export-pdf', [SupplementController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
 // EquipmentsAdd routes
