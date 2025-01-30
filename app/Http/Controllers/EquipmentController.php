@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipment;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EquipmentController extends Controller
 {
@@ -138,4 +139,36 @@ class EquipmentController extends Controller
             return back()->with('error', 'Failed to permanently delete the equipment.');
         }
     }
+
+    public function filterByDate(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        $date = $request->input('date');
+        $equipments = Equipment::whereDate('date', $date)->paginate(9);
+
+        return view('inventory-equipments-list-add', compact('equipments'))->with('filteredDate', $date);
+    }
+
+    public function exportPdfByDate(Request $request)
+    {
+        $date = $request->input('date');
+
+        if ($date) {
+            $request->validate([
+                'date' => 'date',
+            ]);
+
+            $equipments = Equipment::whereDate('date', $date)->get();
+        } else {
+            $equipments = Equipment::all();
+        }
+
+        $pdf = Pdf::loadView('inventory-equipments-pdf', compact('equipments', 'date'));
+
+        return $pdf->download('inventory-equipments-report.pdf');
+    }
+
 }

@@ -216,6 +216,10 @@ Route::prefix('equipmentsAdd')->name('equipmentsAdd.')->group(function () {
     Route::post('/restore-bulk', [EquipmentController::class, 'restoreBulk'])->name('restoreBulk');
     Route::post('/restore/{id}', [EquipmentController::class, 'restore'])->name('restore');
     Route::delete('/force-delete/{id}', [EquipmentController::class, 'forceDelete'])->name('forceDelete');
+
+    // Filter and Export routes
+    Route::get('/filter', [EquipmentController::class, 'filterByDate'])->name('filterByDate');
+    Route::get('/export-pdf', [EquipmentController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
 // Machines routes
