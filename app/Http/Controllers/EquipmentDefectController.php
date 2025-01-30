@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipment;
 use App\Models\EquipmentDefect;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Http\Request;
 
@@ -148,5 +149,35 @@ class EquipmentDefectController extends Controller
         $equipmentDefect->forceDelete();
 
         return redirect()->route('equipments-defect.trashed')->with('success', 'Equipment defect permanently deleted.');
+    }
+
+    public function filterByDate(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        $date = $request->input('date');
+        $equipmentDefects = EquipmentDefect::whereDate('date', $date)->paginate(9);
+
+        return view('inventory-equipments-list-defect', compact('equipmentDefects'))->with('filteredDate', $date);
+    }
+
+    public function exportPdfByDate(Request $request)
+    {
+        $date = $request->input('date');
+
+        if ($date) {
+            $request->validate([
+                'date' => 'date',
+            ]);
+            $equipmentDefects = EquipmentDefect::whereDate('date', $date)->get();
+        } else {
+            $equipmentDefects = EquipmentDefect::all();
+        }
+
+        $pdf = Pdf::loadView('inventory-equipments-defect-pdf', compact('equipmentDefects', 'date'));
+
+        return $pdf->download('inventory-equipments-defect-report.pdf');
     }
 }

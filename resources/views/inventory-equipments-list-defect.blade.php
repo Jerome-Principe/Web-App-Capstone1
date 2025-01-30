@@ -143,12 +143,22 @@
                         </button>
                     </form>
 
-                    <!-- Search Form -->
-                    <form class="d-flex" role="search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                            style="height: 35px;">
-                        <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                    </form>
+                    <!-- Date Filter Form -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <form id="date-filter-form" method="GET" action="{{ route('equipments-defect.filterByDate') }}">
+                            <label for="date" class="form-label">Select Date:</label>
+                            <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                style="width: 200px;" required>
+                            <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                        </form>
+
+                        <!-- Export PDF by Date -->
+                        <form method="GET" action="{{ route('equipments-defect.exportPdfByDate') }}">
+                            <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                            <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
 
@@ -172,7 +182,8 @@
                 <tbody>
                     @foreach($equipmentDefects as $index => $equipmentDefect)
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $equipmentDefect->id }}"
+                            <td class="text-center">
+                                <input type="checkbox" name="selected[]" value="{{ $equipmentDefect->id }}"
                                     onchange="updateSelectionCount()" />
                             </td>
                             <td class="text-center">
@@ -259,6 +270,15 @@
             alert('Please select at least one appointments to restore.');
             e.preventDefault(); // Prevent form submission
         }
+    });
+
+    document.getElementById('date').addEventListener('change', function () {
+        document.getElementById('date-filter-form').submit();
+    });
+
+    document.getElementById('date').addEventListener('change', function () {
+        const pdfDateField = document.getElementById('pdf-date');
+        pdfDateField.value = this.value;
     });
 </script>
 

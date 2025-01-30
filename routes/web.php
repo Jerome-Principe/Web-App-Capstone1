@@ -254,6 +254,10 @@ Route::prefix('equipments-defect')->name('equipments-defect.')->group(function (
     Route::post('/restore-bulk', [EquipmentDefectController::class, 'restoreBulk'])->name('restoreBulk');
     Route::post('/restore/{id}', [EquipmentDefectController::class, 'restore'])->name('restore');
     Route::delete('/force-delete/{id}', [EquipmentDefectController::class, 'forceDelete'])->name('forceDelete');
+
+    // Filter and Export routes
+    Route::get('/filter', [EquipmentDefectController::class, 'filterByDate'])->name('filterByDate');
+    Route::get('/export-pdf', [EquipmentDefectController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
 // Machines Defect routes
