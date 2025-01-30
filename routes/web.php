@@ -273,6 +273,10 @@ Route::prefix('machine-defects')->name('machine-defects.')->group(function () {
     Route::post('/restore-bulk', [MachineDefectController::class, 'restoreBulk'])->name('restoreBulk');
     Route::post('/restore/{id}', [MachineDefectController::class, 'restore'])->name('restore');
     Route::delete('/force-delete/{id}', [MachineDefectController::class, 'forceDelete'])->name('forceDelete');
+
+    // Filter and Export routes
+    Route::get('/filter', [MachineDefectController::class, 'filterByDate'])->name('filterByDate');
+    Route::get('/export-pdf', [MachineDefectController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
 //Meal-plan

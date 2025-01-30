@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MachineDefect;
 use App\Models\Machine;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Http\Request;
 
@@ -142,6 +143,36 @@ class MachineDefectController extends Controller
         $machineDefect->forceDelete();
 
         return redirect()->route('machine-defects.trashed')->with('success', 'Machine defect permanently deleted.');
+    }
+
+    public function filterByDate(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        $date = $request->input('date');
+        $machineDefects = MachineDefect::whereDate('date', $date)->paginate(9);
+
+        return view('inventory-machines-list-defect', compact('machineDefects'))->with('filteredDate', $date);
+    }
+
+    public function exportPdfByDate(Request $request)
+    {
+        $date = $request->input('date');
+
+        if ($date) {
+            $request->validate([
+                'date' => 'date',
+            ]);
+            $machineDefects = MachineDefect::whereDate('date', $date)->get();
+        } else {
+            $machineDefects = MachineDefect::all();
+        }
+
+        $pdf = Pdf::loadView('inventory-machines-defect-pdf', compact('machineDefects', 'date'));
+
+        return $pdf->download('inventory-machines-defect-report.pdf');
     }
 
 }
