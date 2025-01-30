@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Walk-in Client Report</title>
+    <title>Walk-in Clients Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,11 +24,15 @@
         td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: left;
+            text-align: center;
         }
 
         th {
             background-color: #f4f4f4;
+        }
+
+        .total-row {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -36,6 +40,7 @@
 <body>
     <h1>Walk-in Clients Report</h1>
     <p>Date: {{ $date }}</p>
+
     <table>
         <thead>
             <tr>
@@ -46,18 +51,28 @@
             </tr>
         </thead>
         <tbody>
+            @php $totalAmount = 0; @endphp
             @foreach ($walkins as $index => $walkin)
+                @php $totalAmount += $walkin->amount; @endphp
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $walkin->lastname }}</td>
                     <td>{{ $walkin->firstname }}</td>
-                    <td>{{ $walkin->amount }}</td>
+                    <td>{{ number_format($walkin->amount, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="3">Total Amount</td>
+                <td>{{ number_format($totalAmount, 2) }}</td>
+            </tr>
+            <tr class="total-row">
+                <td colspan="3">Total Walk-ins</td>
+                <td>{{ count($walkins) }}</td>
+            </tr>
+        </tfoot>
     </table>
-    <p>Total Names: {{ $totalNames }}</p>
-    <p>Total Amount: {{ $totalAmount }}</p>
 </body>
 
 </html>
