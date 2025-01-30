@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Drink;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DrinkController extends Controller
 {
@@ -161,4 +162,53 @@ class DrinkController extends Controller
             return back()->with('error', 'Failed to permanently delete the drink.');
         }
     }
+
+    public function filterByDate(Request $request)
+    {
+        $date = $request->input('date');
+
+        // Retrieve drinks based on the selected date
+        $drinks = Drink::whereDate('date', $date)->paginate(9);
+
+        // Initialize total price
+        $totalPrice = 0;
+
+        // Compute total for each drink
+        foreach ($drinks as $drink) {
+            $drink->total = $drink->price * $drink->quantity;
+            $totalPrice += $drink->total;
+        }
+
+        return view('inventory-drinks-list', compact('drinks', 'totalPrice'));
+    }
+
+
+    public function exportPdfByDate(Request $request)
+    {
+        // Retrieve date from request
+        $date = $request->input('date');
+
+        // Check if a date is provided; if not, fetch all records
+        if ($date) {
+            $drinks = Drink::whereDate('date', $date)->get();
+        } else {
+            $drinks = Drink::all(); // Get all records
+        }
+
+        // Calculate totals
+        $totalAmount = $drinks->sum('amount');
+        $totalItemNames = $drinks->count();
+
+        // Generate the PDF
+        $pdf = Pdf::loadView('inventory-drinks-pdf', [
+            'drinks' => $drinks,
+            'date' => $date ?? 'All Dates',
+            'totalAmount' => $totalAmount,
+            'totalItemNames' => $totalItemNames,
+        ]);
+
+        // Return the PDF for download
+        return $pdf->download('inventory-drinks-report.pdf');
+    }
+
 }

@@ -176,6 +176,10 @@ Route::prefix('drinks')->name('drinks.')->group(function () {
     Route::post('/restore-bulk', [DrinkController::class, 'restoreBulk'])->name('restoreBulk');
     Route::post('/restore/{id}', [DrinkController::class, 'restore'])->name('restore');
     Route::delete('/force-delete/{id}', [DrinkController::class, 'forceDelete'])->name('forceDelete');
+
+    // Filter and Export routes
+    Route::get('/filter', [DrinkController::class, 'filterByDate'])->name('filterByDate');
+    Route::get('/export-pdf', [DrinkController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
 // Supplements routes
