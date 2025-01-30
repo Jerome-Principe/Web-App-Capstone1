@@ -235,6 +235,10 @@ Route::prefix('machines')->name('machines.')->group(function () {
     Route::post('/restore-bulk', [MachineController::class, 'restoreBulk'])->name('restoreBulk');
     Route::post('/restore/{id}', [MachineController::class, 'restore'])->name('restore');
     Route::delete('/force-delete/{id}', [MachineController::class, 'forceDelete'])->name('forceDelete');
+
+    // Filter and Export routes
+    Route::get('/filter', [MachineController::class, 'filterByDate'])->name('filterByDate');
+    Route::get('/export-pdf', [MachineController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
 // Equipments Defect routes

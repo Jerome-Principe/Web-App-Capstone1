@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Machine;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MachineController extends Controller
 {
@@ -145,5 +146,35 @@ class MachineController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to permanently delete the machine.');
         }
+    }
+
+    public function filterByDate(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        $date = $request->input('date');
+        $machines = Machine::whereDate('date', $date)->paginate(9);
+
+        return view('inventory-machines-list-add', compact('machines'))->with('filteredDate', $date);
+    }
+
+    public function exportPdfByDate(Request $request)
+    {
+        $date = $request->input('date');
+
+        if ($date) {
+            $request->validate([
+                'date' => 'date',
+            ]);
+            $machines = Machine::whereDate('date', $date)->get();
+        } else {
+            $machines = Machine::all();
+        }
+
+        $pdf = Pdf::loadView('inventory-machines-pdf', compact('machines', 'date'));
+
+        return $pdf->download('inventory-machines-report.pdf');
     }
 }
