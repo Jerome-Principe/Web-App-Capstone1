@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Approved / Declined Memberships</title>
+    <title>Membership List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -133,12 +133,22 @@
                         </button>
                     </form>
 
-                    <!-- Search Form -->
-                    <form class="d-flex" role="search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                            style="height: 35px;">
-                        <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                    </form>
+                    <!-- Date Filter Form -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <form id="date-filter-form" method="GET" action="{{ route('membership.list.filterByDate') }}">
+                            <label for="date" class="form-label">Select Date:</label>
+                            <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                style="width: 200px;" required>
+                            <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                        </form>
+
+                        <!-- Export PDF by Date -->
+                        <form method="GET" action="{{ route('membership.list.exportPdfByDate') }}">
+                            <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                            <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
 
@@ -153,6 +163,7 @@
                         <th class="text-center">First Name</th>
                         <th class="text-center">Last Name</th>
                         <th class="text-center">Email</th>
+                        <th class="text-center">Date / Time</th>
                         <th class="text-center">Status</th>
                     </tr>
                 </thead>
@@ -166,6 +177,7 @@
                             <td class="text-center">{{ $membership->first_name }}</td>
                             <td class="text-center">{{ $membership->last_name }}</td>
                             <td class="text-center">{{ $membership->email }}</td>
+                            <td class="text-center">{{ $membership->created_at }}</td>
                             <td class="text-center">{{ $membership->status }}</td>
                         </tr>
                     @endforeach
@@ -228,6 +240,15 @@
             alert('Please select at least one appointments to restore.');
             e.preventDefault(); // Prevent form submission
         }
+    });
+
+    document.getElementById('date').addEventListener('change', function () {
+        document.getElementById('date-filter-form').submit();
+    });
+
+    document.getElementById('date').addEventListener('change', function () {
+        const pdfDateField = document.getElementById('pdf-date');
+        pdfDateField.value = this.value;
     });
 </script>
 

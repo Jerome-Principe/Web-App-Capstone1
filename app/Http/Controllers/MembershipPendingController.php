@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PendingMembership;
-use App\Models\RequestMembership;
-use App\Models\MedicalForm;
-use App\Models\MembershipPayment;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MembershipPendingController extends Controller
 {
@@ -131,4 +129,34 @@ class MembershipPendingController extends Controller
             return back()->with('error', 'Failed to permanently delete the membership and related data.' . $e->getMessage());
         }
     }
+
+    public function filterByDate(Request $request)
+    {
+        // Validate the date input
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        // Retrieve memberships filtered by the selected date and status 'Approved'
+        $date = $request->input('date');
+        $memberships = PendingMembership::where('status', 'Approved')
+            ->whereDate('created_at', $date) // or any other date column if necessary
+            ->paginate(10);
+
+        return view('membership-list', compact('memberships', 'date'));
+    }
+
+    public function exportPdfByDate(Request $request)
+    {
+        $date = $request->get('date');
+        // Filter memberships based on the selected date or fetch all if no date is provided
+        $memberships = $date
+            ? PendingMembership::whereDate('created_at', $date)->get()
+            : PendingMembership::all();
+
+        // Return PDF
+        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date'));
+        return $pdf->download('membership-list.pdf');
+    }
+
 }

@@ -297,7 +297,12 @@ Route::prefix('membership-pendings')->group(function () {
     Route::post('/{id}/restore', [MembershipPendingController::class, 'restore'])->name('membership-pendings.restore');
     Route::post('/restore-bulk', [MembershipPendingController::class, 'restoreBulk'])->name('membership-pendings.restoreBulk');
     Route::delete('/force-delete/{id}', [MembershipPendingController::class, 'forceDelete'])->name('membership-pendings.forceDelete');
+
+    // Filter and Export routes 
+    Route::get('/list/filter', [MembershipPendingController::class, 'filterByDate'])->name('membership.list.filterByDate');
+    Route::get('/list/export-pdf', [MembershipPendingController::class, 'exportPdfByDate'])->name('membership.list.exportPdfByDate');
 });
+
 Route::resource('membership-pendings', MembershipPendingController::class);
 Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');
 Route::post('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline'])->name('membership-pendings.decline');
