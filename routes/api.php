@@ -70,8 +70,8 @@ Route::get('/mobile/meal-plan-custom', [MealPlanCustomMobileController::class, '
 Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store']);
 
 //OTP
-Route::post('/send-otp', [OtpController::class, 'sendOtp']);
-Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
+Route::post('/mobile/send-otp', [OtpController::class, 'sendOtp']);
+Route::post('/mobile/verify-otp', [OtpController::class, 'verifyOtp']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
