@@ -13,6 +13,7 @@ use App\Http\Controllers\CancelledAppointmentController;
 use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\MealPlanCustomController;
 use App\Http\Controllers\MealPlanCustomMobileController;
+use App\Http\Controllers\OtpController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -67,6 +68,10 @@ Route::post('/mobile/meal-plan', [MealPlanController::class, 'store']);
 
 Route::get('/mobile/meal-plan-custom', [MealPlanCustomMobileController::class, 'index']);
 Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store']);
+
+//OTP
+Route::post('/send-otp', [OtpController::class, 'sendOtp']);
+Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
