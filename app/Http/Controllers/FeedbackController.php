@@ -10,7 +10,7 @@ class FeedbackController extends Controller
     // Display a paginated list of feedback
     public function index()
     {
-        // Order walk-ins by creation date, showing newest first
+        // Order feedback by creation date, showing newest first
         $feedback = Feedback::orderBy('created_at', 'desc')->paginate(2); // Retrieve 2 feedback entries per page
         return view('feedback', compact('feedback')); // Return view with feedback data
     }

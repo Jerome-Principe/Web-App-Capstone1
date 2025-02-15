@@ -14,8 +14,8 @@ class SupplementController extends Controller
      */
     public function index()
     {
-        // Paginate supplements (9 items per page)
-        $supplements = Supplement::paginate(9);
+        // Paginate supplement and order by creation date (newest first)
+        $supplements = Supplement::orderBy('created_at', 'desc')->paginate(9);
 
         // Compute total price
         $totalPrice = 0;
