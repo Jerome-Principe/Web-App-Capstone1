@@ -14,7 +14,7 @@ class DrinkController extends Controller
     public function index()
     {
         // Retrieve all drinks and calculate the total price for all
-        $allDrinks = Drink::orderBy('created_at', 'desc')->all(); // Order walk-ins by creation date, showing newest first
+        $allDrinks = Drink::all();
         $totalPrice = 0;
 
         foreach ($allDrinks as $drink) {
