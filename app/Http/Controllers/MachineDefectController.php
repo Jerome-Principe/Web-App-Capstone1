@@ -15,7 +15,8 @@ class MachineDefectController extends Controller
      */
     public function index()
     {
-        $machineDefects = MachineDefect::with('machine')->paginate(9);
+        // Order defect-machine by creation date, showing newest first
+        $machineDefects = MachineDefect::with('machine')->orderBy('created_at', 'desc')->paginate(9);
         return view('inventory-machines-list-defect', compact('machineDefects'));
     }
 
