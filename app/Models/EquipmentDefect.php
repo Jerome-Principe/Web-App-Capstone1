@@ -20,6 +20,9 @@ class EquipmentDefect extends Model
         'time',
     ];
 
+    // Ensure timestamps are enabled
+    public $timestamps = true;
+
     // Define the belongsTo relationship
     public function equipment()
     {
