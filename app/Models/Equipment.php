@@ -11,4 +11,7 @@ class Equipment extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'equipments';
     protected $fillable = ['item_name', 'quantity', 'date', 'time'];
+
+    // Ensure timestamps are enabled
+    public $timestamps = true;
 }

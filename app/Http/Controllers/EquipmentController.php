@@ -13,7 +13,8 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        $equipments = Equipment::paginate(9);
+        // Order equipment by creation date, showing newest first
+        $equipments = Equipment::orderBy('created_at', 'desc')->paginate(9);
         return view('inventory-equipments-list-add', compact('equipments'));
     }
 
