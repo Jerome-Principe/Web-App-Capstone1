@@ -10,4 +10,7 @@ class Feedback extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = ['id', 'name', 'email', 'subject', 'message'];
+
+    // Ensure timestamps are enabled
+    public $timestamps = true;
 }
