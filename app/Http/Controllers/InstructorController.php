@@ -9,8 +9,8 @@ class InstructorController extends Controller
 {
     public function index(Request $request)
     {
-        // Use pagination instead of fetching all records
-        $instructors = Instructor::paginate(10); // Adjust the number per page as needed
+        // Order walk-ins by creation date, showing newest first
+        $instructors = Instructor::orderBy('created_at', 'desc')->paginate(10); // Adjust the number per page as needed
 
         // Check if the request expects JSON
         if ($request->wantsJson()) {

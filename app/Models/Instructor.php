@@ -20,6 +20,9 @@ class Instructor extends Model
         'rates',
     ];
 
+    // Ensure timestamps are enabled
+    public $timestamps = true;
+
     // Define relationships if needed
     public function appointments()
     {
