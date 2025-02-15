@@ -16,4 +16,7 @@ class Drink extends Model
         'date',
         'time'
     ];
+
+    // Ensure timestamps are enabled
+    public $timestamps = true;
 }

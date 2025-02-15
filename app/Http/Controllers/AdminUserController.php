@@ -10,6 +10,7 @@ class AdminUserController extends Controller
 {
     public function index()
     {
+        // Order users by creation date, showing newest first
         $users = User::orderBy('created_at', 'desc')->paginate(9);
         return view('admin-users', compact('users'));
     }

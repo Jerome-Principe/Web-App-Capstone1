@@ -22,8 +22,8 @@ class DrinkController extends Controller
             $totalPrice += $drink->total;
         }
 
-        // Paginate drinks for display (9 items per page)
-        $drinks = Drink::paginate(9);
+        // Paginate drinks and order by creation date (newest first)
+        $drinks = Drink::orderBy('created_at', 'desc')->paginate(9);
 
         // Calculate the total for each paginated drink
         foreach ($drinks as $drink) {

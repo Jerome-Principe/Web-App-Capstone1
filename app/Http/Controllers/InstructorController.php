@@ -9,7 +9,7 @@ class InstructorController extends Controller
 {
     public function index(Request $request)
     {
-        // Order walk-ins by creation date, showing newest first
+        // Order instructors by creation date, showing newest first
         $instructors = Instructor::orderBy('created_at', 'desc')->paginate(10); // Adjust the number per page as needed
 
         // Check if the request expects JSON
