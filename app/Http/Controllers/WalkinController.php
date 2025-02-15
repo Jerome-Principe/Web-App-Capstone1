@@ -11,7 +11,8 @@ class WalkinController extends Controller
     // Display a paginated list of walk-in clients with the total amount
     public function index()
     {
-        $walkins = Walkin::paginate(5); // Paginate walk-ins (9 per page)
+        // Order walk-ins by creation date, showing newest first
+        $walkins = Walkin::orderBy('created_at', 'desc')->paginate(5); // 5 per page
         $totalAmount = Walkin::sum('amount'); // Calculate total amount of walk-ins
 
         return view('walkin-client-list', compact('walkins', 'totalAmount'));

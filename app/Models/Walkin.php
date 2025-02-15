@@ -24,4 +24,7 @@ class Walkin extends Model
         'payment',
     ];
 
+    // Ensure timestamps are enabled
+    public $timestamps = true;
+
 }
