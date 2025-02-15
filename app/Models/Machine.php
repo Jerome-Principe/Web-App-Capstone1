@@ -13,6 +13,9 @@ class Machine extends Model
 
     protected $fillable = ['item_name', 'quantity', 'date', 'time'];
 
+    // Ensure timestamps are enabled
+    public $timestamps = true;
+
     public function machineDefects()
     {
         return $this->hasMany(MachineDefect::class);

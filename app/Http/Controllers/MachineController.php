@@ -12,8 +12,8 @@ class MachineController extends Controller
      */
     public function index()
     {
-        //
-        $machines = Machine::paginate(9);
+        // Order machine by creation date, showing newest first
+        $machines = Machine::orderBy('created_at', 'desc')->paginate(9);
 
         return view('inventory-machines-list-add', compact('machines')); // Create a view for listing
     }
