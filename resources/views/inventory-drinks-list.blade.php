@@ -84,200 +84,198 @@
 
 @section('content')
 
-<body>
-    <div class="container">
-        <div class="header-section">
-            <h1>Drinks List</h1>
-            <div>
-                <div class="d-flex justify-content-end position-relative">
-                    <a href="/drinks/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                            aria-hidden="true"></i>Add New
+    <body>
+        <div class="container">
+            <div class="header-section">
+                <h1>Drinks List</h1>
+                <div>
+                    <div class="d-flex justify-content-end position-relative">
+                        <a href="/drinks/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                                aria-hidden="true"></i>Add New
+                        </a>
+                    </div>
+                </div>
+
+                @if(session('success'))
+                    <div class="custom-alert-message">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        setTimeout(function () {
+                            const alert = document.querySelector('.custom-alert-message');
+                            if (alert) {
+                                alert.classList.add('fade-out');
+                            }
+                        }, 3000);
+                    });
+                </script>
+            </div>
+
+            <div class="filter-options">
+                <div class="filter-links">
+                    <!-- Link to view all drinks -->
+                    <a href="#" id="select-all-link">All (0)</a>
+
+                    <!-- Link to view all trashed drinks -->
+                    <a href="{{ route('drinks.trashed') }}">Trashed
+                        ({{ App\Models\Drink::onlyTrashed()->count() }})
                     </a>
                 </div>
-            </div>
 
-            @if(session('success'))
-                <div class="custom-alert-message">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    setTimeout(function () {
-                        const alert = document.querySelector('.custom-alert-message');
-                        if (alert) {
-                            alert.classList.add('fade-out');
-                        }
-                    }, 3000);
-                });
-            </script>
-        </div>
-
-        <div class="filter-options">
-            <div class="filter-links">
-                <!-- Link to view all drinks -->
-                <a href="#" id="select-all-link">All (0)</a>
-
-                <!-- Link to view all trashed drinks -->
-                <a href="{{ route('drinks.trashed') }}">Trashed
-                    ({{ App\Models\Drink::onlyTrashed()->count() }})
-                </a>
-            </div>
-
-            <div>
-                @csrf
-                @method('DELETE')
-                <div class="d-flex align-items-center">
-                    <!-- Form to move selected drinks to trash -->
-                    <form action="{{ route('drinks.moveToTrash') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="selected" id="selectedIds">
-                        <button type="submit" class="btn btn-light border mx-2">
-                            <i class="fa fa-trash"></i> Move to Trash
-                        </button>
-                    </form>
-
-                    <!-- Date Filter Form -->
-                    <div class="d-flex justify-content-between align-items-center">
-                        <form id="date-filter-form" method="GET" action="{{ route('drinks.filterByDate') }}">
-                            <label for="date" class="form-label">Select Date:</label>
-                            <input type="date" name="date" id="date" class="form-control d-inline-block"
-                                style="width: 200px;" required>
-                            <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                <div>
+                    @csrf
+                    @method('DELETE')
+                    <div class="d-flex align-items-center">
+                        <!-- Form to move selected drinks to trash -->
+                        <form action="{{ route('drinks.moveToTrash') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="selected" id="selectedIds">
+                            <button type="submit" class="btn btn-light border mx-2">
+                                <i class="fa fa-trash"></i> Move to Trash
+                            </button>
                         </form>
 
-                        <!-- Export PDF by Date -->
-                        <form method="GET" action="{{ route('drinks.exportPdfByDate') }}">
-                            <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
-                            <button type="submit" class="btn btn-success ms-2">Export PDF</button>
-                        </form>
+                        <!-- Date Filter Form -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <form id="date-filter-form" method="GET" action="{{ route('drinks.filterByDate') }}">
+                                <label for="date" class="form-label">Select Date:</label>
+                                <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                    style="width: 200px;" required>
+                                <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                            </form>
+
+                            <!-- Export PDF by Date -->
+                            <form method="GET" action="{{ route('drinks.exportPdfByDate') }}">
+                                <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                                <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                            </form>
+                        </div>
+
                     </div>
-
                 </div>
             </div>
-        </div>
 
-        <div class="table-container">
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Drink Name</th>
-                        <th class="text-center">Quantity</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Total</th>
-                        <th class="text-center">Date</th>
-                        <th class="text-center">Time</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach($drinks as $index => $drink)
+            <div class="table-container">
+                <table class="table table-bordered text-center">
+                    <thead>
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $drink->id }}"
-                                    onchange="updateSelectionCount()" />
-                            </td>
-                            <td class="text-center">
-                                {{ ($drinks->currentPage() - 1) * $drinks->perPage() + $loop->index + 1  }}
-                            </td>
-                            <td class="text-center">{{ $drink->item_name }}</td>
-                            <td class="text-center">{{ $drink->quantity }}</td>
-                            <td class="text-center">{{ $drink->price }}</td>
-                            <td class="text-center">{{ $drink->total }}</td>
-                            <td class="text-center">{{ $drink->date }}</td>
-                            <td class="text-center">{{ $drink->time }}</td>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route('drinks.edit', $drink->id) }}" class="btn btn-sm btn-primary"><i
-                                        class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
-                                <form action="{{ route('drinks.destroy', $drink->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                        onclick="return confirm('Are you sure you want to delete this drink?')"><i
-                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                    </button>
-                                </form>
-                            </td>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Drink Name</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-center">Price</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
 
-            <div class="mt-3">
-                <h5>Total Price = {{ $totalPrice }}</h5>
-            </div>
+                    <tbody>
+                        @foreach($drinks as $index => $drink)
+                            <tr>
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $drink->id }}"
+                                        onchange="updateSelectionCount()" />
+                                </td>
+                                <td class="text-center">
+                                    {{ ($drinks->currentPage() - 1) * $drinks->perPage() + $loop->index + 1  }}
+                                </td>
+                                <td class="text-center">{{ $drink->item_name }}</td>
+                                <td class="text-center">{{ $drink->quantity }}</td>
+                                <td class="text-center">{{ $drink->price }}</td>
+                                <td class="text-center">{{ $drink->total }}</td>
+                                <td class="text-center">{{ $drink->date }}</td>
+                                <td class="d-flex justify-content-center">
+                                    <a href="{{ route('drinks.edit', $drink->id) }}" class="btn btn-sm btn-primary"><i
+                                            class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
+                                    <form action="{{ route('drinks.destroy', $drink->id) }}" method="POST"
+                                        style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger mx-1"
+                                            onclick="return confirm('Are you sure you want to delete this drink?')"><i
+                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $drinks->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $drinks->previousPageUrl() }}" tabindex="-1">Previous</a>
-                    </li>
+                <div class="mt-3">
+                    <h5>Total Price = {{ $totalPrice }}</h5>
+                </div>
 
-                    @foreach(range(1, $drinks->lastPage()) as $page)
-                        <li class="page-item {{ $page == $drinks->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $drinks->url($page) }}">{{ $page }}</a>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item {{ $drinks->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $drinks->previousPageUrl() }}" tabindex="-1">Previous</a>
                         </li>
-                    @endforeach
 
-                    <li class="page-item {{ !$drinks->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $drinks->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                        @foreach(range(1, $drinks->lastPage()) as $page)
+                            <li class="page-item {{ $page == $drinks->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $drinks->url($page) }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
+
+                        <li class="page-item {{ !$drinks->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $drinks->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-    </div>
-</body>
+    </body>
 
-<script>
-    // Toggle select all checkboxes
-    function toggleSelectAll(checkbox) {
-        const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-        checkboxes.forEach(item => item.checked = checkbox.checked);
-        updateSelectionCount();
-    }
-
-    // Update selected count and hidden input value
-    function updateSelectionCount() {
-        const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-        const count = selectedCheckboxes.length;
-        document.getElementById('select-all-link').textContent = `All (${count})`;
-        const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
-        document.getElementById('selectedIds').value = selectedIds.join(',');
-        console.log(selectedIds.join(',')); // Log selected IDs to debug
-    }
-
-    // Add functionality for the "All (0)" link click
-    document.getElementById('select-all-link').addEventListener('click', function (e) {
-        e.preventDefault();
-        const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
-        const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
-        selectAllCheckbox.checked = isChecked;
-        toggleSelectAll(selectAllCheckbox);
-    });
-
-    // Ensure the form doesn't submit if no appointments are selected
-    document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
-        const selectedIds = document.getElementById('selectedIds').value;
-        if (!selectedIds) {
-            alert('Please select at least one appointments to restore.');
-            e.preventDefault(); // Prevent form submission
+    <script>
+        // Toggle select all checkboxes
+        function toggleSelectAll(checkbox) {
+            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+            checkboxes.forEach(item => item.checked = checkbox.checked);
+            updateSelectionCount();
         }
-    });
 
-    document.getElementById('date').addEventListener('change', function () {
-        document.getElementById('date-filter-form').submit();
-    });
+        // Update selected count and hidden input value
+        function updateSelectionCount() {
+            const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+            const count = selectedCheckboxes.length;
+            document.getElementById('select-all-link').textContent = `All (${count})`;
+            const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
+            document.getElementById('selectedIds').value = selectedIds.join(',');
+            console.log(selectedIds.join(',')); // Log selected IDs to debug
+        }
 
-    document.getElementById('date').addEventListener('change', function () {
-        const pdfDateField = document.getElementById('pdf-date');
-        pdfDateField.value = this.value;
-    });
+        // Add functionality for the "All (0)" link click
+        document.getElementById('select-all-link').addEventListener('click', function (e) {
+            e.preventDefault();
+            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
+            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
+            selectAllCheckbox.checked = isChecked;
+            toggleSelectAll(selectAllCheckbox);
+        });
 
-</script>
+        // Ensure the form doesn't submit if no appointments are selected
+        document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
+            const selectedIds = document.getElementById('selectedIds').value;
+            if (!selectedIds) {
+                alert('Please select at least one appointments to restore.');
+                e.preventDefault(); // Prevent form submission
+            }
+        });
 
-</html>
+        document.getElementById('date').addEventListener('change', function () {
+            document.getElementById('date-filter-form').submit();
+        });
+
+        document.getElementById('date').addEventListener('change', function () {
+            const pdfDateField = document.getElementById('pdf-date');
+            pdfDateField.value = this.value;
+        });
+
+    </script>
+
+    </html>
 @endsection
