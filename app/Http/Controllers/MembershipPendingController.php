@@ -49,7 +49,9 @@ class MembershipPendingController extends Controller
 
     public function listApproved()
     {
-        $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])->paginate(10);
+        $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         return view('membership-list', compact('memberships'));
     }
 
