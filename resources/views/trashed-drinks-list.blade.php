@@ -172,7 +172,6 @@
                                 <td class="text-center">{{ $drink->price }}</td>
                                 <td class="text-center">{{ $drink->total }}</td>
                                 <td class="text-center">{{ $drink->date }}</td>
-                                <td class="text-center">{{ $drink->time }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
                                         <form action="{{ route('drinks.restore', $drink->id) }}" method="POST">

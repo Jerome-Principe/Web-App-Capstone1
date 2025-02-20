@@ -170,7 +170,6 @@
                                 <td class="text-center">{{ $machine->item_name }}</td>
                                 <td class="text-center">{{ $machine->quantity }}</td>
                                 <td class="text-center">{{ $machine->date }}</td>
-                                <td class="text-center">{{ $machine->time }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
                                         <form action="{{ route('machines.restore', $machine->id) }}" method="POST">

@@ -175,7 +175,6 @@
                                 <td class="text-center">{{ $equipmentDefect->quantity }}</td>
                                 <td class="text-center">{{ $equipmentDefect->defect }}</td>
                                 <td class="text-center">{{ $equipmentDefect->date }}</td>
-                                <td class="text-center">{{ $equipmentDefect->time }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
                                         <form action="{{ route('equipments-defect.restore', $equipmentDefect->id) }}"

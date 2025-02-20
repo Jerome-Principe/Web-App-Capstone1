@@ -166,7 +166,6 @@
                                 <td class="text-center">{{ $supplement->price }}</td>
                                 <td class="text-center">{{ $supplement->total }}</td>
                                 <td class="text-center">{{ $supplement->date }}</td>
-                                <td class="text-center">{{ $supplement->time }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
                                         <form action="{{ route('supplements.restore', $supplement->id) }}" method="POST">
