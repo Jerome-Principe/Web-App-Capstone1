@@ -16,7 +16,7 @@ class EquipmentDefectController extends Controller
     public function index()
     {
         // Order defect-equipment by creation date, showing newest first
-        $equipmentDefects = EquipmentDefect::with('equipment')->orderBy('created_at', 'desc')->paginate(9);
+        $equipmentDefects = EquipmentDefect::with('equipment')->orderBy('id', 'desc')->paginate(9);
         return view('inventory-equipments-list-defect', compact('equipmentDefects'));
     }
 

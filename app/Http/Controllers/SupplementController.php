@@ -15,7 +15,7 @@ class SupplementController extends Controller
     public function index()
     {
         // Paginate supplement and order by creation date (newest first)
-        $supplements = Supplement::orderBy('created_at', 'desc')->paginate(9);
+        $supplements = Supplement::orderBy('id', 'desc')->paginate(9);
 
         // Compute total price
         $totalPrice = 0;
@@ -50,7 +50,6 @@ class SupplementController extends Controller
             'quantity' => 'required|integer',
             'price' => 'required|numeric',
             'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
         ]);
 
         Supplement::create($request->all());

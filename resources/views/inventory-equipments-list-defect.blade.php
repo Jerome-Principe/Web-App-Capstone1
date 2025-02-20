@@ -185,9 +185,7 @@
                                     <input type="checkbox" name="selected[]" value="{{ $equipmentDefect->id }}"
                                         onchange="updateSelectionCount()" />
                                 </td>
-                                <td class="text-center">
-                                    {{ $equipmentDefects->perPage() * ($equipmentDefects->currentPage() - 1) + $index + 1 }}
-                                </td>
+                                <td class="text-center">{{ $equipmentDefect->equipment->id }}</td>
                                 <td class="text-center">{{ $equipmentDefect->equipment->item_name }}</td>
                                 <td class="text-center">{{ $equipmentDefect->quantity }}</td>
                                 <td class="text-center">{{ $equipmentDefect->defect }}</td>

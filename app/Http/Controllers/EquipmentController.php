@@ -14,7 +14,7 @@ class EquipmentController extends Controller
     public function index()
     {
         // Order equipment by creation date, showing newest first
-        $equipments = Equipment::orderBy('created_at', 'desc')->paginate(9);
+        $equipments = Equipment::orderBy('id', 'desc')->paginate(9);
         return view('inventory-equipments-list-add', compact('equipments'));
     }
 
@@ -35,7 +35,6 @@ class EquipmentController extends Controller
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|integer',
             'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
         ]);
 
         Equipment::create($request->all());

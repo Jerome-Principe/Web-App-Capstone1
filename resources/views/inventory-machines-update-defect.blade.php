@@ -187,10 +187,6 @@
                     <input type="date" id="date" name="date" value="{{ $machine->date }}" required>
                 </div>
 
-                <div class="input-field">
-                    <label for="time">Time:</label>
-                    <input type="time" id="time" name="time" value="{{ $machine->time }}" required>
-                </div>
             </div>
 
             @if(session('success'))

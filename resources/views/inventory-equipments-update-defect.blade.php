@@ -189,10 +189,6 @@
                     <input type="date" id="date" name="date" value="{{ $equipment->date }}" required>
                 </div>
 
-                <div class="input-field">
-                    <label for="time">Time:</label>
-                    <input type="time" id="time" name="time" value="{{ $equipment->time }}" required>
-                </div>
             </div>
 
             <div class="buttons">

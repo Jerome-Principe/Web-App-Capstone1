@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->integer('quantity');
             $table->string('defect')->nullable();
             $table->date('date');
-            $table->time('time');
             $table->timestamps();
         });
     }

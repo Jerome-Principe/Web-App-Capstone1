@@ -37,7 +37,6 @@ class MachineController extends Controller
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|integer',
             'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
         ]);
 
         Machine::create($request->all());

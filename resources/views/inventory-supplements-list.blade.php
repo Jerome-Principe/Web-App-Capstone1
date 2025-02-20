@@ -177,10 +177,9 @@
                         @foreach($supplements as $index => $supplement)
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $supplement->id }}"
-                                        onchange="updateSelectionCount()" /></td>
-                                <td class="text-center">
-                                    {{ ($supplements->currentPage() - 1) * $supplements->perPage() + $index + 1 }}
+                                        onchange="updateSelectionCount()" />
                                 </td>
+                                <td class="text-center">{{ $supplement->id }}</td>
                                 <td class="text-center">{{ $supplement->name }}</td>
                                 <td class="text-center">{{ $supplement->quantity }}</td>
                                 <td class="text-center">{{ $supplement->price }}</td>

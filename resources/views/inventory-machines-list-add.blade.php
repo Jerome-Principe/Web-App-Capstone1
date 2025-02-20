@@ -183,8 +183,7 @@
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $machine->id }}"
                                         onchange="updateSelectionCount()" /></td>
-                                <td class="text-center">{{ $machines->perPage() * ($machines->currentPage() - 1) + $index + 1 }}
-                                </td>
+                                <td class="text-center">{{ $machine->id }}</td>
                                 <td class="text-center">{{ $machine->item_name }}</td>
                                 <td class="text-center">{{ $machine->quantity }}</td>
                                 <td class="text-center">{{ $machine->date }}</td>
