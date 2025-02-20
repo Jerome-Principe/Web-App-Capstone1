@@ -51,7 +51,6 @@ class DrinkController extends Controller
             'quantity' => 'required|integer',
             'price' => 'required|numeric',
             'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
         ]);
 
         Drink::create($request->all());

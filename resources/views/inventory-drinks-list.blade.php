@@ -169,7 +169,6 @@
                             <th class="text-center">Price</th>
                             <th class="text-center">Total</th>
                             <th class="text-center">Date</th>
-                            <th class="text-center">Time</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -186,7 +185,6 @@
                                 <td class="text-center">{{ $drink->price }}</td>
                                 <td class="text-center">{{ $drink->total }}</td>
                                 <td class="text-center">{{ $drink->date }}</td>
-                                <td class="text-center">{{ $drink->time }}</td>
                                 <td class="d-flex justify-content-center">
                                     <a href="{{ route('drinks.edit', $drink->id) }}" class="btn btn-sm btn-primary"><i
                                             class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
