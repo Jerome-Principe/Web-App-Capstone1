@@ -163,10 +163,6 @@
                     <input type="date" id="date" name="date" required>
                 </div>
 
-                <div class="input-field">
-                    <label for="time">Time:</label>
-                    <input type="time" id="time" name="time" required>
-                </div>
             </div>
 
             @if(session('success'))

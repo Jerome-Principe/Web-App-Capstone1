@@ -184,10 +184,6 @@
                     <input type="date" name="date" required>
                 </div>
 
-                <div class="input-field">
-                    <label>Time:</label>
-                    <input type="time" name="time" required>
-                </div>
             </div>
 
             @if(session('success'))
