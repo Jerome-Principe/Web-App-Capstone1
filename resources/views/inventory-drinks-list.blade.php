@@ -179,9 +179,7 @@
                                 <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $drink->id }}"
                                         onchange="updateSelectionCount()" />
                                 </td>
-                                <td class="text-center">
-                                    {{ ($drinks->currentPage() - 1) * $drinks->perPage() + $loop->index + 1  }}
-                                </td>
+                                <td class="text-center">{{ $drink->id }}</td>
                                 <td class="text-center">{{ $drink->item_name }}</td>
                                 <td class="text-center">{{ $drink->quantity }}</td>
                                 <td class="text-center">{{ $drink->price }}</td>

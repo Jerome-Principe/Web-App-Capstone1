@@ -23,7 +23,7 @@ class DrinkController extends Controller
         }
 
         // Paginate drinks and order by creation date (newest first)
-        $drinks = Drink::orderBy('created_at', 'desc')->paginate(9);
+        $drinks = Drink::orderBy('id', 'desc')->paginate(9);
 
         // Calculate the total for each paginated drink
         foreach ($drinks as $drink) {
