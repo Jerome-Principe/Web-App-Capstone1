@@ -177,7 +177,7 @@
                                 <td class="text-center">{{ $membership->first_name }}</td>
                                 <td class="text-center">{{ $membership->last_name }}</td>
                                 <td class="text-center">{{ $membership->email }}</td>
-                                <td class="text-center">{{ $membership->date }}</td>
+                                <td class="text-center">{{ $membership->created_at }}</td>
                                 <td class="text-center">{{ $membership->status }}</td>
                             </tr>
                         @endforeach
