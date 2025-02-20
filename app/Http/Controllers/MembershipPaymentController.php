@@ -14,7 +14,7 @@ class MembershipPaymentController extends Controller
     public function index()
     {
         // Get paginated list of payments
-        $payments = MembershipPayment::paginate(10);
+        $payments = MembershipPayment::orderBy('id', 'desc')->paginate(10);
 
         // Return the view with the payments data
         return view('membership-payment-list', compact('payments'));

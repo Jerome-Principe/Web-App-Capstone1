@@ -13,7 +13,9 @@ class MembershipPendingController extends Controller
      */
     public function index()
     {
-        $pendingMemberships = PendingMembership::where('status', 'Pending')->paginate(10);
+        $pendingMemberships = PendingMembership::where('status', 'Pending')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         return view('membership-pending-list', compact('pendingMemberships'));
     }
 

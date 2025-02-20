@@ -10,7 +10,9 @@ class RequestMembershipController extends Controller
     public function index()
     {
         //
-        $memberships = RequestMembership::with('pendingMembership')->paginate(10);
+        $memberships = RequestMembership::with('pendingMembership')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         return view('membership-request-list', compact('memberships'));
     }
     public function store(Request $request)
