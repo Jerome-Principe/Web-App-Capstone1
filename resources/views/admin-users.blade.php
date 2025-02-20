@@ -84,129 +84,129 @@
 
 @section('content')
 
-<body>
-    <div class="container">
-        <div class="header-section">
-            <h1>Admin User Information</h1>
-            <div class="d-flex justify-content-end position-relative">
-                <a href="/register" class="btn btn-primary px-2"><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add
-                    New</a>
+    <body>
+        <div class="container">
+            <div class="header-section">
+                <h1>Admin User Information</h1>
+                <div class="d-flex justify-content-end position-relative">
+                    <a href="/register" class="btn btn-primary px-2"><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add
+                        New</a>
+                </div>
             </div>
-        </div>
 
-        @if(session('success'))
-            <div class="custom-alert-message">
-                {{ session('success') }}
-            </div>
-        @endif
+            @if(session('success'))
+                <div class="custom-alert-message">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                setTimeout(function () {
-                    const alert = document.querySelector('.custom-alert-message');
-                    if (alert) {
-                        alert.classList.add('fade-out');
-                    }
-                }, 3000);
-            });
-        </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(function () {
+                        const alert = document.querySelector('.custom-alert-message');
+                        if (alert) {
+                            alert.classList.add('fade-out');
+                        }
+                    }, 3000);
+                });
+            </script>
 
-        <div class="filter-options">
-            <div class="d-flex justify-content-between w-100">
-                <div class="ms-auto">
-                    <div class="d-flex align-items-center">
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
+            <div class="filter-options">
+                <div class="d-flex justify-content-between w-100">
+                    <div class="ms-auto">
+                        <div class="d-flex align-items-center">
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                    style="height: 35px;">
+                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="table-container">
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Username</th>
-                        <th class="text-center">Email</th>
-                        <th class="text-center">Created At</th>
-                        <th class="text-center">Updated At</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($users as $index => $user)
+            <div class="table-container">
+                <table class="table table-bordered text-center">
+                    <thead>
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $user->id }}"
-                                    onchange="updateSelectionCount()" /></td>
-                            <td>{{ $users->perPage() * ($users->currentPage() - 1) + $index + 1 }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->created_at }}</td>
-                            <td>{{ $user->updated_at }}</td>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route('admin-users.edit', $user->id) }}" class="btn btn-primary"><i
-                                        class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
-                                <form action="{{ route('admin-users.destroy', $user->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger mx-1"
-                                        onclick="return confirm('Are you sure you want to delete this user account?')"><i
-                                            class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                    </button>
-                                </form>
-                            </td>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Username</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Created At</th>
+                            <th class="text-center">Updated At</th>
+                            <th class="text-center">Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
 
-            <!-- Pagination links -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $users->previousPageUrl() }}">Previous</a>
-                    </li>
+                    <tbody>
+                        @foreach ($users as $index => $user)
+                            <tr>
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $user->id }}"
+                                        onchange="updateSelectionCount()" /></td>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->created_at }}</td>
+                                <td>{{ $user->updated_at }}</td>
+                                <td class="d-flex justify-content-center">
+                                    <a href="{{ route('admin-users.edit', $user->id) }}" class="btn btn-primary"><i
+                                            class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
+                                    <form action="{{ route('admin-users.destroy', $user->id) }}" method="POST"
+                                        style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger mx-1"
+                                            onclick="return confirm('Are you sure you want to delete this user account?')"><i
+                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-                    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-                        <li class="page-item {{ $page == $users->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                <!-- Pagination links -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $users->previousPageUrl() }}">Previous</a>
                         </li>
-                    @endforeach
 
-                    <li class="page-item {{ !$users->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $users->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                        @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                            <li class="page-item {{ $page == $users->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
+
+                        <li class="page-item {{ !$users->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $users->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-    </div>
 
-    <script>
-        // Select all checkboxes
-        function toggleSelectAll(source) {
-            const checkboxes = document.getElementsByName('selected[]');
-            for (let i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = source.checked;
+        <script>
+            // Select all checkboxes
+            function toggleSelectAll(source) {
+                const checkboxes = document.getElementsByName('selected[]');
+                for (let i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = source.checked;
+                }
+                updateSelectionCount();
             }
-            updateSelectionCount();
-        }
 
-        // Update the selection count
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-    </script>
+            // Update the selection count
+            function updateSelectionCount() {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+                const count = checkboxes.length;
+                document.getElementById('select-all-link').innerText = `All (${count})`;
+            }
+        </script>
 
-</body>
+    </body>
 
-</html>
+    </html>
 @endsection
