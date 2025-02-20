@@ -13,6 +13,7 @@ class PendingAppointmentController extends Controller
     {
         $appointments = PendingAppointment::where('status', 'Pending')
             ->with(['instructor', 'pendingMembership'])
+            ->orderBy('id', 'desc') // Order by 'id' in descending order
             ->paginate(10);
         return view('appointment-pending-list', compact('appointments'));
     }
@@ -82,6 +83,7 @@ class PendingAppointmentController extends Controller
     {
         $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
             ->with(['instructor', 'pendingMembership'])
+            ->orderBy('id', 'desc') // Order by 'id' in descending order
             ->paginate(10);
 
         return view('appointment-list', compact('appointments'));
