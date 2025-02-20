@@ -12,7 +12,7 @@ class WalkinController extends Controller
     public function index()
     {
         // Order walk-ins by creation date, showing newest first
-        $walkins = Walkin::orderBy('created_at', 'desc')->paginate(5); // 5 per page
+        $walkins = Walkin::orderBy('id', 'desc')->paginate(5); // 5 per page
         $totalAmount = Walkin::sum('amount'); // Calculate total amount of walk-ins
 
         return view('walkin-client-list', compact('walkins', 'totalAmount'));
