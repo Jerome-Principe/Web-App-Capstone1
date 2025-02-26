@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\DrinkController;
+use App\Http\Controllers\DrinkItemController;
 use App\Http\Controllers\MachineDefectController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\SupplementController;
@@ -71,6 +72,8 @@ Route::get('/our-team', function () {
 Route::get('/transaction', function () {
     return view('transaction');
 });
+
+Route::resource('drinks-item', DrinkItemController::class);
 
 // Feedback routes
 Route::prefix('feedback')->name('feedback.')->group(function () {

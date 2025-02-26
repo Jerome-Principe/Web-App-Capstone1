@@ -13,7 +13,7 @@
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Add Drinks Item</title>
+    <title>Update Drinks Item</title>
 
     <style>
         * {
@@ -28,7 +28,7 @@
             color: #fff;
             height: 100vh;
             width: 100%;
-            background-image: url('{{asset('assets/images/GYM2.jpg')}}');
+            background-image: url('{{ asset('assets/images/GYM2.jpg') }}');
             background-size: cover;
             background-position: center center;
             display: flex;
@@ -78,11 +78,9 @@
         .submit-btn {
             width: 45%;
             padding: 8px;
-            /* Reduced padding for smaller buttons */
             border: none;
             border-radius: 5px;
             font-size: 1.1em;
-            /* Reduced font size */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -147,44 +145,40 @@
 <body>
 
     <div class="form-container">
-        <header>Drinks Item</header>
+        <header>Update Drinks Item</header>
 
-        <form action="{{ route('drinks.store') }}" method="POST">
+        <form action="{{ route('drinks.update', $drink->id) }}" method="POST">
             @csrf
+            @method('PUT')
+
             <div class="form-group">
                 <div class="input-field">
                     <label for="item_name">Item Name:</label>
-                    <select id="item_name" name="item_name" required onchange="updatePrice()">
-                        <option value="" disabled selected>Select an Item</option>
-                        @foreach($drinkItems as $drinkItem)
-                            <option value="{{ $drinkItem->id }}" data-price="{{ $drinkItem->price }}">
-                                {{ $drinkItem->item_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="input-field">
-                    <label for="price">Price:</label>
-                    <input type="number" id="price" name="price" required readonly>
+                    <input type="text" placeholder="Enter Item Name" id="item_name" name="item_name"
+                        value="{{ $drink->item_name }}" required>
                 </div>
 
                 <div class="input-field">
                     <label for="quantity">Quantity:</label>
-                    <input type="number" placeholder="Enter Quantity" id="quantity" name="quantity" required>
+                    <input type="number" placeholder="Enter Quantity" id="quantity" name="quantity"
+                        value="{{ $drink->quantity }}" required>
                 </div>
 
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
+                <div class="input-field">
+                    <label for="price">Price:</label>
+                    <input type="text" placeholder="Enter Price" id="price" name="price" value="{{ $drink->price }}"
+                        required>
+                </div>
 
                 <div class="input-field">
                     <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" required>
+                    <input type="date" id="date" name="date" value="{{ $drink->date }}" required>
                 </div>
 
+                <div class="input-field">
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" value="{{ $drink->time }}" required>
+                </div>
             </div>
 
             @if(session('success'))
@@ -195,31 +189,10 @@
 
             <div class="buttons">
                 <a href="{{ url()->previous() }}" class="back-btn">Back</a>
-                <button type="submit" class="submit-btn">Submit</button>
+                <button type="submit" class="submit-btn">Save</button>
             </div>
         </form>
     </div>
-
-    <script>
-
-        //item_name & price
-        function updatePrice() {
-            var select = document.getElementById("item_name");
-            var priceField = document.getElementById("price");
-            var selectedOption = select.options[select.selectedIndex];
-
-            if (selectedOption) {
-                priceField.value = selectedOption.getAttribute("data-price");
-            }
-        }
-
-        //quantity
-        document.getElementById("quantity").addEventListener("input", function () {
-            if (this.value < 1) {
-                this.value = 1;
-            }
-        });
-    </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

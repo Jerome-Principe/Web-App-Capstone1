@@ -13,7 +13,7 @@
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Add Drinks Item</title>
+    <title>Add Item List Drinks</title>
 
     <style>
         * {
@@ -147,26 +147,14 @@
 <body>
 
     <div class="form-container">
-        <header>Drinks Item</header>
+        <header>Add Drink Stock List</header>
 
-        <form action="{{ route('drinks.store') }}" method="POST">
+        <form action="{{ route('drinks-item.store') }}" method="POST">
             @csrf
             <div class="form-group">
                 <div class="input-field">
                     <label for="item_name">Item Name:</label>
-                    <select id="item_name" name="item_name" required onchange="updatePrice()">
-                        <option value="" disabled selected>Select an Item</option>
-                        @foreach($drinkItems as $drinkItem)
-                            <option value="{{ $drinkItem->id }}" data-price="{{ $drinkItem->price }}">
-                                {{ $drinkItem->item_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="input-field">
-                    <label for="price">Price:</label>
-                    <input type="number" id="price" name="price" required readonly>
+                    <input type="text" placeholder="Enter Item Name" id="item_name" name="item_name" required>
                 </div>
 
                 <div class="input-field">
@@ -174,17 +162,20 @@
                     <input type="number" placeholder="Enter Quantity" id="quantity" name="quantity" required>
                 </div>
 
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
+                <div class="input-field">
+                    <label for="price">Price:</label>
+                    <input type="text" placeholder="Enter Price" id="price" name="price" required>
+                </div>
 
                 <div class="input-field">
                     <label for="date">Date:</label>
                     <input type="date" id="date" name="date" required>
                 </div>
 
+                <div class="input-field">
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
             </div>
 
             @if(session('success'))
@@ -199,27 +190,6 @@
             </div>
         </form>
     </div>
-
-    <script>
-
-        //item_name & price
-        function updatePrice() {
-            var select = document.getElementById("item_name");
-            var priceField = document.getElementById("price");
-            var selectedOption = select.options[select.selectedIndex];
-
-            if (selectedOption) {
-                priceField.value = selectedOption.getAttribute("data-price");
-            }
-        }
-
-        //quantity
-        document.getElementById("quantity").addEventListener("input", function () {
-            if (this.value < 1) {
-                this.value = 1;
-            }
-        });
-    </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
