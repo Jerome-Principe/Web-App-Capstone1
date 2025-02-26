@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->decimal('price', 10, 2);
             $table->decimal('total', 10, 2)->default(0);
             $table->date('date');
-            $table->time('time');
             $table->timestamps();
         });
     }

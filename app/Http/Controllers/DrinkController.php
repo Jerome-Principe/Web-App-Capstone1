@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DrinkItem;
 use App\Models\Drink;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -13,32 +14,29 @@ class DrinkController extends Controller
      */
     public function index()
     {
-        // Retrieve all drinks and calculate the total price for all
-        $allDrinks = Drink::all();
+        $drinks = Drink::orderBy('id', 'desc')->paginate(9);
         $totalPrice = 0;
 
-        foreach ($allDrinks as $drink) {
+        foreach ($drinks as $drink) {
+            $drinkItem = DrinkItem::where('item_name', $drink->item_name)->first();
+            if ($drinkItem) {
+                $drink->price = $drinkItem->price; // Ensure price is up-to-date
+            }
             $drink->total = $drink->price * $drink->quantity;
             $totalPrice += $drink->total;
         }
 
-        // Paginate drinks and order by creation date (newest first)
-        $drinks = Drink::orderBy('id', 'desc')->paginate(9);
-
-        // Calculate the total for each paginated drink
-        foreach ($drinks as $drink) {
-            $drink->total = $drink->price * $drink->quantity;
-        }
-
         return view('inventory-drinks-list', compact('drinks', 'totalPrice'));
     }
+
 
     /**
      * Show the form for creating a new drink.
      */
     public function create()
     {
-        return view('inventory-drinks-create');
+        $drinkItems = DrinkItem::all(); // Fetch all drink items from the database
+        return view('inventory-drinks-create', compact('drinkItems'));
     }
 
     /**
@@ -47,13 +45,36 @@ class DrinkController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'item_name' => 'required|string|max:255',
-            'quantity' => 'required|integer',
+            'item_name' => 'required',
+            'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric',
             'date' => 'required|date',
         ]);
 
-        Drink::create($request->all());
+        // Find the selected drink item
+        $drinkItem = DrinkItem::find($request->item_name);
+
+        if (!$drinkItem) {
+            return redirect()->back()->with('error', 'Selected drink item not found.');
+        }
+
+        // Check if there is enough stock
+        if ($drinkItem->quantity < $request->quantity) {
+            return redirect()->back()->with('error', 'Not enough stock available.');
+        }
+
+        // Deduct the quantity from inventory
+        $drinkItem->quantity -= $request->quantity;
+        $drinkItem->save();
+
+        // Create a new drink entry
+        Drink::create([
+            'item_name' => $drinkItem->item_name,
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+            'date' => $request->date,
+        ]);
+
         return redirect()->route('drinks.index')->with('success', 'Drink added successfully.');
     }
 
@@ -69,9 +90,40 @@ class DrinkController extends Controller
     /**
      * Update the specified drink in the database.
      */
-    public function update(Request $request, Drink $drink)
+    public function update(Request $request, $id)
     {
-        $drink->update($request->all());
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+            'price' => 'required|numeric',
+            'date' => 'required|date',
+        ]);
+
+        $drink = Drink::find($id);
+        $drinkItem = DrinkItem::where('item_name', $drink->item_name)->first();
+
+        if (!$drinkItem) {
+            return redirect()->back()->with('error', 'Drink item not found in inventory.');
+        }
+
+        // Calculate the difference in quantity
+        $quantityDifference = $request->quantity - $drink->quantity;
+
+        // If the quantity increases, check if there's enough stock
+        if ($quantityDifference > 0 && $drinkItem->quantity < $quantityDifference) {
+            return redirect()->back()->with('error', 'Not enough stock available.');
+        }
+
+        // Adjust stock in DrinkItem
+        $drinkItem->quantity -= $quantityDifference;
+        $drinkItem->save();
+
+        // Update the drink entry
+        $drink->update([
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+            'date' => $request->date,
+        ]);
+
         return redirect()->route('drinks.index')->with('success', 'Drink updated successfully.');
     }
 
@@ -180,7 +232,6 @@ class DrinkController extends Controller
 
         return view('inventory-drinks-list', compact('drinks', 'totalPrice'));
     }
-
 
     public function exportPdfByDate(Request $request)
     {

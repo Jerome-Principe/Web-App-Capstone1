@@ -19,4 +19,9 @@ class Drink extends Model
 
     // Ensure timestamps are enabled
     public $timestamps = true;
+
+    public function drinkItem()
+    {
+        return $this->belongsTo(DrinkItem::class, 'item_name', 'item_name');
+    }
 }

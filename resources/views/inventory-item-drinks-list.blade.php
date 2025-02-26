@@ -184,7 +184,6 @@
 
                                 <td class="text-center">{{ $drinkItem->price }}</td>
                                 <td class="text-center">{{ $drinkItem->date }}</td>
-                                <td class="text-center">{{ $drinkItem->time }}</td>
                                 <td class="d-flex justify-content-center">
                                     <a href="{{ route('drinks-item.edit', $drinkItem->id) }}" class="btn btn-sm btn-primary"><i
                                             class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
