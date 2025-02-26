@@ -165,7 +165,6 @@
                             <th class="text-center">Quantity</th>
                             <th class="text-center">Price</th>
                             <th class="text-center">Date</th>
-                            <th class="text-center">Time</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>

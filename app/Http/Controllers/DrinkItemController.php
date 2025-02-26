@@ -27,7 +27,6 @@ class DrinkItemController extends Controller
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'date' => 'required|date',
-            'time' => 'required',
         ]);
 
         // Check if the drink item already exists
@@ -44,7 +43,6 @@ class DrinkItemController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price,
                 'date' => $request->date,
-                'time' => $request->time,
             ]);
         }
 
@@ -66,7 +64,6 @@ class DrinkItemController extends Controller
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'date' => 'required|date',
-            'time' => 'required',
         ]);
 
         $drinkItem = DrinkItem::findOrFail($id);
@@ -77,7 +74,6 @@ class DrinkItemController extends Controller
             'quantity' => $request->quantity,
             'price' => $request->price,
             'date' => $request->date,
-            'time' => $request->time,
         ]);
 
         // Also update the price in the Drink table for all drinks using this item
