@@ -161,7 +161,8 @@
                         @foreach($trashedstockItems as $stockItem)
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $stockItem->id }}"
-                                        onchange="updateSelectionCount()" /></td>
+                                        onchange="updateSelectionCount()" />
+                                </td>
                                 <td class="text-center">
                                     {{ ($trashedstockItems->currentPage() - 1) * $trashedstockItems->perPage() + $loop->index + 1 }}
                                 </td>

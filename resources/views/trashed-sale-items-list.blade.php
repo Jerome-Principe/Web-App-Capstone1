@@ -171,7 +171,6 @@
                                 <td class="text-center">{{ $item->price }}</td>
                                 <td class="text-center">{{ $item->total }}</td>
                                 <td class="text-center">{{ $item->date }}</td>
-                                <td class="text-center">{{ $item->time }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
                                         <form action="{{ route('sales.restore', $item->id) }}" method="POST">
