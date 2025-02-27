@@ -46,7 +46,7 @@ class StockItemController extends Controller
             ]);
         }
 
-        return redirect()->route('stock-items.index')->with('success', 'Drink item added successfully!');
+        return redirect()->route('stock-items.index')->with('success', 'Stock item added successfully!');
     }
 
     public function edit($id)
