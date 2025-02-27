@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Supplements List Report</title>
+    <title>Inventory Sale Items List Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,14 +38,14 @@
 </head>
 
 <body>
-    <h1>Inventory Supplements List Report</h1>
+    <h1>Sale Items List Report</h1>
     <p>Date: {{ $date }}</p>
 
     <table>
         <thead>
             <tr>
                 <th>#</th>
-                <th>Supplement Name</th>
+                <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Total</th>
@@ -53,16 +53,16 @@
         </thead>
         <tbody>
             @php $Total = 0; @endphp
-            @foreach ($supplements as $index => $supplement)
+            @foreach ($items as $index => $item)
                         @php
-                            $total = $supplement->quantity * $supplement->price;
+                            $total = $item->quantity * $item->price;
                             $Total += $total;
                         @endphp
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $supplement->name }}</td>
-                            <td>{{ $supplement->quantity }}</td>
-                            <td>{{ number_format($supplement->price, 2) }}</td>
+                            <td>{{ $item->item_name }}</td>
+                            <td>{{ $item->quantity }}</td>
+                            <td>{{ number_format($item->price, 2) }}</td>
                             <td>{{ number_format($total, 2) }}</td>
                         </tr>
             @endforeach

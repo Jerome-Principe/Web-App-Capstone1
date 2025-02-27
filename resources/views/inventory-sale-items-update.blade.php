@@ -13,7 +13,7 @@
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Update Supplements Item</title>
+    <title>Update Sale Items</title>
 
     <style>
         * {
@@ -145,31 +145,34 @@
 <body>
 
     <div class="form-container">
-        <header>Update Supplements Item</header>
+        <header>Update Drinks Item</header>
 
-        <form action="{{ route('supplements.update', $supplement->id) }}" method="POST">
+        <form action="{{ route('sales.update', $item->id) }}" method="POST">
             @csrf
             @method('PUT')
 
             <div class="form-group">
                 <div class="input-field">
-                    <label for="name">Item Name:</label>
-                    <input type="text" id="name" name="name" value="{{ $supplement->name }}" required>
+                    <label for="item_name">Item Name:</label>
+                    <input type="text" placeholder="Enter Item Name" id="item_name" name="item_name"
+                        value="{{ $item->item_name }}" required>
                 </div>
 
                 <div class="input-field">
                     <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" value="{{ $supplement->quantity }}" required>
+                    <input type="number" placeholder="Enter Quantity" id="quantity" name="quantity"
+                        value="{{ $item->quantity }}" required>
                 </div>
 
                 <div class="input-field">
                     <label for="price">Price:</label>
-                    <input type="text" id="price" name="price" value="{{ $supplement->price }}" required>
+                    <input type="text" placeholder="Enter Price" id="price" name="price" value="{{ $item->price }}"
+                        required>
                 </div>
 
                 <div class="input-field">
                     <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" value="{{ $supplement->date }}" required>
+                    <input type="date" id="date" name="date" value="{{$item->date }}" required>
                 </div>
 
             </div>
@@ -189,8 +192,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6Z5JfMFfQp1m49jWm8yNFf0/3pEj9/h6+6j5LLFujVnY"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6Z5JfMFfQp1m49jWm8yNFf0/3pEj9/h6+6j5LLFujVnY" crossorigin="anonymous">
+        </script>
 
 </body>
 

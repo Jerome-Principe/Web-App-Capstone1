@@ -125,13 +125,10 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/drinks">Add Sales Drinks</a>
+                        <a href="/sales">Sale Items</a>
                     </li>
                     <li>
-                        <a href="/drinks-item">Stocks Drinks</a>
-                    </li>
-                    <li>
-                        <a href="/supplements">Add Supplements</a>
+                        <a href="/stock-items">Stock Items</a>
                     </li>
                     <li>
                         <a href="/equipmentsAdd">Add Equipment</a>

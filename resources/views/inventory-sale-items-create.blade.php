@@ -13,7 +13,7 @@
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Add Item List Drinks</title>
+    <title>Add Sale Items</title>
 
     <style>
         * {
@@ -147,14 +147,26 @@
 <body>
 
     <div class="form-container">
-        <header>Add Drink Stock List</header>
+        <header>Sale Items Add</header>
 
-        <form action="{{ route('drinks-item.store') }}" method="POST">
+        <form action="{{ route('sales.store') }}" method="POST">
             @csrf
             <div class="form-group">
                 <div class="input-field">
                     <label for="item_name">Item Name:</label>
-                    <input type="text" placeholder="Enter Item Name" id="item_name" name="item_name" required>
+                    <select id="item_name" name="item_name" required onchange="updatePrice()">
+                        <option value="" disabled selected>Select an Item</option>
+                        @foreach($stockItems as $stockItem)
+                            <option value="{{ $stockItem->id }}" data-price="{{ $stockItem->price }}">
+                                {{ $stockItem->item_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="input-field">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" required readonly>
                 </div>
 
                 <div class="input-field">
@@ -162,10 +174,11 @@
                     <input type="number" placeholder="Enter Quantity" id="quantity" name="quantity" required>
                 </div>
 
-                <div class="input-field">
-                    <label for="price">Price:</label>
-                    <input type="text" placeholder="Enter Price" id="price" name="price" required>
-                </div>
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
                 <div class="input-field">
                     <label for="date">Date:</label>
@@ -186,6 +199,27 @@
             </div>
         </form>
     </div>
+
+    <script>
+
+        //item_name & price
+        function updatePrice() {
+            var select = document.getElementById("item_name");
+            var priceField = document.getElementById("price");
+            var selectedOption = select.options[select.selectedIndex];
+
+            if (selectedOption) {
+                priceField.value = selectedOption.getAttribute("data-price");
+            }
+        }
+
+        //quantity
+        document.getElementById("quantity").addEventListener("input", function () {
+            if (this.value < 1) {
+                this.value = 1;
+            }
+        });
+    </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

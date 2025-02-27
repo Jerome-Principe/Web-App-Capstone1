@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Drinks List Report</title>
+    <title>Inventory Stock Items List Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,14 +38,14 @@
 </head>
 
 <body>
-    <h1>Inventory Drinks List Report</h1>
+    <h1>Stock Items List Report</h1>
     <p>Date: {{ $date }}</p>
 
     <table>
         <thead>
             <tr>
                 <th>#</th>
-                <th>Drink Name</th>
+                <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Total</th>
@@ -53,16 +53,16 @@
         </thead>
         <tbody>
             @php $Total = 0; @endphp
-            @foreach ($drinks as $index => $drink)
+            @foreach ($stockItems as $index => $stockItem)
                         @php
-                            $total = $drink->quantity * $drink->price;
+                            $total = $stockItem->quantity * $stockItem->price;
                             $Total += $total;
                         @endphp
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $drink->item_name }}</td>
-                            <td>{{ $drink->quantity }}</td>
-                            <td>{{ number_format($drink->price, 2) }}</td>
+                            <td>{{ $stockItem->item_name }}</td>
+                            <td>{{ $stockItem->quantity }}</td>
+                            <td>{{ number_format($stockItem->price, 2) }}</td>
                             <td>{{ number_format($total, 2) }}</td>
                         </tr>
             @endforeach

@@ -11,7 +11,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Trashed Drinks List</title>
+    <title>Trashed Stock Item List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -90,7 +90,7 @@
     <body>
         <div class="container">
             <div class="header-section">
-                <h1>Trashed Drinks List</h1>
+                <h1>Trashed Stock Item List</h1>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
@@ -112,12 +112,12 @@
 
             <div class="filter-options">
                 <div class="filter-links">
-                    <!-- Link to view all drinkss -->
+                    <!-- Link to view all sales -->
                     <a href="#" id="select-all-link">All (0)</a>
 
-                    <!-- Link to view drinks appointments -->
-                    <a href="{{ route('drinks.trashed') }}">Trashed
-                        ({{ App\Models\Drink::onlyTrashed()->count() }})
+                    <!-- Link to view sales -->
+                    <a href="{{ route('stock-items.trashed') }}">Trashed
+                        ({{ App\Models\StockItem::onlyTrashed()->count() }})
                     </a>
                 </div>
 
@@ -125,8 +125,8 @@
                     @csrf
                     @method('DELETE')
                     <div class="d-flex align-items-center">
-                        <!-- Button to restore selected drinks -->
-                        <form action="{{ route('drinks.restoreBulk') }}" method="POST" id="restore-selected-form">
+                        <!-- Button to restore selected sales -->
+                        <form action="{{ route('stock-items.restoreBulk') }}" method="POST" id="restore-selected-form">
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
                             <button type="submit" class="btn btn-success mx-2">
@@ -134,7 +134,6 @@
                             </button>
                         </form>
 
-                        <!-- Search Form -->
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">
@@ -150,35 +149,33 @@
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                             <th class="text-center">ID</th>
-                            <th class="text-center">Drink Name</th>
+                            <th class="text-center">Item Name</th>
                             <th class="text-center">Quantity</th>
                             <th class="text-center">Price</th>
-                            <th class="text-center">Total</th>
                             <th class="text-center">Date</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach($trashedDrinks as $drink)
+                        @foreach($trashedstockItems as $stockItem)
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $drink->id }}"
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $stockItem->id }}"
                                         onchange="updateSelectionCount()" /></td>
                                 <td class="text-center">
-                                    {{ ($trashedDrinks->currentPage() - 1) * $trashedDrinks->perPage() + $loop->index + 1 }}
+                                    {{ ($trashedstockItems->currentPage() - 1) * $trashedstockItems->perPage() + $loop->index + 1 }}
                                 </td>
-                                <td class="text-center">{{ $drink->item_name }}</td>
-                                <td class="text-center">{{ $drink->quantity }}</td>
-                                <td class="text-center">{{ $drink->price }}</td>
-                                <td class="text-center">{{ $drink->total }}</td>
-                                <td class="text-center">{{ $drink->date }}</td>
+                                <td class="text-center">{{ $stockItem->item_name }}</td>
+                                <td class="text-center">{{ $stockItem->quantity }}</td>
+                                <td class="text-center">{{ $stockItem->price }}</td>
+                                <td class="text-center">{{ $stockItem->date }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
-                                        <form action="{{ route('drinks.restore', $drink->id) }}" method="POST">
+                                        <form action="{{ route('stock-items.restore', $stockItem->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-success btn-sm">Restore</button>
                                         </form>
-                                        <form action="{{ route('drinks.forceDelete', $drink->id) }}" method="POST">
+                                        <form action="{{ route('stock-items.forceDelete', $stockItem->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
@@ -192,24 +189,20 @@
                     </tbody>
                 </table>
 
-                <div class="mt-3">
-                    <h5>Total Price = {{ $totalPrice }}</h5>
-                </div>
-
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $trashedDrinks->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $trashedDrinks->previousPageUrl() }}" tabindex="-1">Previous</a>
+                        <li class="page-item {{ $trashedstockItems->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $trashedstockItems->previousPageUrl() }}"
+                                tabindex="-1">Previous</a>
                         </li>
-
-                        @foreach(range(1, $trashedDrinks->lastPage()) as $page)
-                            <li class="page-item {{ $page == $trashedDrinks->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $trashedDrinks->url($page) }}">{{ $page }}</a>
+                        @foreach(range(1, $trashedstockItems->lastPage()) as $page)
+                            <li class="page-item {{ $page == $trashedstockItems->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $trashedstockItems->url($page) }}">{{ $page }}</a>
                             </li>
                         @endforeach
 
-                        <li class="page-item {{ !$trashedDrinks->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $trashedDrinks->nextPageUrl() }}">Next</a>
+                        <li class="page-item {{ !$trashedstockItems->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $trashedstockItems->nextPageUrl() }}">Next</a>
                         </li>
                     </ul>
                 </nav>

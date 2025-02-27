@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Add Supplements List</title>
+    <title>Stock Item List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,12 +87,11 @@
     <body>
         <div class="container">
             <div class="header-section">
-                <h1>Supplements List</h1>
+                <h1>Stock Items List</h1>
                 <div>
                     <div class="d-flex justify-content-end position-relative">
-                        <a href="/supplements/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                                aria-hidden="true"></i>Add New
-                        </a>
+                        <a href="{{ route('stock-items.create') }}" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                                aria-hidden="true"></i>Add New</a>
                     </div>
                 </div>
 
@@ -116,12 +115,12 @@
 
             <div class="filter-options">
                 <div class="filter-links">
-                    <!-- Link to view all supplements -->
+                    <!-- Link to view all stocks -->
                     <a href="#" id="select-all-link">All (0)</a>
 
-                    <!-- Link to view all trashed supplements -->
-                    <a href="{{ route('supplements.trashed') }}">Trashed
-                        ({{App\Models\Supplement::onlyTrashed()->count()}})
+                    <!-- Link to view all trashed stocks -->
+                    <a href="{{ route('stock-items.trashed') }}">Trashed
+                        ({{ App\Models\StockItem::onlyTrashed()->count() }})
                     </a>
                 </div>
 
@@ -129,8 +128,8 @@
                     @csrf
                     @method('DELETE')
                     <div class="d-flex align-items-center">
-                        <!-- Form to move selected supplements to trash -->
-                        <form action="{{ route('supplements.moveToTrash') }}" method="POST">
+                        <!-- Form to move selected drinks to trash -->
+                        <form action="{{ route('stock-items.moveToTrash') }}" method="POST">
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
                             <button type="submit" class="btn btn-light border mx-2">
@@ -140,7 +139,7 @@
 
                         <!-- Date Filter Form -->
                         <div class="d-flex justify-content-between align-items-center">
-                            <form id="date-filter-form" method="GET" action="{{ route('supplements.filterByDate') }}">
+                            <form id="date-filter-form" method="GET" action="{{ route('stock-items.filterByDate') }}">
                                 <label for="date" class="form-label">Select Date:</label>
                                 <input type="date" name="date" id="date" class="form-control d-inline-block"
                                     style="width: 200px;" required>
@@ -148,7 +147,7 @@
                             </form>
 
                             <!-- Export PDF by Date -->
-                            <form method="GET" action="{{ route('supplements.exportPdfByDate') }}">
+                            <form method="GET" action="{{ route('stock-items.exportPdfByDate') }}">
                                 <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
                                 <button type="submit" class="btn btn-success ms-2">Export PDF</button>
                             </form>
@@ -164,37 +163,38 @@
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                             <th class="text-center">ID</th>
-                            <th class="text-center">Supplement Name</th>
+                            <th class="text-center">Item Name</th>
                             <th class="text-center">Quantity</th>
                             <th class="text-center">Price</th>
-                            <th class="text-center">Total</th>
                             <th class="text-center">Date</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach($supplements as $index => $supplement)
+                        @foreach($stockItems as $index => $stockItem)
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $supplement->id }}"
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $stockItem->id }}"
                                         onchange="updateSelectionCount()" />
                                 </td>
-                                <td class="text-center">{{ $supplement->id }}</td>
-                                <td class="text-center">{{ $supplement->name }}</td>
-                                <td class="text-center">{{ $supplement->quantity }}</td>
-                                <td class="text-center">{{ $supplement->price }}</td>
-                                <td class="text-center">{{ $supplement->total }}</td>
-                                <td class="text-center">{{ $supplement->date }}</td>
+                                <td class="text-center">{{ $stockItem->id }}</td>
+                                <td class="text-center">{{ $stockItem->item_name }}</td>
+                                <td class="text-center">
+                                    {{ $stockItem->quantity > 0 ? $stockItem->quantity : 'Out of Stock' }}
+                                </td>
+                                <td class="text-center">{{ $stockItem->price }}</td>
+                                <td class="text-center">{{ $stockItem->date }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="{{ route('supplements.edit', $supplement->id) }}" class="btn btn-sm btn-primary"><i
+                                    <a href="{{ route('stock-items.edit', $stockItem->id) }}" class="btn btn-sm btn-primary"><i
                                             class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
-                                    <form action="{{ route('supplements.destroy', $supplement->id) }}" method="POST"
+                                    <form action="{{ route('stock-items.destroy', $stockItem->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                            onclick="return confirm('Are you sure you want to delete this supplement?')"><i
-                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
+                                            onclick="return confirm('Are you sure you want to delete this stock item?')"><i
+                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -202,30 +202,27 @@
                     </tbody>
                 </table>
 
-                <div class="mt-3">
-                    <h5>Total Price = {{ $totalPrice }}</h5>
-                </div>
-
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $supplements->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $supplements->previousPageUrl() }}" tabindex="-1">Previous</a>
+                        <li class="page-item {{ $stockItems->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $stockItems->previousPageUrl() }}" tabindex="-1">Previous</a>
                         </li>
 
-                        @foreach(range(1, $supplements->lastPage()) as $page)
-                            <li class="page-item {{ $page == $supplements->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $supplements->url($page) }}">{{ $page }}</a>
+                        @foreach(range(1, $stockItems->lastPage()) as $page)
+                            <li class="page-item {{ $page == $stockItems->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $stockItems->url($page) }}">{{ $page }}</a>
                             </li>
                         @endforeach
 
-                        <li class="page-item {{ !$supplements->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $supplements->nextPageUrl() }}">Next</a>
+                        <li class="page-item {{ !$stockItems->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $stockItems->nextPageUrl() }}">Next</a>
                         </li>
                     </ul>
                 </nav>
             </div>
         </div>
     </body>
+
     <script>
         // Toggle select all checkboxes
         function toggleSelectAll(checkbox) {

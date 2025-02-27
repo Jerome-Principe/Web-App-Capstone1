@@ -5,21 +5,27 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        Schema::create('drink_items', function (Blueprint $table) {
+        Schema::create('stock_items', function (Blueprint $table) {
             $table->id();
             $table->string('item_name');
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
-            $table->decimal('total', 10, 2)->default(0);
+            $table->decimal('total', 10, 2)->default(0); // Removed `after('price')`
             $table->date('date');
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('drink_items');
+        Schema::dropIfExists('stock_items');
     }
 };

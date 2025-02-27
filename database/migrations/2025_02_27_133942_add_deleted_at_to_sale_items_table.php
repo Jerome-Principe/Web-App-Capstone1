@@ -10,13 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('supplements', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('quantity');
-            $table->decimal('price', 8, 2);
-            $table->date('date');
-            $table->timestamps();
+        Schema::table('sale_items', function (Blueprint $table) {
+            $table->softDeletes(); // Adds deleted_at column
         });
     }
 
@@ -25,6 +20,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('supplements');
+        Schema::table('sale_items', function (Blueprint $table) {
+            $table->dropSoftDeletes(); // Removes deleted_at column
+        });
     }
 };
+

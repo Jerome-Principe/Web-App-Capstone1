@@ -6,11 +6,10 @@ use App\Http\Controllers\WalkinController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\DrinkController;
-use App\Http\Controllers\DrinkItemController;
+use App\Http\Controllers\SaleItemController;
+use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\MachineDefectController;
 use App\Http\Controllers\MachineController;
-use App\Http\Controllers\SupplementController;
 use App\Http\Controllers\MembershipPendingController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\RequestMembershipController;
@@ -72,8 +71,6 @@ Route::get('/our-team', function () {
 Route::get('/transaction', function () {
     return view('transaction');
 });
-
-Route::resource('drinks-item', DrinkItemController::class);
 
 // Feedback routes
 Route::prefix('feedback')->name('feedback.')->group(function () {
@@ -168,43 +165,44 @@ Route::prefix('cancelled')->group(function () {
     Route::delete('/force-delete/{id}', [CancelledAppointmentController::class, 'forceDelete'])->name('appointments.cancelled.forceDelete');
 });
 
-// Drinks routes
-Route::prefix('drinks')->name('drinks.')->group(function () {
-    // Main resource routes
-    Route::resource('/', DrinkController::class)
-        ->parameters(['' => 'drink'])
+// StockItems routes
+Route::prefix('stock-items')->name('stock-items.')->group(function () {
+    // Main resource routes (excluding 'show')
+    Route::resource('/', StockItemController::class)
+        ->parameters(['' => 'stock-item'])
         ->except(['show']);
 
-    // Additional routes
-    Route::get('/trashed', [DrinkController::class, 'trashed'])->name('trashed');
-    Route::post('/move-to-trash', [DrinkController::class, 'moveToTrash'])->name('moveToTrash');
-    Route::post('/restore-bulk', [DrinkController::class, 'restoreBulk'])->name('restoreBulk');
-    Route::post('/restore/{id}', [DrinkController::class, 'restore'])->name('restore');
-    Route::delete('/force-delete/{id}', [DrinkController::class, 'forceDelete'])->name('forceDelete');
-
-    // Filter and Export routes
-    Route::get('/filter', [DrinkController::class, 'filterByDate'])->name('filterByDate');
-    Route::get('/export-pdf', [DrinkController::class, 'exportPdfByDate'])->name('exportPdfByDate');
+    // Additional custom routes using a controller group
+    Route::controller(StockItemController::class)->group(function () {
+        Route::get('/trashed', 'trashed')->name('trashed');
+        Route::post('/move-to-trash', 'moveToTrash')->name('moveToTrash');
+        Route::post('/restore-selected', 'restoreBulk')->name('restoreBulk');
+        Route::post('/restore/{id}', 'restore')->name('restore');
+        Route::delete('/forece-delete/{id}', 'forceDelete')->name('forceDelete');
+        Route::get('/filter', 'filterByDate')->name('filterByDate');
+        Route::get('/export-pdf', 'exportPdfByDate')->name('exportPdfByDate');
+    });
 });
 
-// Supplements routes
-Route::prefix('supplements')->name('supplements.')->group(function () {
-    // Main resource routes
-    Route::resource('/', SupplementController::class)
-        ->parameters(['' => 'supplement'])
+// SaleItems routes
+Route::prefix('sales')->name('sales.')->group(function () {
+    // Main resource routes (excluding 'show')
+    Route::resource('/', SaleItemController::class)
+        ->parameters(['' => 'sale'])
         ->except(['show']);
 
-    // Additional routes
-    Route::get('/trashed', [SupplementController::class, 'trashed'])->name('trashed');
-    Route::post('/move-to-trash', [SupplementController::class, 'moveToTrash'])->name('moveToTrash');
-    Route::post('/restore-bulk', [SupplementController::class, 'restoreBulk'])->name('restoreBulk');
-    Route::post('/restore/{id}', [SupplementController::class, 'restore'])->name('restore');
-    Route::delete('/force-delete/{id}', [SupplementController::class, 'forceDelete'])->name('forceDelete');
-
-    // Filter and Export routes
-    Route::get('/filter', [SupplementController::class, 'filterByDate'])->name('filterByDate');
-    Route::get('/export-pdf', [SupplementController::class, 'exportPdfByDate'])->name('exportPdfByDate');
+    // Additional custom routes using a controller group
+    Route::controller(SaleItemController::class)->group(function () {
+        Route::get('/trashed', 'trashed')->name('trashed');
+        Route::post('/move-to-trash', 'moveToTrash')->name('moveToTrash');
+        Route::post('/restore-bulk', 'restoreBulk')->name('restoreBulk');
+        Route::post('/restore/{id}', 'restore')->name('restore');
+        Route::delete('/force-delete/{id}', 'forceDelete')->name('forceDelete');
+        Route::get('/filter', 'filterByDate')->name('filterByDate');
+        Route::get('/export-pdf', 'exportPdfByDate')->name('exportPdfByDate');
+    });
 });
+
 
 // EquipmentsAdd routes
 Route::prefix('equipmentsAdd')->name('equipmentsAdd.')->group(function () {

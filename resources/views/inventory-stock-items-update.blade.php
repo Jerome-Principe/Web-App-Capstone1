@@ -145,9 +145,9 @@
 <body>
 
     <div class="form-container">
-        <header>Update Drinks Item</header>
+        <header>Update Drinks Stock List</header>
 
-        <form action="{{ route('drinks.update', $drink->id) }}" method="POST">
+        <form action="{{ route('stock-items.update', $stockItem->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -155,24 +155,24 @@
                 <div class="input-field">
                     <label for="item_name">Item Name:</label>
                     <input type="text" placeholder="Enter Item Name" id="item_name" name="item_name"
-                        value="{{ $drink->item_name }}" required>
+                        value="{{ $stockItem->item_name }}" required>
                 </div>
 
                 <div class="input-field">
                     <label for="quantity">Quantity:</label>
                     <input type="number" placeholder="Enter Quantity" id="quantity" name="quantity"
-                        value="{{ $drink->quantity }}" required>
+                        value="{{ $stockItem->quantity }}" required>
                 </div>
 
                 <div class="input-field">
                     <label for="price">Price:</label>
-                    <input type="text" placeholder="Enter Price" id="price" name="price" value="{{ $drink->price }}"
+                    <input type="text" placeholder="Enter Price" id="price" name="price" value="{{ $stockItem->price }}"
                         required>
                 </div>
 
                 <div class="input-field">
                     <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" value="{{ $drink->date }}" required>
+                    <input type="date" id="date" name="date" value="{{ $stockItem->date }}" required>
                 </div>
 
             </div>

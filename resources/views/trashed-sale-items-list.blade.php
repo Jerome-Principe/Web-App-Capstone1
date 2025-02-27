@@ -1,3 +1,6 @@
+<div>
+    <!-- It is quality rather than quantity that matters. - Lucius Annaeus Seneca -->
+</div>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +11,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Trashed Supplements List</title>
+    <title>Trashed Sale Item List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,7 +90,7 @@
     <body>
         <div class="container">
             <div class="header-section">
-                <h1>Trashed Supplements List</h1>
+                <h1>Trashed Sale Item List</h1>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
@@ -109,9 +112,12 @@
 
             <div class="filter-options">
                 <div class="filter-links">
+                    <!-- Link to view all sales -->
                     <a href="#" id="select-all-link">All (0)</a>
-                    <a href="{{ route('supplements.trashed') }}">Trashed
-                        ({{App\Models\Supplement::onlyTrashed()->count()}})
+
+                    <!-- Link to view sales -->
+                    <a href="{{ route('sales.trashed') }}">Trashed
+                        ({{ App\Models\SaleItem::onlyTrashed()->count() }})
                     </a>
                 </div>
 
@@ -119,8 +125,8 @@
                     @csrf
                     @method('DELETE')
                     <div class="d-flex align-items-center">
-                        <!-- Button to restore selected supplements -->
-                        <form action="{{ route('supplements.restoreBulk') }}" method="POST" id="restore-selected-form">
+                        <!-- Button to restore selected sales -->
+                        <form action="{{ route('sales.restoreBulk') }}" method="POST" id="restore-selected-form">
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
                             <button type="submit" class="btn btn-success mx-2">
@@ -128,7 +134,6 @@
                             </button>
                         </form>
 
-                        <!-- Search Form -->
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">
@@ -144,7 +149,7 @@
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                             <th class="text-center">ID</th>
-                            <th class="text-center">Supplement Name</th>
+                            <th class="text-center">Item Name</th>
                             <th class="text-center">Quantity</th>
                             <th class="text-center">Price</th>
                             <th class="text-center">Total</th>
@@ -154,31 +159,31 @@
                     </thead>
 
                     <tbody>
-                        @foreach($trashedSupplements as $index => $supplement)
+                        @foreach($trashedItems as $item)
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $supplement->id }}"
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $item->id }}"
                                         onchange="updateSelectionCount()" /></td>
                                 <td class="text-center">
-                                    {{ ($trashedSupplements->currentPage() - 1) * $trashedSupplements->perPage() + $index + 1 }}
+                                    {{ ($trashedItems->currentPage() - 1) * $trashedItems->perPage() + $loop->index + 1 }}
                                 </td>
-                                <td class="text-center">{{ $supplement->name }}</td>
-                                <td class="text-center">{{ $supplement->quantity }}</td>
-                                <td class="text-center">{{ $supplement->price }}</td>
-                                <td class="text-center">{{ $supplement->total }}</td>
-                                <td class="text-center">{{ $supplement->date }}</td>
+                                <td class="text-center">{{ $item->item_name }}</td>
+                                <td class="text-center">{{ $item->quantity }}</td>
+                                <td class="text-center">{{ $item->price }}</td>
+                                <td class="text-center">{{ $item->total }}</td>
+                                <td class="text-center">{{ $item->date }}</td>
+                                <td class="text-center">{{ $item->time }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
-                                        <form action="{{ route('supplements.restore', $supplement->id) }}" method="POST">
+                                        <form action="{{ route('sales.restore', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-success btn-sm">Restore</button>
                                         </form>
-                                        <form action="{{ route('supplements.forceDelete', $supplement->id) }}" method="POST">
+                                        <form action="{{ route('sales.forceDelete', $item->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to permanently delete?')">Delete
-                                                Permanently
-                                            </button>
+                                                Permanently</button>
                                         </form>
                                     </div>
                                 </td>
@@ -193,19 +198,18 @@
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $trashedSupplements->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $trashedSupplements->previousPageUrl() }}"
-                                tabindex="-1">Previous</a>
+                        <li class="page-item {{ $trashedItems->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $trashedItems->previousPageUrl() }}" tabindex="-1">Previous</a>
                         </li>
 
-                        @foreach(range(1, $trashedSupplements->lastPage()) as $page)
-                            <li class="page-item {{ $page == $trashedSupplements->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $trashedSupplements->url($page) }}">{{ $page }}</a>
+                        @foreach(range(1, $trashedItems->lastPage()) as $page)
+                            <li class="page-item {{ $page == $trashedItems->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $trashedItems->url($page) }}">{{ $page }}</a>
                             </li>
                         @endforeach
 
-                        <li class="page-item {{ !$trashedSupplements->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $trashedSupplements->nextPageUrl() }}">Next</a>
+                        <li class="page-item {{ !$trashedItems->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $trashedItems->nextPageUrl() }}">Next</a>
                         </li>
                     </ul>
                 </nav>
