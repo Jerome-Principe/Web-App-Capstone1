@@ -155,7 +155,13 @@
                 <div class="input-field">
                     <label for="item_name">Item Name:</label>
                     <input type="text" placeholder="Enter Item Name" id="item_name" name="item_name"
-                        value="{{ $item->item_name }}" required>
+                        value="{{ $item->item_name }}" readonly required>
+                </div>
+
+                <div class="input-field">
+                    <label for="price">Price:</label>
+                    <input type="text" placeholder="Enter Price" id="price" name="price" value="{{ $item->price }}"
+                        readonly required>
                 </div>
 
                 <div class="input-field">
@@ -165,16 +171,9 @@
                 </div>
 
                 <div class="input-field">
-                    <label for="price">Price:</label>
-                    <input type="text" placeholder="Enter Price" id="price" name="price" value="{{ $item->price }}"
-                        required>
-                </div>
-
-                <div class="input-field">
                     <label for="date">Date:</label>
                     <input type="date" id="date" name="date" value="{{$item->date }}" required>
                 </div>
-
             </div>
 
             @if(session('success'))
