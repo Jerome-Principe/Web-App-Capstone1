@@ -70,6 +70,9 @@ Route::post('/mobile/meal-plan', [MealPlanController::class, 'store']);
 Route::get('/mobile/meal-plan-custom', [MealPlanCustomMobileController::class, 'index']);
 Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store']);
 
+Route::get('/mobile/workout-programs', [WorkoutProgramController::class, 'index']);
+Route::post('/mobile/workout-programs', [WorkoutProgramController::class, 'store']);
+
 //OTP
 Route::post('/mobile/send-otp', [OtpController::class, 'sendOtp']);
 Route::post('/mobile/verify-otp', [OtpController::class, 'verifyOtp']);
@@ -78,8 +81,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
     Route::put('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline']);
 });
-
-Route::resource('/mobile/workout-programs', WorkoutProgramController::class);
 
 Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $request) {
     return response()->json([
