@@ -245,14 +245,16 @@
                                 <select class="form-control" id="type" name="type" required>
                                     <option value="">Select Type</option>
                                     <option value="Advanced Lifting Program">Advanced Lifting Program</option>
+                                    <option value="Beginner Full-Body Workout">Beginner Full-Body Workout</option>
                                     <option value="3-Day PPL Beginner Workout">3-Day PPL Beginner Workout</option>
-                                    <option value="3-Day PPL Beginner Plan">3-Day PPL Beginner Plan</option>
                                     <option value="4-Day Dumbbell Upper/Lower Routine">4-Day Dumbbell Upper/Lower Routine
                                     </option>
-                                    <option value="6-Day PPL Powerbuilding Split">6-Day PPL Powerbuilding Split</option>
                                     <option value="6-Day PPL Powerbuilding Plan">6-Day PPL Powerbuilding Plan</option>
                                     <option value="8-Week Muscle Growth Plan">8-Week Muscle Growth Plan</option>
                                     <option value="8-Week Beginner Fat Loss Plan">8-Week Beginner Fat Loss Plan</option>
+                                    <option value="8-Week Advanced Strength Building Workout">8 Week Advanced Strength
+                                        Building Workout
+                                    </option>
                                 </select>
                             </div>
 
@@ -359,10 +361,10 @@
                                     $workoutTypes = [
                                         'Advanced Lifting Program',
                                         '3-Day PPL Beginner Workout',
-                                        '3-Day PPL Beginner Plan',
+                                        'Beginner Full-Body Workout',
                                         '4-Day Dumbbell Upper/Lower Routine',
                                         '6-Day PPL Powerbuilding Split',
-                                        '6-Day PPL Powerbuilding Plan',
+                                        '8-Week Advanced Strength Building Workout',
                                         '8-Week Muscle Growth Plan',
                                         '8-Week Beginner Fat Loss Plan'
                                     ];
