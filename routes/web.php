@@ -20,6 +20,7 @@ use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\CancelledAppointmentController;
 use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\MealPlanCustomController;
+use App\Http\Controllers\WorkoutProgramController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -311,3 +312,6 @@ Route::post('/membership-pendings/destroy-all', [MembershipPendingController::cl
 
 // Admin Users
 Route::resource('admin-users', AdminUserController::class);
+
+// Workout-Programs
+Route::resource('workout-programs', WorkoutProgramController::class);

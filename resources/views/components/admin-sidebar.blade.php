@@ -147,19 +147,31 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="#">
                     <span class="icon-holder">
-                        <i class="fa fa-cutlery" aria-hidden="true"></i>
+                        <i class="fa fa-list" aria-hidden="true"></i>
                     </span>
-                    <span class="title">Meal Plan</span>
+                    <span class="title">Resources</span>
                     <span class="arrow">
                         <i class="lni-chevron-right"></i>
                     </span>
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
+                        <a href="#">Exercise Default</a>
+                    </li>
+                    <li>
+                        <a href="#">Exercise Custom</a>
+                    </li>
+                    <li>
                         <a href="/meal-plan">Meal Plan Default</a>
                     </li>
                     <li>
                         <a href="/meal-plan-custom">Meal Plan Custom</a>
+                    </li>
+                    <li>
+                        <a href="/workout-programs">Workout Default</a>
+                    </li>
+                    <li>
+                        <a href="#">Workout Custom</a>
                     </li>
                 </ul>
             </li>

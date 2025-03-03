@@ -14,6 +14,7 @@ use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\MealPlanCustomController;
 use App\Http\Controllers\MealPlanCustomMobileController;
 use App\Http\Controllers\OtpController;
+use App\Http\Controllers\WorkoutProgramController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -77,6 +78,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
     Route::put('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline']);
 });
+
+Route::resource('/mobile/workout-programs', WorkoutProgramController::class);
 
 Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $request) {
     return response()->json([
