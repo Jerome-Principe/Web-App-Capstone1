@@ -360,8 +360,8 @@
                                 @php
                                     $workoutTypes = [
                                         'Advanced Lifting Program',
-                                        '3-Day PPL Beginner Workout',
                                         'Beginner Full-Body Workout',
+                                        '3-Day PPL Beginner Workout',
                                         '4-Day Dumbbell Upper/Lower Routine',
                                         '6-Day PPL Powerbuilding Split',
                                         '8-Week Advanced Strength Building Workout',
