@@ -156,10 +156,10 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="#">Exercise Default</a>
+                        <a href="/exercise">Exercise Default</a>
                     </li>
                     <li>
-                        <a href="#">Exercise Custom</a>
+                        <a href="/exercise-custom">Exercise Custom</a>
                     </li>
                     <li>
                         <a href="/meal-plan">Meal Plan Default</a>

@@ -22,6 +22,8 @@ use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\MealPlanCustomController;
 use App\Http\Controllers\WorkoutProgramController;
 use App\Http\Controllers\WorkoutProgramCustomController;
+use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\ExerciseCustomController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -292,6 +294,12 @@ Route::resource('workout-programs', WorkoutProgramController::class);
 
 Route::resource('workout-program-custom', WorkoutProgramCustomController::class);
 Route::get('/workout-program-custom-list', [WorkoutProgramCustomController::class, 'workoutProgramCustomList'])->name('workout-program-custom.list');
+
+//Exercise
+Route::resource('exercise', ExerciseController::class);
+
+Route::resource('exercise-custom', ExerciseCustomController::class);
+Route::get('/exercise-custom-list', [ExerciseCustomController::class, 'exerciseCustomList'])->name('exercise-custom.list');
 
 //Membership
 Route::get('/membership-request-list', [RequestMembershipController::class, 'index']);

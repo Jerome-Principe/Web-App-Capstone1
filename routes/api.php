@@ -10,13 +10,13 @@ use App\Http\Controllers\MembershipPaymentController;
 use App\Http\Controllers\PendingAppointmentController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\CancelledAppointmentController;
-use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\MealPlanCustomController;
 use App\Http\Controllers\MealPlanCustomMobileController;
 use App\Http\Controllers\OtpController;
-use App\Http\Controllers\WorkoutProgramController;
 use App\Http\Controllers\WorkoutProgramCustomController;
 use App\Http\Controllers\WorkoutProgramCustomMobileController;
+use App\Http\Controllers\ExerciseCustomController;
+use App\Http\Controllers\ExerciseCustomMobileController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -71,6 +71,9 @@ Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store
 
 Route::get('/mobile/workout-program-custom', [WorkoutProgramCustomMobileController::class, 'index']);
 Route::post('/mobile/workout-program-custom', [WorkoutProgramCustomController::class, 'store']);
+
+Route::get('/mobile/exercise-custom', [ExerciseCustomMobileController::class, 'index']);
+Route::post('/mobile/exercise-custom', [ExerciseCustomController::class, 'store']);
 
 //OTP
 Route::post('/mobile/send-otp', [OtpController::class, 'sendOtp']);
