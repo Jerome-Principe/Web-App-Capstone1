@@ -15,6 +15,8 @@ use App\Http\Controllers\MealPlanCustomController;
 use App\Http\Controllers\MealPlanCustomMobileController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\WorkoutProgramController;
+use App\Http\Controllers\WorkoutProgramCustomController;
+use App\Http\Controllers\WorkoutProgramCustomMobileController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -72,6 +74,9 @@ Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store
 
 Route::get('/mobile/workout-programs', [WorkoutProgramController::class, 'index']);
 Route::post('/mobile/workout-programs', [WorkoutProgramController::class, 'store']);
+
+Route::get('/mobile/workout-program-custom', [WorkoutProgramCustomMobileController::class, 'index']);
+Route::post('/workout-program-custom', [WorkoutProgramCustomController::class, 'store']);
 
 //OTP
 Route::post('/mobile/send-otp', [OtpController::class, 'sendOtp']);

@@ -171,7 +171,7 @@
                         <a href="/workout-programs">Workout Default</a>
                     </li>
                     <li>
-                        <a href="#">Workout Custom</a>
+                        <a href="/workout-program-custom">Workout Custom</a>
                     </li>
                 </ul>
             </li>

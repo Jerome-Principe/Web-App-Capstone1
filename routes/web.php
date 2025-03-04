@@ -21,6 +21,7 @@ use App\Http\Controllers\CancelledAppointmentController;
 use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\MealPlanCustomController;
 use App\Http\Controllers\WorkoutProgramController;
+use App\Http\Controllers\WorkoutProgramCustomController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -204,7 +205,6 @@ Route::prefix('sales')->name('sales.')->group(function () {
     });
 });
 
-
 // EquipmentsAdd routes
 Route::prefix('equipmentsAdd')->name('equipmentsAdd.')->group(function () {
     // Main resource routes
@@ -287,6 +287,12 @@ Route::resource('meal-plan', MealPlanController::class);
 Route::resource('meal-plan-custom', MealPlanCustomController::class);
 Route::get('/meal-plan-custom-list', [MealPlanCustomController::class, 'mealPlanCustomList'])->name('meal-plan-custom.list');
 
+//Workout-Program
+Route::resource('workout-programs', WorkoutProgramController::class);
+
+Route::resource('workout-program-custom', WorkoutProgramCustomController::class);
+Route::get('/workout-program-custom-list', [WorkoutProgramCustomController::class, 'workoutProgramCustomList'])->name('workout-program-custom.list');
+
 //Membership
 Route::get('/membership-request-list', [RequestMembershipController::class, 'index']);
 Route::get('/membership-emergency-medical', [MedicalFormController::class, 'index']);
@@ -312,6 +318,3 @@ Route::post('/membership-pendings/destroy-all', [MembershipPendingController::cl
 
 // Admin Users
 Route::resource('admin-users', AdminUserController::class);
-
-// Workout-Programs
-Route::resource('workout-programs', WorkoutProgramController::class);
