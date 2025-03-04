@@ -51,7 +51,7 @@ class ExerciseCustomController extends Controller
         });
     }
 
-    public function workoutProgramCustomList()
+    public function exerciseCustomList()
     {
         $approvedUsers = PendingAppointment::where('status', 'Approved')->pluck('user_id')->unique();
 
@@ -98,7 +98,7 @@ class ExerciseCustomController extends Controller
         $exerciseCustom = ExerciseCustom::findOrFail($id);
         $exerciseCustom->update($request->all());
 
-        return redirect()->route('exercise-custom.index')->with('success', 'Workout Program Custom updated successfully!');
+        return redirect()->route('exercise-custom.index')->with('success', 'Exercise Custom updated successfully!');
     }
 
     public function destroy($id)
@@ -106,6 +106,6 @@ class ExerciseCustomController extends Controller
         $exerciseCustom = ExerciseCustom::findOrFail($id);
         $exerciseCustom->delete();
 
-        return redirect()->route('exercise-custom.index')->with('success', 'Workout Program Custom deleted successfully!');
+        return redirect()->route('exercise-custom.index')->with('success', 'Exercise Custom deleted successfully!');
     }
 }
