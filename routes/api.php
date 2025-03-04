@@ -73,7 +73,7 @@ Route::get('/mobile/workout-programs', [WorkoutProgramController::class, 'index'
 Route::post('/mobile/workout-programs', [WorkoutProgramController::class, 'store']);
 
 Route::get('/mobile/workout-program-custom', [WorkoutProgramCustomMobileController::class, 'index']);
-Route::post('/workout-program-custom', [WorkoutProgramCustomController::class, 'store']);
+Route::post('/mobile/workout-program-custom', [WorkoutProgramCustomController::class, 'store']);
 
 //OTP
 Route::post('/mobile/send-otp', [OtpController::class, 'sendOtp']);
