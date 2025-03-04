@@ -69,9 +69,6 @@ Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'fetchCan
 Route::get('/mobile/meal-plan', [MealPlanController::class, 'index']);
 Route::post('/mobile/meal-plan', [MealPlanController::class, 'store']);
 
-Route::get('/mobile/meal-plan-custom', [MealPlanCustomMobileController::class, 'index']);
-Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store']);
-
 Route::get('/mobile/workout-programs', [WorkoutProgramController::class, 'index']);
 Route::post('/mobile/workout-programs', [WorkoutProgramController::class, 'store']);
 
