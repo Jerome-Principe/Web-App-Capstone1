@@ -171,9 +171,7 @@
                                 <td class="text-center">
                                     <input type="checkbox" name="selected[]" value="{{ $workoutProgramCustom->id }}" />
                                 </td>
-                                <td class="text-center">
-                                    {{ ($workoutProgramsCustom->currentPage() - 1) * $workoutProgramsCustom->perPage() + $loop->index + 1 }}
-                                </td>
+                                <td class="text-center">{{ $workoutProgramCustom->id }}</td>
                                 <td class="text-center">{{ $workoutProgramCustom->user->name ?? 'User Not Found' }}</td>
                                 <td class="text-center">{{ $workoutProgramCustom->category }}</td>
                                 <td class="text-center">{{ $workoutProgramCustom->type }}</td>

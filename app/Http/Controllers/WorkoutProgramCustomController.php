@@ -25,7 +25,7 @@ class WorkoutProgramCustomController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        $workoutProgramsCustom = $query->paginate(10);
+        $workoutProgramsCustom = $query->orderBy('id', 'desc')->paginate(10);
 
         // Fetch approved users
         $approvedUsers = PendingAppointment::where('pending_appointments.status', 'Approved')

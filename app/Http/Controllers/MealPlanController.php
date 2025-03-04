@@ -20,7 +20,7 @@ class MealPlanController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        $mealPlans = $query->paginate(10);
+        $mealPlans = $query->orderBy('id', 'desc')->paginate(10);
 
         // Check if the request expects a view (web) or JSON (API)
         if ($request->wantsJson()) {

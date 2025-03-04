@@ -25,7 +25,7 @@ class ExerciseCustomController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        $exercisesCustom = $query->paginate(10);
+        $exercisesCustom = $query->orderBy('id', 'desc')->paginate(10);
 
         // Fetch approved users
         $approvedUsers = PendingAppointment::where('pending_appointments.status', 'Approved')

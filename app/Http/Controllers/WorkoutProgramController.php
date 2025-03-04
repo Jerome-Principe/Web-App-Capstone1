@@ -20,7 +20,7 @@ class WorkoutProgramController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        $workoutPrograms = $query->paginate(10);
+        $workoutPrograms = $query->orderBy('id', 'desc')->paginate(10);
 
         // Check if the request expects a view (web) or JSON (API)
         if ($request->wantsJson()) {

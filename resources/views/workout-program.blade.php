@@ -170,9 +170,7 @@
                                 <td class="text-center">
                                     <input type="checkbox" name="selected[]" value="{{ $workoutProgram->id }}" />
                                 </td>
-                                <td class="text-center">
-                                    {{ ($workoutPrograms->currentPage() - 1) * $workoutPrograms->perPage() + $loop->index + 1 }}
-                                </td>
+                                <td class="text-center">{{ $workoutProgram->id }}</td>>
                                 <td class="text-center">{{ $workoutProgram->category }}</td>
                                 <td class="text-center">{{ $workoutProgram->type }}</td>
                                 <td class="text-center">{{ $workoutProgram->guideline }}</td>

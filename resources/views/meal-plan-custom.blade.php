@@ -171,9 +171,7 @@
                                 <td class="text-center">
                                     <input type="checkbox" name="selected[]" value="{{ $mealPlanCustom->id }}" />
                                 </td>
-                                <td class="text-center">
-                                    {{ ($mealPlansCustom->currentPage() - 1) * $mealPlansCustom->perPage() + $loop->index + 1 }}
-                                </td>
+                                <td class="text-center">{{ $mealPlanCustom->id }}</td>
                                 <td class="text-center">{{ $mealPlanCustom->user->name ?? 'User Not Found' }}</td>
                                 <td class="text-center">{{ $mealPlanCustom->category }}</td>
                                 <td class="text-center">{{ $mealPlanCustom->type }}</td>

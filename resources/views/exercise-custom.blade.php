@@ -170,9 +170,7 @@
                                 <td class="text-center">
                                     <input type="checkbox" name="selected[]" value="{{ $exerciseCustom->id }}" />
                                 </td>
-                                <td class="text-center">
-                                    {{ ($exercisesCustom->currentPage() - 1) * $exercisesCustom->perPage() + $loop->index + 1 }}
-                                </td>
+                                <td class="text-center">{{ $exerciseCustom->id }}</td>
                                 <td class="text-center">{{ $exerciseCustom->user->name ?? 'User Not Found' }}</td>
                                 <td class="text-center">{{ $exerciseCustom->category }}</td>
                                 <td class="text-center">{{ $exerciseCustom->type }}</td>

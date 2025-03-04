@@ -20,7 +20,7 @@ class ExerciseController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        $exercises = $query->paginate(10);
+        $exercises = $query->orderBy('id', 'desc')->paginate(10);
 
         // Check if the request expects a view (web) or JSON (API)
         if ($request->wantsJson()) {

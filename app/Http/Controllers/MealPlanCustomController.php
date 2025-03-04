@@ -25,7 +25,7 @@ class MealPlanCustomController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        $mealPlansCustom = $query->paginate(10);
+        $mealPlansCustom = $query->orderBy('id', 'desc')->paginate(10);
 
         // Fetch approved users
         $approvedUsers = PendingAppointment::where('pending_appointments.status', 'Approved')
