@@ -13,8 +13,7 @@ class MembershipPendingController extends Controller
      */
     public function index()
     {
-        $pendingMemberships = PendingMembership::where('status', 'Pending')
-            ->orderBy('id', 'desc')
+        $pendingMemberships = PendingMembership::where('status', 'Pending')->orderBy('id', 'desc')
             ->paginate(10);
         return view('membership-pending-list', compact('pendingMemberships'));
     }
@@ -49,8 +48,7 @@ class MembershipPendingController extends Controller
 
     public function listApproved()
     {
-        $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])
-            ->orderBy('id', 'desc')
+        $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])->orderBy('id', 'desc')
             ->paginate(10);
         return view('membership-list', compact('memberships'));
     }
