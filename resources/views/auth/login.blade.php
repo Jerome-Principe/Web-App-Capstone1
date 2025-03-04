@@ -198,9 +198,9 @@
                     @endif
 
                     <!-- Register Link -->
-                    <!-- @if (Route::has('register'))
+                    @if (Route::has('register'))
                         <a href="{{ route('register') }}" class="register">Register?</a>
-                    @endif -->
+                    @endif
                 </div>
             </div>
 
