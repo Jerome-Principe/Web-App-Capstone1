@@ -17,28 +17,6 @@ class MembershipPendingController extends Controller
         return view('membership-pending-list', compact('pendingMemberships'));
     }
 
-    /**
-     * Store a new membership request.
-     */
-    public function store(Request $request)
-    {
-        $membership = new PendingMembership();
-        $membership->first_name = $request->first_name;
-        $membership->last_name = $request->last_name;
-        $membership->email = $request->email;
-        $membership->password = bcrypt($request->password);
-        $membership->membership_type = $request->membership_type;
-
-        // Calculate and set the expiry date based on membership type
-        $membership->expiry_date = PendingMembership::calculateExpiryDate($membership->membership_type);
-
-        $membership->save();
-
-        return redirect()->route('membership-pendings.index')->with('success', 'Membership created successfully.');
-    }
-
-
-
     public function approve($id, Request $request)
     {
         $membership = PendingMembership::find($id);
@@ -54,13 +32,33 @@ class MembershipPendingController extends Controller
             return redirect()->back()->withErrors(['Request membership data not found']);
         }
 
+        $startDate = now(); // Set start date to approval date
+        $expiryDate = $this->calculateExpiryDate($requestMembership->membership_type, $startDate);
+
         $membership->status = 'Approved';
-        $membership->start_date = now(); // Set start date to approval date
-        $membership->expiry_date = PendingMembership::calculateExpiryDate($requestMembership->membership_type, now());
+        $membership->start_date = $startDate;
+        $membership->expiry_date = $expiryDate;
 
         $membership->save();
 
         return redirect()->route('membership.list')->with('success', 'Membership approved successfully');
+    }
+
+    /**
+     * Calculate expiry date based on membership type.
+     */
+    private function calculateExpiryDate($membershipType, $startDate)
+    {
+        switch (strtolower($membershipType)) {
+            case 'bronze':
+                return $startDate->addMonth()->format('Y-m-d');
+            case 'silver':
+                return $startDate->addMonths(3)->format('Y-m-d');
+            case 'gold':
+                return $startDate->addMonths(6)->format('Y-m-d');
+            default:
+                return null; // Handle unexpected membership types
+        }
     }
 
     public function decline($id)

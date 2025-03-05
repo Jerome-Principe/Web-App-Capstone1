@@ -17,9 +17,10 @@ class PendingMembership extends Model
         'last_name',
         'email',
         'password',
+        'start_date', // Added start_date field
+        'expiry_date', // Keep expiry_date
         'membership_type',
         'status',
-        'expiry_date', // Added expiry_date to fillable attributes
     ];
 
     /**
@@ -28,14 +29,6 @@ class PendingMembership extends Model
     protected static function boot()
     {
         parent::boot();
-
-        static::creating(function ($membership) {
-            $membership->expiry_date = self::calculateExpiryDate($membership->membership_type);
-        });
-
-        static::updating(function ($membership) {
-            $membership->expiry_date = self::calculateExpiryDate($membership->membership_type);
-        });
 
         static::deleting(function ($pendingMembership) {
             // Delete related records when the membership is soft-deleted
@@ -48,9 +41,9 @@ class PendingMembership extends Model
     /**
      * Calculate expiry date based on membership type.
      */
-    public static function calculateExpiryDate($membershipType, $startDate = null)
+    public static function calculateExpiryDate($membershipType, $startDate)
     {
-        $startDate = $startDate ? Carbon::parse($startDate) : Carbon::now(); // Use provided date or now()
+        $startDate = Carbon::parse($startDate); // Ensure it's a Carbon instance
 
         switch (strtolower($membershipType)) {
             case 'bronze':
@@ -63,7 +56,6 @@ class PendingMembership extends Model
                 return null;
         }
     }
-
 
     /**
      * Relationship: RequestMembership.
