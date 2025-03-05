@@ -47,9 +47,17 @@ class MembershipPendingController extends Controller
             return redirect()->back()->withErrors(['Membership not found']);
         }
 
-        $membership->membership_type = $request->input('membership_type', 'Standard');
+        // Get the membership type from the request_membership table
+        $requestMembership = $membership->requestMembership;
+
+        if (!$requestMembership) {
+            return redirect()->back()->withErrors(['Request membership data not found']);
+        }
+
         $membership->status = 'Approved';
-        $membership->expiry_date = PendingMembership::calculateExpiryDate($membership->membership_type);
+        $membership->start_date = now(); // Set start date to approval date
+        $membership->expiry_date = PendingMembership::calculateExpiryDate($requestMembership->membership_type, now());
+
         $membership->save();
 
         return redirect()->route('membership.list')->with('success', 'Membership approved successfully');
