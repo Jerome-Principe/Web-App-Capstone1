@@ -49,17 +49,20 @@ class MembershipPendingController extends Controller
      */
     private function calculateExpiryDate($membershipType, $startDate)
     {
+        $date = \Carbon\Carbon::parse($startDate); // Ensure it's a Carbon instance
+
         switch (strtolower($membershipType)) {
             case 'bronze':
-                return $startDate->addMonth()->format('Y-m-d');
+                return $date->copy()->addMonth()->format('Y-m-d');
             case 'silver':
-                return $startDate->addMonths(3)->format('Y-m-d');
+                return $date->copy()->addMonths(3)->format('Y-m-d');
             case 'gold':
-                return $startDate->addMonths(6)->format('Y-m-d');
+                return $date->copy()->addMonths(6)->format('Y-m-d');
             default:
-                return null; // Handle unexpected membership types
+                return null;
         }
     }
+
 
     public function decline($id)
     {
