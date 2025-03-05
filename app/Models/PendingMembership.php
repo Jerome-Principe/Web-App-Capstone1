@@ -17,8 +17,8 @@ class PendingMembership extends Model
         'last_name',
         'email',
         'password',
-        'start_date', // Added start_date field
-        'expiry_date', // Keep expiry_date
+        'start_date',
+        'expiry_date',
         'membership_type',
         'status',
     ];
