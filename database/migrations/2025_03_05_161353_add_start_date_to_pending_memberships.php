@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('pending_memberships', function (Blueprint $table) {
-            $table->date('start_date')->nullable()->after('email'); // Adjust placement as needed
+            $table->date('start_date')->nullable()->after('status'); // Adjust placement as needed
         });
     }
 
