@@ -181,7 +181,7 @@
                                 <td class="text-center">{{ $membership->email }}</td>
                                 <td class="text-center">
                                     {{ $membership->start_date ? \Carbon\Carbon::parse($membership->start_date)->format('Y-m-d') : 'N/A' }}
-                                </td> <!-- Updated Start Date -->
+                                </td>
                                 <td class="text-center">{{ $membership->expiry_date }}</td> <!-- Expiry Date -->
                                 <td class="text-center">{{ ucfirst($membership->membership_type) }}</td>
                                 <td class="text-center">{{ $membership->status }}</td>
