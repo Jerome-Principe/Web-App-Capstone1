@@ -184,7 +184,7 @@
                                 </td>
                                 <td class="text-center">{{ $membership->expiry_date }}</td> <!-- Expiry Date -->
                                 <td class="text-center">
-                                    {{ $membership->membership_type ?? 'N/A' }}
+                                    {{ ucfirst(optional($membership->requestMembership)->membership_type ?? 'N/A') }}
                                 </td>
                                 <td class="text-center">{{ $membership->status }}</td>
                         @endforeach
