@@ -179,10 +179,10 @@
                                 <td class="text-center">{{ $membership->first_name }}</td>
                                 <td class="text-center">{{ $membership->last_name }}</td>
                                 <td class="text-center">{{ $membership->email }}</td>
-                                <td class="text-center"><!-- Start Date -->
-                                    {{ \Carbon\Carbon::parse($membership->created_at)->format('Y-m-d') }}
-                                </td>
-                                <td class="text-center">{{ $membership->expiry_date }}</td> <!-- Expiry Date (From Model) -->
+                                <td class="text-center">
+                                    {{ $membership->start_date ? \Carbon\Carbon::parse($membership->start_date)->format('Y-m-d') : 'N/A' }}
+                                </td> <!-- Updated Start Date -->
+                                <td class="text-center">{{ $membership->expiry_date }}</td> <!-- Expiry Date -->
                                 <td class="text-center">{{ ucfirst($membership->membership_type) }}</td>
                                 <td class="text-center">{{ $membership->status }}</td>
                         @endforeach
