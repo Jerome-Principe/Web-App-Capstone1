@@ -75,11 +75,11 @@ class MembershipPendingController extends Controller
 
     public function listApproved()
     {
-        $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])
+        $memberships = PendingMembership::where('status', 'Approved')
             ->orderBy('id', 'desc')
             ->paginate(10);
 
-        // Calculate total income
+        // Calculate total income only from approved memberships
         $totalIncome = $memberships->sum(function ($membership) {
             $membershipType = optional($membership->requestMembership)->membership_type ?? '';
 
