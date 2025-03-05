@@ -79,17 +79,19 @@ class MembershipPendingController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(10);
 
-        // Calculate total income only from approved memberships
-        $totalIncome = $memberships->sum(function ($membership) {
-            $membershipType = optional($membership->requestMembership)->membership_type ?? '';
+        // Calculate total income from approved memberships
+        $totalIncome = PendingMembership::where('status', 'Approved')
+            ->get()
+            ->sum(function ($membership) {
+                $membershipType = optional($membership->requestMembership)->membership_type ?? '';
 
-            return match (strtolower($membershipType)) {
-                'gold' => 3500,
-                'silver' => 2000,
-                'bronze' => 800,
-                default => 0,
-            };
-        });
+                return match (strtolower($membershipType)) {
+                    'gold' => 3500,
+                    'silver' => 2000,
+                    'bronze' => 800,
+                    default => 0,
+                };
+            });
 
         return view('membership-list', compact('memberships', 'totalIncome'));
     }
