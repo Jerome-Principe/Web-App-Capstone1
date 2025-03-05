@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PendingMembership;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class MembershipPendingController extends Controller
 {
@@ -22,24 +23,23 @@ class MembershipPendingController extends Controller
         $membership = PendingMembership::find($id);
 
         if (!$membership) {
-            return redirect()->back()->withErrors(['Membership not found']);
+            return redirect()->back()->withErrors(['error' => 'Membership not found']);
         }
 
-        // Get the membership type from the request_membership table
         $requestMembership = $membership->requestMembership;
 
         if (!$requestMembership) {
-            return redirect()->back()->withErrors(['Request membership data not found']);
+            return redirect()->back()->withErrors(['error' => 'Request membership data not found']);
         }
 
-        $startDate = now()->format('Y-m-d'); // Ensure start date is set before expiry calculation
+        $startDate = Carbon::now()->format('Y-m-d');
         $expiryDate = $this->calculateExpiryDate($requestMembership->membership_type, $startDate);
 
-        $membership->status = 'Approved';
-        $membership->start_date = $startDate; // Save the correct start date
-        $membership->expiry_date = $expiryDate;
-
-        $membership->save();
+        $membership->update([
+            'status' => 'Approved',
+            'start_date' => $startDate,
+            'expiry_date' => $expiryDate,
+        ]);
 
         return redirect()->route('membership.list')->with('success', 'Membership approved successfully');
     }
@@ -49,20 +49,15 @@ class MembershipPendingController extends Controller
      */
     private function calculateExpiryDate($membershipType, $startDate)
     {
-        $date = \Carbon\Carbon::parse($startDate); // Ensure it's a Carbon instance
+        $date = Carbon::parse($startDate);
 
-        switch (strtolower($membershipType)) {
-            case 'bronze':
-                return $date->copy()->addMonth()->format('Y-m-d');
-            case 'silver':
-                return $date->copy()->addMonths(3)->format('Y-m-d');
-            case 'gold':
-                return $date->copy()->addMonths(6)->format('Y-m-d');
-            default:
-                return null;
-        }
+        return match (strtolower($membershipType)) {
+            'bronze' => $date->addMonth()->format('Y-m-d'),
+            'silver' => $date->addMonths(3)->format('Y-m-d'),
+            'gold' => $date->addMonths(6)->format('Y-m-d'),
+            default => null,
+        };
     }
-
 
     public function decline($id)
     {
