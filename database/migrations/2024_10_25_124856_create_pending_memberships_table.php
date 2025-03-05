@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('membership_type')->default('Standard');
             $table->string('status')->default('Pending');
             $table->date('expiry_date')->nullable(); // Add expiry_date column
             $table->timestamps();
