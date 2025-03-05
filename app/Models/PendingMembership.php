@@ -48,9 +48,14 @@ class PendingMembership extends Model
     /**
      * Calculate expiry date based on membership type.
      */
-    public static function calculateExpiryDate($membershipType, $startDate = null)
+    public static function calculateExpiryDate($pendingMembership)
     {
-        $startDate = $startDate ? Carbon::parse($startDate) : Carbon::now(); // Use provided date or now()
+        if (!$pendingMembership->requestMembership) {
+            return null; // No related request membership
+        }
+
+        $membershipType = $pendingMembership->requestMembership->membership_type;
+        $startDate = Carbon::parse($pendingMembership->created_at);
 
         switch (strtolower($membershipType)) {
             case 'bronze':

@@ -183,7 +183,9 @@
                                     {{ \Carbon\Carbon::parse($membership->created_at)->format('Y-m-d') }}
                                 </td>
                                 <td class="text-center">{{ $membership->expiry_date }}</td> <!-- Expiry Date (From Model) -->
-                                <td class="text-center">{{ ucfirst($membership->membership_type) }}</td>
+                                <td class="text-center">
+                                    {{ ucfirst(optional($membership->requestMembership)->membership_type ?? 'N/A') }}
+                                </td>
                                 <td class="text-center">{{ $membership->status }}</td>
                         @endforeach
                     </tbody>
