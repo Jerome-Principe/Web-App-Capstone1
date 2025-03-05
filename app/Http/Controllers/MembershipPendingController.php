@@ -193,13 +193,23 @@ class MembershipPendingController extends Controller
 
     public function exportPdfByDate(Request $request)
     {
-        $memberships = PendingMembership::all();
+        $date = $request->input('date');
 
-        // Calculate total income (assuming 'price' is a column in your Membership model)
-        $totalIncome = $memberships->sum('price');
+        // Filter memberships based on date if provided
+        $query = PendingMembership::query();
+        if ($date) {
+            $query->whereDate('start_date', $date);
+        }
 
-        $pdf = PDF::loadView('membership-list-pdf', compact('memberships', 'totalIncome'));
+        $memberships = $query->get();
 
+        // Calculate total income
+        $totalIncome = $memberships->sum(function ($membership) {
+            return optional($membership->membershipPayments)->sum('amount') ?? 0;
+        });
+
+        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'totalIncome', 'date'));
         return $pdf->download('membership-list.pdf');
     }
+
 }
