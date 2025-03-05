@@ -38,6 +38,7 @@
 </head>
 
 <body>
+
     <h1>Membership List Report</h1>
     <p>Date: {{ $date ?? 'All Dates' }}</p>
 
@@ -47,26 +48,40 @@
                 <th>#</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Date / Time</th>
                 <th>Email</th>
+                <th>Start Date</th>
+                <th>Expiry Date</th>
+                <th>Membership Type</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($memberships as $membership)
+            @foreach($memberships as $index => $membership)
                 <tr>
-                    <td>{{ $membership->id }}</td>
+                    <td>{{ $index + 1 }}</td>
                     <td>{{ $membership->first_name }}</td>
                     <td>{{ $membership->last_name }}</td>
-                    <td>{{ $membership->created_at }}</td>
                     <td>{{ $membership->email }}</td>
+                    <td>{{ $membership->start_date ? \Carbon\Carbon::parse($membership->start_date)->format('Y-m-d') : 'N/A' }}
+                    </td>
+                    <td>{{ $membership->expiry_date ?? 'N/A' }}</td>
+                    <td>{{ ucfirst(optional($membership->requestMembership)->membership_type ?? 'N/A') }}</td>
+                    <td>{{ $membership->status }}</td>
                 </tr>
             @endforeach
         </tbody>
-        <tr class="total-row">
-            <td colspan="4">Total Memberships</td>
-            <td>{{ count($memberships) }}</td>
-        </tr>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="7">Total Memberships</td>
+                <td>{{ count($memberships) }}</td>
+            </tr>
+            <tr class="total-row">
+                <td colspan="7">Total Income</td>
+                <td>{{ $totalIncome ?? 0 }}</td>
+            </tr>
+        </tfoot>
     </table>
+
 </body>
 
 </html>
