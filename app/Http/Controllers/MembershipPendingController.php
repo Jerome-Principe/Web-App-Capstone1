@@ -86,9 +86,9 @@ class MembershipPendingController extends Controller
                 $membershipType = optional($membership->requestMembership)->membership_type ?? '';
 
                 return match (strtolower($membershipType)) {
-                    'gold' => 3500,
+                    'bronze' => 800, // Example pricing
                     'silver' => 2000,
-                    'bronze' => 800,
+                    'gold' => 3500,
                     default => 0,
                 };
             });
