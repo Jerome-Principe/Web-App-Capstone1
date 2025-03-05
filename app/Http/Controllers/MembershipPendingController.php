@@ -75,10 +75,25 @@ class MembershipPendingController extends Controller
 
     public function listApproved()
     {
-        $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])->orderBy('id', 'desc')
+        $memberships = PendingMembership::whereIn('status', ['Approved', 'Declined'])
+            ->orderBy('id', 'desc')
             ->paginate(10);
-        return view('membership-list', compact('memberships'));
+
+        // Calculate total income
+        $totalIncome = $memberships->sum(function ($membership) {
+            $membershipType = optional($membership->requestMembership)->membership_type ?? '';
+
+            return match (strtolower($membershipType)) {
+                'gold' => 3500,
+                'silver' => 2000,
+                'bronze' => 800,
+                default => 0,
+            };
+        });
+
+        return view('membership-list', compact('memberships', 'totalIncome'));
     }
+
 
     public function mGetMembershipPending()
     {
