@@ -32,11 +32,11 @@ class MembershipPendingController extends Controller
             return redirect()->back()->withErrors(['Request membership data not found']);
         }
 
-        $startDate = now(); // Set start date to approval date
+        $startDate = now()->format('Y-m-d'); // Ensure start date is set before expiry calculation
         $expiryDate = $this->calculateExpiryDate($requestMembership->membership_type, $startDate);
 
         $membership->status = 'Approved';
-        $membership->start_date = $startDate;
+        $membership->start_date = $startDate; // Save the correct start date
         $membership->expiry_date = $expiryDate;
 
         $membership->save();
