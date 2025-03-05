@@ -206,4 +206,25 @@ class MembershipPendingController extends Controller
         return $pdf->download('membership-list.pdf');
     }
 
+    public function generatePDF()
+    {
+        $memberships = PendingMembership::where('status', 'Approved')->get();
+
+        // Calculate total income
+        $totalIncome = $memberships->sum(function ($membership) {
+            $membershipType = optional($membership->requestMembership)->membership_type ?? '';
+
+            return match (strtolower($membershipType)) {
+                'gold' => 3500,
+                'silver' => 2000,
+                'bronze' => 800,
+                default => 0,
+            };
+        });
+
+        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'totalIncome'));
+        return $pdf->download('membership-list.pdf');
+    }
+
+
 }
