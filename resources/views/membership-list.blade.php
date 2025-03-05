@@ -191,6 +191,10 @@
                     </tbody>
                 </table>
 
+                <div class="mt-3">
+                    <h5>Total Income = {{ $totalIncome }}</h5>
+                </div>
+
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4">
                         <li class="page-item {{ $memberships->onFirstPage() ? 'disabled' : '' }}">
