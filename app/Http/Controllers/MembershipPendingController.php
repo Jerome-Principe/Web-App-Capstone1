@@ -206,11 +206,11 @@ class MembershipPendingController extends Controller
         return $pdf->download('membership-list.pdf');
     }
 
-    public function generatePDF()
+    public function generateMembershipPDF()
     {
         $memberships = PendingMembership::where('status', 'Approved')->get();
 
-        // Calculate total income
+        // Calculate total income from approved memberships
         $totalIncome = $memberships->sum(function ($membership) {
             $membershipType = optional($membership->requestMembership)->membership_type ?? '';
 
@@ -222,9 +222,13 @@ class MembershipPendingController extends Controller
             };
         });
 
-        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'totalIncome'));
+        $data = [
+            'memberships' => $memberships,
+            'totalIncome' => $totalIncome,
+            'date' => now()->format('Y-m-d'),
+        ];
+
+        $pdf = Pdf::loadView('membership-list-pdf', $data);
         return $pdf->download('membership-list.pdf');
     }
-
-
 }

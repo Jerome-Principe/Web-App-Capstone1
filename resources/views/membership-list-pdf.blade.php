@@ -77,7 +77,7 @@
             </tr>
             <tr class="total-row">
                 <td colspan="7">Total Income</td>
-                <td>{{ $totalIncome ?? 0 }}</td>
+                <td>{{ number_format($totalIncome, 2) }}</td>
             </tr>
         </tfoot>
     </table>
