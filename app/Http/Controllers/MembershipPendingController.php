@@ -96,8 +96,6 @@ class MembershipPendingController extends Controller
         return view('membership-list', compact('memberships', 'totalIncome'));
     }
 
-
-
     public function mGetMembershipPending()
     {
         return PendingMembership::where('status', 'Pending')->get();
@@ -195,40 +193,13 @@ class MembershipPendingController extends Controller
 
     public function exportPdfByDate(Request $request)
     {
-        $date = $request->get('date');
-        // Filter memberships based on the selected date or fetch all if no date is provided
-        $memberships = $date
-            ? PendingMembership::whereDate('created_at', $date)->get()
-            : PendingMembership::all();
+        $memberships = PendingMembership::all();
 
-        // Return PDF
-        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date'));
-        return $pdf->download('membership-list.pdf');
-    }
+        // Calculate total income (assuming 'price' is a column in your Membership model)
+        $totalIncome = $memberships->sum('price');
 
-    public function generateMembershipPDF()
-    {
-        $memberships = PendingMembership::where('status', 'Approved')->get();
+        $pdf = PDF::loadView('membership-list-pdf', compact('memberships', 'totalIncome'));
 
-        // Calculate total income from approved memberships
-        $totalIncome = $memberships->sum(function ($membership) {
-            $membershipType = optional($membership->requestMembership)->membership_type ?? '';
-
-            return match (strtolower($membershipType)) {
-                'gold' => 3500,
-                'silver' => 2000,
-                'bronze' => 800,
-                default => 0,
-            };
-        });
-
-        $data = [
-            'memberships' => $memberships,
-            'totalIncome' => $totalIncome,
-            'date' => now()->format('Y-m-d'),
-        ];
-
-        $pdf = Pdf::loadView('membership-list-pdf', $data);
         return $pdf->download('membership-list.pdf');
     }
 }
