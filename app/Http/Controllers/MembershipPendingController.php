@@ -13,12 +13,33 @@ class MembershipPendingController extends Controller
      */
     public function index()
     {
-        $pendingMemberships = PendingMembership::where('status', 'Pending')->orderBy('id', 'desc')
-            ->paginate(10);
+        $pendingMemberships = PendingMembership::where('status', 'Pending')->paginate(10);
         return view('membership-pending-list', compact('pendingMemberships'));
     }
 
-    public function approve($id)
+    /**
+     * Store a new membership request.
+     */
+    public function store(Request $request)
+    {
+        $membership = new PendingMembership();
+        $membership->first_name = $request->first_name;
+        $membership->last_name = $request->last_name;
+        $membership->email = $request->email;
+        $membership->password = bcrypt($request->password);
+        $membership->membership_type = $request->membership_type;
+
+        // Calculate and set the expiry date based on membership type
+        $membership->expiry_date = PendingMembership::calculateExpiryDate($membership->membership_type);
+
+        $membership->save();
+
+        return redirect()->route('membership-pendings.index')->with('success', 'Membership created successfully.');
+    }
+
+
+
+    public function approve($id, Request $request)
     {
         $membership = PendingMembership::find($id);
 
@@ -26,7 +47,9 @@ class MembershipPendingController extends Controller
             return redirect()->back()->withErrors(['Membership not found']);
         }
 
+        $membership->membership_type = $request->input('membership_type', 'Standard');
         $membership->status = 'Approved';
+        $membership->expiry_date = PendingMembership::calculateExpiryDate($membership->membership_type);
         $membership->save();
 
         return redirect()->route('membership.list')->with('success', 'Membership approved successfully');

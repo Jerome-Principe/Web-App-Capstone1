@@ -163,7 +163,9 @@
                             <th class="text-center">First Name</th>
                             <th class="text-center">Last Name</th>
                             <th class="text-center">Email</th>
-                            <th class="text-center">Date</th>
+                            <th class="text-center">Start Date</th>
+                            <th class="text-center">Expiry Date</th>
+                            <th class="text-center">Membership Type</th>
                             <th class="text-center">Status</th>
                         </tr>
                     </thead>
@@ -173,13 +175,16 @@
                                 <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
                                         onchange="updateSelectionCount()" />
                                 </td>
-                                <td class="text-center">{{ $membership->id  }}</td>
+                                <td class="text-center">{{ $membership->id }}</td>
                                 <td class="text-center">{{ $membership->first_name }}</td>
                                 <td class="text-center">{{ $membership->last_name }}</td>
                                 <td class="text-center">{{ $membership->email }}</td>
-                                <td class="text-center">{{ $membership->created_at }}</td>
+                                <td class="text-center"><!-- Start Date -->
+                                    {{ \Carbon\Carbon::parse($membership->created_at)->format('Y-m-d') }}
+                                </td>
+                                <td class="text-center">{{ $membership->expiry_date }}</td> <!-- Expiry Date (From Model) -->
+                                <td class="text-center">{{ ucfirst($membership->membership_type) }}</td>
                                 <td class="text-center">{{ $membership->status }}</td>
-                            </tr>
                         @endforeach
                     </tbody>
                 </table>
