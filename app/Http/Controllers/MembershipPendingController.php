@@ -201,28 +201,14 @@ class MembershipPendingController extends Controller
 
     public function exportPdfByDate(Request $request)
     {
-        $date = $request->input('date');
+        $date = $request->get('date');
+        // Filter memberships based on the selected date or fetch all if no date is provided
+        $memberships = $date
+            ? PendingMembership::whereDate('created_at', $date)->get()
+            : PendingMembership::all();
 
-        // Retrieve memberships filtered by date
-        $memberships = PendingMembership::whereDate('start_date', $date)
-            ->where('status', 'Approved')
-            ->get();
-
-        // Calculate total income from approved memberships
-        $totalIncome = $memberships->sum(function ($membership) {
-            $membershipType = optional($membership->requestMembership)->membership_type ?? '';
-
-            return match (strtolower($membershipType)) {
-                'gold' => 3500,
-                'silver' => 2000,
-                'bronze' => 800,
-                default => 0,
-            };
-        });
-
-        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date', 'totalIncome'));
-
-        return $pdf->download('membership-list-' . ($date ?? 'all') . '.pdf');
+        // Return PDF
+        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date'));
+        return $pdf->download('membership-list.pdf');
     }
-
 }
