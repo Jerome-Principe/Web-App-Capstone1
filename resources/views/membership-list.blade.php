@@ -192,7 +192,7 @@
                 </table>
 
                 <div class="mt-3">
-                    <h5>Total Income = {{ $totalIncome }}</h5>
+                    <h5>Total Income = {{ $totalIncome ?? 0 }}</h5>
                 </div>
 
                 <nav aria-label="Page navigation example">

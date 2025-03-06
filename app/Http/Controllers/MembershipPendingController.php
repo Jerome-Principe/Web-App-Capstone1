@@ -177,30 +177,52 @@ class MembershipPendingController extends Controller
 
     public function filterByDate(Request $request)
     {
-        // Validate the date input
-        $request->validate([
-            'date' => 'required|date',
-        ]);
-
-        // Retrieve memberships filtered by the selected date and status 'Approved'
         $date = $request->input('date');
+
         $memberships = PendingMembership::where('status', 'Approved')
-            ->whereDate('created_at', $date) // or any other date column if necessary
+            ->whereDate('start_date', $date)
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
-        return view('membership-list', compact('memberships', 'date'));
+        // Calculate total income for filtered results
+        $totalIncome = $memberships->sum(function ($membership) {
+            $membershipType = optional($membership->requestMembership)->membership_type ?? '';
+
+            return match (strtolower($membershipType)) {
+                'gold' => 3500,
+                'silver' => 2000,
+                'bronze' => 800,
+                default => 0,
+            };
+        });
+
+        return view('membership-list', compact('memberships', 'totalIncome'));
     }
 
     public function exportPdfByDate(Request $request)
     {
-        $date = $request->get('date');
-        // Filter memberships based on the selected date or fetch all if no date is provided
-        $memberships = $date
-            ? PendingMembership::whereDate('created_at', $date)->get()
-            : PendingMembership::all();
+        $date = $request->input('date');
 
-        // Return PDF
-        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date'));
-        return $pdf->download('membership-list.pdf');
+        // Retrieve memberships filtered by date
+        $memberships = PendingMembership::whereDate('start_date', $date)
+            ->where('status', 'Approved')
+            ->get();
+
+        // Calculate total income from approved memberships
+        $totalIncome = $memberships->sum(function ($membership) {
+            $membershipType = optional($membership->requestMembership)->membership_type ?? '';
+
+            return match (strtolower($membershipType)) {
+                'gold' => 3500,
+                'silver' => 2000,
+                'bronze' => 800,
+                default => 0,
+            };
+        });
+
+        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date', 'totalIncome'));
+
+        return $pdf->download('membership-list-' . ($date ?? 'all') . '.pdf');
     }
+
 }
