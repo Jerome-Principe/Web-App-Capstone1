@@ -144,7 +144,7 @@
 
                             <!-- Export PDF by Date -->
                             <form method="GET" action="{{ route('membership.list.exportPdfByDate') }}">
-                                <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                                <input type="hidden" name="date" id="pdf-date" value="{{ request('date') ?? '' }}">
                                 <button type="submit" class="btn btn-success ms-2">Export PDF</button>
                             </form>
                         </div>
