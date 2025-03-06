@@ -179,9 +179,6 @@ class MembershipPendingController extends Controller
     {
         $date = $request->input('date');
 
-        // Store selected date in session for export
-        session(['filtered_date' => $date]);
-
         $memberships = PendingMembership::where('status', 'Approved')
             ->whereDate('start_date', $date)
             ->orderBy('id', 'desc')
@@ -199,21 +196,14 @@ class MembershipPendingController extends Controller
             };
         });
 
-        return view('membership-list', compact('memberships', 'totalIncome', 'date'));
+        return view('membership-list', compact('memberships', 'totalIncome'));
     }
-
 
     public function exportPdfByDate(Request $request)
     {
-        // Retrieve the last filtered date from session
-        $date = session('filtered_date');
+        $date = $request->get('date');
 
-        // If no date was stored, use request input (fallback)
-        if (!$date) {
-            $date = $request->get('date');
-        }
-
-        // Get all memberships (both approved and declined) based on the selected date
+        // Get all memberships (both approved and declined)
         $memberships = $date
             ? PendingMembership::whereDate('created_at', $date)->get()
             : PendingMembership::all();
@@ -234,6 +224,5 @@ class MembershipPendingController extends Controller
         $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date', 'totalIncome'));
         return $pdf->download('membership-list.pdf');
     }
-
 
 }
