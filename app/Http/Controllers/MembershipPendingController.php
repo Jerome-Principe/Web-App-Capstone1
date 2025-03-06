@@ -203,13 +203,13 @@ class MembershipPendingController extends Controller
     {
         $date = $request->get('date');
 
-        // Get filtered memberships based on the selected date or fetch all if no date is provided
+        // Get all memberships (both approved and declined)
         $memberships = $date
-            ? PendingMembership::whereDate('created_at', $date)->where('status', 'Approved')->get()
-            : PendingMembership::where('status', 'Approved')->get();
+            ? PendingMembership::whereDate('created_at', $date)->get()
+            : PendingMembership::all();
 
-        // Calculate total income from approved memberships
-        $totalIncome = $memberships->sum(function ($membership) {
+        // Calculate total income ONLY from approved memberships
+        $totalIncome = $memberships->where('status', 'Approved')->sum(function ($membership) {
             $membershipType = optional($membership->requestMembership)->membership_type ?? '';
 
             return match (strtolower($membershipType)) {
@@ -224,6 +224,5 @@ class MembershipPendingController extends Controller
         $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date', 'totalIncome'));
         return $pdf->download('membership-list.pdf');
     }
-
 
 }

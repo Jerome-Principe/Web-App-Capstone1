@@ -66,7 +66,9 @@
                     </td>
                     <td>{{ $membership->expiry_date ?? 'N/A' }}</td>
                     <td>{{ ucfirst(optional($membership->requestMembership)->membership_type ?? 'N/A') }}</td>
-                    <td>{{ $membership->status }}</td>
+                    <td style="color: {{ $membership->status == 'Declined' ? 'red' : 'black' }};">
+                        {{ $membership->status }}
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -77,7 +79,7 @@
             </tr>
             <tr class="total-row">
                 <td colspan="7">Total Income</td>
-                <td>{{ number_format($totalIncome ?? 0, 2) }}</td>
+                <td><strong>₱{{ number_format($totalIncome ?? 0, 2) }}</strong></td>
             </tr>
         </tfoot>
     </table>
