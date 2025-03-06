@@ -79,7 +79,7 @@
             </tr>
             <tr class="total-row">
                 <td colspan="7">Total Income</td>
-                <td><strong>₱{{ number_format($totalIncome ?? 0, 2) }}</strong></td>
+                <td><strong>&#8369;{{ number_format($totalIncome ?? 0, 2) }}</strong></td>
             </tr>
         </tfoot>
     </table>
