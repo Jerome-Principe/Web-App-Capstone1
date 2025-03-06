@@ -56,7 +56,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($memberships as $index => $membership)
+            @foreach($memberships as $index => $membership)
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $membership->first_name }}</td>
@@ -68,11 +68,7 @@
                     <td>{{ ucfirst(optional($membership->requestMembership)->membership_type ?? 'N/A') }}</td>
                     <td>{{ $membership->status }}</td>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="8" class="text-center">No memberships found.</td>
-                </tr>
-            @endforelse
+            @endforeach
         </tbody>
         <tfoot>
             <tr class="total-row">
