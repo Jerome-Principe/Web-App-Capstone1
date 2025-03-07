@@ -89,131 +89,131 @@
 
 @section('content')
 
-<body>
-    <div class="container">
-        <div class="header-section">
-            <h1>Pending Membership Approvals</h1>
+    <body>
+        <div class="container">
+            <div class="header-section">
+                <h1>Pending Membership Approvals</h1>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(function () {
+                        const alert = document.querySelector('.custom-alert-message');
+                        if (alert) {
+                            alert.classList.add('fade-out');
+                        }
+                    }, 3000);
+                });
+            </script>
+
+            <div class="filter-options">
+                <div class="filter-links">
+                    <a href="#" id="select-all-link">All (0)</a>
+                    <a href="#">Trashed (0)</a>
+                </div>
+
+                <div>
+                    <form method="POST" action="#">
+                        @csrf
+                        @method('DELETE')
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
+                                onclick="return confirm('Are you sure you want to delete all selected memberships?')">
+                                <i class="fa fa-trash"></i> Move to Trash
+                            </button>
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                    style="height: 35px;">
+                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                            </form>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pendingMemberships as $index => $membership)
+                            <tr>
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
+                                        onchange="updateSelectionCount()" />
+                                </td>
+                                <td class="text-center">{{ $membership->id  }}</td>
+                                <td class="text-center">{{ $membership->first_name }}</td>
+                                <td class="text-center">{{ $membership->last_name }}</td>
+                                <td class="text-center">{{ $membership->email }}</td>
+                                <td class="text-center">{{ $membership->status }}</td>
+                                <td class="d-flex justify-content-center">
+                                    @if($membership->status === 'Pending')
+                                        <form action="{{ route('membership-pendings.approve', $membership->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                        </form>
+                                        <form action="{{ route('membership-pendings.decline', $membership->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger btn-sm mx-1">Decline</button>
+                                        </form>
+                                    @else
+                                        {{ $membership->status }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item {{ $pendingMemberships->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $pendingMemberships->previousPageUrl() }}"
+                                tabindex="-1">Previous</a>
+                        </li>
+
+                        @foreach(range(1, $pendingMemberships->lastPage()) as $page)
+                            <li class="page-item {{ $page == $pendingMemberships->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $pendingMemberships->url($page) }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
+
+                        <li class="page-item {{ !$pendingMemberships->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $pendingMemberships->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
         </div>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                setTimeout(function () {
-                    const alert = document.querySelector('.custom-alert-message');
-                    if (alert) {
-                        alert.classList.add('fade-out');
-                    }
-                }, 3000);
-            });
+            function toggleSelectAll(source) {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = source.checked;
+                });
+                updateSelectionCount();
+            }
+
+            function updateSelectionCount() {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+                const count = checkboxes.length;
+                document.getElementById('select-all-link').innerText = `All (${count})`;
+            }
         </script>
 
-        <div class="filter-options">
-            <div class="filter-links">
-                <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
-            </div>
-
-            <div>
-                <form method="POST" action="#">
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                            onclick="return confirm('Are you sure you want to delete all selected memberships?')">
-                            <i class="fa fa-trash"></i> Move to Trash
-                        </button>
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">First Name</th>
-                        <th class="text-center">Last Name</th>
-                        <th class="text-center">Email</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($pendingMemberships as $index => $membership)
-                        <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
-                                    onchange="updateSelectionCount()" />
-                            </td>
-                            <td class="text-center">{{ $membership->id  }}</td>
-                            <td class="text-center">{{ $membership->first_name }}</td>
-                            <td class="text-center">{{ $membership->last_name }}</td>
-                            <td class="text-center">{{ $membership->email }}</td>
-                            <td class="text-center">{{ $membership->status }}</td>
-                            <td class="d-flex justify-content-center">
-                                @if($membership->status === 'Pending')
-                                    <form action="{{ route('membership-pendings.approve', $membership->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                                    </form>
-                                    <form action="{{ route('membership-pendings.decline', $membership->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm mx-1">Decline</button>
-                                    </form>
-                                @else
-                                    {{ $membership->status }}
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $pendingMemberships->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $pendingMemberships->previousPageUrl() }}"
-                            tabindex="-1">Previous</a>
-                    </li>
-
-                    @foreach(range(1, $pendingMemberships->lastPage()) as $page)
-                        <li class="page-item {{ $page == $pendingMemberships->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $pendingMemberships->url($page) }}">{{ $page }}</a>
-                        </li>
-                    @endforeach
-
-                    <li class="page-item {{ !$pendingMemberships->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $pendingMemberships->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
-
-        </div>
-    </div>
-
-    <script>
-        function toggleSelectAll(source) {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = source.checked;
-            });
-            updateSelectionCount();
-        }
-
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-    </script>
-
-</body>
+    </body>
 
 @endsection
