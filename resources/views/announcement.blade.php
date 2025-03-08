@@ -310,22 +310,26 @@
                                 <td class="text-center">
                                     <a href="{{ asset('storage/' . $announcement->pdf_file) }}" target="_blank">View PDF</a>
                                 </td class="text-center">
-                                <td class="d-flex justify-content-center">
-                                    <a href="#" class="btn btn-sm btn-primary edit-btn" data-id="{{ $announcement->id }}"
-                                        data-notification="{{ $announcement->notification_text }}"
-                                        data-description="{{ $announcement->description }}"
-                                        data-pdf="{{ asset('storage/' . $announcement->pdf_file) }}" data-bs-toggle="modal"
-                                        data-bs-target="#editAnnouncementModal">
-                                        <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
-                                    </a>
-                                    <form action="{{ route('announcements.destroy', $announcement->id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                            onclick="return confirm('Are you sure you want to delete this Announcements?')"><i
-                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
-                                    </form>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center">
+                                        <a href="#" class="btn btn-sm btn-primary edit-btn mx-1"
+                                            data-id="{{ $announcement->id }}"
+                                            data-notification="{{ $announcement->notification_text }}"
+                                            data-description="{{ $announcement->description }}"
+                                            data-pdf="{{ asset('storage/' . $announcement->pdf_file) }}" data-bs-toggle="modal"
+                                            data-bs-target="#editAnnouncementModal">
+                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                        </a>
+                                        <form action="{{ route('announcements.destroy', $announcement->id) }}" method="POST"
+                                            style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger mx-1"
+                                                onclick="return confirm('Are you sure you want to delete this Announcements?')">
+                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
