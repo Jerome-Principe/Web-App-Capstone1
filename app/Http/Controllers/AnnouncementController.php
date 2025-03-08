@@ -33,7 +33,8 @@ class AnnouncementController extends Controller
 
         // Handle PDF upload
         if ($request->hasFile('pdf_file')) {
-            $data['pdf_file'] = $request->file('pdf_file')->store('pdfs', 'public');
+            $data['pdf_file'] = 'storage/' . $request->file('pdf_file')->store('pdfs', 'public');
+
         }
 
         Announcement::create($data);
@@ -67,7 +68,7 @@ class AnnouncementController extends Controller
 
         if ($request->hasFile('pdf_file')) {
             $pdfPath = $request->file('pdf_file')->store('pdfs', 'public');
-            $announcement->pdf_file = $pdfPath;
+            $announcement->pdf_file = 'storage/' . $pdfPath;
         }
 
         $announcement->notification_text = $request->notification_text;
