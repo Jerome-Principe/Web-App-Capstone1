@@ -124,11 +124,8 @@ require __DIR__ . '/auth.php';
 
 
 //Announcements
+Route::resource('/announcements', AnnouncementController::class);
 Route::prefix('announcements')->name('announcements.')->group(function () {
-    // Resource routes for announcements
-    Route::resource('/', AnnouncementController::class);
-
-    // Trash and Restore Routes
     Route::prefix('trashed')->group(function () {
         Route::get('/', [AnnouncementController::class, 'trashed'])->name('trashed');
         Route::post('/move-to-trash', [AnnouncementController::class, 'moveToTrash'])->name('moveToTrash');
@@ -139,8 +136,8 @@ Route::prefix('announcements')->name('announcements.')->group(function () {
 });
 
 //Instructors
+Route::resource('instructors', InstructorController::class);
 Route::prefix('instructors')->name('instructors.')->group(function () {
-    Route::resource('/', InstructorController::class);
     Route::post('/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('moveToTrash');
     Route::get('/trashed', [InstructorController::class, 'trashed'])->name('trashed');
     Route::post('{id}/restore', [InstructorController::class, 'restore'])->name('restore');
