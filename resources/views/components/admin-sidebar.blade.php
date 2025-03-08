@@ -49,10 +49,7 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/all-announcement">All Announcement</a>
-                    </li>
-                    <li>
-                        <a href="/create-announcement">Create Announcement</a>
+                        <a href="/announcements">Create Announcement</a>
                     </li>
                 </ul>
             </li>

@@ -24,6 +24,7 @@ use App\Http\Controllers\WorkoutProgramController;
 use App\Http\Controllers\WorkoutProgramCustomController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ExerciseCustomController;
+use App\Http\Controllers\AnnouncementController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,13 +49,6 @@ Route::get('/learnmorebtn', function () {
 // dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
-});
-Route::get('/create-announcement', function () {
-    return view('create-announcement');
-});
-
-Route::get('/all-announcement', function () {
-    return view('all-announcement');
 });
 
 Route::get('/attendance', function () {
@@ -129,18 +123,30 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 
-// Instructors
-Route::resource('/instructors', InstructorController::class);
-// Move to trash
-Route::post('/instructors/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('instructors.moveToTrash');
-// Trashed instructors
-Route::get('/trashed-instructors', [InstructorController::class, 'trashed'])->name('instructors.trashed');
-// Restore instructor
-Route::post('/instructors/{id}/restore', [InstructorController::class, 'restore'])->name('instructors.restore');
-// Force delete instructor
-Route::delete('/instructors/{id}/force-delete', [InstructorController::class, 'forceDelete'])->name('instructors.forceDelete');
-// Restore bulk instructor
-Route::post('/instructors/restore-bulk', [InstructorController::class, 'restoreBulk'])->name('instructors.restore.bulk');
+//Announcements
+Route::prefix('announcements')->name('announcements.')->group(function () {
+    // Resource routes for announcements
+    Route::resource('/', AnnouncementController::class);
+
+    // Trash and Restore Routes
+    Route::prefix('trashed')->group(function () {
+        Route::get('/', [AnnouncementController::class, 'trashed'])->name('trashed');
+        Route::post('/move-to-trash', [AnnouncementController::class, 'moveToTrash'])->name('moveToTrash');
+        Route::post('/restore-bulk', [AnnouncementController::class, 'restoreBulk'])->name('restore.bulk');
+        Route::post('/restore/{id}', [AnnouncementController::class, 'restore'])->name('restore');
+        Route::delete('/force-delete/{id}', [AnnouncementController::class, 'forceDelete'])->name('forceDelete');
+    });
+});
+
+//Instructors
+Route::prefix('instructors')->name('instructors.')->group(function () {
+    Route::resource('/', InstructorController::class);
+    Route::post('/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::get('/trashed', [InstructorController::class, 'trashed'])->name('trashed');
+    Route::post('{id}/restore', [InstructorController::class, 'restore'])->name('restore');
+    Route::delete('{id}/force-delete', [InstructorController::class, 'forceDelete'])->name('forceDelete');
+    Route::post('/restore-bulk', [InstructorController::class, 'restoreBulk'])->name('restore.bulk');
+});
 
 // Pending Appointments Routes
 Route::prefix('appointments')->group(function () {
