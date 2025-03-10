@@ -192,7 +192,7 @@
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger mx-1"
+                                            <button type="submit" class="btn btn-sm btn-danger"
                                                 onclick="return confirm('Are you sure you want to delete this exercise?')">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>Delete
                                             </button>
