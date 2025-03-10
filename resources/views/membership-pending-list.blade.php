@@ -37,23 +37,6 @@
             margin-right: 10px;
         }
 
-        .filter-options {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .filter-links {
-            display: flex;
-        }
-
-        .filter-options a {
-            margin-right: 15px;
-            color: #007bff;
-            text-decoration: none;
-        }
-
         .table-container {
             overflow-x: auto;
         }
@@ -106,29 +89,12 @@
                 });
             </script>
 
-            <div class="filter-options">
-                <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
-                    <a href="#">Trashed (0)</a>
-                </div>
-
-                <div>
-                    <form method="POST" action="#">
-                        @csrf
-                        @method('DELETE')
-                        <div class="d-flex align-items-center">
-                            <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                                onclick="return confirm('Are you sure you want to delete all selected memberships?')">
-                                <i class="fa fa-trash"></i> Move to Trash
-                            </button>
-                            <form class="d-flex" role="search">
-                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                    style="height: 35px;">
-                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                            </form>
-                        </div>
-                    </form>
-                </div>
+            <div class="d-flex justify-content-end mb-3">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                        style="width: 250px; height: 35px;">
+                    <button class="btn btn-primary" type="submit" style="height: 35px;">Search</button>
+                </form>
             </div>
 
             <div class="table-container">
