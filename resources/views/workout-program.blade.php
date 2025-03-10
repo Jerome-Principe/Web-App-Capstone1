@@ -180,18 +180,24 @@
                                 <td class="text-center">{{ $workoutProgram->difficulty }}</td>
                                 <td class="text-center">{{ $workoutProgram->duration }}</td>
                                 <td class="text-center">
-                                    <!-- Edit Button -->
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editWorkoutProgramModal{{ $workoutProgram->id }}">Update</button>
+                                    <div class="d-flex justify-content-center">
+                                        <!-- Edit Button -->
+                                        <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editWorkoutProgramModal{{ $workoutProgram->id }}">
+                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                        </button>
 
-                                    <!-- Delete Button (Form for DELETE request) -->
-                                    <form action="{{ route('workout-programs.destroy', $workoutProgram->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete this workout program?')">Delete</button>
-                                    </form>
+                                        <!-- Delete Button (Form for DELETE request) -->
+                                        <form action="{{ route('workout-programs.destroy', $workoutProgram->id) }}"
+                                            method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this workout program?')">
+                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
