@@ -92,119 +92,106 @@
 
 @section('content')
 
-<body>
-    <div class="container">
-        <div class="header-section">
-            <h1>Request For Membership</h1>
-        </div>
-
-        <div class="filter-options">
-            <div class="filter-links">
-                <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
+    <body>
+        <div class="container">
+            <div class="header-section">
+                <h1>Request For Membership</h1>
             </div>
 
-            <div>
-                <form method="POST" action="#">
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
-                    </div>
+            <div class="d-flex justify-content-end mb-3">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                        style="width: 250px; height: 35px;">
+                    <button class="btn btn-primary" type="submit" style="height: 35px;">Search</button>
                 </form>
             </div>
-        </div>
 
-        <div class="table-container">
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Last Name</th>
-                        <th class="text-center">First Name</th>
-                        <th class="text-center">Middle Name</th>
-                        <th class="text-center">Date Of Birth</th>
-                        <th class="text-center">Gender</th>
-                        <th class="text-center">Age</th>
-                        <th class="text-center">Weight</th>
-                        <th class="text-center">Height</th>
-                        <th class="text-center">Address</th>
-                        <th class="text-center">Postal Code</th>
-                        <th class="text-center">Email</th>
-                        <th class="text-center">Work</th>
-                        <th class="text-center">Mobile Number</th>
-                        <th class="text-center">Gym Source</th>
-                        <th class="text-center">Membership Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($memberships as $membership)
+            <div class="table-container">
+                <table class="table table-bordered text-center">
+                    <thead>
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
-                                    onchange="updateSelectionCount()" />
-                            </td>
-                            <td class="text-center">{{ $membership->id }}</td>
-                            <td class="text-center">{{ $membership->last_name }}</td>
-                            <td class="text-center">{{ $membership->first_name }}</td>
-                            <td class="text-center">{{ $membership->middle_name }}</td>
-                            <td class="text-center">{{ $membership->date }}</td>
-                            <td class="text-center">{{ $membership->gender }}</td>
-                            <td class="text-center">{{ $membership->age }}</td>
-                            <td class="text-center">{{ $membership->weight }}</td>
-                            <td class="text-center">{{ $membership->height }}</td>
-                            <td class="text-center">{{ $membership->address }}</td>
-                            <td class="text-center">{{ $membership->postal_code }}</td>
-                            <td class="text-center">{{ $membership->email }}</td>
-                            <td class="text-center">{{ $membership->work }}</td>
-                            <td class="text-center">{{ $membership->mobile }}</td>
-                            <td class="text-center">{{ $membership->gym_source }}</td>
-                            <td class="text-center">{{ $membership->membership_type }}</td>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Middle Name</th>
+                            <th class="text-center">Date Of Birth</th>
+                            <th class="text-center">Gender</th>
+                            <th class="text-center">Age</th>
+                            <th class="text-center">Weight</th>
+                            <th class="text-center">Height</th>
+                            <th class="text-center">Address</th>
+                            <th class="text-center">Postal Code</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Work</th>
+                            <th class="text-center">Mobile Number</th>
+                            <th class="text-center">Gym Source</th>
+                            <th class="text-center">Membership Type</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($memberships as $membership)
+                            <tr>
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
+                                        onchange="updateSelectionCount()" />
+                                </td>
+                                <td class="text-center">{{ $membership->id }}</td>
+                                <td class="text-center">{{ $membership->last_name }}</td>
+                                <td class="text-center">{{ $membership->first_name }}</td>
+                                <td class="text-center">{{ $membership->middle_name }}</td>
+                                <td class="text-center">{{ $membership->date }}</td>
+                                <td class="text-center">{{ $membership->gender }}</td>
+                                <td class="text-center">{{ $membership->age }}</td>
+                                <td class="text-center">{{ $membership->weight }}</td>
+                                <td class="text-center">{{ $membership->height }}</td>
+                                <td class="text-center">{{ $membership->address }}</td>
+                                <td class="text-center">{{ $membership->postal_code }}</td>
+                                <td class="text-center">{{ $membership->email }}</td>
+                                <td class="text-center">{{ $membership->work }}</td>
+                                <td class="text-center">{{ $membership->mobile }}</td>
+                                <td class="text-center">{{ $membership->gym_source }}</td>
+                                <td class="text-center">{{ $membership->membership_type }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4 mb-4">
-                    <li class="page-item {{ $memberships->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $memberships->previousPageUrl() }}" tabindex="-1">Previous</a>
-                    </li>
-
-                    @foreach(range(1, $memberships->lastPage()) as $page)
-                        <li class="page-item {{ $page == $memberships->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{$memberships->url($page) }}">{{ $page }}</a>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mt-4 mb-4">
+                        <li class="page-item {{ $memberships->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $memberships->previousPageUrl() }}" tabindex="-1">Previous</a>
                         </li>
-                    @endforeach
 
-                    <li class="page-item {{ !$memberships->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $memberships->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                        @foreach(range(1, $memberships->lastPage()) as $page)
+                            <li class="page-item {{ $page == $memberships->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{$memberships->url($page) }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
 
+                        <li class="page-item {{ !$memberships->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $memberships->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
         </div>
-    </div>
 
-    <script>
-        function toggleSelectAll(source) {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = source.checked;
-            });
-            updateSelectionCount();
-        }
+        <script>
+            function toggleSelectAll(source) {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = source.checked;
+                });
+                updateSelectionCount();
+            }
 
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-    </script>
+            function updateSelectionCount() {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+                const count = checkboxes.length;
+                document.getElementById('select-all-link').innerText = `All (${count})`;
+            }
+        </script>
 
-</body>
+    </body>
 @endsection
