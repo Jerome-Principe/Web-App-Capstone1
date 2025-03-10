@@ -262,7 +262,7 @@
                     <a href="#" id="select-all-link">All (0)</a>
 
                     <!-- Link to view all trashed announcements -->
-                    <a href="{{ route('announcements.trashed') }}">Trashed
+                    <a href="{{ route('announcements.trashed') }}">Archived
                         ({{ App\Models\Announcement::onlyTrashed()->count() }})
                     </a>
 
@@ -276,7 +276,7 @@
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
                             <button type="submit" class="btn btn-light border mx-2">
-                                <i class="fa fa-trash"></i> Move to Trash
+                                <i class="fa fa-trash"></i> Move to Archive
                             </button>
                         </form>
 

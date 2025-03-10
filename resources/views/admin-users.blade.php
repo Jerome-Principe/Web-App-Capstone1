@@ -18,11 +18,12 @@
         }
 
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
+            max-width: 800px;
+            margin: 30px auto;
             background-color: white;
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         .header-section {
@@ -111,22 +112,16 @@
                 });
             </script>
 
-            <div class="filter-options">
-                <div class="d-flex justify-content-between w-100">
-                    <div class="ms-auto">
-                        <div class="d-flex align-items-center">
-                            <form class="d-flex" role="search">
-                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                    style="height: 35px;">
-                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-end mb-3">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                        style="width: 250px; height: 35px;">
+                    <button class="btn btn-primary" type="submit" style="height: 35px;">Search</button>
+                </form>
             </div>
 
             <div class="table-container">
-                <table class="table table-bordered text-center">
+                <table>
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
