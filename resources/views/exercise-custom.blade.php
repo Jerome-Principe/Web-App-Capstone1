@@ -179,18 +179,20 @@
                                 <td class="text-center">{{ $exerciseCustom->description }}</td>
                                 <td class="text-center">{{ $exerciseCustom->duration }}</td>
                                 <td class="text-center">
-                                    <!-- Edit Button -->
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editExerciseModal{{ $exerciseCustom->id }}">Update</button>
+                                    <div class="d-flex justify-content-center">
+                                        <!-- Edit Button -->
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#editExerciseModal{{ $exerciseCustom->id }}">Update</button>
 
-                                    <!-- Delete Button (Form for DELETE request) -->
-                                    <form action="{{ route('exercise-custom.destroy', $exerciseCustom->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete this exercise?')">Delete</button>
-                                    </form>
+                                        <!-- Delete Button (Form for DELETE request) -->
+                                        <form action="{{ route('exercise-custom.destroy', $exerciseCustom->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this exercise?')">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
