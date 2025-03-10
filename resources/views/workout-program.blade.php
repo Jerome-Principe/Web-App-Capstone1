@@ -125,6 +125,7 @@
                         }, 3000);
                     });
                 </script>
+
             </div>
             <div class="filter-options">
                 <div class="filter-links">
@@ -170,7 +171,7 @@
                                 <td class="text-center">
                                     <input type="checkbox" name="selected[]" value="{{ $workoutProgram->id }}" />
                                 </td>
-                                <td class="text-center">{{ $workoutProgram->id }}</td>>
+                                <td class="text-center">{{ $workoutProgram->id }}</td>
                                 <td class="text-center">{{ $workoutProgram->category }}</td>
                                 <td class="text-center">{{ $workoutProgram->type }}</td>
                                 <td class="text-center">{{ $workoutProgram->guideline }}</td>
