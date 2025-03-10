@@ -17,11 +17,12 @@
         }
 
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
+            max-width: 800px;
+            margin: 30px auto;
             background-color: white;
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         .header-section {
@@ -57,7 +58,6 @@
             max-height: 700px;
             overflow-y: auto;
             overflow-x: auto;
-            white-space: nowrap;
         }
 
         table {
@@ -125,11 +125,12 @@
                         }, 3000);
                     });
                 </script>
+
             </div>
             <div class="filter-options">
                 <div class="filter-links">
                     <a href="#" id="select-all-link">All (0)</a>
-                    <a href="#">Trashed (0)</a>
+                    <a href="#">Archived (0)</a>
                 </div>
 
                 <div>
@@ -137,8 +138,9 @@
                     @method('DELETE')
                     <div class="d-flex align-items-center">
                         <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                            onclick="return confirm('Are you sure you want to delete all this equipment?')"><i
-                                class="fa fa-trash"></i> Move to Trash</button>
+                            onclick="return confirm('Are you sure you want to move all these meal plans to the archive?')">
+                            <i class="fa fa-trash"></i> Move to Archive
+                        </button>
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">
@@ -149,7 +151,7 @@
             </div>
 
             <div class="table-container">
-                <table class="table table-bordered text-center">
+                <table>
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
@@ -179,18 +181,24 @@
                                 <td class="text-center">{{ $mealPlan->lunch }}</td>
                                 <td class="text-center">{{ $mealPlan->dinner }}</td>
                                 <td class="text-center">
-                                    <!-- Edit Button -->
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editMealPlanModal{{ $mealPlan->id }}">Update</button>
+                                    <div class="d-flex justify-content-center">
+                                        <!-- Edit Button -->
+                                        <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editMealPlanModal{{ $mealPlan->id }}">
+                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                        </button>
 
-                                    <!-- Delete Button (Form for DELETE request) -->
-                                    <form action="{{ route('meal-plan.destroy', $mealPlan->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete this meal plan?')">Delete</button>
-                                    </form>
+                                        <!-- Delete Button (Form for DELETE request) -->
+                                        <form action="{{ route('meal-plan.destroy', $mealPlan->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this meal plan?')">
+                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

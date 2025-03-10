@@ -184,7 +184,7 @@
                                         <!-- Edit Button -->
                                         <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
                                             data-bs-target="#editExerciseModal{{ $exercise->id }}">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Update
+                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
                                         </button>
 
                                         <!-- Delete Button (Form for DELETE request) -->
@@ -194,7 +194,7 @@
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger"
                                                 onclick="return confirm('Are you sure you want to delete this exercise?')">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i>Delete
+                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
                                             </button>
                                         </form>
                                     </div>
