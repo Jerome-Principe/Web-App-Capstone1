@@ -258,15 +258,6 @@
             toggleSelectAll(selectAllCheckbox);
         });
 
-        // Ensure the form doesn't submit if no walkin-client are selected
-        document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
-            const selectedIds = document.getElementById('selectedIds').value;
-            if (!selectedIds) {
-                alert('Please select at least one walkin-client to restore.');
-                e.preventDefault(); // Prevent form submission
-            }
-        });
-
         document.getElementById('date').addEventListener('change', function () {
             document.getElementById('date-filter-form').submit();
         });
