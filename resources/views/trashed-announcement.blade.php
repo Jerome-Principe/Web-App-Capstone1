@@ -151,10 +151,9 @@
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                             <th class="text-center">ID</th>
-                            <th class="text-center">Item Name</th>
-                            <th class="text-center">Quantity</th>
-                            <th class="text-center">Date</th>
-                            <th class="text-center">Time</th>
+                            <th class="text-center">Title</th>
+                            <th class="text-center">Description</th>
+                            <th class="text-center">FILE</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>

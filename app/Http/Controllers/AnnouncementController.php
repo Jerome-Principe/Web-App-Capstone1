@@ -94,7 +94,7 @@ class AnnouncementController extends Controller
         // Move instructors to trash
         Announcement::whereIn('id', $announcementIds)->delete();
 
-        return redirect()->route('announcements.index')->with('success', 'Selected instructors moved to trash.');
+        return redirect()->route('announcements.index')->with('success', 'Selected Announcement moved to trash.');
     }
 
     /**
