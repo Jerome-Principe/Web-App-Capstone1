@@ -161,12 +161,13 @@
                     <tbody>
                         @foreach($trashedAnnouncements as $index => $announcement)
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $announcement->id }}"
-                                        onchange="updateSelectionCount()" /></td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="selected[]" value="{{ $announcement->id }}"
+                                        onchange="updateSelectionCount()" />
+                                </td>
                                 <td class="text-center">
                                     {{ $trashedAnnouncements->perPage() * ($trashedAnnouncements->currentPage() - 1) + $index + 1 }}
                                 </td>
-                                <td class="text-center">{{ $announcement->id }}</td>
                                 <td class="text-center">{{ $announcement->notification_text }}</td>
                                 <td class="text-center">{{ $announcement->description }}</td>
                                 <td class="text-center">{{ $announcement->pdf_file }}</td>
