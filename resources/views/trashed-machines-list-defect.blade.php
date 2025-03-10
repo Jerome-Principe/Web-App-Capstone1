@@ -8,7 +8,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Trashed Defect Machines List</title>
+    <title>Archived</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,11 +18,12 @@
         }
 
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
+            max-width: 800px;
+            margin: 30px auto;
             background-color: white;
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         .header-section {
@@ -92,7 +93,7 @@
     <body>
         <div class="container">
             <div class="header-section">
-                <h1>Trashed Defect Machines List</h1>
+                <h1>Archived</h1>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
@@ -118,7 +119,7 @@
                     <a href="#" id="select-all-link">All (0)</a>
 
                     <!-- Link to view all trashed machines defect -->
-                    <a href="{{ route('machine-defects.trashed') }}">Trashed
+                    <a href="{{ route('machine-defects.trashed') }}">Archived
                         ({{ App\Models\MachineDefect::onlyTrashed()->count() }})
                     </a>
                 </div>
@@ -148,7 +149,7 @@
             </div>
 
             <div class="table-container">
-                <table class="table table-bordered text-center">
+                <table>
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>

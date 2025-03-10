@@ -18,11 +18,12 @@
         }
 
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
+            max-width: 800px;
+            margin: 30px auto;
             background-color: white;
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         .header-section {
@@ -88,151 +89,151 @@
 
 @section('content')
 
-<body>
-    <div class="container">
-        <div class="header-section">
-            <h1>Cancelled Appointment List</h1>
+    <body>
+        <div class="container">
+            <div class="header-section">
+                <h1>Cancelled Appointment List</h1>
 
-            @if(session('success'))
-                <div class="custom-alert-message">
-                    {{ session('success') }}
+                @if(session('success'))
+                    <div class="custom-alert-message">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        setTimeout(function () {
+                            const alert = document.querySelector('.custom-alert-message');
+                            if (alert) {
+                                alert.classList.add('fade-out');
+                            }
+                        }, 3000);
+                    });
+                </script>
+            </div>
+
+            <div class="filter-options">
+                <div class="filter-links">
+                    <a href="#" id="select-all-link">All (0)</a>
+                    <a href="{{ route('appointments.cancelled.trashed') }}">Archived
+                        ({{ App\Models\CancelledAppointment::onlyTrashed()->count() }})
+                    </a>
                 </div>
-            @endif
 
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    setTimeout(function () {
-                        const alert = document.querySelector('.custom-alert-message');
-                        if (alert) {
-                            alert.classList.add('fade-out');
-                        }
-                    }, 3000);
-                });
-            </script>
-        </div>
+                <div class="d-flex align-items-center">
+                    <form action="{{ route('appointments.cancelled.moveToTrash') }}" method="POST"
+                        class="d-flex align-items-center">
+                        @csrf
+                        <input type="hidden" name="selected" id="selectedIds">
+                        <button type="submit" class="btn btn-light border mx-2">
+                            <i class="fa fa-trash"></i> Move to Archive
+                        </button>
+                    </form>
 
-        <div class="filter-options">
-            <div class="filter-links">
-                <a href="#" id="select-all-link">All (0)</a>
-                <a href="{{ route('appointments.cancelled.trashed') }}">Trashed
-                    ({{ App\Models\CancelledAppointment::onlyTrashed()->count() }})
-                </a>
+                    <form class="d-flex" role="search">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                            style="height: 35px;">
+                        <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                    </form>
+                </div>
             </div>
 
-            <div class="d-flex align-items-center">
-                <form action="{{ route('appointments.cancelled.moveToTrash') }}" method="POST"
-                    class="d-flex align-items-center">
-                    @csrf
-                    <input type="hidden" name="selected" id="selectedIds">
-                    <button type="submit" class="btn btn-light border mx-2">
-                        <i class="fa fa-trash"></i> Move to Trash
-                    </button>
-                </form>
-
-                <form class="d-flex" role="search">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                        style="height: 35px;">
-                    <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                        <th class="text-center">User ID</th>
-                        <th class="text-center">Instructor Name</th>
-                        <th class="text-center">Date</th>
-                        <th class="text-center">Time</th>
-                        <th class="text-center">Payment Method</th>
-                        <th class="text-center">Proof of Payment</th>
-                        <th class="text-center">Reason</th>
-                        <th class="text-center">Cancelled At</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($cancelledAppointments as $appointment)
+            <div class="table-container">
+                <table>
+                    <thead>
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }}"
-                                    onchange="updateSelectionCount()" /></td>
-                            <td class="text-center">
-                                {{ ($cancelledAppointments->currentPage() - 1) * $cancelledAppointments->perPage() + $loop->index + 1 }}
-                            </td class="text-center">
-                            <td class="text-center">{{ $appointment->instructor_name }}</td>
-                            <td class="text-center">{{ $appointment->selected_date }}</td>
-                            <td class="text-center">{{ $appointment->selected_time }}</td>
-                            <td class="text-center">{{ $appointment->payment_method }}</td>
-                            <td class="text-center">
-                                <a href="{{ asset('storage/app/public/' . $appointment->proof_of_payment) }}"
-                                    target="_blank">View
-                                </a>
-                            </td>
-                            <td class="text-center">{{ $appointment->reason }}</td>
-                            <td class="text-center">{{ $appointment->created_at }}</td>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">User ID</th>
+                            <th class="text-center">Instructor Name</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Time</th>
+                            <th class="text-center">Payment Method</th>
+                            <th class="text-center">Proof of Payment</th>
+                            <th class="text-center">Reason</th>
+                            <th class="text-center">Cancelled At</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($cancelledAppointments as $appointment)
+                            <tr>
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }}"
+                                        onchange="updateSelectionCount()" /></td>
+                                <td class="text-center">
+                                    {{ ($cancelledAppointments->currentPage() - 1) * $cancelledAppointments->perPage() + $loop->index + 1 }}
+                                </td class="text-center">
+                                <td class="text-center">{{ $appointment->instructor_name }}</td>
+                                <td class="text-center">{{ $appointment->selected_date }}</td>
+                                <td class="text-center">{{ $appointment->selected_time }}</td>
+                                <td class="text-center">{{ $appointment->payment_method }}</td>
+                                <td class="text-center">
+                                    <a href="{{ asset('storage/app/public/' . $appointment->proof_of_payment) }}"
+                                        target="_blank">View
+                                    </a>
+                                </td>
+                                <td class="text-center">{{ $appointment->reason }}</td>
+                                <td class="text-center">{{ $appointment->created_at }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center mt-4 mb-4">
+                    <li class="page-item {{ $cancelledAppointments->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $cancelledAppointments->previousPageUrl() }}"
+                            tabindex="-1">Previous</a>
+                    </li>
+
+                    @foreach (range(1, $cancelledAppointments->lastPage()) as $page)
+                        <li class="page-item {{ $page == $cancelledAppointments->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $cancelledAppointments->url($page) }}">{{ $page }}</a>
+                        </li>
                     @endforeach
-                </tbody>
-            </table>
+
+                    <li class="page-item {{ !$cancelledAppointments->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $cancelledAppointments->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center mt-4 mb-4">
-                <li class="page-item {{ $cancelledAppointments->onFirstPage() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $cancelledAppointments->previousPageUrl() }}"
-                        tabindex="-1">Previous</a>
-                </li>
-
-                @foreach (range(1, $cancelledAppointments->lastPage()) as $page)
-                    <li class="page-item {{ $page == $cancelledAppointments->currentPage() ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $cancelledAppointments->url($page) }}">{{ $page }}</a>
-                    </li>
-                @endforeach
-
-                <li class="page-item {{ !$cancelledAppointments->hasMorePages() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $cancelledAppointments->nextPageUrl() }}">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
-    <script>
-        // Toggle select all checkboxes
-        function toggleSelectAll(checkbox) {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(item => item.checked = checkbox.checked);
-            updateSelectionCount();
-        }
-
-        // Update selected count and hidden input value
-        function updateSelectionCount() {
-            const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = selectedCheckboxes.length;
-            document.getElementById('select-all-link').textContent = `All (${count})`;
-            const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
-            document.getElementById('selectedIds').value = selectedIds.join(',');
-            console.log(selectedIds.join(',')); // Log selected IDs to debug
-        }
-
-        // Add functionality for the "All (0)" link click
-        document.getElementById('select-all-link').addEventListener('click', function (e) {
-            e.preventDefault();
-            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
-            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
-            selectAllCheckbox.checked = isChecked;
-            toggleSelectAll(selectAllCheckbox);
-        });
-
-        // Ensure the form doesn't submit if no appointments are selected
-        document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
-            const selectedIds = document.getElementById('selectedIds').value;
-            if (!selectedIds) {
-                alert('Please select at least one appointments to restore.');
-                e.preventDefault(); // Prevent form submission
+        <script>
+            // Toggle select all checkboxes
+            function toggleSelectAll(checkbox) {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+                checkboxes.forEach(item => item.checked = checkbox.checked);
+                updateSelectionCount();
             }
-        });
-    </script>
-</body>
+
+            // Update selected count and hidden input value
+            function updateSelectionCount() {
+                const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+                const count = selectedCheckboxes.length;
+                document.getElementById('select-all-link').textContent = `All (${count})`;
+                const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
+                document.getElementById('selectedIds').value = selectedIds.join(',');
+                console.log(selectedIds.join(',')); // Log selected IDs to debug
+            }
+
+            // Add functionality for the "All (0)" link click
+            document.getElementById('select-all-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
+                const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
+                selectAllCheckbox.checked = isChecked;
+                toggleSelectAll(selectAllCheckbox);
+            });
+
+            // Ensure the form doesn't submit if no appointments are selected
+            document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
+                const selectedIds = document.getElementById('selectedIds').value;
+                if (!selectedIds) {
+                    alert('Please select at least one appointments to restore.');
+                    e.preventDefault(); // Prevent form submission
+                }
+            });
+        </script>
+    </body>
 
 @endsection

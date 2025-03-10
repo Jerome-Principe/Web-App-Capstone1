@@ -17,11 +17,12 @@
         }
 
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
+            max-width: 800px;
+            margin: 30px auto;
             background-color: white;
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         .header-section {
@@ -92,283 +93,283 @@
 
 @section('content')
 
-<body>
-    <div class="container">
-        <div class="header-section">
-            <h1>Instructor List</h1>
-            <!-- Button to trigger modal -->
-            <div>
-                <div class="d-flex justify-content-end position-relative">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#addInstructorModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>
-                        Add New Instructor
-                    </button>
-                </div>
-            </div>
-
-            @if(session('success'))
-                <div class="custom-alert-message">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    setTimeout(function () {
-                        const alert = document.querySelector('.custom-alert-message');
-                        if (alert) {
-                            alert.classList.add('fade-out');
-                        }
-                    }, 3000);
-                });
-            </script>
-        </div>
-
-        <div class="filter-options">
-            <div class="filter-links">
-                <a href="#" id="select-all-link">All (0)</a>
-                <a href="{{ route('instructors.trashed') }}">Trashed
-                    ({{ App\Models\Instructor::onlyTrashed()->count() }})
-                </a>
-            </div>
-
-            <div>
-                @csrf
-                @method('DELETE')
-                <div class="d-flex align-items-center">
-                    <form action="{{ route('instructors.moveToTrash') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="selected" id="selectedIds">
-                        <button type="submit" class="btn btn-light border mx-2">
-                            <i class="fa fa-trash"></i> Move to Trash
+    <body>
+        <div class="container">
+            <div class="header-section">
+                <h1>Instructor List</h1>
+                <!-- Button to trigger modal -->
+                <div>
+                    <div class="d-flex justify-content-end position-relative">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addInstructorModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>
+                            Add New Instructor
                         </button>
-                    </form>
-                    <form class="d-flex" role="search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                            style="height: 35px;">
-                        <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                    </form>
+                    </div>
+                </div>
+
+                @if(session('success'))
+                    <div class="custom-alert-message">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        setTimeout(function () {
+                            const alert = document.querySelector('.custom-alert-message');
+                            if (alert) {
+                                alert.classList.add('fade-out');
+                            }
+                        }, 3000);
+                    });
+                </script>
+            </div>
+
+            <div class="filter-options">
+                <div class="filter-links">
+                    <a href="#" id="select-all-link">All (0)</a>
+                    <a href="{{ route('instructors.trashed') }}">Archived
+                        ({{ App\Models\Instructor::onlyTrashed()->count() }})
+                    </a>
+                </div>
+
+                <div>
+                    @csrf
+                    @method('DELETE')
+                    <div class="d-flex align-items-center">
+                        <form action="{{ route('instructors.moveToTrash') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="selected" id="selectedIds">
+                            <button type="submit" class="btn btn-light border mx-2">
+                                <i class="fa fa-trash"></i> Move to Archive
+                            </button>
+                        </form>
+                        <form class="d-flex" role="search">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                style="height: 35px;">
+                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Instructor List Table -->
-        <div class="table-container">
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">First Name</th>
-                        <th class="text-center">Last Name</th>
-                        <th class="text-center">Contact Number</th>
-                        <th class="text-center">Expertise</th>
-                        <th class="text-center">Session</th>
-                        <th class="text-center">Rates</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($instructors as $instructor)
+            <!-- Instructor List Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
-                                    onchange="updateSelectionCount()" />
-                            </td>
-                            <td class="text-center">
-                                {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
-                            </td>
-                            <td class="text-center">{{ $instructor->first_name }}</td>
-                            <td class="text-center">{{ $instructor->last_name }}</td>
-                            <td class="text-center">{{ $instructor->contact_number }}</td>
-                            <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
-                            <td class="text-center">{{ $instructor->session }}</td>
-                            <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#editInstructorModal{{ $instructor->id }}">Update
-                                </button>
-                                <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Are you sure you want to delete this instructor?')">Delete</button>
-                                </form>
-                            </td>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Contact Number</th>
+                            <th class="text-center">Expertise</th>
+                            <th class="text-center">Session</th>
+                            <th class="text-center">Rates</th>
+                            <th class="text-center">Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($instructors as $instructor)
+                            <tr>
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
+                                        onchange="updateSelectionCount()" />
+                                </td>
+                                <td class="text-center">
+                                    {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
+                                </td>
+                                <td class="text-center">{{ $instructor->first_name }}</td>
+                                <td class="text-center">{{ $instructor->last_name }}</td>
+                                <td class="text-center">{{ $instructor->contact_number }}</td>
+                                <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $instructor->session }}</td>
+                                <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#editInstructorModal{{ $instructor->id }}">Update
+                                    </button>
+                                    <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
+                                        style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are you sure you want to delete this instructor?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4 mb-4">
-                    <li class="page-item {{ $instructors->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $instructors->previousPageUrl() }}" tabindex="-1">Previous</a>
-                    </li>
-
-                    @foreach(range(1, $instructors->lastPage()) as $page)
-                        <li class="page-item {{ $page == $instructors->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $instructors->url($page) }}">{{ $page }}</a>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mt-4 mb-4">
+                        <li class="page-item {{ $instructors->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $instructors->previousPageUrl() }}" tabindex="-1">Previous</a>
                         </li>
-                    @endforeach
 
-                    <li class="page-item {{ !$instructors->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $instructors->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                        @foreach(range(1, $instructors->lastPage()) as $page)
+                            <li class="page-item {{ $page == $instructors->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $instructors->url($page) }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
 
-        </div>
-    </div>
+                        <li class="page-item {{ !$instructors->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $instructors->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
 
-    <!-- Add Instructor Modal -->
-    <div class="modal fade" id="addInstructorModal" tabindex="-1" aria-labelledby="addInstructorModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addInstructorModalLabel">Add New Instructor</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('instructors.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="first_name">First Name</label>
-                            <input type="text" name="first_name" id="first_name" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="contact_number">Contact Number</label>
-                            <input type="text" name="contact_number" id="contact_number" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="expertise">Expertise</label>
-                            <input type="text" name="expertise" id="expertise" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="session">Session</label>
-                            <input type="text" name="session" id="session" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="rates">Rates</label>
-                            <input type="number" step="0.01" name="rates" id="rates" class="form-control">
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Instructor</button>
-                    </form>
-                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal for Editing Instructor -->
-    @foreach($instructors as $instructor)
-        <div class="modal fade" id="editInstructorModal{{ $instructor->id }}" tabindex="-1"
-            aria-labelledby="editInstructorModalLabel{{ $instructor->id }}" aria-hidden="true">
+        <!-- Add Instructor Modal -->
+        <div class="modal fade" id="addInstructorModal" tabindex="-1" aria-labelledby="addInstructorModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editInstructorModalLabel">Edit Instructor</h5>
+                        <h5 class="modal-title" id="addInstructorModalLabel">Add New Instructor</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('instructors.update', $instructor->id) }}" method="POST">
+                        <form action="{{ route('instructors.store') }}" method="POST">
                             @csrf
-                            @method('PUT')
-                            <!-- Form fields -->
-
-                            <input type="hidden" name="id" value="{{ $instructor->id }}">
                             <div class="mb-3">
-                                <label for="edit_first_name" class="form-label">First Name</label>
-                                <input type="text" name="first_name" id="edit_first_name" class="form-control"
-                                    value="{{ $instructor->first_name }}" required>
+                                <label for="first_name">First Name</label>
+                                <input type="text" name="first_name" id="first_name" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit_last_name" class="form-label">Last Name</label>
-                                <input type="text" name="last_name" id="edit_last_name" class="form-control"
-                                    value="{{ $instructor->last_name }}" required>
+                                <label for="last_name">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit_contact_number" class="form-label">Contact Number</label>
-                                <input type="text" name="contact_number" id="edit_contact_number" class="form-control"
-                                    value="{{ $instructor->contact_number }}" required>
+                                <label for="contact_number">Contact Number</label>
+                                <input type="text" name="contact_number" id="contact_number" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="edit_expertise" class="form-label">Expertise</label>
-                                <input type="text" name="expertise" id="edit_expertise" class="form-control"
-                                    value="{{ $instructor->expertise }}" required>
+                                <label for="expertise">Expertise</label>
+                                <input type="text" name="expertise" id="expertise" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="edit_session" class="form-label">Expertise</label>
-                                <input type="text" name="session" id="edit_session" class="form-control"
-                                    value="{{ $instructor->session }}" required>
+                                <label for="session">Session</label>
+                                <input type="text" name="session" id="session" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="edit_rates" class="form-label">Rates</label>
-                                <input type="text" name="rates" id="edit_rates" class="form-control"
-                                    value="{{ $instructor->rates }}" required>
+                                <label for="rates">Rates</label>
+                                <input type="number" step="0.01" name="rates" id="rates" class="form-control">
                             </div>
-
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="submit" class="btn btn-primary">Add Instructor</button>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
-    @endforeach
 
-</body>
+        <!-- Modal for Editing Instructor -->
+        @foreach($instructors as $instructor)
+            <div class="modal fade" id="editInstructorModal{{ $instructor->id }}" tabindex="-1"
+                aria-labelledby="editInstructorModalLabel{{ $instructor->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editInstructorModalLabel">Edit Instructor</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('instructors.update', $instructor->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <!-- Form fields -->
 
-<script>
-    // Add the toggleSelectAll function
-    function toggleSelectAll(checkbox) {
-        const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-        checkboxes.forEach(function (item) {
-            item.checked = checkbox.checked;
-        });
-        updateSelectionCount();
-    }
+                                <input type="hidden" name="id" value="{{ $instructor->id }}">
+                                <div class="mb-3">
+                                    <label for="edit_first_name" class="form-label">First Name</label>
+                                    <input type="text" name="first_name" id="edit_first_name" class="form-control"
+                                        value="{{ $instructor->first_name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_last_name" class="form-label">Last Name</label>
+                                    <input type="text" name="last_name" id="edit_last_name" class="form-control"
+                                        value="{{ $instructor->last_name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_contact_number" class="form-label">Contact Number</label>
+                                    <input type="text" name="contact_number" id="edit_contact_number" class="form-control"
+                                        value="{{ $instructor->contact_number }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_expertise" class="form-label">Expertise</label>
+                                    <input type="text" name="expertise" id="edit_expertise" class="form-control"
+                                        value="{{ $instructor->expertise }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_session" class="form-label">Expertise</label>
+                                    <input type="text" name="session" id="edit_session" class="form-control"
+                                        value="{{ $instructor->session }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_rates" class="form-label">Rates</label>
+                                    <input type="text" name="rates" id="edit_rates" class="form-control"
+                                        value="{{ $instructor->rates }}" required>
+                                </div>
 
-    // Update the selection count when checkboxes are toggled
-    function updateSelectionCount() {
-        const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-        const count = selectedCheckboxes.length;
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
 
-        // Update the "All (count)" link text
-        const allLink = document.getElementById('select-all-link');
-        allLink.textContent = `All (${count})`;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
 
-        // Update the selected IDs field to be submitted with the form
-        const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
-        document.getElementById('selectedIds').value = selectedIds.join(',');
-    }
+    </body>
 
-    // Add the event listener for the "All (0)" link click
-    document.getElementById('select-all-link').addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent the default link behavior
-        const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
-
-        // Toggle the "Select All" checkbox and update the count
-        const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
-        selectAllCheckbox.checked = isChecked;
-        toggleSelectAll(selectAllCheckbox);
-    });
-
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var modalElement = document.getElementById('addInstructorModal');
-        if (modalElement) {
-            new bootstrap.Modal(modalElement);
+    <script>
+        // Add the toggleSelectAll function
+        function toggleSelectAll(checkbox) {
+            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+            checkboxes.forEach(function (item) {
+                item.checked = checkbox.checked;
+            });
+            updateSelectionCount();
         }
-    });
-</script>
+
+        // Update the selection count when checkboxes are toggled
+        function updateSelectionCount() {
+            const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+            const count = selectedCheckboxes.length;
+
+            // Update the "All (count)" link text
+            const allLink = document.getElementById('select-all-link');
+            allLink.textContent = `All (${count})`;
+
+            // Update the selected IDs field to be submitted with the form
+            const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
+            document.getElementById('selectedIds').value = selectedIds.join(',');
+        }
+
+        // Add the event listener for the "All (0)" link click
+        document.getElementById('select-all-link').addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent the default link behavior
+            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
+
+            // Toggle the "Select All" checkbox and update the count
+            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
+            selectAllCheckbox.checked = isChecked;
+            toggleSelectAll(selectAllCheckbox);
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modalElement = document.getElementById('addInstructorModal');
+            if (modalElement) {
+                new bootstrap.Modal(modalElement);
+            }
+        });
+    </script>
 
 @endsection
