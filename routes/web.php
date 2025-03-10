@@ -123,16 +123,14 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 
-//Announcements
-Route::resource('/announcements', AnnouncementController::class);
-Route::prefix('announcements')->name('announcements.')->group(function () {
-    Route::prefix('trashed')->group(function () {
-        Route::get('/', [AnnouncementController::class, 'trashed'])->name('trashed');
-        Route::post('/move-to-trash', [AnnouncementController::class, 'moveToTrash'])->name('moveToTrash');
-        Route::post('/restore-bulk', [AnnouncementController::class, 'restoreBulk'])->name('restore.bulk');
-        Route::post('/restore/{id}', [AnnouncementController::class, 'restore'])->name('restore');
-        Route::delete('/force-delete/{id}', [AnnouncementController::class, 'forceDelete'])->name('forceDelete');
-    });
+// Announcements
+Route::resource('announcements', AnnouncementController::class);
+Route::prefix('trashed-announcement')->name('announcements.')->group(function () {
+    Route::post('/move-to-trash', [AnnouncementController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::get('/trashed', [AnnouncementController::class, 'trashed'])->name('trashed');
+    Route::post('{id}/restore', [AnnouncementController::class, 'restore'])->name('restore');
+    Route::delete('{id}/force-delete', [AnnouncementController::class, 'forceDelete'])->name('forceDelete');
+    Route::post('/restore-bulk', [AnnouncementController::class, 'restoreBulk'])->name('restore.bulk');
 });
 
 //Instructors

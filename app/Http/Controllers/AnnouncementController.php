@@ -34,14 +34,12 @@ class AnnouncementController extends Controller
         // Handle PDF upload
         if ($request->hasFile('pdf_file')) {
             $data['pdf_file'] = 'storage/' . $request->file('pdf_file')->store('pdfs', 'public');
-
         }
 
         Announcement::create($data);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement created successfully!');
     }
-
 
     // Show specific announcement
     public function show(Announcement $announcement)
@@ -55,7 +53,6 @@ class AnnouncementController extends Controller
         $announcement = Announcement::findOrFail($id);
         return response()->json($announcement);
     }
-
 
     // Update announcement
     public function update(Request $request, Announcement $announcement)
@@ -84,6 +81,20 @@ class AnnouncementController extends Controller
         $announcement = Announcement::find($id);
         $announcement->delete();
         return redirect()->route('announcements.index')->with('success', 'Announcement deleted successfully!');
+    }
+
+    /**
+     * Move selected announcements to trash (soft delete).
+     */
+    public function moveToTrash(Request $request)
+    {
+        // Get selected instructor IDs from the form
+        $announcementIds = explode(',', $request->input('selected'));
+
+        // Move instructors to trash
+        Announcement::whereIn('id', $announcementIds)->delete();
+
+        return redirect()->route('announcements.index')->with('success', 'Selected instructors moved to trash.');
     }
 
     /**
