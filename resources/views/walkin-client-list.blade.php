@@ -119,7 +119,7 @@
             <div class="filter-options">
                 <div class="filter-links">
                     <a href="#" id="select-all-link">All (0)</a>
-                    <a href="{{ route('walkins.trashed') }}">Trashed
+                    <a href="{{ route('walkins.trashed') }}">Archived
                         ({{App\Models\Walkin::onlyTrashed()->count()}})
                     </a>
                 </div>
@@ -133,7 +133,7 @@
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
                             <button type="submit" class="btn btn-light border mx-2">
-                                <i class="fa fa-trash"></i> Move to Trash
+                                <i class="fa fa-trash"></i> Move to Archive
                             </button>
                         </form>
 
@@ -258,11 +258,11 @@
             toggleSelectAll(selectAllCheckbox);
         });
 
-        // Ensure the form doesn't submit if no appointments are selected
+        // Ensure the form doesn't submit if no walkin-client are selected
         document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
             const selectedIds = document.getElementById('selectedIds').value;
             if (!selectedIds) {
-                alert('Please select at least one appointments to restore.');
+                alert('Please select at least one walkin-client to restore.');
                 e.preventDefault(); // Prevent form submission
             }
         });
