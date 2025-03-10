@@ -140,6 +140,7 @@
                             onclick="return confirm('Are you sure you want to move all these meal plans to the archive?')">
                             <i class="fa fa-trash"></i> Move to Archive
                         </button>
+                        
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">
