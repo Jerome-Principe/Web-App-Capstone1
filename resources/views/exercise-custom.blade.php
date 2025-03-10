@@ -125,6 +125,7 @@
                         }, 3000);
                     });
                 </script>
+
             </div>
             <div class="filter-options">
                 <div class="filter-links">
@@ -181,8 +182,10 @@
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center">
                                         <!-- Edit Button -->
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editExerciseModal{{ $exerciseCustom->id }}">Update</button>
+                                        <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editExerciseModal{{ $exerciseCustom->id }}">
+                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                        </button>
 
                                         <!-- Delete Button (Form for DELETE request) -->
                                         <form action="{{ route('exercise-custom.destroy', $exerciseCustom->id) }}" method="POST"
@@ -190,7 +193,9 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this exercise?')">Delete</button>
+                                                onclick="return confirm('Are you sure you want to delete this exercise?')">
+                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                            </button>
                                         </form>
                                     </div>
                                 </td>

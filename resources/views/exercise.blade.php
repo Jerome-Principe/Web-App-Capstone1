@@ -125,7 +125,9 @@
                         }, 3000);
                     });
                 </script>
+
             </div>
+
             <div class="filter-options">
                 <div class="filter-links">
                     <a href="#" id="select-all-link">All (0)</a>
@@ -138,7 +140,8 @@
                     <div class="d-flex align-items-center">
                         <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
                             onclick="return confirm('Are you sure you want to move all these exercises to the archive?')"><i
-                                class="fa fa-trash"></i> Move to Archive</button>
+                                class="fa fa-trash"></i> Move to Archive
+                        </button>
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">
@@ -179,16 +182,20 @@
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center">
                                         <!-- Edit Button -->
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editExerciseModal{{ $exercise->id }}">Update</button>
+                                        <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editExerciseModal{{ $exercise->id }}">
+                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                        </button>
 
                                         <!-- Delete Button (Form for DELETE request) -->
                                         <form action="{{ route('exercise.destroy', $exercise->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this exercise?')">Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-danger mx-1"
+                                                onclick="return confirm('Are you sure you want to delete this exercise?')">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>Delete
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
