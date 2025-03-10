@@ -184,7 +184,7 @@
                                         <!-- Edit Button -->
                                         <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
                                             data-bs-target="#editExerciseModal{{ $exercise->id }}">
-                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Update
                                         </button>
 
                                         <!-- Delete Button (Form for DELETE request) -->
