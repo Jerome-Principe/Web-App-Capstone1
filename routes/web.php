@@ -135,7 +135,7 @@ Route::prefix('trashed-announcement')->name('announcements.')->group(function ()
 
 //Instructors
 Route::resource('instructors', InstructorController::class);
-Route::prefix('instructors')->name('instructors.')->group(function () {
+Route::prefix('trashed-instructors')->name('instructors.')->group(function () {
     Route::post('/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('moveToTrash');
     Route::get('/trashed', [InstructorController::class, 'trashed'])->name('trashed');
     Route::post('{id}/restore', [InstructorController::class, 'restore'])->name('restore');
