@@ -18,11 +18,12 @@
         }
 
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
+            max-width: 800px;
+            margin: 30px auto;
             background-color: white;
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         .header-section {
@@ -120,7 +121,7 @@
                     <a href="#" id="select-all-link">All (0)</a>
 
                     <!-- Link to view all trashed sales -->
-                    <a href="{{ route('sales.trashed') }}">Trashed
+                    <a href="{{ route('sales.trashed') }}">Archived
                         ({{ App\Models\SaleItem::onlyTrashed()->count() }})
                     </a>
                 </div>
@@ -134,7 +135,7 @@
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
                             <button type="submit" class="btn btn-light border mx-2">
-                                <i class="fa fa-trash"></i> Move to Trash
+                                <i class="fa fa-trash"></i> Move to Archive
                             </button>
                         </form>
 
@@ -159,7 +160,7 @@
             </div>
 
             <div class="table-container">
-                <table class="table table-bordered text-center">
+                <table>
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
