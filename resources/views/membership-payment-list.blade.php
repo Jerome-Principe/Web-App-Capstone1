@@ -89,99 +89,86 @@
 
 @section('content')
 
-<body>
-    <div class="container">
-        <div class="header-section">
-            <h1>Payment List</h1>
-        </div>
-
-        <div class="filter-options">
-            <div class="filter-links">
-                <a href="#" id="select-all-link">All (0)</a>
-                <a href="#">Trashed (0)</a>
+    <body>
+        <div class="container">
+            <div class="header-section">
+                <h1>Payment List</h1>
             </div>
 
-            <div>
-                <form method="POST" action="#">
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
-                    </div>
+            <div class="d-flex justify-content-end mb-3">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                        style="width: 250px; height: 35px;">
+                    <button class="btn btn-primary" type="submit" style="height: 35px;">Search</button>
                 </form>
             </div>
-        </div>
 
-        <div class="table-container">
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                        <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Gcash Number</th>
-                        <th class="text-center">Account Name</th>
-                        <th class="text-center">Reference Number</th>
-                        <th class="text-center">Proof of Payment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($payments as $payment)
+            <div class="table-container">
+                <table>
+                    <thead>
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $payment->id }}" />
-                            </td>
-                            <td class="text-center">{{ $payment->id }}</td>
-                            <td class="text-center">{{ $payment->gcash_number }}</td>
-                            <td class="text-center">{{ $payment->account_name }}</td>
-                            <td class="text-center">{{ $payment->reference_number }}</td>
-                            <td class="text-center">
-                                <a href="{{ url($payment->proof_of_payment_url) }}" target="_blank">View Proof</a>
-                            </td>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Gcash Number</th>
+                            <th class="text-center">Account Name</th>
+                            <th class="text-center">Reference Number</th>
+                            <th class="text-center">Proof of Payment</th>
                         </tr>
-                    @endforeach
-                </tbody>
+                    </thead>
+                    <tbody>
+                        @foreach($payments as $payment)
+                            <tr>
+                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $payment->id }}" />
+                                </td>
+                                <td class="text-center">{{ $payment->id }}</td>
+                                <td class="text-center">{{ $payment->gcash_number }}</td>
+                                <td class="text-center">{{ $payment->account_name }}</td>
+                                <td class="text-center">{{ $payment->reference_number }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url($payment->proof_of_payment_url) }}" target="_blank">View Proof</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
 
-            </table>
+                </table>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $payments->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $payments->previousPageUrl() }}" tabindex="-1">Previous</a>
-                    </li>
-
-                    @foreach(range(1, $payments->lastPage()) as $page)
-                        <li class="page-item {{ $page == $payments->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{$payments->url($page) }}">{{ $page }}</a>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item {{ $payments->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $payments->previousPageUrl() }}" tabindex="-1">Previous</a>
                         </li>
-                    @endforeach
 
-                    <li class="page-item {{ !$payments->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $payments->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                        @foreach(range(1, $payments->lastPage()) as $page)
+                            <li class="page-item {{ $page == $payments->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{$payments->url($page) }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
 
+                        <li class="page-item {{ !$payments->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $payments->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
         </div>
-    </div>
 
-    <script>
-        function toggleSelectAll(source) {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = source.checked;
-            });
-            updateSelectionCount();
-        }
+        <script>
+            function toggleSelectAll(source) {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = source.checked;
+                });
+                updateSelectionCount();
+            }
 
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-    </script>
+            function updateSelectionCount() {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+                const count = checkboxes.length;
+                document.getElementById('select-all-link').innerText = `All (${count})`;
+            }
+        </script>
 
-</body>
+    </body>
 @endsection
