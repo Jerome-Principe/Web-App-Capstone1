@@ -151,7 +151,7 @@
 
             <!-- Table -->
             <div class="table-container">
-                <table class="table table-bordered text-center">
+                <table>
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>

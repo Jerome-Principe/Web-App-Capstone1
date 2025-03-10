@@ -82,7 +82,7 @@ class WalkinController extends Controller
 
         if (!empty($selectedIds)) {
             Walkin::whereIn('id', $selectedIds)->delete(); // Soft delete the selected clients
-            return redirect()->route('walkin.index')->with('success', 'Selected walk-in clients moved to trash.');
+            return redirect()->route('walkin.index')->with('success', 'Selected walk-in clients moved to archived.');
         }
 
         return redirect()->back()->with('error', 'No clients selected.');
