@@ -128,7 +128,7 @@ class MembershipPendingController extends Controller
         if (!empty($selectedIds)) {
             PendingMembership::whereIn('id', $selectedIds)->delete();
             return redirect()->route('membership.list')
-                ->with('success', 'Selected membership moved to trash.');
+                ->with('success', 'Selected membership moved to archived.');
         }
 
         return redirect()->back()->with('error', 'No membership selected.');
