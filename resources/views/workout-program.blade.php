@@ -280,11 +280,11 @@
                                             <div class="mb-3">
                                                 <label for="guideline" class="form-label">Guideline</label>
                                                 <input type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline">
+                                                    placeholder="Guideline" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="day" class="form-label">Day</label>
-                                                <select class="form-control" id="day" name="day">
+                                                <select class="form-control" id="day" name="day" required>
                                                     <option value="">Select Day</option>
                                                     <option value="Monday">Monday</option>
                                                     <option value="Tuesday">Tuesday</option>
@@ -298,7 +298,7 @@
                                             <div class="mb-3">
                                                 <label for="workout" class="form-label">Workout</label>
                                                 <input type="text" class="form-control" id="workout" name="workout"
-                                                    placeholder="Workout">
+                                                    placeholder="Workout" required>
                                             </div>
                                         </div>
                                     </div>
@@ -319,12 +319,12 @@
                                             <div class="mb-3">
                                                 <label for="difficulty" class="form-label">Difficulty</label>
                                                 <input type="text" class="form-control" id="difficulty" name="difficulty"
-                                                    placeholder="E.g., Beginner, Intermediate, Advanced">
+                                                    placeholder="E.g., Beginner, Intermediate, Advanced" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="duration" class="form-label">Duration</label>
                                                 <input type="text" class="form-control" id="duration" name="duration"
-                                                    placeholder="E.g., 30 minutes">
+                                                    placeholder="E.g., 30 minutes" required>
                                             </div>
                                         </div>
                                     </div>

@@ -290,11 +290,11 @@
                                             <div class="mb-3">
                                                 <label for="guideline" class="form-label">Guideline</label>
                                                 <input type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline">
+                                                    placeholder="Guideline" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="day" class="form-label">Day</label>
-                                                <select class="form-control" id="day" name="day">
+                                                <select class="form-control" id="day" name="day" required>
                                                     <option value="">Select Day</option>
                                                     <option value="Monday">Monday</option>
                                                     <option value="Tuesday">Tuesday</option>
@@ -324,17 +324,17 @@
                                             <div class="mb-3">
                                                 <label for="breakfast" class="form-label">Breakfast</label>
                                                 <input type="text" class="form-control" id="breakfast" name="breakfast"
-                                                    placeholder="E.g., Pandesal ">
+                                                    placeholder="E.g., Pandesal" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="lunch" class="form-label">Lunch</label>
                                                 <input type="text" class="form-control" id="lunch" name="lunch"
-                                                    placeholder="E.g., Grilled meats">
+                                                    placeholder="E.g., Grilled meats" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="dinner" class="form-label">Dinner</label>
                                                 <input type="text" class="form-control" id="dinner" name="dinner"
-                                                    placeholder="E.g., Adobo">
+                                                    placeholder="E.g., Adobo" required>
                                             </div>
                                         </div>
                                     </div>

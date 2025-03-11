@@ -140,7 +140,7 @@
                             onclick="return confirm('Are you sure you want to move all these meal plans to the archive?')">
                             <i class="fa fa-trash"></i> Move to Archive
                         </button>
-                        
+
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">
@@ -191,15 +191,15 @@
                                         </button>
 
                                         <!-- Delete Button (Form for DELETE request) -->
-                                        <form action="{{ route('meal-plan-custom.destroy', $mealPlanCustom->id) }}" method="POST"
-                                            style="display:inline;">
+                                        <form action="{{ route('meal-plan-custom.destroy', $mealPlanCustom->id) }}"
+                                            method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger"
                                                 onclick="return confirm('Are you sure you want to delete this meal plan?')">
                                                 <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
                                             </button>
-                                        </form>      
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -307,11 +307,11 @@
                                             <div class="mb-3">
                                                 <label for="guideline" class="form-label">Guideline</label>
                                                 <input type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline">
+                                                    placeholder="Guideline" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="day" class="form-label">Day</label>
-                                                <select class="form-control" id="day" name="day">
+                                                <select class="form-control" id="day" name="day" required>
                                                     <option value="">Select Day</option>
                                                     <option value="Monday">Monday</option>
                                                     <option value="Tuesday">Tuesday</option>
@@ -341,17 +341,17 @@
                                             <div class="mb-3">
                                                 <label for="breakfast" class="form-label">Breakfast</label>
                                                 <input type="text" class="form-control" id="breakfast" name="breakfast"
-                                                    placeholder="E.g., Pandesal ">
+                                                    placeholder="E.g., Pandesal " required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="lunch" class="form-label">Lunch</label>
                                                 <input type="text" class="form-control" id="lunch" name="lunch"
-                                                    placeholder="E.g., Grilled meats">
+                                                    placeholder="E.g., Grilled meats" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="dinner" class="form-label">Dinner</label>
                                                 <input type="text" class="form-control" id="dinner" name="dinner"
-                                                    placeholder="E.g., Adobo">
+                                                    placeholder="E.g., Adobo" required>
                                             </div>
                                         </div>
                                     </div>
@@ -445,9 +445,11 @@
                                                         id="guideline{{ $mealPlanCustom->id }}" name="guideline"
                                                         value="{{ $mealPlanCustom->guideline }}">
                                                 </div>
+
                                                 <div class="mb-3">
                                                     <label for="day{{ $mealPlanCustom->id }}" class="form-label">Day</label>
-                                                    <select class="form-control" id="day{{ $mealPlanCustom->id }}" name="day">
+                                                    <select class="form-control" id="day{{ $mealPlanCustom->id }}" name="day"
+                                                        value="{{ $mealPlanCustom->day }}">
                                                         <option value="Monday" {{ $mealPlanCustom->day == 'Monday' ? 'selected' : '' }}>Monday</option>
                                                         <option value="Tuesday" {{ $mealPlanCustom->day == 'Tuesday' ? 'selected' : '' }}>Tuesday</option>
                                                         <option value="Wednesday" {{ $mealPlanCustom->day == 'Wednesday' ? 'selected' : '' }}>Wednesday</option>
@@ -457,6 +459,7 @@
                                                         <option value="Sunday" {{ $mealPlanCustom->day == 'Sunday' ? 'selected' : '' }}>Sunday</option>
                                                     </select>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>

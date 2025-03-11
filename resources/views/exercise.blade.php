@@ -274,11 +274,11 @@
                                             <div class="mb-3">
                                                 <label for="guideline" class="form-label">Guideline</label>
                                                 <input type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline">
+                                                    placeholder="Guideline" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exercise" class="form-label">Exercises</label>
-                                                <select class="form-control" id="exercise" name="exercise">
+                                                <select class="form-control" id="exercise" name="exercise" required>
                                                     <option value="">Select Exercise</option>
                                                     <option value="Chest">Chest</option>
                                                     <option value="Shoulders">Shoulders</option>
@@ -292,7 +292,7 @@
                                             <div class="mb-3">
                                                 <label for="description" class="form-label">Description</label>
                                                 <input type="text" class="form-control" id="description" name="description"
-                                                    placeholder="Exercise">
+                                                    placeholder="Exercise" required>
                                             </div>
                                         </div>
                                     </div>
@@ -313,7 +313,7 @@
                                             <div class="mb-3">
                                                 <label for="duration" class="form-label">Duration</label>
                                                 <input type="text" class="form-control" id="duration" name="duration"
-                                                    placeholder="E.g., 30 minutes">
+                                                    placeholder="E.g., 30 minutes" required>
                                             </div>
                                         </div>
                                     </div>
