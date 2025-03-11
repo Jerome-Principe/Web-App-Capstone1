@@ -15,11 +15,11 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('pending_memberships')->onDelete('cascade');
             $table->string('category');
             $table->string('type');
-            $table->string('guideline')->nullable();
-            $table->string('day');
-            $table->string('breakfast');
-            $table->string('lunch');
-            $table->string('dinner');
+            $table->text('guideline')->nullable();
+            $table->string('day')->nullable();
+            $table->text('breakfast')->nullable();
+            $table->text('lunch')->nullable();
+            $table->text('dinner')->nullable();
             $table->timestamps();
         });
     }

@@ -14,11 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->string('category');
             $table->string('type');
-            $table->string('guideline')->nullable();
+            $table->text('guideline')->nullable();
             $table->string('day')->nullable();
-            $table->string('breakfast')->nullable();
-            $table->string('lunch')->nullable();
-            $table->string('dinner')->nullable();
+            $table->text('breakfast')->nullable();
+            $table->text('lunch')->nullable();
+            $table->text('dinner')->nullable();
             $table->timestamps();
         });
     }

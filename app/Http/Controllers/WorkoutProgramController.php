@@ -60,7 +60,7 @@ class WorkoutProgramController extends Controller
             'type' => 'required|string|max:255',
             'guideline' => 'nullable|string',
             'day' => 'required|string|max:255',
-            'workout' => 'nullable|string',
+            'workout' => 'nullable|string|max:65535',
             'difficulty' => 'required|string|max:255',
             'duration' => 'required|string|max:255',
         ]);

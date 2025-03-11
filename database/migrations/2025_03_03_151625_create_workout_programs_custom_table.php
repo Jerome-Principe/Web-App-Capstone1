@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('type');
             $table->text('guideline');
             $table->string('day');
-            $table->string('workout');
+            $table->text('workout');
             $table->string('difficulty');
             $table->string('duration');
             $table->timestamps();
