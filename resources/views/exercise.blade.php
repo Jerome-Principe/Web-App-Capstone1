@@ -247,13 +247,12 @@
 
                             <div class="mb-3">
                                 <label for="type" class="form-label">Type</label>
-                                <select class="form-control" id="type" name="type" required>
+                                <select class="form-control" id="type" name="type" required onchange="updateExercise()">
                                     <option value="">Select Type</option>
                                     <option value="Strength Training">Strength Training</option>
                                     <option value="Cardiovascular exercises">Cardiovascular exercises</option>
                                     <option value="Plyometrics">Plyometrics</option>
-                                    <option value="Core Strength exercises">Core Strength exercises
-                                    </option>
+                                    <option value="Core Strength exercises">Core Strength exercises</option>
                                 </select>
                             </div>
 
@@ -273,26 +272,21 @@
                                         <div class="accordion-body">
                                             <div class="mb-3">
                                                 <label for="guideline" class="form-label">Guideline</label>
-                                                <input type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline" required>
+                                                <textarea type="text" class="form-control" id="guideline" name="guideline"
+                                                    placeholder="Guideline" required
+                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exercise" class="form-label">Exercises</label>
                                                 <select class="form-control" id="exercise" name="exercise" required>
                                                     <option value="">Select Exercise</option>
-                                                    <option value="Chest">Chest</option>
-                                                    <option value="Shoulders">Shoulders</option>
-                                                    <option value="Back">Back</option>
-                                                    <option value="Arms">Arms</option>
-                                                    <option value="Legs Quad focused">Legs Quad focused</option>
-                                                    <option value="Legs Hamstring focused">Legs Hamstring focused</option>
-                                                    <option value="Glutes">Glutes</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="description" class="form-label">Description</label>
-                                                <input type="text" class="form-control" id="description" name="description"
-                                                    placeholder="Exercise" required>
+                                                <textarea type="text" class="form-control" id="description"
+                                                    name="description" placeholder="Exercise" required
+                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -330,6 +324,48 @@
             </div>
         </div>
 
+        <!-- JavaScript to Update Exercise Dropdown -->
+        <script>
+            function updateExercise() {
+                const type = document.getElementById('type').value;
+                const exerciseSelect = document.getElementById('exercise');
+
+                // Clear previous options
+                exerciseSelect.innerHTML = '<option value="">Select Exercise</option>';
+
+                let exercises = [];
+
+                switch (type) {
+                    case 'Strength Training':
+                        exercises = ['Bench press', 'Incline Bench press', 'Push-ups', 'Chest press machine', 'Chest flys', 'Barbell or dumbbells press', 'Arnold press',
+                            'Lateral raises', 'Face pulls', 'Front raises', 'Pull-ups or chin-ups', 'Lat pulldowns', 'Barbell rows', 'Deadlifts', 'Dumbbell rows', 'Bicep curls',
+                            'Tricep dips', 'Hammer curls', 'Skull crushers', 'Squats', 'Step-ups', 'Lunges', 'Leg press', 'Romanian deadlifts', 'Hamstring curls', 'Glute bridges',
+                            'Hip thrusts', 'Bulgarian split squats', 'Kettle bell swings'
+                        ];
+                        break;
+                    case 'Cardiovascular exercises':
+                        exercises = ['Running', 'Cycling', 'Jump Rope', 'Brisk Walking', 'Swimming'];
+                        break;
+                    case 'Plyometrics':
+                        exercises = ['Pop Squat', 'Split Squat Jump', 'Alternating Lunge Squat', 'Reverse Lunge to Knee-Up Jump', 'Tuck Jump', 'Jump Squat With Heel Tap', 'Skater Hop',
+                            'Burpee', 'Box Jump', 'Crab Walk to Jump', 'Single-Leg Deadlift to Jump', 'Lateral Lunge to Single-Leg Hop', 'Hands-Release Push-Up', 'Broad Jump to Burpee',
+                            'Burpee Into Tuck Jump',
+                        ];
+                        break;
+                    case 'Core Strength exercises':
+                        exercises = ['Bridge', 'Superman', 'Quadruped', 'Side plank', 'Modified plank', 'Abdominal Crunch', 'Single-leg abdominal press', 'Double-leg abdominal press'];
+                        break;
+                }
+
+                exercises.forEach(function (exercise) {
+                    const option = document.createElement('option');
+                    option.value = exercise;
+                    option.textContent = exercise;
+                    exerciseSelect.appendChild(option);
+                });
+            }
+        </script>
+
         <!-- Modal for Editing Exercise -->
         @foreach($exercises as $exercise)
             <div class="modal fade" id="editExerciseModal{{ $exercise->id }}" tabindex="-1"
@@ -351,24 +387,15 @@
                                         readonly>
                                 </div>
 
-                                @php
-                                    $exerciseTypes = [
-                                        'Strength Training',
-                                        'Cardiovascular exercises',
-                                        'Plyometrics',
-                                        'Core Strength exercises',
-                                    ];
-                                @endphp
-
                                 <div class="mb-3">
-                                    <label for="type{{ $exercise->id }}" class="form-label">Type</label>
-                                    <select class="form-control" name="type" required>
-                                        <option value="">Select Type</option>
-                                        @foreach($exerciseTypes as $type)
-                                            <option value="{{ $type }}" {{ $exercise->type == $type ? 'selected' : '' }}>
-                                                {{ $type }}
-                                            </option>
-                                        @endforeach
+                                    <label for="type" class="form-label">Type</label>
+                                    <select class="form-control" id="type{{ $exercise->id }}" name="type" required
+                                        onchange="updateExercises('{{ $exercise->id }}')">
+                                        <option value="Strength Training" {{ $exercise->type == 'Strength Training' ? 'selected' : '' }}>Strength Training</option>
+                                        <option value="Cardiovascular exercises" {{ $exercise->type == 'Cardiovascular exercises' ? 'selected' : '' }}>Cardiovascular exercises</option>
+                                        <option value="Plyometrics" {{ $exercise->type == 'Plyometrics' ? 'selected' : '' }}>
+                                            Plyometrics</option>
+                                        <option value="Core Strength exercises" {{ $exercise->type == 'Core Strength exercises' ? 'selected' : '' }}>Core Strength exercises</option>
                                     </select>
                                 </div>
 
@@ -390,27 +417,25 @@
                                                 <div class="mb-3">
                                                     <label for="guideline{{ $exercise->id }}"
                                                         class="form-label">Guideline</label>
-                                                    <input type="text" class="form-control" id="guideline{{ $exercise->id }}"
-                                                        name="guideline" value="{{ $exercise->guideline }}">
+                                                    <textarea class="form-control" id="guideline{{ $exercise->id }}"
+                                                        name="guideline"
+                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $exercise->guideline }}</textarea>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="exercises{{ $exercise->id }}"
-                                                        class="form-label">Exercises</label>
+                                                    <label for="exercise" class="form-label">Exercises</label>
                                                     <select class="form-control" id="exercise{{ $exercise->id }}"
-                                                        name="exercise">
-                                                        @php
-                                                            $Exercises = ['Chest', 'Shoulders', 'Back', 'Arms', 'Legs Quad focused', 'Legs Hamstring focused', 'Glutes'];
-                                                        @endphp
-                                                        @foreach($Exercises as $Exercise)
-                                                            <option value="{{ $Exercise }}" {{ $exercise->Exercise == $Exercise ? 'selected' : '' }}>{{ $Exercise }}</option>
-                                                        @endforeach
+                                                        name="exercise" required>
+                                                        <option value="{{ $exercise->exercise }}" selected>
+                                                            {{ $exercise->exercise }}
+                                                        </option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="description{{ $exercise->id }}"
                                                         class="form-label">Description</label>
-                                                    <input type="text" class="form-control" id="description{{ $exercise->id }}"
-                                                        name="description" value="{{ $exercise->description }}">
+                                                    <textarea class="form-control" id="description{{ $exercise->id }}"
+                                                        name="description"
+                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $exercise->description }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -447,24 +472,76 @@
                     </div>
                 </div>
             </div>
+
+            <script>
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Loop through each exercise and update the dropdown for each one
+                    @foreach($exercises as $exercise)
+                        updateExercises('{{ $exercise->id }}', '{{ $exercise->exercise }}');
+                    @endforeach 
+                            });
+
+                function updateExercises(exerciseId = '', selectedExercise = '') {
+                    const type = document.getElementById('type' + exerciseId).value;
+                    const exerciseSelect = document.getElementById('exercise' + exerciseId);
+
+                    // Clear previous options
+                    exerciseSelect.innerHTML = '<option value="">Select Exercise</option>';
+
+                    let exercises = [];
+
+                    switch (type) {
+                        case 'Strength Training':
+                            exercises = ['Bench press', 'Incline Bench press', 'Push-ups', 'Chest press machine', 'Chest flys', 'Barbell or dumbbells press', 'Arnold press',
+                                'Lateral raises', 'Face pulls', 'Front raises', 'Pull-ups or chin-ups', 'Lat pulldowns', 'Barbell rows', 'Deadlifts', 'Dumbbell rows', 'Bicep curls',
+                                'Tricep dips', 'Hammer curls', 'Skull crushers', 'Squats', 'Step-ups', 'Lunges', 'Leg press', 'Romanian deadlifts', 'Hamstring curls', 'Glute bridges',
+                                'Hip thrusts', 'Bulgarian split squats', 'Kettle bell swings'];
+                            break;
+                        case 'Cardiovascular exercises':
+                            exercises = ['Running', 'Cycling', 'Jump Rope', 'Brisk Walking', 'Swimming'];
+                            break;
+                        case 'Plyometrics':
+                            exercises = ['Pop Squat', 'Split Squat Jump', 'Alternating Lunge Squat', 'Reverse Lunge to Knee-Up Jump', 'Tuck Jump', 'Jump Squat With Heel Tap', 'Skater Hop',
+                                'Burpee', 'Box Jump', 'Crab Walk to Jump', 'Single-Leg Deadlift to Jump', 'Lateral Lunge to Single-Leg Hop', 'Hands-Release Push-Up', 'Broad Jump to Burpee',
+                                'Burpee Into Tuck Jump'];
+                            break;
+                        case 'Core Strength exercises':
+                            exercises = ['Bridge', 'Superman', 'Quadruped', 'Side plank', 'Modified plank', 'Abdominal Crunch', 'Single-leg abdominal press', 'Double-leg abdominal press'];
+                            break;
+                    }
+
+                    exercises.forEach(function (exercise) {
+                        const option = document.createElement('option');
+                        option.value = exercise;
+                        option.textContent = exercise;
+
+                        // Set the selected option based on the previous exercise selection
+                        if (exercise === selectedExercise) {
+                            option.selected = true;
+                        }
+
+                        exerciseSelect.appendChild(option);
+                    });
+                }
+
+                function toggleSelectAll(source) {
+                    const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = source.checked;
+                    });
+                    updateSelectionCount();
+                }
+
+                function updateSelectionCount() {
+                    const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+                    const count = checkboxes.length;
+                    document.getElementById('select-all-link').innerText = `All (${count})`;
+                }
+
+            </script>
+
         @endforeach
 
     </body>
-
-    <script>
-        function toggleSelectAll(source) {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = source.checked;
-            });
-            updateSelectionCount();
-        }
-
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-    </script>
-
 @endsection

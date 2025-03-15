@@ -297,8 +297,9 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="workout" class="form-label">Workout</label>
-                                                <input type="text" class="form-control" id="workout" name="workout"
-                                                    placeholder="Workout" required>
+                                                <textarea type="text" class="form-control" id="workout" name="workout"
+                                                    placeholder="Workout" required
+                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -422,11 +423,13 @@
                                                     </select>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="workout{{ $workoutProgram->id }}"
-                                                        class="form-label">Workout</label>
-                                                    <input type="text" class="form-control"
-                                                        id="workout{{ $workoutProgram->id }}" name="workout"
-                                                        value="{{ $workoutProgram->workout }}">
+                                                    <label for="workout{{ $workoutProgram->id }}" class="form-label">
+                                                        Workout
+                                                    </label>
+                                                    <textarea class="form-control" id="workout{{ $workoutProgram->id }}"
+                                                        name="workout"
+                                                        style="height: 100px; resize: none; white-space: pre-wrap;"> {{ $workoutProgram->workout }}
+                                                                                                            </textarea>
                                                 </div>
                                             </div>
                                         </div>

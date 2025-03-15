@@ -306,8 +306,9 @@
                                         <div class="accordion-body">
                                             <div class="mb-3">
                                                 <label for="guideline" class="form-label">Guideline</label>
-                                                <input type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline" required>
+                                                <textarea type="text" class="form-control" id="guideline" name="guideline"
+                                                    placeholder="Guideline" required
+                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="day" class="form-label">Day</label>
@@ -340,18 +341,21 @@
                                         <div class="accordion-body">
                                             <div class="mb-3">
                                                 <label for="breakfast" class="form-label">Breakfast</label>
-                                                <input type="text" class="form-control" id="breakfast" name="breakfast"
-                                                    placeholder="E.g., Pandesal " required>
+                                                <textarea type="text" class="form-control" id="breakfast" name="breakfast"
+                                                    placeholder="E.g., Pandesal" required
+                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="lunch" class="form-label">Lunch</label>
-                                                <input type="text" class="form-control" id="lunch" name="lunch"
-                                                    placeholder="E.g., Grilled meats" required>
+                                                <textarea type="text" class="form-control" id="lunch" name="lunch"
+                                                    placeholder="E.g., Grilled meats" required
+                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="dinner" class="form-label">Dinner</label>
-                                                <input type="text" class="form-control" id="dinner" name="dinner"
-                                                    placeholder="E.g., Adobo" required>
+                                                <textarea type="text" class="form-control" id="dinner" name="dinner"
+                                                    placeholder="E.g., Adobo" required
+                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -363,6 +367,7 @@
                                 <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Add Meal Plan</button>
                             </div>
+
                         </form>
                     </div>
 
@@ -438,16 +443,23 @@
                                             class="accordion-collapse collapse show"
                                             aria-labelledby="editHeadingDetails{{ $mealPlanCustom->id }}">
                                             <div class="accordion-body">
+
                                                 <div class="mb-3">
-                                                    <label for="guideline{{ $mealPlanCustom->id }}"
-                                                        class="form-label">Guideline</label>
-                                                    <input type="text" class="form-control"
-                                                        id="guideline{{ $mealPlanCustom->id }}" name="guideline"
-                                                        value="{{ $mealPlanCustom->guideline }}">
+                                                    <label for="guideline{{ $mealPlanCustom->id }}" class="form-label">
+                                                        Guideline
+                                                    </label>
+
+                                                    <textarea class="form-control" id="guideline{{ $mealPlanCustom->id }}"
+                                                        name="guideline"
+                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $mealPlanCustom->guideline }}
+                                                                                                    </textarea>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="day{{ $mealPlanCustom->id }}" class="form-label">Day</label>
+                                                    <label for="day{{ $mealPlanCustom->id }}" class="form-label">
+                                                        Day
+                                                    </label>
+
                                                     <select class="form-control" id="day{{ $mealPlanCustom->id }}" name="day"
                                                         value="{{ $mealPlanCustom->day }}">
                                                         <option value="Monday" {{ $mealPlanCustom->day == 'Monday' ? 'selected' : '' }}>Monday</option>
@@ -480,20 +492,22 @@
                                                 <div class="mb-3">
                                                     <label for="breakfast{{ $mealPlanCustom->id }}"
                                                         class="form-label">Breakfast</label>
-                                                    <input type="text" class="form-control"
-                                                        id="breakfast{{ $mealPlanCustom->id }}" name="breakfast"
-                                                        value="{{ $mealPlanCustom->breakfast }}">
+                                                    <textarea class="form-control" id="breakfast{{ $mealPlanCustom->id }}"
+                                                        name="breakfast"
+                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $mealPlanCustom->breakfast }}</textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="lunch{{ $mealPlanCustom->id }}" class="form-label">Lunch</label>
-                                                    <input type="text" class="form-control" id="lunch{{ $mealPlanCustom->id }}"
-                                                        name="lunch" value="{{ $mealPlanCustom->lunch }}">
+                                                    <textarea class="form-control" id="lunch{{ $mealPlanCustom->id }}"
+                                                        name="lunch"
+                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $mealPlanCustom->lunch }}</textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="dinner{{ $mealPlanCustom->id }}"
                                                         class="form-label">Dinner</label>
-                                                    <input type="text" class="form-control" id="dinner{{ $mealPlanCustom->id }}"
-                                                        name="dinner" value="{{ $mealPlanCustom->dinner }}">
+                                                    <textarea class="form-control" id="dinner{{ $mealPlanCustom->id }}"
+                                                        name="dinner"
+                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $mealPlanCustom->dinner }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -505,6 +519,7 @@
                                     <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Update Meal Plan</button>
                                 </div>
+
                             </form>
                         </div>
 
