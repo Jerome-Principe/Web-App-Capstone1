@@ -65,9 +65,6 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/instructors">View Instructor</a>
-                    </li>
-                    <li>
                         <a href="/appointments">View Appointment List</a>
                     </li>
                     <li>
@@ -212,7 +209,7 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/our-team">View Our Team</a>
+                        <a href="/instructors">View Instructor</a>
                     </li>
                 </ul>
             </li>
