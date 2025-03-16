@@ -121,7 +121,7 @@ class RFIDController extends Controller
 
         // Filter attendance and attendance records by the given username in descending order
         $attendance = RFID::where('username', $username)->orderBy('id', 'desc')->get();
-        $attendanceRecord = AttendanceRecord::where('username', $username)->get();
+        $attendanceRecord = AttendanceRecord::where('username', $username)->orderBy('id', 'desc')->get();
 
         return response()->json([
             'attendance' => $attendance,
