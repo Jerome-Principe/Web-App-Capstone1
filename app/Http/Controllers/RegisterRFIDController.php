@@ -9,7 +9,7 @@ class RegisterRFIDController extends Controller
 {
     public function index()
     {
-        $registerRfids = RegisterRFID::paginate(10);
+        $registerRfids = RegisterRFID::orderBy('id', 'desc')->paginate(10);
         $approvedMembers = \App\Models\PendingMembership::where('status', 'Approved')->get();
         return view('attendance-register-list', compact('registerRfids', 'approvedMembers'));
     }

@@ -119,8 +119,8 @@ class RFIDController extends Controller
             return response()->json(['error' => 'Username is required'], 400);
         }
 
-        // Filter attendance and attendance records by the given username
-        $attendance = RFID::where('username', $username)->get();
+        // Filter attendance and attendance records by the given username in descending order
+        $attendance = RFID::where('username', $username)->orderBy('id', 'desc')->get();
         $attendanceRecord = AttendanceRecord::where('username', $username)->get();
 
         return response()->json([

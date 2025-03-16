@@ -9,8 +9,8 @@ class AttendanceRecordController extends Controller
 {
     public function index()
     {
-        // Fetch all attendance records
-        $attendanceRecords = AttendanceRecord::all();
+        // Fetch all attendance records in descending order by ID
+        $attendanceRecords = AttendanceRecord::orderBy('id', 'desc')->get();
 
         // Pass the data to the view
         return view('attendance-record-list', compact('attendanceRecords'));
