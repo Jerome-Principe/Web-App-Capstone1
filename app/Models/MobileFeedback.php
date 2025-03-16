@@ -11,8 +11,8 @@ class MobileFeedback extends Model
 
     protected $table = 'mobile_feedback';
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'username',
+        'email',
         'subject',
         'message',
     ];

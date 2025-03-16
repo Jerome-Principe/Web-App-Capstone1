@@ -16,8 +16,8 @@ class MobileFeedbackController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
         ]);

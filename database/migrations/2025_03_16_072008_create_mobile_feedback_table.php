@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('mobile_feedback', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('username');
+            $table->string('email');
             $table->string('subject');
             $table->text('message')->nullable();
             $table->timestamps();

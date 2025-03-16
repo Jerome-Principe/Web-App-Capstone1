@@ -137,8 +137,8 @@
                                         value="{{ $mobileFeedback->id }}" onchange="updateSelectionCount()" />
                                 </td>
                                 <td class="text-center">{{ $mobileFeedback->id}}</td>
-                                <td class="text-center">{{ $mobileFeedback->first_name}}</td>
-                                <td class="text-center">{{ $mobileFeedback->last_name }}</td>
+                                <td class="text-center">{{ $mobileFeedback->username}}</td>
+                                <td class="text-center">{{ $mobileFeedback->email }}</td>
                                 <td class="text-center">{{ $mobileFeedback->subject }}</td>
                                 <td class="text-center">{{ $mobileFeedback->message }}</td>
                             </tr>
