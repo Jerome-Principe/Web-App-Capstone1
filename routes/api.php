@@ -17,6 +17,7 @@ use App\Http\Controllers\WorkoutProgramCustomController;
 use App\Http\Controllers\WorkoutProgramCustomMobileController;
 use App\Http\Controllers\ExerciseCustomController;
 use App\Http\Controllers\ExerciseCustomMobileController;
+use App\Http\Controllers\MobileFeedbackController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,6 +38,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // gagawa controller
 // Test API in postman
 // yung routes mo laging may /api sa umpisa
+
+Route::post('/mobile/feedback', [MobileFeedbackController::class, 'store']);
+Route::get('/mobile/feedback', [MobileFeedbackController::class, 'index']);
 
 Route::get('/mobile/membership-pendings', [MembershipPendingController::class, 'mGetMembershipPending']);
 Route::post('/mobile/create-account', [MobileCreateAccountController::class, 'createAccount']);
