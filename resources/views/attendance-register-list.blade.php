@@ -81,38 +81,6 @@
         .summary {
             margin-top: 20px;
         }
-
-        .alert-msg {
-            padding: 12px 20px;
-            border-radius: 20px;
-            margin: 10px 0 10px 20px;
-            /* Margin to the left and bottom */
-            opacity: 1;
-            transition: opacity 0.5s ease-out;
-            position: relative;
-            display: inline-block;
-            font-size: 14px;
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .alert-msg.success {
-            background-color: #28a745;
-            border: 1px solid #28a745;
-        }
-
-        .alert-msg.error {
-            background-color: #dc3545;
-            border: 1px solid #dc3545;
-        }
-
-        .alert-msg .icon {
-            margin-right: 8px;
-        }
-
-        .fade-out {
-            opacity: 0;
-        }
     </style>
 </head>
 @extends('layouts.master')
@@ -125,34 +93,41 @@
                 <h1>Register RFID</h1>
 
                 <div>
-                    <div class="d-flex justify-content-end position-relative">
+                    <div class="d-flex justify-content-end position-relative mx-2">
                         <button class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#addNewModal"><i
                                 class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
                         </button>
                     </div>
                 </div>
 
-                @if(session('success'))
-                    <div class="alert-msg success">
-                        <span class="icon">✔️</span> {{ session('success') }}
-                    </div>
-                @endif
-                @if(session('error'))
-                    <div class="alert-msg error">
-                        <span class="icon">❌</span> {{ session('error') }}
-                    </div>
-                @endif
+                <div class="d-flex justify-content-end position-relative mx-2">
+                    <!-- Flash Messages -->
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert"
+                            style="margin-bottom: 15px; min-width: 200px;">
+                            <i class="fa fa-check-circle me-2"></i> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                            style="margin-bottom: 15px; min-width: 200px;">
+                            <i class="fa fa-exclamation-triangle me-2"></i> {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    <script>
                         setTimeout(function () {
-                            const alertMessages = document.querySelectorAll('.alert-msg');
-                            alertMessages.forEach(function (alert) {
-                                alert.classList.add('fade-out');
+                            const alerts = document.querySelectorAll('.alert-dismissible');
+                            alerts.forEach(alert => {
+                                alert.classList.remove('show'); // Hides the alert with Bootstrap's fade-out effect
+                                alert.addEventListener('transitionend', () => alert.remove()); // Removes from DOM after fade-out
                             });
-                        }, 3000);
-                    });
-                </script>
+                        }, 3000); // 3000 milliseconds = 3 seconds
+                    </script>
+                </div>
 
             </div>
 

@@ -61,6 +61,8 @@
             margin: 0 auto;
             border-collapse: collapse;
             width: 100%;
+            border: none !important;
+            outline: none !important;
         }
 
         th,
@@ -68,6 +70,9 @@
             border: none;
             padding: 12px;
             text-align: center;
+            border: none !important;
+            outline: none !important;
+            color: black !important;
         }
 
         button {
@@ -168,7 +173,7 @@
 
     <!-- Table Section -->
     <div class="container mt-4">
-        <table class="table table-bordered">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>ID</th>

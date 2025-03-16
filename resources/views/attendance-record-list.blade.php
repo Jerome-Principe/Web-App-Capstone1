@@ -49,27 +49,17 @@
             margin: 0 auto;
             border-collapse: collapse;
             width: 100%;
+            border: none !important;
+            outline: none !important;
         }
 
         th,
         td {
-            border: 1px solid #ddd;
+            border: none !important;
+            outline: none !important;
             padding: 12px;
             text-align: center;
-        }
-
-        button {
-            margin-top: 10px;
-            padding: 8px 16px;
-            background-color: rgb(196, 44, 44);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: rgb(207, 88, 88);
+            color: black !important;
         }
     </style>
 
@@ -111,7 +101,7 @@
 
         <!-- Table section -->
         <div class="container">
-            <table>
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>ID</th>
