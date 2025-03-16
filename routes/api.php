@@ -44,11 +44,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/mobile/feedback', [MobileFeedbackController::class, 'store']);
 Route::get('/mobile/feedback', [MobileFeedbackController::class, 'index']);
 
-Route::post('/mobile/rfid', [RFIDController::class, 'store']);
+// Route to get attendance by username
+Route::get('/mobile/rfid/user', [RFIDController::class, 'getAttendanceByUsername']);
+
+// Route to get all attendance records
 Route::get('/mobile/rfid', [RFIDController::class, 'index']);
 
-Route::post('/mobile/attendance-records', [RFIDController::class, 'store']);
-Route::get('/mobile/attendance-records', [AttendanceRecordController::class, 'index']);
+// Route to store new attendance data
+Route::post('/mobile/rfid', [RFIDController::class, 'store']);
 
 Route::get('/mobile/membership-pendings', [MembershipPendingController::class, 'mGetMembershipPending']);
 Route::post('/mobile/create-account', [MobileCreateAccountController::class, 'createAccount']);
