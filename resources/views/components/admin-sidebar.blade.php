@@ -87,7 +87,13 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/attendance">View Attendance</a>
+                        <a href="/rfid">View Attendance</a>
+                    </li>
+                    <li>
+                        <a href="/attendance-records">Attendance Record List</a>
+                    </li>
+                    <li>
+                        <a href="/register-rfid">Attendance Register List</a>
                     </li>
                 </ul>
             </li>

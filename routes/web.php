@@ -25,6 +25,11 @@ use App\Http\Controllers\WorkoutProgramCustomController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ExerciseCustomController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\RFIDController;
+use App\Http\Controllers\AttendanceRecordController;
+use App\Http\Controllers\MobileFeedbackController;
+use App\Http\Controllers\RegisterRFIDController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,9 +56,18 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
-Route::get('/attendance', function () {
-    return view('attendance');
-});
+//Attendance
+Route::resource('/rfid', RFIDController::class);
+
+//Attendance Rercord List
+Route::resource('/attendance-records', AttendanceRecordController::class);
+
+//Attendance Rercord List
+Route::resource('/register-rfid', RegisterRFIDController::class);
+
+//Mobile Feedback
+Route::resource('/mobile-feedback', MobileFeedbackController::class);
+
 Route::get('/feedback', function () {
     return view('feedback');
 });
