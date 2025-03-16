@@ -14,9 +14,12 @@ class RFIDController extends Controller
     {
         $timeIns = RFID::orderBy('id', 'desc')->get();
         $usernames = RegisterRFID::select('username')->get();
-        return view('attendance', compact('timeIns', 'usernames')); // Pass usernames to the view
-
+        return response()->json([
+            'timeIns' => $timeIns,
+            'usernames' => $usernames,
+        ]);
     }
+
 
     public function store(Request $request)
     {
