@@ -41,6 +41,29 @@ class RegisterRFIDController extends Controller
         return redirect()->back()->with('error', 'An unexpected error occurred while registering the RFID.');
     }
 
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'id' => 'required|integer|exists:register_r_f_i_d_s,id',
+            'username' => 'required|string|max:255',
+            'serial_number' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+        ]);
+
+        // Find the RFID record
+        $registerRfid = RegisterRFID::findOrFail($id);
+
+        // Check for duplicate serial number (excluding the current record)
+        if (RegisterRFID::where('serial_number', $request->serial_number)->where('id', '!=', $id)->exists()) {
+            return redirect()->back()->with('error', 'Duplicate entry! Serial Number already taken.');
+        }
+
+        // Update the RFID record
+        $registerRfid->update($validated);
+
+        return redirect()->route('register-rfid.index')->with('success', 'RFID updated successfully.');
+    }
+
 
     public function destroy($id)
     {

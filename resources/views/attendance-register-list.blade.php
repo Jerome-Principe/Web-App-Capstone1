@@ -127,7 +127,8 @@
                 <div>
                     <div class="d-flex justify-content-end position-relative">
                         <button class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#addNewModal"><i
-                                class="fa fa-plus mx-1" aria-hidden="true"></i>Add New</button>
+                                class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
+                        </button>
                     </div>
                 </div>
 
@@ -155,6 +156,7 @@
 
             </div>
 
+            <!-- Add Modal -->
             <div class="modal fade" id="addNewModal" tabindex="-1" aria-labelledby="addNewModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -198,6 +200,51 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Update Modal -->
+            @foreach($registerRfids as $index => $registerRfid)
+                <div class="modal fade" id="updateModal{{ $registerRfid->id }}" tabindex="-1"
+                    aria-labelledby="updateModalLabel{{ $registerRfid->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel{{ $registerRfid->id }}">Update RFID</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('register-rfid.update', $registerRfid->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label for="id" class="form-label">ID</label>
+                                        <input type="text" class="form-control" name="id" value="{{ $registerRfid->id }}"
+                                            readonly required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control" name="username"
+                                            value="{{ $registerRfid->username }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="serial_number" class="form-label">Serial Number</label>
+                                        <input type="text" class="form-control" name="serial_number"
+                                            value="{{ $registerRfid->serial_number }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" value="{{ $registerRfid->email }}"
+                                            readonly required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
 
             <div class="filter-options">
                 <div class="filter-links">
@@ -245,8 +292,12 @@
                                 <td class="text-center">{{ $registerRfid->serial_number }}</td>
                                 <td class="text-center">{{ $registerRfid->email }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="#" class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o mx-1"
-                                            aria-hidden="true"></i>Update</a>
+
+                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal{{ $registerRfid->id }}">
+                                        <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                    </a>
+
                                     <form action="{{ route('register-rfid.destroy', $registerRfid->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
@@ -256,6 +307,7 @@
                                                 class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
                                         </button>
                                     </form>
+
                                 </td>
                             </tr>
                         @endforeach
