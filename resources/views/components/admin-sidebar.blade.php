@@ -111,6 +111,9 @@
                     <li>
                         <a href="/feedback">View Feedback</a>
                     </li>
+                    <li>
+                        <a href="/mobile-feedback">View Mobile Feedback</a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
