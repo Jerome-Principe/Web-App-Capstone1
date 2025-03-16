@@ -18,6 +18,8 @@ use App\Http\Controllers\WorkoutProgramCustomMobileController;
 use App\Http\Controllers\ExerciseCustomController;
 use App\Http\Controllers\ExerciseCustomMobileController;
 use App\Http\Controllers\MobileFeedbackController;
+use App\Http\Controllers\RFIDController;
+use App\Http\Controllers\AttendanceRecordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,6 +43,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/mobile/feedback', [MobileFeedbackController::class, 'store']);
 Route::get('/mobile/feedback', [MobileFeedbackController::class, 'index']);
+
+Route::post('/mobile/rfid', [RFIDController::class, 'store']);
+Route::get('/mobile/rfid', [RFIDController::class, 'index']);
+
+Route::post('/mobile/attendance-records', [RFIDController::class, 'store']);
+Route::get('/mobile/attendance-records', [AttendanceRecordController::class, 'index']);
 
 Route::get('/mobile/membership-pendings', [MembershipPendingController::class, 'mGetMembershipPending']);
 Route::post('/mobile/create-account', [MobileCreateAccountController::class, 'createAccount']);
