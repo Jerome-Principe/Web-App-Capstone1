@@ -111,5 +111,22 @@ class RFIDController extends Controller
         }
     }
 
+    public function getAttendanceByUsername(Request $request)
+    {
+        $username = $request->query('username'); // Get the username from query parameters
+
+        if (!$username) {
+            return response()->json(['error' => 'Username is required'], 400);
+        }
+
+        // Filter attendance and attendance records by the given username
+        $attendance = RFID::where('username', $username)->get();
+        $attendanceRecord = AttendanceRecord::where('username', $username)->get();
+
+        return response()->json([
+            'attendance' => $attendance,
+            'attendanceRecord' => $attendanceRecord,
+        ]);
+    }
 
 }
