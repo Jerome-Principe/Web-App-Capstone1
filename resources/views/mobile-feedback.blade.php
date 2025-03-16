@@ -124,8 +124,8 @@
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                             <th class="text-center">ID</th>
-                            <th class="text-center">First Name</th>
-                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Username</th>
+                            <th class="text-center">Email</th>
                             <th class="text-center">Subject</th>
                             <th class="text-center">Message</th>
                         </tr>
