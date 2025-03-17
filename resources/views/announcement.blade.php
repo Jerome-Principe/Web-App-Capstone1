@@ -308,7 +308,9 @@
                                 <td class="text-center">{{ $announcement->notification_text }}</td>
                                 <td class="text-center">{{ $announcement->description }}</td>
                                 <td class="text-center">
-                                    <a href="{{ url($announcement->pdf_file) }}" target="_blank">View PDF</a>
+                                    <a href="{{ url('storage/app/public/' . $announcement->pdf_file) }}" target="_blank">View
+                                        PDF
+                                    </a>
                                 </td class="text-center">
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center">
