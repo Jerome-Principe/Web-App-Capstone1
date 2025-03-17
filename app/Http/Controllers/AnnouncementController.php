@@ -35,7 +35,7 @@ class AnnouncementController extends Controller
         // Handle PDF upload
         if ($request->hasFile('pdf_file')) {
             $path = $request->file('pdf_file')->store('public/pdfs');
-            $data['pdf_file'] = Storage::url($path);
+            $data['pdf_file'] = asset('storage/' . str_replace('public/', '', $path));
         }
 
         Announcement::create($data);
@@ -70,11 +70,11 @@ class AnnouncementController extends Controller
         // Handle PDF upload and delete the old file if a new one is uploaded
         if ($request->hasFile('pdf_file')) {
             if ($announcement->pdf_file) {
-                $oldPath = str_replace('/storage', 'public', $announcement->pdf_file);
+                $oldPath = str_replace(asset('storage/'), 'public/', $announcement->pdf_file);
                 Storage::delete($oldPath);
             }
             $path = $request->file('pdf_file')->store('public/pdfs');
-            $data['pdf_file'] = Storage::url($path);
+            $data['pdf_file'] = asset('storage/' . str_replace('public/', '', $path));
         }
 
         $announcement->update($data);
