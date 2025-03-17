@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Announcement;
+use Illuminate\Support\Facades\Storage;
 
 class AnnouncementController extends Controller
 {
@@ -33,7 +34,8 @@ class AnnouncementController extends Controller
 
         // Handle PDF upload
         if ($request->hasFile('pdf_file')) {
-            $data['pdf_file'] = 'storage/' . $request->file('pdf_file')->store('pdfs', 'public');
+            $path = $request->file('pdf_file')->store('public/pdfs');
+            $data['pdf_file'] = Storage::url($path);
         }
 
         Announcement::create($data);
@@ -63,14 +65,19 @@ class AnnouncementController extends Controller
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
         ]);
 
+        $data = $request->only(['notification_text', 'description']);
+
+        // Handle PDF upload and delete the old file if a new one is uploaded
         if ($request->hasFile('pdf_file')) {
-            $pdfPath = $request->file('pdf_file')->store('pdfs', 'public');
-            $announcement->pdf_file = 'storage/' . $pdfPath;
+            if ($announcement->pdf_file) {
+                $oldPath = str_replace('/storage', 'public', $announcement->pdf_file);
+                Storage::delete($oldPath);
+            }
+            $path = $request->file('pdf_file')->store('public/pdfs');
+            $data['pdf_file'] = Storage::url($path);
         }
 
-        $announcement->notification_text = $request->notification_text;
-        $announcement->description = $request->description;
-        $announcement->save();
+        $announcement->update($data);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement updated successfully!');
     }
@@ -78,56 +85,54 @@ class AnnouncementController extends Controller
     // Delete announcement
     public function destroy($id)
     {
-        $announcement = Announcement::find($id);
-        $announcement->delete();
-        return redirect()->route('announcements.index')->with('success', 'Announcement deleted successfully!');
+        try {
+            $announcement = Announcement::findOrFail($id);
+
+            // Delete associated PDF file if it exists
+            if ($announcement->pdf_file) {
+                $filePath = str_replace('/storage', 'public', $announcement->pdf_file);
+                Storage::delete($filePath);
+            }
+
+            $announcement->delete();
+            return redirect()->route('announcements.index')->with('success', 'Announcement deleted successfully!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to delete the announcement.');
+        }
     }
 
-    /**
-     * Move selected announcements to trash (soft delete).
-     */
+    // Move selected announcements to trash (soft delete)
     public function moveToTrash(Request $request)
     {
-        // Get selected instructor IDs from the form
         $announcementIds = explode(',', $request->input('selected'));
-
-        // Move instructors to trash
         Announcement::whereIn('id', $announcementIds)->delete();
-
-        return redirect()->route('announcements.index')->with('success', 'Selected Announcement moved to trash.');
+        return redirect()->route('announcements.index')->with('success', 'Selected announcements moved to trash.');
     }
 
-    /**
-     * Display the trashed announcement (soft deleted).
-     */
+    // Display trashed announcements (soft deleted)
     public function trashed()
     {
         $trashedAnnouncements = Announcement::onlyTrashed()->paginate(10);
         return view('trashed-announcement', compact('trashedAnnouncements'));
     }
 
-    /**
-     * Restore selected announcement from trash (soft delete).
-     */
+    // Restore selected announcements from trash (soft delete)
     public function restoreBulk(Request $request)
     {
         $announcementIds = explode(',', $request->input('selected'));
-
         if (empty($announcementIds)) {
-            return back()->with('error', 'Please select at least one Announcement to restore.');
+            return back()->with('error', 'Please select at least one announcement to restore.');
         }
 
         try {
             Announcement::onlyTrashed()->whereIn('id', $announcementIds)->restore();
-            return redirect()->route('announcements.trashed')->with('success', 'Selected Announcement restored successfully.');
+            return redirect()->route('announcements.trashed')->with('success', 'Selected announcements restored successfully.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to restore selected announcements.');
         }
     }
 
-    /**
-     * Restore a single announcement from trash (soft delete).
-     */
+    // Restore a single announcement from trash (soft delete)
     public function restore($id)
     {
         try {
@@ -135,13 +140,11 @@ class AnnouncementController extends Controller
             $announcement->restore();
             return redirect()->route('announcements.trashed')->with('success', 'Announcement restored successfully.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore the Announcement.');
+            return back()->with('error', 'Failed to restore the announcement.');
         }
     }
 
-    /**
-     * Permanently delete a single announcement from trash.
-     */
+    // Permanently delete a single announcement from trash
     public function forceDelete($id)
     {
         try {
@@ -149,7 +152,7 @@ class AnnouncementController extends Controller
             $announcement->forceDelete();
             return redirect()->route('announcements.trashed')->with('success', 'Announcement permanently deleted.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to permanently delete the Announcement.');
+            return back()->with('error', 'Failed to permanently delete the announcement.');
         }
     }
 }
