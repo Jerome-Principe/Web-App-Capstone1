@@ -308,13 +308,8 @@
                                 <td class="text-center">{{ $announcement->notification_text }}</td>
                                 <td class="text-center">{{ $announcement->description }}</td>
                                 <td class="text-center">
-                                    @if ($announcement->pdf_file)
-                                        <a href="{{ $announcement->pdf_file }}" target="_blank">View PDF</a>
-                                    @else
-                                        No PDF
-                                    @endif
-                                </td>
-
+                                    <a href="{{ url($announcement->pdf_file) }}" target="_blank">View PDF</a>
+                                </td class="text-center">
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center">
                                         <a href="#" class="btn btn-sm btn-primary edit-btn mx-1"
