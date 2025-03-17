@@ -471,7 +471,8 @@
                         document.getElementById("editAnnouncementId").value = id;
                         document.getElementById("editNotificationText").value = notificationText;
                         document.getElementById("editDescription").value = description;
-                        document.getElementById("currentPdfFile").innerHTML = `<a href="${pdfFile}" target="_blank">View Current PDF</a>`;
+                        document.getElementById("currentPdfFile").innerHTML = `<a href="/storage/${pdfFile.replace('public/', '')}" target="_blank">View Current PDF</a>`;
+
 
                         // Update the form action dynamically
                         document.getElementById("editAnnouncementForm").setAttribute("action", `/announcements/${id}`);
