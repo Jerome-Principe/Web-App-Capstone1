@@ -752,7 +752,7 @@
                                 <input type="text" name="name" placeholder="Name" required>
                             </div>
                             <div class="single_form">
-                                <input type="text" name="email" placeholder="Mobile number or email" required>
+                                <input type="text" name="email" placeholder="example@email.com" required>
                             </div>
                             <div class="single_form">
                                 <input type="text" name="subject" placeholder="Subject" required>
