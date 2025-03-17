@@ -318,8 +318,8 @@
                                             data-id="{{ $announcement->id }}"
                                             data-notification="{{ $announcement->notification_text }}"
                                             data-description="{{ $announcement->description }}"
-                                            data-pdf="{{ asset('storage/' . $announcement->pdf_file) }}" data-bs-toggle="modal"
-                                            data-bs-target="#editAnnouncementModal">
+                                            data-pdf="{{ url('storage/app/public/' . $announcement->pdf_file) }}"
+                                            data-bs-toggle="modal" data-bs-target="#editAnnouncementModal">
                                             <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
                                         </a>
                                         <form action="{{ route('announcements.destroy', $announcement->id) }}" method="POST"
@@ -471,8 +471,7 @@
                         document.getElementById("editAnnouncementId").value = id;
                         document.getElementById("editNotificationText").value = notificationText;
                         document.getElementById("editDescription").value = description;
-                        document.getElementById("currentPdfFile").innerHTML = `<a href="/storage/${pdfFile.replace('public/', '')}" target="_blank">View Current PDF</a>`;
-
+                        document.getElementById("currentPdfFile").innerHTML = `<a href="${pdfFile}" target="_blank">View Current PDF</a>`;
 
                         // Update the form action dynamically
                         document.getElementById("editAnnouncementForm").setAttribute("action", `/announcements/${id}`);
