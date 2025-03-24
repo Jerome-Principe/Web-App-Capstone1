@@ -121,15 +121,23 @@ Route::prefix('walkins')->group(function () {
 
 Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Dashboard
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
+    })->name('dashboard');
+
+    // Profile Routes
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+        Route::put('/update', [ProfileController::class, 'update'])->name('update');
+        Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('updatePassword');
+        Route::post('/delete', [ProfileController::class, 'destroy'])->name('delete');
+    });
+
+    // Registration
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
 });
 
 

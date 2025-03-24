@@ -205,27 +205,30 @@
                         </li>
                         <li class="user-profile dropdown dropdown-animated scale-left">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img class="profile-img img-fluid"
-                                    src={{asset('assets/admin-dashboard/img/avatar/avatar.jpg')}} alt="">
+                                <img src="{{ asset(auth()->user()->profile_picture ?? 'assets/admin-dashboard/img/avatar/avatar.jpg') }}"
+                                    alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                             </a>
                             <ul class="dropdown-menu dropdown-md">
                                 <li>
                                     <ul class="list-media">
                                         <li class="list-item avatar-info">
                                             <div class="media-img">
-                                                <img src={{asset('assets/admin-dashboard/img/avatar/avatar.jpg')}}
-                                                    alt="">
+                                                <img src="{{ asset(auth()->user()->profile_picture ?? 'assets/admin-dashboard/img/avatar/avatar.jpg') }}"
+                                                    alt="Profile Picture" class="rounded-circle"
+                                                    style="width: 50px; height: 50px;">
                                             </div>
                                             <div class="info">
-                                                <span class="title text-semibold">Jerome Principe</span>
+                                                <span
+                                                    class="title text-semibold">{{ auth()->user()->name ?? 'Jerome Principe' }}</span>
                                                 <span class="sub-title">Admin</span>
                                             </div>
                                         </li>
                                     </ul>
                                 </li>
+
                                 <li role="separator" class="divider"></li>
                                 <li>
-                                    <a href="/profile">
+                                    <a href="{{ route('profile.edit') }}">
                                         <i class="lni-user"></i>
                                         <span>Profile</span>
                                     </a>
@@ -254,7 +257,6 @@
                                         </a>
 
                                     </form>
-
                                 </li>
                             </ul>
                         </li>
