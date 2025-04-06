@@ -32,6 +32,8 @@
             text-align: center;
             word-wrap: break-word;
             /* Prevent overflow issues */
+            word-break: keep-all;
+            /* Prevent breaking words */
         }
 
         th {
