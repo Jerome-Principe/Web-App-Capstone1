@@ -21,7 +21,8 @@
             border-collapse: collapse;
             margin-top: 20px;
             table-layout: fixed;
-            /* Ensure proper column width */
+            page-break-inside: avoid;
+            /* Ensure proper column width and avoid breaking inside */
         }
 
         th,
@@ -42,11 +43,6 @@
             background-color: #f4f4f4;
         }
 
-        /* Handling page breaks for large content */
-        .container {
-            page-break-before: always;
-        }
-
         /* Styling for Total Rows */
         tfoot td {
             font-weight: bold;
@@ -63,6 +59,16 @@
             size: A4;
             margin: 10mm;
             /* Margin for the entire page */
+        }
+
+        /* Page break before table if needed */
+        .container {
+            page-break-before: always;
+        }
+
+        /* Add a bottom margin to ensure total row is on the same page */
+        .container-footer {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -103,6 +109,12 @@
                     </tr>
                 @endforeach
             </tbody>
+        </table>
+    </div>
+
+    <!-- Container Footer to ensure Total Rows appear on the same page -->
+    <div class="container-footer">
+        <table>
             <tfoot>
                 <tr class="total-row">
                     <td colspan="7">Total Memberships</td>
