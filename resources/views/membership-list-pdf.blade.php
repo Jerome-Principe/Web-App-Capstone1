@@ -9,6 +9,8 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            page-break-before: always;
+            /* Force a page break before the content */
         }
 
         h1 {
@@ -21,8 +23,8 @@
             border-collapse: collapse;
             margin-top: 20px;
             table-layout: fixed;
-            page-break-inside: avoid;
-            /* Ensure proper column width and avoid breaking inside */
+            page-break-inside: auto;
+            /* Default behavior */
         }
 
         th,
@@ -94,6 +96,10 @@
             </thead>
             <tbody>
                 @foreach($memberships as $index => $membership)
+                    @if($index % 20 == 0 && $index > 0)
+                        <div class="container" style="page-break-before: always;"></div>
+                        <!-- Force a page break every 20 rows -->
+                    @endif
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $membership->first_name }}</td>
