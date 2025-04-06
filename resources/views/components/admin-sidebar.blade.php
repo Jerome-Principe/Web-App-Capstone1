@@ -116,7 +116,7 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="#">
                     <span class="icon-holder">
-                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                     </span>
                     <span class="title">Events</span>
                     <span class="arrow">
