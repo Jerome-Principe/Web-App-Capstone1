@@ -9,7 +9,6 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            page-break-before: always;
             /* Force a page break before the content */
         }
 
@@ -23,7 +22,6 @@
             border-collapse: collapse;
             margin-top: 20px;
             table-layout: fixed;
-            page-break-inside: auto;
             /* Default behavior */
         }
 
