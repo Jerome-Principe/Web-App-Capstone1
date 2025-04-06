@@ -79,12 +79,12 @@
                                     <li class="nav-item">
                                         <a class="page-scroll" href="#contact">Contact</a>
                                     </li>
+                                    <li class="nav-item d-flex align-items-center">
+                                        <a href="/login" class="btn px-3 py-2"
+                                            style="background-color: #343a40; border-color: #212529; color: white;">Login</a>
+                                    </li>
                                 </ul>
                             </div>
-                            <li class="nav-item d-flex align-items-center ml-4">
-                                <a href="/login" class="btn px-3 py-2"
-                                    style="background-color: #343a40; border-color: #212529; color: white;">Login</a>
-                            </li>
                         </nav>
                     </div>
                 </div>
