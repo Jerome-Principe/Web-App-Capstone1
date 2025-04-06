@@ -59,7 +59,6 @@
         /* Adjustments for better PDF rendering */
         @page {
             size: A4;
-            margin: 10mm;
             /* Margin for the entire page */
         }
 
@@ -96,10 +95,6 @@
             </thead>
             <tbody>
                 @foreach($memberships as $index => $membership)
-                    @if($index % 20 == 0 && $index > 0)
-                        <div class="container" style="page-break-before: always;"></div>
-                        <!-- Force a page break every 20 rows -->
-                    @endif
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $membership->first_name }}</td>
