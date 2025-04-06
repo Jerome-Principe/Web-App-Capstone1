@@ -81,6 +81,10 @@
                                     </li>
                                 </ul>
                             </div>
+                            <li class="nav-item d-flex align-items-center ml-4">
+                                <a href="/login" class="btn px-3 py-2"
+                                    style="background-color: #456d9f; border-color: #5A7CA6; color: white;">Login</a>
+                            </li>
                         </nav>
                     </div>
                 </div>
