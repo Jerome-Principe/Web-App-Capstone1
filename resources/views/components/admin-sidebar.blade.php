@@ -100,6 +100,22 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="#">
                     <span class="icon-holder">
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                    </span>
+                    <span class="title">Competition</span>
+                    <span class="arrow">
+                        <i class="lni-chevron-right"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu sub-down">
+                    <li>
+                        <a href="#">View Competition</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="#">
+                    <span class="icon-holder">
                         <i class="fa fa-comments-o" aria-hidden="true"></i>
                     </span>
                     <span class="title">Feedback</span>
