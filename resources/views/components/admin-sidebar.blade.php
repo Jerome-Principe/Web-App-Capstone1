@@ -241,22 +241,6 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="#">
                     <span class="icon-holder">
-                        <i class="fa fa-credit-card" aria-hidden="true"></i>
-                    </span>
-                    <span class="title">Transaction</span>
-                    <span class="arrow">
-                        <i class="lni-chevron-right"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down">
-                    <li>
-                        <a href="/transaction">View Transaction</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="#">
-                    <span class="icon-holder">
                         <i class="fa fa-user" aria-hidden="true"></i>
                     </span>
                     <span class="title">Walkin Client</span>
