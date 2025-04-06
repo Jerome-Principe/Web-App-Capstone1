@@ -31,10 +31,15 @@
             padding: 10px;
             text-align: center;
             word-wrap: break-word;
-            /* Prevent overflow issues */
             word-break: keep-all;
-            /* Prevent breaking words */
+            /* <-- Add this */
         }
+
+        td:last-child {
+            white-space: nowrap;
+            /* Prevent wrapping in Status */
+        }
+
 
         th {
             background-color: #f4f4f4;
