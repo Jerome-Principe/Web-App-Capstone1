@@ -116,6 +116,22 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="#">
                     <span class="icon-holder">
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                    </span>
+                    <span class="title">Events</span>
+                    <span class="arrow">
+                        <i class="lni-chevron-right"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu sub-down">
+                    <li>
+                        <a href="#">View Events</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="#">
+                    <span class="icon-holder">
                         <i class="fa fa-comments-o" aria-hidden="true"></i>
                     </span>
                     <span class="title">Feedback</span>
@@ -129,6 +145,22 @@
                     </li>
                     <li>
                         <a href="/mobile-feedback">View Mobile Feedback</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="#">
+                    <span class="icon-holder">
+                        <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                    </span>
+                    <span class="title">Goal</span>
+                    <span class="arrow">
+                        <i class="lni-chevron-right"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu sub-down">
+                    <li>
+                        <a href="#">View Goal</a>
                     </li>
                 </ul>
             </li>
