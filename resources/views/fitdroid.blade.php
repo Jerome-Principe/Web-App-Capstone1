@@ -102,8 +102,12 @@
                             <p class="wow fadeInUp" data-wow-duration="1.3s" data-wow-delay="0.5s"
                                 style="font-size: 30px;"><i>Believe In Yourself I am ∞ Limitless</i></p>
                             <ul>
-                                <li><a href="/login" class="main-btn wow fadeInUp" data-wow-duration="1.3s"
-                                        data-wow-delay="0.8s">Get Started</a></li>
+                                <li>
+                                    <a href="https://drive.google.com/file/d/1_6SHcZFdJvG8u0vofgZBuaqCRUOE9s4t/view?usp=sharing
+                                        FITDROID(3-18-25).apk" class="main-btn wow fadeInUp" data-wow-duration="1.3s"
+                                        data-wow-delay="0.8s">Get Started
+                                    </a>
+                                </li>
                                 <li><a href="/learnmorebtn" class="main-btn main-btn-2 wow fadeInUp"
                                         data-wow-duration="1.3s" data-wow-delay="1.2s">Learn More
                                 </li></a>
