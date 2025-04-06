@@ -9,7 +9,6 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            /* Force a page break before the content */
         }
 
         h1 {
@@ -22,6 +21,7 @@
             border-collapse: collapse;
             margin-top: 20px;
             table-layout: fixed;
+            page-break-inside: auto;
             /* Default behavior */
         }
 
@@ -57,12 +57,20 @@
         /* Adjustments for better PDF rendering */
         @page {
             size: A4;
+            margin: 10mm;
             /* Margin for the entire page */
         }
 
         /* Page break before table if needed */
         .container {
-            page-break-before: always;
+            page-break-before: auto;
+            /* This can be used if you only want a page break before specific sections */
+        }
+
+        /* Optional: Add a class for specific tables or elements you want to ensure are on the first page */
+        .first-page-content {
+            page-break-before: auto;
+            /* Only for elements you want to ensure are not pushed to a new page */
         }
 
         /* Add a bottom margin to ensure total row is on the same page */
