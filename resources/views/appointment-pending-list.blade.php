@@ -133,7 +133,7 @@
                         ({{ App\Models\PendingAppointment::onlyTrashed()->count() }})</a>
                 </div>
 
-                <div>
+                <div class="d-flex align-items-center">
                     <form action="{{ route('appointments.moveToTrash') }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
