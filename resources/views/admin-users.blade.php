@@ -18,12 +18,13 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 30px auto;
-            background-color: white;
+            background-color: #f8f9fc;
+            /* Light background */
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
         }
 
         .header-section {
@@ -62,17 +63,21 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            background-color: transparent;
         }
 
-        th,
+        th {
+            font-weight: bold;
+            border-bottom: 1px solid #999;
+            padding: 12px 10px;
+            text-align: center;
+            background-color: transparent !important;
+        }
+
         td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-
-        table th {
-            background-color: #f0f0f0 !important;
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
         }
 
         input[type="checkbox"] {
@@ -112,12 +117,18 @@
                 });
             </script>
 
-            <div class="d-flex justify-content-end mb-3">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                        style="width: 250px; height: 35px;">
-                    <button class="btn btn-primary" type="submit" style="height: 35px;">Search</button>
-                </form>
+            <div class="filter-options">
+                <div class="d-flex justify-content-between w-100">
+                    <div class="ms-auto">
+                        <div class="d-flex align-items-center">
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                    style="height: 35px;">
+                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="table-container">
@@ -138,12 +149,13 @@
                         @foreach ($users as $index => $user)
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $user->id }}"
-                                        onchange="updateSelectionCount()" /></td>
+                                        onchange="updateSelectionCount()" />
+                                </td>
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->created_at }}</td>
-                                <td>{{ $user->updated_at }}</td>
+                                <td>{{ $user->created_at->format('m/d/Y | h:i A') }}</td>
+                                <td>{{ $user->updated_at->format('m/d/Y | h:i A') }}</td>
                                 <td class="d-flex justify-content-center">
                                     <a href="{{ route('admin-users.edit', $user->id) }}" class="btn btn-primary"><i
                                             class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
