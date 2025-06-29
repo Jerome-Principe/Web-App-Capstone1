@@ -145,6 +145,25 @@
         line-height: 16px;
         /* Same as checkbox height */
     }
+
+    .text-danger i.fa {
+        font-size: 1.1em;
+        color: #ff6b6b;
+    }
+
+    .alert-dark-danger {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #ff6b6b;
+        border: 1px solid #ff6b6b;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .alert-dark-danger i.fa {
+        margin-right: 8px;
+    }
 </style>
 
 <body>
@@ -156,13 +175,15 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf <!-- Include CSRF token for form security -->
 
-                <!-- Name / Email Field -->
+                <!-- Email Field -->
                 <div class="control">
                     <label for="email">Email</label>
                     <input type="email" name="email" id="email" required value="{{ old('email') }}" autofocus>
-                    <!-- Validation error display -->
                     @if ($errors->has('email'))
-                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                        <div class="text-danger d-flex align-items-center mt-1">
+                            <i class="fa fa-exclamation-circle me-2"></i>
+                            <small>{{ $errors->first('email') }}</small>
+                        </div>
                     @endif
                 </div>
 
@@ -170,9 +191,11 @@
                 <div class="control">
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" required>
-                    <!-- Validation error display -->
                     @if ($errors->has('password'))
-                        <span class="text-danger">{{ $errors->first('password') }}</span>
+                        <div class="text-danger d-flex align-items-center mt-1">
+                            <i class="fa fa-exclamation-circle me-2"></i>
+                            <small>{{ $errors->first('password') }}</small>
+                        </div>
                     @endif
                 </div>
 
