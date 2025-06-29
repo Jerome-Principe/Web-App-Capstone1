@@ -19,9 +19,11 @@
         .container {
             max-width: 1000px;
             margin: 20px auto;
-            background-color: white;
+            background-color: #f8f9fc;
+            /* soft light gray background */
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .header-section {
@@ -61,17 +63,26 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            background-color: transparent;
+            font-size: 14px;
         }
 
-        th,
+        th {
+            font-weight: bold;
+            background-color: transparent !important;
+            border-bottom: 1px solid #999;
+            padding: 12px 10px;
+            text-align: center;
+        }
+
         td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
         }
 
-        table th {
-            background-color: #f0f0f0 !important;
+        tr:last-child td {
+            border-bottom: none;
         }
 
         input[type="checkbox"] {
@@ -152,7 +163,7 @@
             </div>
 
             <div class="table-container">
-                <table class="table table-bordered text-center">
+                <table>
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
