@@ -160,6 +160,12 @@
             text-align: center;
         }
 
+        /* Hover effect */
+        tbody tr:hover {
+            background-color: #eaeaea;
+            cursor: pointer;
+        }
+
         input[type="checkbox"] {
             margin: 0;
         }
