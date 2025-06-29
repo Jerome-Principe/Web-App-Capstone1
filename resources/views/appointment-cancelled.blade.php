@@ -178,7 +178,7 @@
                                     </a>
                                 </td>
                                 <td class="text-center">{{ $appointment->reason }}</td>
-                                <td class="text-center">{{ $appointment->created_at }}</td>
+                                <td class="text-center">{{ $appointment->created_at->format('m/d/Y | h:i A') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
