@@ -18,10 +18,12 @@
 
         .container {
             max-width: 1000px;
-            margin: 20px auto;
-            background-color: white;
+            margin: 30px auto;
+            background-color: #f8f9fc;
+            /* Light background */
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
         }
 
         .header-section {
@@ -61,17 +63,21 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            background-color: transparent;
         }
 
-        th,
+        th {
+            font-weight: bold;
+            border-bottom: 1px solid #999;
+            padding: 12px 10px;
+            text-align: center;
+            background-color: transparent !important;
+        }
+
         td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-
-        table th {
-            background-color: #f0f0f0 !important;
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
         }
 
         input[type="checkbox"] {
