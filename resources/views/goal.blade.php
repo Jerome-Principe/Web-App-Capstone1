@@ -152,10 +152,10 @@
                             <th class="text-center">ID</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Name</th>
-                            <th class="text-center">Starting Weight</th>
-                            <th class="text-center">Current Weight</th>
-                            <th class="text-center">Goal Weight</th>
-                            <th class="text-center">Weekly Goal</th>
+                            <th class="text-center">Starting Weight (Kg)</th>
+                            <th class="text-center">Current Weight (Kg)</th>
+                            <th class="text-center">Goal Weight (Kg)</th>
+                            <th class="text-center">Weekly Goal (Kg)</th>
                             <th class="text-center">Activity</th>
                             <th class="text-center">Action</th>
                         </tr>

@@ -9,7 +9,7 @@ class GoalController extends Controller
 {
     public function index()
     {
-        $goals = Goal::paginate(10);
+        $goals = Goal::orderBy('id', 'desc')->paginate(10); // Order by newest ID first
         return view('goal', compact('goals'));
     }
 
