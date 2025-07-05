@@ -29,6 +29,7 @@ use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\AttendanceRecordController;
 use App\Http\Controllers\MobileFeedbackController;
 use App\Http\Controllers\RegisterRFIDController;
+use App\Http\Controllers\GoalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,9 @@ Route::resource('/register-rfid', RegisterRFIDController::class);
 
 //Mobile Feedback
 Route::resource('/mobile-feedback', MobileFeedbackController::class);
+
+//Goal
+Route::resource('/goals', GoalController::class);
 
 Route::get('/feedback', function () {
     return view('feedback');

@@ -160,14 +160,14 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="#">View Goal</a>
+                        <a href="/goals">View Goal</a>
                     </li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="#">
                     <span class="icon-holder">
-                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <i class="fa fa-folder-open" aria-hidden="true"></i>
                     </span>
                     <span class="title">Inventory</span>
                     <span class="arrow">

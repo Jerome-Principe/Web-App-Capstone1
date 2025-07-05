@@ -19,7 +19,8 @@ use App\Http\Controllers\ExerciseCustomController;
 use App\Http\Controllers\ExerciseCustomMobileController;
 use App\Http\Controllers\MobileFeedbackController;
 use App\Http\Controllers\RFIDController;
-use App\Http\Controllers\AttendanceRecordController;
+use App\Http\Controllers\GoalController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,6 +44,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/mobile/feedback', [MobileFeedbackController::class, 'store']);
 Route::get('/mobile/feedback', [MobileFeedbackController::class, 'index']);
+
+Route::get('/mobile/goals', [GoalController::class, 'index']);
+Route::post('/mobile/goals', [GoalController::class, 'store']);
 
 Route::get('/mobile/rfid/user', [RFIDController::class, 'getAttendanceByUsername']);
 Route::get('/mobile/rfid', [RFIDController::class, 'index']);
