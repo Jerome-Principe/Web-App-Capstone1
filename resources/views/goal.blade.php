@@ -79,6 +79,10 @@
             white-space: nowrap;
         }
 
+        .nowrap {
+            white-space: nowrap;
+        }
+
         td {
             padding: 12px 10px;
             border-bottom: 1px solid #e0e0e0;
