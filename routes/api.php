@@ -20,6 +20,7 @@ use App\Http\Controllers\ExerciseCustomMobileController;
 use App\Http\Controllers\MobileFeedbackController;
 use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\GoalController;
+use App\Http\Controllers\CompetitionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,9 @@ Route::get('/mobile/feedback', [MobileFeedbackController::class, 'index']);
 
 Route::get('/mobile/goals', [GoalController::class, 'index']);
 Route::post('/mobile/goals', [GoalController::class, 'store']);
+
+Route::get('/mobile/competitions', [CompetitionController::class, 'index']);
+Route::post('/mobile/competitions', [CompetitionController::class, 'store']);
 
 Route::get('/mobile/rfid/user', [RFIDController::class, 'getAttendanceByUsername']);
 Route::get('/mobile/rfid', [RFIDController::class, 'index']);

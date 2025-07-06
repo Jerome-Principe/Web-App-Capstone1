@@ -30,6 +30,7 @@ use App\Http\Controllers\AttendanceRecordController;
 use App\Http\Controllers\MobileFeedbackController;
 use App\Http\Controllers\RegisterRFIDController;
 use App\Http\Controllers\GoalController;
+use App\Http\Controllers\CompetitionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,9 @@ Route::resource('/mobile-feedback', MobileFeedbackController::class);
 
 //Goal
 Route::resource('/goals', GoalController::class);
+
+//Competition
+Route::resource('/competitions', CompetitionController::class);
 
 Route::get('/feedback', function () {
     return view('feedback');
