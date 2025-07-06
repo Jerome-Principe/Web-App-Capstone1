@@ -76,11 +76,6 @@
             padding: 12px 10px;
             text-align: center;
             background-color: transparent !important;
-            white-space: nowrap;
-        }
-
-        .nowrap {
-            white-space: nowrap;
         }
 
         td {
