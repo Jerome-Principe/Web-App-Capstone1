@@ -84,22 +84,19 @@ class GoalController extends Controller
         return redirect()->route('goals.index')->with('success', 'Goal deleted successfully!');
     }
 
-    public function getUserGoals(Request $request)
+    public function getGoalsByUsername(Request $request)
     {
-        $username = $request->query('username');
+        $username = $request->query('username'); // Get ?username= from query
 
         if (!$username) {
-            return response()->json([
-                'message' => 'Username is required.'
-            ], 400);
+            return response()->json(['error' => 'Username is required'], 400);
         }
 
-        $goals = Goal::where('name', $username)
-            ->orderBy('id', 'desc') // Sort by latest first
-            ->get();
+        // Filter goals where 'name' matches the username
+        $goals = Goal::where('name', $username)->orderBy('id', 'desc')->get();
 
         return response()->json([
-            'data' => $goals
+            'data' => $goals,
         ]);
     }
 }
