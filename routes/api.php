@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/mobile/feedback', [MobileFeedbackController::class, 'store']);
 Route::get('/mobile/feedback', [MobileFeedbackController::class, 'index']);
 
-Route::get('/mobile/goals', [GoalController::class, 'getGoalsByUsername']);
+Route::get('/mobile/goals/user', [GoalController::class, 'getGoalsByUsername']);
 Route::get('/mobile/goals', [GoalController::class, 'index']);
 Route::post('/mobile/goals', [GoalController::class, 'store']);
 
