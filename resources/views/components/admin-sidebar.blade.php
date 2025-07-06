@@ -109,7 +109,7 @@
                 </a>
                 <ul class="dropdown-menu sub-down">
                     <li>
-                        <a href="/Competitions">View Competition</a>
+                        <a href="/competitions">View Competition</a>
                     </li>
                 </ul>
             </li>
