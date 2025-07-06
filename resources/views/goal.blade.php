@@ -68,6 +68,7 @@
             width: 100%;
             border-collapse: collapse;
             background-color: transparent;
+            white-space: nowrap;
         }
 
         th {
@@ -76,12 +77,14 @@
             padding: 12px 10px;
             text-align: center;
             background-color: transparent !important;
+            white-space: nowrap;
         }
 
         td {
             padding: 12px 10px;
             border-bottom: 1px solid #e0e0e0;
             text-align: center;
+            white-space: nowrap;
         }
 
         input[type="checkbox"] {
