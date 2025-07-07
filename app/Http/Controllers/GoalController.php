@@ -62,7 +62,6 @@ class GoalController extends Controller
             'activity' => 'required',
         ]);
 
-        // Automatically update status
         $status = $request->current_weight == $request->goal_weight ? 'Done' : 'In Progress';
 
         $goal->update([
@@ -75,7 +74,10 @@ class GoalController extends Controller
             'activity' => $request->activity,
         ]);
 
-        return redirect()->route('goals.index')->with('success', 'Goal updated successfully!');
+        return response()->json([
+            'message' => 'Goal updated successfully!',
+            'data' => $goal,
+        ]);
     }
 
     public function destroy(Goal $goal)

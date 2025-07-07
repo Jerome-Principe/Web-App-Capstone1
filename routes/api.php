@@ -49,6 +49,7 @@ Route::get('/mobile/feedback', [MobileFeedbackController::class, 'index']);
 Route::get('/mobile/goals/user', [GoalController::class, 'getGoalsByUsername']);
 Route::get('/mobile/goals', [GoalController::class, 'index']);
 Route::post('/mobile/goals', [GoalController::class, 'store']);
+Route::put('/mobile/goals/{goal}', [GoalController::class, 'update']);
 
 Route::get('/mobile/competitions', [CompetitionController::class, 'index']);
 Route::post('/mobile/competitions', [CompetitionController::class, 'store']);
