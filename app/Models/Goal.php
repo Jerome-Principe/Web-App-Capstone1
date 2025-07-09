@@ -13,6 +13,7 @@ class Goal extends Model
         'status',
         'name',
         'starting_weight',
+        'starting_date',
         'current_weight',
         'goal_weight',
         'weekly_goal',

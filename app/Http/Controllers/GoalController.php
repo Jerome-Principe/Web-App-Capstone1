@@ -23,6 +23,7 @@ class GoalController extends Controller
         $request->validate([
             'name' => 'required',
             'starting_weight' => 'required|numeric',
+            'starting_date' => 'required|date',
             'current_weight' => 'required|numeric',
             'goal_weight' => 'required|numeric',
             'weekly_goal' => 'required|numeric',
@@ -36,6 +37,7 @@ class GoalController extends Controller
             'status' => $status,
             'name' => $request->name,
             'starting_weight' => $request->starting_weight,
+            'starting_date' => $request->starting_date,
             'current_weight' => $request->current_weight,
             'goal_weight' => $request->goal_weight,
             'weekly_goal' => $request->weekly_goal,
@@ -56,6 +58,7 @@ class GoalController extends Controller
         $request->validate([
             'name' => 'required',
             'starting_weight' => 'required|numeric',
+            'starting_date' => 'required|date',
             'current_weight' => 'required|numeric',
             'goal_weight' => 'required|numeric',
             'weekly_goal' => 'required|numeric',
@@ -68,6 +71,7 @@ class GoalController extends Controller
             'status' => $status,
             'name' => $request->name,
             'starting_weight' => $request->starting_weight,
+            'starting_date' => $request->starting_date,
             'current_weight' => $request->current_weight,
             'goal_weight' => $request->goal_weight,
             'weekly_goal' => $request->weekly_goal,

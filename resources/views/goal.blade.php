@@ -156,6 +156,7 @@
                             <th class="text-center">Status</th>
                             <th class="text-center">Name</th>
                             <th class="text-center">Starting Weight (Kg)</th>
+                            <th class="text-center">Starting Date</th>
                             <th class="text-center">Current Weight (Kg)</th>
                             <th class="text-center">Goal Weight (Kg)</th>
                             <th class="text-center">Weekly Goal (Kg)</th>
@@ -173,6 +174,7 @@
                                 <td class="text-center">{{ $goal->status}}</td>
                                 <td class="text-center">{{ $goal->name }}</td>
                                 <td class="text-center">{{ $goal->starting_weight }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($goal->starting_date)->format('m/d/Y') }}</td>
                                 <td class="text-center">{{ $goal->current_weight }}</td>
                                 <td class="text-center">{{ $goal->goal_weight }}</td>
                                 <td class="text-center">{{ $goal->weekly_goal }}</td>
@@ -181,6 +183,7 @@
                                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editGoalModal"
                                         data-id="{{ $goal->id }}" data-name="{{ $goal->name }}"
                                         data-starting_weight="{{ $goal->starting_weight }}"
+                                        data-starting_date="{{ $goal->starting_date }}"
                                         data-current_weight="{{ $goal->current_weight }}"
                                         data-goal_weight="{{ $goal->goal_weight }}" data-weekly_goal="{{ $goal->weekly_goal }}"
                                         data-activity="{{ $goal->activity }}" data-status="{{ $goal->status }}">
@@ -247,6 +250,11 @@
                                     readonly>
                             </div>
                             <div class="mb-3">
+                                <label>Starting date</label>
+                                <input type="date" name="starting_date" id="edit_starting_date" class="form-control"
+                                    readonly>
+                            </div>
+                            <div class="mb-3">
                                 <label>Current Weight</label>
                                 <input type="number" name="current_weight" id="edit_current_weight" class="form-control">
                             </div>
@@ -263,7 +271,7 @@
                                 <select name="activity" id="edit_activity" class="form-control">
                                     <option value="" disabled selected>-- Select Activity Level --</option>
                                     <option value="Not Very Active">Not Very Active</option>
-                                    <option value="Light Active">Light Active</option>
+                                    <option value="Lightly Active">Lightly Active</option>
                                     <option value="Active">Active</option>
                                     <option value="Very Active">Very Active</option>
                                 </select>
@@ -287,6 +295,7 @@
                 const id = button.getAttribute('data-id');
                 const name = button.getAttribute('data-name');
                 const startingWeight = button.getAttribute('data-starting_weight');
+                const startingDate = button.getAttribute('data-starting_date');
                 const currentWeight = button.getAttribute('data-current_weight');
                 const goalWeight = button.getAttribute('data-goal_weight');
                 const weeklyGoal = button.getAttribute('data-weekly_goal');
@@ -296,6 +305,7 @@
                 // Fill modal fields
                 document.getElementById('edit_name').value = name;
                 document.getElementById('edit_starting_weight').value = startingWeight;
+                document.getElementById('edit_starting_date').value = startingDate
                 document.getElementById('edit_current_weight').value = currentWeight;
                 document.getElementById('edit_goal_weight').value = goalWeight;
                 document.getElementById('edit_weekly_goal').value = weeklyGoal;

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('status');
             $table->string('name');
             $table->float('starting_weight');
+            $table->date('starting_date');
             $table->float('current_weight');
             $table->float('goal_weight');
             $table->float('weekly_goal');
