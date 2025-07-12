@@ -82,12 +82,7 @@ Route::get('/feedback', function () {
 Route::get('/inventory', function () {
     return view('inventory');
 });
-Route::get('/maintenance', function () {
-    return view('maintenance');
-});
-Route::get('/our-team', function () {
-    return view('our-team');
-});
+
 Route::get('/transaction', function () {
     return view('transaction');
 });
