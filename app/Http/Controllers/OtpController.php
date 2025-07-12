@@ -21,8 +21,16 @@ class OtpController extends Controller
             ['otp_code' => $otpCode, 'expires_at' => $expiresAt]
         );
 
-        // Send OTP email
-        Mail::to($request->email)->send(new \App\Mail\SendOtpMail($otpCode));
+        // 🔧 Try to send email and catch any errors
+        try {
+            Mail::to($request->email)->send(new \App\Mail\SendOtpMail($otpCode));
+        } catch (\Exception $e) {
+            \Log::error('Mail sending failed: ' . $e->getMessage()); // log to storage/logs/laravel.log
+
+            return response()->json([
+                'error' => 'Failed to send OTP. Reason: ' . $e->getMessage()
+            ], 500);
+        }
 
         return response()->json(['message' => 'OTP sent successfully!']);
     }
