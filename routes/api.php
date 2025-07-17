@@ -62,6 +62,7 @@ Route::post('/mobile/verify-otp', [OtpController::class, 'verifyOtp']);
 //OTP FOR RECOVERY
 Route::post('/mobile/check-email', [RecoveryEmailController::class, 'checkEmail']);
 Route::post('/mobile/send-recovery-otp', [RecoveryEmailController::class, 'sendRecoveryOtp']);
+Route::post('/mobile/verify-otp', [RecoveryEmailController::class, 'verifyOtp']);
 
 Route::get('/mobile/rfid/user', [RFIDController::class, 'getAttendanceByUsername']);
 Route::get('/mobile/rfid', [RFIDController::class, 'index']);

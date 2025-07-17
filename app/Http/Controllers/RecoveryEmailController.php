@@ -79,4 +79,33 @@ class RecoveryEmailController extends Controller
         ]);
     }
 
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required|digits:6',
+        ]);
+
+        $email = $request->email;
+        $otp = $request->otp;
+
+        $cachedOtp = Cache::get("recovery_otp_{$email}");
+
+        if (!$cachedOtp || $cachedOtp != $otp) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid or expired OTP',
+            ], 400);
+        }
+
+        // Optional: remove the OTP from cache after successful validation
+        Cache::forget("recovery_otp_{$email}");
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP verified successfully',
+        ]);
+    }
+
+
 }
