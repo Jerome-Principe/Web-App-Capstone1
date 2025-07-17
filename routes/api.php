@@ -55,6 +55,11 @@ Route::put('/mobile/goals/{goal}', [GoalController::class, 'update']);
 Route::get('/mobile/competitions', [CompetitionController::class, 'index']);
 Route::post('/mobile/competitions', [CompetitionController::class, 'store']);
 
+//OTP FOR SIGNUP
+Route::post('/mobile/send-otp', [OtpController::class, 'sendOtp']);
+Route::post('/mobile/verify-otp', [OtpController::class, 'verifyOtp']);
+
+//OTP FOR RECOVERY
 Route::post('/mobile/check-email', [RecoveryEmailController::class, 'checkEmail']);
 Route::post('/mobile/send-recovery-otp', [RecoveryEmailController::class, 'sendRecoveryOtp']);
 
@@ -98,10 +103,6 @@ Route::post('/mobile/workout-program-custom', [WorkoutProgramCustomController::c
 
 Route::get('/mobile/exercise-custom', [ExerciseCustomMobileController::class, 'index']);
 Route::post('/mobile/exercise-custom', [ExerciseCustomController::class, 'store']);
-
-//OTP
-Route::post('/mobile/send-otp', [OtpController::class, 'sendOtp']);
-Route::post('/mobile/verify-otp', [OtpController::class, 'verifyOtp']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);

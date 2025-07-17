@@ -24,27 +24,8 @@ class RecoveryEmailController extends Controller
         $email = $request->email;
         $user = PendingMembership::where('email', $email)->first();
 
-        if (!$user) {
-            return response()->json(['exists' => false], 200);
-        }
-
-        // Generate OTP
-        $otp = rand(100000, 999999);
-
-        // Cache the OTP for 10 minutes (if needed for verification later)
-        Cache::put("signup_otp_{$email}", $otp, now()->addMinutes(10));
-
-        // Send email using SendOtpMail
-        try {
-            Mail::to($email)->send(new SendOtpMail($otp));
-        } catch (\Exception $e) {
-            \Log::error('Signup OTP Email failed: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to send OTP.'], 500);
-        }
-
         return response()->json([
-            'exists' => true,
-            'message' => 'OTP sent to email.',
+            'exists' => $user ? true : false,
         ]);
     }
 
@@ -64,18 +45,32 @@ class RecoveryEmailController extends Controller
             return response()->json(['success' => false, 'message' => 'Email not found'], 404);
         }
 
+        // Rate limit check: prevent frequent OTP requests
+        if (Cache::has("recent_otp_request_{$email}")) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please wait before requesting another OTP.',
+            ], 429);
+        }
+
+        // Mark email as recently requested
+        Cache::put("recent_otp_request_{$email}", true, now()->addSeconds(60)); // 1-minute cooldown
+
         // Generate OTP
         $otp = rand(100000, 999999);
 
-        // Cache the OTP for 5 minutes
-        Cache::put("otp_{$email}", $otp, now()->addMinutes(5));
+        // Store OTP in cache for verification
+        Cache::put("recovery_otp_{$email}", $otp, now()->addMinutes(5));
 
-        // Send recovery OTP using RecoveryOtpMail
+        // Send the email
         try {
             Mail::to($email)->send(new RecoveryOtpMail($otp));
         } catch (\Exception $e) {
             \Log::error('Failed to send recovery OTP email: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Failed to send OTP'], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send OTP',
+            ], 500);
         }
 
         return response()->json([
@@ -83,4 +78,5 @@ class RecoveryEmailController extends Controller
             'message' => 'OTP sent successfully',
         ]);
     }
+
 }
