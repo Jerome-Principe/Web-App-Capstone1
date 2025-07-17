@@ -56,6 +56,7 @@ Route::get('/mobile/competitions', [CompetitionController::class, 'index']);
 Route::post('/mobile/competitions', [CompetitionController::class, 'store']);
 
 Route::post('/mobile/check-email', [RecoveryEmailController::class, 'checkEmail']);
+Route::post('/mobile/send-recovery-otp', [RecoveryEmailController::class, 'sendRecoveryOtp']);
 
 Route::get('/mobile/rfid/user', [RFIDController::class, 'getAttendanceByUsername']);
 Route::get('/mobile/rfid', [RFIDController::class, 'index']);
