@@ -3,13 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Your OTP Code</title>
+    <title>Sign-Up OTP</title>
 </head>
 
 <body>
+    <h2>Account Sign-Up Verification</h2>
     <p>Hello,</p>
-    <p>Your OTP code is: <strong>{{ $otpCode }}</strong></p>
-    <p>This code will expire in 10 minutes.</p>
+    <p>Your One-Time Password (OTP) for verifying your account sign-up is:</p>
+    <h1>{{ $otpCode }}</h1>
+    <p>This OTP is valid for a limited time. Please do not share it with anyone.</p>
+    <p>Thank you,<br>Limitless Support</p>
 </body>
 
 </html>
