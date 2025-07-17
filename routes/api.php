@@ -62,7 +62,7 @@ Route::post('/mobile/verify-otp', [OtpController::class, 'verifyOtp']);
 //OTP FOR RECOVERY
 Route::post('/mobile/check-email', [RecoveryEmailController::class, 'checkEmail']);
 Route::post('/mobile/send-recovery-otp', [RecoveryEmailController::class, 'sendRecoveryOtp']);
-Route::post('/mobile/verify-otp', [RecoveryEmailController::class, 'verifyOtp']);
+Route::post('/mobile/recovery-verify-otp', [RecoveryEmailController::class, 'verifyOtp']);
 Route::post('/mobile/set-new-password', [RecoveryEmailController::class, 'setNewPassword']);
 
 Route::get('/mobile/rfid/user', [RFIDController::class, 'getAttendanceByUsername']);
