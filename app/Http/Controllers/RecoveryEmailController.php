@@ -107,5 +107,23 @@ class RecoveryEmailController extends Controller
         ]);
     }
 
+    public function setNewPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        $user = PendingMembership::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Email not found.'], 404);
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => 'Password updated.']);
+    }
 
 }
