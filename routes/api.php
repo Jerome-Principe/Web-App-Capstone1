@@ -21,6 +21,7 @@ use App\Http\Controllers\MobileFeedbackController;
 use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\RecoveryEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,8 @@ Route::put('/mobile/goals/{goal}', [GoalController::class, 'update']);
 
 Route::get('/mobile/competitions', [CompetitionController::class, 'index']);
 Route::post('/mobile/competitions', [CompetitionController::class, 'store']);
+
+Route::post('/mobile/check-email', [RecoveryEmailController::class, 'checkEmail']);
 
 Route::get('/mobile/rfid/user', [RFIDController::class, 'getAttendanceByUsername']);
 Route::get('/mobile/rfid', [RFIDController::class, 'index']);
