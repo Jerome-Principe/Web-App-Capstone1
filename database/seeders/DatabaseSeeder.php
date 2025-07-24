@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         // Call the DefaultUserSeeder
         $this->call([
             DefaultUserSeeder::class,
+            NotificationSeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();

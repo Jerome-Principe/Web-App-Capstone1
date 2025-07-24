@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> Fitdroid - Admin and Dashboard Template</title>
 
     <!-- Bootstrap CSS -->
@@ -121,7 +122,7 @@
                             </ul>
                         </li>
                         <li class="notifications dropdown dropdown-animated scale-left">
-                            <span class="counter">2</span>
+                            <span class="counter" id="notification-counter">0</span>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="lni-alarm"></i>
                             </a>
@@ -133,72 +134,15 @@
                                     </h5>
                                 </li>
                                 <li>
-                                    <ul class="list-media">
-                                        <li class="list-item">
-                                            <a href="#" class="media-hover">
-                                                <div class="media-img">
-                                                    <div class="icon-avatar bg-primary">
-                                                        <i class="lni-envelope"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="info">
-                                                    <span class="title">
-                                                        5 new messages
-                                                    </span>
-                                                    <span class="sub-title">4 min ago</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="list-item">
-                                            <a href="#" class="media-hover">
-                                                <div class="media-img">
-                                                    <div class="icon-avatar bg-success">
-                                                        <i class="lni-comments-alt"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="info">
-                                                    <span class="title">
-                                                        4 new comments
-                                                    </span>
-                                                    <span class="sub-title">12 min ago</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="list-item">
-                                            <a href="#" class="media-hover">
-                                                <div class="media-img">
-                                                    <div class="icon-avatar bg-info">
-                                                        <i class="lni-users"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="info">
-                                                    <span class="title">
-                                                        3 Friend Requests
-                                                    </span>
-                                                    <span class="sub-title">a day ago</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="list-item">
-                                            <a href="#" class="media-hover">
-                                                <div class="media-img">
-                                                    <div class="icon-avatar bg-purple">
-                                                        <i class="lni-comments-alt"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="info">
-                                                    <span class="title">
-                                                        2 new messages
-                                                    </span>
-                                                    <span class="sub-title">12 min ago</span>
-                                                </div>
-                                            </a>
+                                    <ul class="list-media" id="notification-list">
+                                        <li class="list-item text-center">
+                                            <span class="text-gray">Loading notifications...</span>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="check-all text-center">
                                     <span>
-                                        <a href="#" class="text-gray">Check all notifications</a>
+                                        <a href="#" class="text-gray" id="mark-all-read">Mark all as read</a>
                                     </span>
                                 </li>
                             </ul>
@@ -313,6 +257,168 @@
     <script src="{{asset('assets/admin-dashboard/plugins/morris/morris.min.js')}}"></script>
     <script src="{{asset('assets/admin-dashboard/plugins/raphael/raphael-min.js')}}"></script>
     <script src="{{asset('assets/admin-dashboard/js/dashborad1.js')}}"></script>
+
+    <!-- Notification System JavaScript -->
+    <script>
+        $(document).ready(function() {
+            // Load notifications on page load
+            loadNotifications();
+            loadNotificationCount();
+
+            // Refresh notifications every 30 seconds
+            setInterval(function() {
+                loadNotifications();
+                loadNotificationCount();
+            }, 30000);
+
+            // Mark all as read functionality
+            $('#mark-all-read').on('click', function(e) {
+                e.preventDefault();
+                markAllAsRead();
+            });
+
+            // Load notification count
+            function loadNotificationCount() {
+                $.ajax({
+                    url: '{{ route("notifications.count") }}',
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.success) {
+                            $('#notification-counter').text(response.count);
+                            
+                            // Hide counter if no notifications
+                            if (response.count === 0) {
+                                $('#notification-counter').hide();
+                            } else {
+                                $('#notification-counter').show();
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading notification count:', error);
+                    }
+                });
+            }
+
+            // Load recent notifications
+            function loadNotifications() {
+                $.ajax({
+                    url: '{{ route("notifications.recent") }}',
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.success) {
+                            displayNotifications(response.data);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading notifications:', error);
+                        $('#notification-list').html('<li class="list-item text-center"><span class="text-gray">Error loading notifications</span></li>');
+                    }
+                });
+            }
+
+            // Display notifications in the dropdown
+            function displayNotifications(notifications) {
+                const notificationList = $('#notification-list');
+                
+                if (notifications.length === 0) {
+                    notificationList.html('<li class="list-item text-center"><span class="text-gray">No new notifications</span></li>');
+                    return;
+                }
+
+                let html = '';
+                notifications.forEach(function(notification) {
+                    const date = new Date(notification.date);
+                    const timeAgo = getTimeAgo(date);
+                    
+                    html += `
+                        <li class="list-item">
+                            <a href="#" class="media-hover" data-notification-id="${notification.id}">
+                                <div class="media-img">
+                                    <div class="icon-avatar bg-primary">
+                                        <i class="lni-alarm"></i>
+                                    </div>
+                                </div>
+                                <div class="info">
+                                    <span class="title">${notification.feature}</span>
+                                    <span class="sub-title">${notification.description}</span>
+                                    <small class="text-muted">${timeAgo}</small>
+                                </div>
+                            </a>
+                        </li>
+                    `;
+                });
+
+                notificationList.html(html);
+
+                // Add click handler for individual notifications
+                $('.media-hover[data-notification-id]').on('click', function(e) {
+                    e.preventDefault();
+                    const notificationId = $(this).data('notification-id');
+                    markAsRead(notificationId);
+                });
+            }
+
+            // Mark single notification as read
+            function markAsRead(notificationId) {
+                $.ajax({
+                    url: `/api/notifications/${notificationId}/mark-read`,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            loadNotifications();
+                            loadNotificationCount();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error marking notification as read:', error);
+                    }
+                });
+            }
+
+            // Mark all notifications as read
+            function markAllAsRead() {
+                $.ajax({
+                    url: '{{ route("notifications.markAllAsRead") }}',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            loadNotifications();
+                            loadNotificationCount();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error marking all notifications as read:', error);
+                    }
+                });
+            }
+
+            // Helper function to get time ago
+            function getTimeAgo(date) {
+                const now = new Date();
+                const diffInSeconds = Math.floor((now - date) / 1000);
+                
+                if (diffInSeconds < 60) {
+                    return 'Just now';
+                } else if (diffInSeconds < 3600) {
+                    const minutes = Math.floor(diffInSeconds / 60);
+                    return `${minutes} min ago`;
+                } else if (diffInSeconds < 86400) {
+                    const hours = Math.floor(diffInSeconds / 3600);
+                    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+                } else {
+                    const days = Math.floor(diffInSeconds / 86400);
+                    return `${days} day${days > 1 ? 's' : ''} ago`;
+                }
+            }
+        });
+    </script>
 
 </body>
 

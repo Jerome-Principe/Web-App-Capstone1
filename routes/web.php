@@ -352,3 +352,16 @@ Route::post('/membership-pendings/destroy-all', [MembershipPendingController::cl
 
 // Admin Users
 Route::resource('admin-users', AdminUserController::class);
+
+// Notifications API routes
+Route::prefix('api/notifications')->name('notifications.')->group(function () {
+    Route::get('/', [App\Http\Controllers\NotificationController::class, 'index'])->name('index');
+    Route::post('/', [App\Http\Controllers\NotificationController::class, 'store'])->name('store');
+    Route::get('/count', [App\Http\Controllers\NotificationController::class, 'getCount'])->name('count');
+    Route::get('/recent', [App\Http\Controllers\NotificationController::class, 'getRecent'])->name('recent');
+    Route::get('/{notification}', [App\Http\Controllers\NotificationController::class, 'show'])->name('show');
+    Route::put('/{notification}', [App\Http\Controllers\NotificationController::class, 'update'])->name('update');
+    Route::delete('/{notification}', [App\Http\Controllers\NotificationController::class, 'destroy'])->name('destroy');
+    Route::post('/{notification}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('markAsRead');
+    Route::post('/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+});
