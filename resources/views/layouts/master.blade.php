@@ -20,6 +20,34 @@
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!-- Custom Notification Styles -->
+    <style>
+        .notification-unread {
+            background-color: rgba(0, 123, 255, 0.05);
+            border-left: 3px solid #007bff;
+        }
+
+        .notification-read {
+            background-color: transparent;
+            border-left: 3px solid transparent;
+        }
+
+        .notification-unread:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        .notification-read:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .notification-unread .title {
+            font-weight: 600;
+        }
+
+        .notification-read .title {
+            font-weight: normal;
+        }
+    </style>
 
 </head>
 
@@ -131,6 +159,7 @@
                                     <h5 class="n-title text-center">
                                         <i class="lni-alarm"></i>
                                         <span>Notifications</span>
+                                        <small class="text-muted" id="notification-total">(0)</small>
                                     </h5>
                                 </li>
                                 <li>
@@ -260,19 +289,19 @@
 
     <!-- Notification System JavaScript -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Load notifications on page load
             loadNotifications();
             loadNotificationCount();
 
             // Refresh notifications every 30 seconds
-            setInterval(function() {
+            setInterval(function () {
                 loadNotifications();
                 loadNotificationCount();
             }, 30000);
 
             // Mark all as read functionality
-            $('#mark-all-read').on('click', function(e) {
+            $('#mark-all-read').on('click', function (e) {
                 e.preventDefault();
                 markAllAsRead();
             });
@@ -282,11 +311,11 @@
                 $.ajax({
                     url: '{{ route("notifications.count") }}',
                     method: 'GET',
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             $('#notification-counter').text(response.count);
-                            
-                            // Hide counter if no notifications
+
+                            // Hide counter if no unread notifications
                             if (response.count === 0) {
                                 $('#notification-counter').hide();
                             } else {
@@ -294,7 +323,7 @@
                             }
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error loading notification count:', error);
                     }
                 });
@@ -305,12 +334,12 @@
                 $.ajax({
                     url: '{{ route("notifications.recent") }}',
                     method: 'GET',
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             displayNotifications(response.data);
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error loading notifications:', error);
                         $('#notification-list').html('<li class="list-item text-center"><span class="text-gray">Error loading notifications</span></li>');
                     }
@@ -320,28 +349,35 @@
             // Display notifications in the dropdown
             function displayNotifications(notifications) {
                 const notificationList = $('#notification-list');
-                
+
+                // Update total count in header
+                $('#notification-total').text(`(${notifications.length})`);
+
                 if (notifications.length === 0) {
-                    notificationList.html('<li class="list-item text-center"><span class="text-gray">No new notifications</span></li>');
+                    notificationList.html('<li class="list-item text-center"><span class="text-gray">No notifications</span></li>');
                     return;
                 }
 
                 let html = '';
-                notifications.forEach(function(notification) {
+                notifications.forEach(function (notification) {
                     const date = new Date(notification.date);
                     const timeAgo = getTimeAgo(date);
-                    
+                    const isRead = notification.is_read;
+                    const readClass = isRead ? 'notification-read' : 'notification-unread';
+                    const iconClass = isRead ? 'lni-alarm' : 'lni-alarm';
+                    const bgClass = isRead ? 'bg-secondary' : 'bg-primary';
+
                     html += `
-                        <li class="list-item">
-                            <a href="#" class="media-hover" data-notification-id="${notification.id}">
+                        <li class="list-item ${readClass}">
+                            <a href="#" class="media-hover" data-notification-id="${notification.id}" data-is-read="${isRead}">
                                 <div class="media-img">
-                                    <div class="icon-avatar bg-primary">
-                                        <i class="lni-alarm"></i>
+                                    <div class="icon-avatar ${bgClass}">
+                                        <i class="${iconClass}"></i>
                                     </div>
                                 </div>
                                 <div class="info">
-                                    <span class="title">${notification.feature}</span>
-                                    <span class="sub-title">${notification.description}</span>
+                                    <span class="title ${isRead ? 'text-muted' : ''}">${notification.feature}</span>
+                                    <span class="sub-title ${isRead ? 'text-muted' : ''}">${notification.description}</span>
                                     <small class="text-muted">${timeAgo}</small>
                                 </div>
                             </a>
@@ -352,10 +388,14 @@
                 notificationList.html(html);
 
                 // Add click handler for individual notifications
-                $('.media-hover[data-notification-id]').on('click', function(e) {
+                $('.media-hover[data-notification-id]').on('click', function (e) {
                     e.preventDefault();
                     const notificationId = $(this).data('notification-id');
-                    markAsRead(notificationId);
+                    const isRead = $(this).data('is-read');
+
+                    if (!isRead) {
+                        markAsRead(notificationId);
+                    }
                 });
             }
 
@@ -367,13 +407,13 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             loadNotifications();
                             loadNotificationCount();
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error marking notification as read:', error);
                     }
                 });
@@ -387,13 +427,13 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             loadNotifications();
                             loadNotificationCount();
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error marking all notifications as read:', error);
                     }
                 });
@@ -403,7 +443,7 @@
             function getTimeAgo(date) {
                 const now = new Date();
                 const diffInSeconds = Math.floor((now - date) / 1000);
-                
+
                 if (diffInSeconds < 60) {
                     return 'Just now';
                 } else if (diffInSeconds < 3600) {

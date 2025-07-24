@@ -40,7 +40,8 @@ class NotificationController extends Controller
             'feature' => $request->feature,
             'description' => $request->description,
             'date' => $request->date,
-            'is_deleted' => false
+            'is_deleted' => false,
+            'is_read' => false
         ]);
 
         return response()->json([
@@ -99,11 +100,11 @@ class NotificationController extends Controller
     }
 
     /**
-     * Get notifications count for the notification bell
+     * Get unread notifications count for the notification bell
      */
     public function getCount(): JsonResponse
     {
-        $count = Notification::active()->count();
+        $count = Notification::active()->unread()->count();
 
         return response()->json([
             'success' => true,
@@ -112,14 +113,14 @@ class NotificationController extends Controller
     }
 
     /**
-     * Get recent notifications for the notification bell dropdown
+     * Get recent notifications for the notification bell dropdown (all notifications, both read and unread)
      */
     public function getRecent(): JsonResponse
     {
         $notifications = Notification::active()
             ->orderBy('date', 'desc')
             ->orderBy('id', 'desc')
-            ->limit(5)
+            ->limit(10)
             ->get();
 
         return response()->json([
@@ -129,11 +130,11 @@ class NotificationController extends Controller
     }
 
     /**
-     * Mark notification as read (soft delete)
+     * Mark notification as read
      */
     public function markAsRead(Notification $notification): JsonResponse
     {
-        $notification->update(['is_deleted' => true]);
+        $notification->update(['is_read' => true]);
 
         return response()->json([
             'success' => true,
@@ -146,7 +147,7 @@ class NotificationController extends Controller
      */
     public function markAllAsRead(): JsonResponse
     {
-        Notification::active()->update(['is_deleted' => true]);
+        Notification::active()->unread()->update(['is_read' => true]);
 
         return response()->json([
             'success' => true,
