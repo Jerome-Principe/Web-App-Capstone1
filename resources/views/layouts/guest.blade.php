@@ -13,7 +13,12 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if($viteManifestExists)
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        <!-- Production fallback - use CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+    @endif
 </head>
 
 <body class="font-sans text-gray-900 antialiased" style="font-family: serif, 'Poppins';">

@@ -21,10 +21,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Tailwind CSS -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- Fallback Tailwind CSS CDN (in case Vite is not running) -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    @if($viteManifestExists)
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        <!-- Production fallback - use CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+    @endif
 
     <!-- Custom Notification Styles -->
     <style>
