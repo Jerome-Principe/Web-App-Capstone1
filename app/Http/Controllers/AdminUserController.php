@@ -8,10 +8,33 @@ use Illuminate\Http\Request;
 
 class AdminUserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = User::query();
+
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('id', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
         // Order user by creation date, showing newest first
-        $users = User::orderBy('id', 'desc')->paginate(9);
+        $users = $query->orderBy('id', 'desc')->paginate(9);
+
+        // Preserve search parameter in pagination links
+        if ($request->has('search')) {
+            $users->appends(['search' => $request->search]);
+        }
+
+        // If it's an AJAX request, return only the table content
+        if ($request->ajax()) {
+            return view('admin-users', compact('users'))->render();
+        }
+
         return view('admin-users', compact('users'));
     }
 

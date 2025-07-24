@@ -20,6 +20,12 @@
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!-- Tailwind CSS -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Fallback Tailwind CSS CDN (in case Vite is not running) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- Custom Notification Styles -->
     <style>
         .notification-unread {
@@ -47,6 +53,48 @@
         .notification-read .title {
             font-weight: normal;
         }
+
+        /* Fix sidebar and main content spacing */
+        .page-container {
+            padding-left: 280px !important;
+            /* Match sidebar width */
+        }
+
+        .page-container .main-content {
+            padding-left: 30px !important;
+            /* Add extra left padding for better spacing */
+        }
+
+        /* Ensure the container has proper margins */
+        .container-fluid {
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* Responsive adjustments */
+        @media only screen and (max-width: 992px) {
+            .page-container {
+                padding-left: 0px !important;
+            }
+
+            .page-container .main-content {
+                padding-left: 15px !important;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            .page-container .main-content {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+            .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
     </style>
 
 </head>
@@ -66,16 +114,7 @@
                         </a>
                     </div>
 
-                    <ul class="nav-left">
-                        <li>
-                            <a class="sidenav-fold-toggler" href="javascript:void(0);">
-                                <i class="lni-menu"></i>
-                            </a>
-                            <a class="sidenav-expand-toggler" href="javascript:void(0);">
-                                <i class="lni-menu"></i>
-                            </a>
-                        </li>
-                    </ul>
+
 
                     <ul class="nav-right">
                         <li class="search-box">
@@ -283,8 +322,8 @@
     <script src="{{asset('assets/admin-dashboard/js/main.js')}}"></script>
 
     <!--Morris Chart-->
-    <script src="{{asset('assets/admin-dashboard/plugins/morris/morris.min.js')}}"></script>
-    <script src="{{asset('assets/admin-dashboard/plugins/raphael/raphael-min.js')}}"></script>
+    <script src="{{asset('assets/admin-dashboard/js/morris.min.js')}}"></script>
+    <script src="{{asset('assets/admin-dashboard/js/raphael-min.js')}}"></script>
     <script src="{{asset('assets/admin-dashboard/js/dashborad1.js')}}"></script>
 
     <!-- Notification System JavaScript -->
