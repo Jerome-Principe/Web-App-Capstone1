@@ -14,78 +14,319 @@
 
     <title>Competition Form Records</title>
     <style>
+        /* Minimalist Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            background-color: #f8f9fc;
-            /* Light background */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .header-section {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin-bottom: 20px;
+        /* Minimalist Card Styles */
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid #e1e5e9;
         }
 
-        .header-section h1 {
-            font-size: 24px;
-            margin-right: 10px;
+        /* Minimalist Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Minimalist Table Styles */
+        .table-section h2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e1e5e9;
         }
 
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
-        .filter-options a {
-            margin-right: 15px;
+        .filter-links a {
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-links a:hover {
+            background: #e3f2fd;
+        }
+
+        .filter-links a.active {
+            background: #007bff;
+            color: white;
         }
 
         .table-container {
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
+            background: white;
         }
 
         th {
-            font-weight: bold;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
-            text-align: center;
-            background-color: transparent !important;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: center;
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
         }
 
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Minimalist Checkbox */
         input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Minimalist Button Styles */
+        .btn {
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            border-color: #c82333;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* Minimalist Pagination */
+        .pagination {
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .page-link {
+            border: 1px solid #e1e5e9;
+            color: #007bff;
+            padding: 8px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .page-link:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .page-item.active .page-link {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background: #f8f9fa;
+            border-color: #e1e5e9;
+        }
+
+        /* Minimalist Modal */
+        .modal-content {
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e1e5e9;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .modal-title {
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Minimalist Alert */
+        .custom-alert-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        /* Badge */
+        .badge {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .badge.bg-primary {
+            background: #007bff !important;
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h5 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .empty-state p {
+            font-size: 14px;
             margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-wrapper {
+                padding: 20px 16px;
+            }
+
+            .content-card {
+                padding: 24px 16px;
+            }
+
+            .filter-options {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .filter-links {
+                justify-content: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Fade animations */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Text utilities */
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .text-center {
+            text-align: center !important;
         }
     </style>
 </head>
@@ -95,130 +336,158 @@
 @section('content')
 
     <body>
-        <div class="container">
-            <div class="header-section">
-                <h1>Gym Competition Record List</h1>
+        <div class="main-wrapper">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Gym Competition Records</h1>
+                <p>Manage and track competition participant information</p>
             </div>
 
-            @if(session('success'))
-                <div class="custom-alert-message">
-                    {{ session('success') }}
-                </div>
-            @endif
+            <!-- Competition Records Section -->
+            <div class="content-card">
+                <div class="table-section">
+                    <h2>All Competition Records</h2>
 
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    setTimeout(function () {
-                        const alert = document.querySelector('.custom-alert-message');
-                        if (alert) {
-                            alert.classList.add('fade-out');
-                        }
-                    }, 3000);
-                });
-            </script>
+                    @if(session('success'))
+                        <div class="custom-alert-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-            <div class="filter-options">
-                <div class="filter-links">
-                    <!-- Link to view all -->
-                    <a href="#" id="select-all-link">All (0)</a>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            setTimeout(function () {
+                                const alert = document.querySelector('.custom-alert-message');
+                                if (alert) {
+                                    alert.classList.add('fade-out');
+                                }
+                            }, 3000);
+                        });
+                    </script>
 
-                    <!-- Link to view all trashed announcements -->
-                    <a href="#" id="select-all-link">Archived (0)</a>
+                    <div class="filter-options">
+                        <div class="filter-links">
+                            <a href="#" id="select-all-link" class="active">
+                                All ({{ $competitions->count() }})
+                            </a>
+                            <a href="#" id="archived-link">
+                                Archived (0)
+                            </a>
+                        </div>
 
-                </div>
+                        <div>
+                            <form action="#" method="POST" class="d-inline">
+                                @csrf
+                                <input type="hidden" name="selected" id="selectedIds">
+                                <button type="submit" class="btn btn-danger btn-sm" id="moveToArchiveBtn" disabled>
+                                    <i class="fa fa-trash me-1"></i>Move to Archive
+                                </button>
+                            </form>
+                        </div>
+                    </div>
 
-                <div>
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <form action="#" method="POST">
-                            @csrf
-                            <input type="hidden" name="selected" id="selectedIds">
-                            <button type="submit" class="btn btn-light border mx-2">
-                                <i class="fa fa-trash"></i> Move to Trash
-                            </button>
-                        </form>
+                    <!-- Table section -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;">
+                                        <input type="checkbox" onclick="toggleSelectAll(this)" />
+                                    </th>
+                                    <th style="width: 60px;">ID</th>
+                                    <th>Name</th>
+                                    <th style="width: 80px;">Age</th>
+                                    <th style="width: 100px;">Gender</th>
+                                    <th style="width: 120px;">Height (cm)</th>
+                                    <th style="width: 120px;">Weight (kg)</th>
+                                    <th>Type of Competition</th>
+                                    <th style="width: 150px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($competitions as $competition)
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="selected[]" value="{{ $competition->id }}"
+                                                onchange="updateSelectionCount()" />
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ $competition->id }}</span>
+                                        </td>
+                                        <td>
+                                            <strong>{{ $competition->name }}</strong>
+                                        </td>
+                                        <td class="text-center">{{ $competition->age }}</td>
+                                        <td class="text-center">{{ $competition->gender }}</td>
+                                        <td class="text-center">{{ $competition->height }}</td>
+                                        <td class="text-center">{{ $competition->weight }}</td>
+                                        <td>{{ $competition->type_of_competition }}</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn btn-sm btn-primary edit-btn" data-bs-toggle="modal"
+                                                    data-bs-target="#editCompetitionModal" data-id="{{ $competition->id }}"
+                                                    data-name="{{ $competition->name }}" data-age="{{ $competition->age }}"
+                                                    data-gender="{{ $competition->gender }}"
+                                                    data-height="{{ $competition->height }}"
+                                                    data-weight="{{ $competition->weight }}"
+                                                    data-activity="{{ $competition->type_of_competition }}">
+                                                    <i class="fa fa-pencil-square-o me-1"></i>Edit
+                                                </button>
+                                                <form action="{{ route('competitions.destroy', $competition->id) }}"
+                                                    method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this competition record?')">
+                                                        <i class="fa fa-trash-o me-1"></i>Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="9">
+                                            <div class="empty-state">
+                                                <i class="fa fa-trophy"></i>
+                                                <h5>No competition records found</h5>
+                                                <p>Add your first competition participant to get started</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
 
+                        @if($competitions->hasPages())
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li class="page-item {{ $competitions->onFirstPage() ? 'disabled' : '' }}">
+                                        <a class="page-link" href="{{ $competitions->previousPageUrl() }}">
+                                            Previous
+                                        </a>
+                                    </li>
+
+                                    @foreach(range(1, $competitions->lastPage()) as $page)
+                                        <li class="page-item {{ $page == $competitions->currentPage() ? 'active' : '' }}">
+                                            <a class="page-link" href="{{ $competitions->url($page) }}">{{ $page }}</a>
+                                        </li>
+                                    @endforeach
+
+                                    <li class="page-item {{ !$competitions->hasMorePages() ? 'disabled' : '' }}">
+                                        <a class="page-link" href="{{ $competitions->nextPageUrl() }}">
+                                            Next
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        @endif
                     </div>
                 </div>
-
-            </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Name</th>
-                            <th class="text-center">Age</th>
-                            <th class="text-center">Gender</th>
-                            <th class="text-center">Height (cm)</th>
-                            <th class="text-center">Weight (kg)</th>
-                            <th class="text-center">Type of Competition</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach ($competitions as $index => $competition)
-                            <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $competition->id }}"
-                                        onchange="updateSelectionCount()" /></td>
-                                <td class="text-center">{{ $competition->id }}</td>
-                                <td class="text-center">{{ $competition->name}}</td>
-                                <td class="text-center">{{ $competition->age }}</td>
-                                <td class="text-center">{{ $competition->gender }}</td>
-                                <td class="text-center">{{ $competition->height }}</td>
-                                <td class="text-center">{{ $competition->weight }}</td>
-                                <td class="text-center">{{ $competition->type_of_competition }}</td>
-                                <td class="d-flex justify-content-center">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editCompetitionModal" data-id="{{ $competition->id }}"
-                                        data-name="{{ $competition->name }}" data-age="{{ $competition->age }}"
-                                        data-gender="{{ $competition->gender }}" data-height="{{ $competition->height }}"
-                                        data-weight="{{ $competition->weight }}"
-                                        data-activity="{{ $competition->type_of_competition }}">
-                                        <i class="fa fa-pencil-square-o mx-1"></i>Update
-                                    </button>
-
-                                    <form action="{{ route('competitions.destroy', $competition->id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mx-1"
-                                            onclick="return confirm('Are you sure you want to delete this competition record?')">
-                                            <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <!-- Pagination links -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $competitions->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $competitions->previousPageUrl() }}">Previous</a>
-                        </li>
-
-                        @foreach ($competitions->getUrlRange(1, $competitions->lastPage()) as $page => $url)
-                            <li class="page-item {{ $page == $competitions->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                            </li>
-                        @endforeach
-
-                        <li class="page-item {{ !$competitions->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $competitions->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
 
-        <!-- Edit Goal Modal -->
+        <!-- Edit Competition Modal -->
         <div class="modal fade" id="editCompetitionModal" tabindex="-1" aria-labelledby="editCompetitionModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -227,35 +496,35 @@
                     @method('PUT')
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Edit Competition</h5>
+                            <h5 class="modal-title">Edit Competition Record</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="competition_id" id="competition_id">
                             <div class="mb-3">
-                                <label>Name</label>
+                                <label class="form-label">Name</label>
                                 <input type="text" name="name" id="edit_name" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label>Age</label>
+                                <label class="form-label">Age</label>
                                 <input type="number" name="age" id="edit_age" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label>Gender</label>
+                                <label class="form-label">Gender</label>
                                 <input type="text" name="gender" id="edit_gender" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label>Height (cm)</label>
+                                <label class="form-label">Height (cm)</label>
                                 <input type="number" name="height" id="edit_height" class="form-control" step="0.01">
                             </div>
                             <div class="mb-3">
-                                <label>Weight (kg)</label>
+                                <label class="form-label">Weight (kg)</label>
                                 <input type="text" name="weight" id="edit_weight" class="form-control" step="0.01">
                             </div>
                             <div class="mb-3">
-                                <label>Type of Competition</label>
+                                <label class="form-label">Type of Competition</label>
                                 <select name="type_of_competition" id="edit_competition" class="form-control">
-                                    <option value="" disabled selected>-- Select Activity Level --</option>
+                                    <option value="" disabled selected>-- Select Competition Type --</option>
                                     <option value="Powerlifting">Powerlifting</option>
                                     <option value="Boxing">Boxing</option>
                                     <option value="Crossfit">Crossfit</option>
@@ -264,15 +533,52 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Update Goal</button>
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Record</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
-
         <script>
+            // Toggle select all checkboxes
+            function toggleSelectAll(checkbox) {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+                checkboxes.forEach(item => item.checked = checkbox.checked);
+                updateSelectionCount();
+            }
+
+            // Update selected count and hidden input value
+            function updateSelectionCount() {
+                const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+                const count = selectedCheckboxes.length;
+                const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
+
+                document.getElementById('select-all-link').textContent = `All (${count}/${totalCount})`;
+
+                const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
+                document.getElementById('selectedIds').value = selectedIds.join(',');
+
+                // Enable/disable move to archive button
+                const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
+                moveToArchiveBtn.disabled = count === 0;
+
+                // Update select all checkbox
+                const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+                selectAllCheckbox.checked = count === totalCount && totalCount > 0;
+                selectAllCheckbox.indeterminate = count > 0 && count < totalCount;
+            }
+
+            // Add functionality for the "All" link click
+            document.getElementById('select-all-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+                selectAllCheckbox.checked = !selectAllCheckbox.checked;
+                toggleSelectAll(selectAllCheckbox);
+            });
+
+            // Edit modal functionality
             const editModal = document.getElementById('editCompetitionModal');
             editModal.addEventListener('show.bs.modal', function (event) {
                 const button = event.relatedTarget;
@@ -302,23 +608,6 @@
                 const form = document.getElementById('editCompetitionForm');
                 form.action = `/competitions/${id}`;
             });
-
-
-            // Select all checkboxes
-            function toggleSelectAll(source) {
-                const checkboxes = document.getElementsByName('selected[]');
-                for (let i = 0; i < checkboxes.length; i++) {
-                    checkboxes[i].checked = source.checked;
-                }
-                updateSelectionCount();
-            }
-
-            // Update the selection count
-            function updateSelectionCount() {
-                const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-                const count = checkboxes.length;
-                document.getElementById('select-all-link').innerText = `All (${count})`;
-            }
         </script>
 
     </body>
