@@ -162,8 +162,7 @@ Route::prefix('trashed-announcement')->name('announcements.')->group(function ()
 //Instructors
 Route::resource('instructors', InstructorController::class);
 
-// Appointments
-Route::resource('appointments', PendingAppointmentController::class);
+// Trashed Instructors Routes
 Route::prefix('trashed-instructors')->name('instructors.')->group(function () {
     Route::post('/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('moveToTrash');
     Route::get('/trashed', [InstructorController::class, 'trashed'])->name('trashed');
