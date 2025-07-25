@@ -54,9 +54,7 @@ Route::get('/learnmorebtn', function () {
 });
 
 // dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
 //Attendance
 Route::resource('/rfid', RFIDController::class);
@@ -160,6 +158,9 @@ Route::prefix('trashed-announcement')->name('announcements.')->group(function ()
 
 //Instructors
 Route::resource('instructors', InstructorController::class);
+
+// Appointments
+Route::resource('appointments', PendingAppointmentController::class);
 Route::prefix('trashed-instructors')->name('instructors.')->group(function () {
     Route::post('/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('moveToTrash');
     Route::get('/trashed', [InstructorController::class, 'trashed'])->name('trashed');
@@ -289,6 +290,9 @@ Route::prefix('equipments-defect')->name('equipments-defect.')->group(function (
     Route::get('/filter', [EquipmentDefectController::class, 'filterByDate'])->name('filterByDate');
     Route::get('/export-pdf', [EquipmentDefectController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
+
+// Stock Items routes
+Route::resource('stock-items', StockItemController::class);
 
 // Machines Defect routes
 Route::prefix('machine-defects')->name('machine-defects.')->group(function () {

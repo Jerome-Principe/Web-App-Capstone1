@@ -4,129 +4,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Profile Settings</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .minimalist-bg {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-picture-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 3rem;
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #fff;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .camera-overlay {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            border: 3px solid #fff;
+        }
+
+        .camera-overlay:hover {
+            transform: scale(1.15);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .form-input {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px 20px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 15px;
+            letter-spacing: 0.025em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            font-size: 15px;
+            letter-spacing: 0.025em;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+            font-size: 15px;
+            letter-spacing: 0.025em;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+            font-size: 15px;
+            letter-spacing: 0.025em;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 10px;
+            letter-spacing: -0.025em;
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .alert {
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            font-weight: 500;
+            animation: slideIn 0.4s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 13px;
+            margin-top: 6px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .error-message::before {
+            content: "⚠";
+            margin-right: 6px;
+            font-size: 14px;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            margin: -12px 0 0 -12px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .page-title {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
     <script>
         function previewImage(event) {
             const output = document.getElementById('profile_preview');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = () => URL.revokeObjectURL(output.src);
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    output.src = e.target.result;
+                    output.style.opacity = '0';
+                    setTimeout(() => {
+                        output.style.opacity = '1';
+                    }, 100);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showLoading(form) {
+            const button = form.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            button.classList.add('loading');
+            button.disabled = true;
+
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('loading');
+                button.disabled = false;
+            }, 2000);
+        }
+
+        function showPasswordLoading(form) {
+            const button = form.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            button.classList.add('loading');
+            button.disabled = true;
+
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('loading');
+                button.disabled = false;
+            }, 2000);
         }
     </script>
 </head>
 
 <body>
-    <header class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto">
-            <h2 class="font-semibold text-xl">Profile</h2>
+    <div class="minimalist-bg py-12">
+        <!-- Home/Dashboard Button - Top Right Corner -->
+        <div class="absolute top-6 right-6 z-10">
+            <a href="{{ route('dashboard') }}"
+                class="nav-button inline-flex items-center px-6 py-3 text-gray-700 rounded-2xl transition-all duration-200">
+                <i class="fas fa-home mr-3 text-lg"></i>
+                <span class="hidden sm:inline font-semibold">Home / Dashboard</span>
+                <span class="sm:hidden font-semibold">Home</span>
+            </a>
         </div>
-    </header>
 
-    <main class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-5xl mx-auto px-6 sm:px-8 lg:px-10">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="page-title text-4xl font-bold mb-3">Profile Settings</h1>
+                <p class="text-gray-600 text-lg">Manage your account information and preferences</p>
+            </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+            <!-- Success Alert -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle mr-3 text-xl"></i>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Profile Information Section -->
+            <div class="glass-card rounded-3xl p-10 mb-8">
+                <div class="text-center mb-8">
+                    <h2 class="section-title">Profile Information</h2>
+                    <p class="section-subtitle">Update your personal details and profile picture</p>
+                </div>
+
+                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data"
+                    onsubmit="showLoading(this)">
                     @csrf
                     @method('PUT')
 
-                    @if(session('success'))
-                        <div
-                            class="custom-alert-message bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                setTimeout(function () {
-                                    alert.style.transition = "opacity 0.5s ease";
-                                    alert.style.opacity = "0";
-                                    setTimeout(function () {
-                                        alert.remove();
-                                    }, 500); // Wait for fade-out before removing
-                                }, 3000); // Display for 3 seconds
-                            }
-                        });
-                    </script>
-
-
                     <!-- Profile Picture -->
-                    <div class="relative w-32 h-32 mx-auto mb-6">
-                        <label for="profile_picture" class="cursor-pointer">
-                            <img id="profile_preview"
-                                src="{{ asset($user->profile_picture ?? 'https://via.placeholder.com/150') }}"
-                                alt="Profile Picture"
-                                class="w-full h-full rounded-full border-4 border-white shadow-md object-cover">
-                            <div class="absolute bottom-0 right-0 bg-gray-300 p-1 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700"
-                                    fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 5c-3.86 0-7 3.14-7 7s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm4-5h-3v3h-2v-3H8v-2h3V8h2v3h3v2z" />
-                                </svg>
-                            </div>
-                            <input type="file" id="profile_picture" name="profile_picture" class="hidden"
-                                accept="image/*" onchange="previewImage(event)">
+                    <div class="profile-picture-container">
+                        <img id="profile_preview"
+                            src="{{ asset($user->profile_picture ?? 'https://via.placeholder.com/150/667eea/ffffff?text=' . substr($user->name, 0, 1)) }}"
+                            alt="Profile Picture" class="profile-picture">
+                        <label for="profile_picture" class="camera-overlay">
+                            <i class="fas fa-camera text-lg"></i>
                         </label>
+                        <input type="file" id="profile_picture" name="profile_picture" class="hidden" accept="image/*"
+                            onchange="previewImage(event)">
                     </div>
 
                     <!-- Name and Email -->
-                    <label for="name" class="block text-gray-700">Name:</label>
-                    <input type="text" id="name" name="name" class="w-full border-gray-300 rounded-lg p-2 mb-2"
-                        value="{{ old('name', $user->name) }}" placeholder="Enter your name">
-                    @error('name')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="form-group">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-user mr-2 text-blue-500"></i>Full Name
+                            </label>
+                            <input type="text" id="name" name="name" class="form-input"
+                                value="{{ old('name', $user->name) }}" placeholder="Enter your full name">
+                            @error('name')
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <label for="email" class="block text-gray-700">Email:</label>
-                    <input type="email" id="email" name="email" class="w-full border-gray-300 rounded-lg p-2 mb-2"
-                        value="{{ old('email', $user->email) }}" placeholder="Enter your email">
-                    @error('email')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope mr-2 text-blue-500"></i>Email Address
+                            </label>
+                            <input type="email" id="email" name="email" class="form-input"
+                                value="{{ old('email', $user->email) }}" placeholder="Enter your email address">
+                            @error('email')
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
                     <!-- Save Button -->
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Save Profile</button>
+                    <div class="text-center mt-10">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save mr-3"></i>Save Profile
+                        </button>
+                    </div>
                 </form>
             </div>
 
+            <!-- Password Change Section -->
+            <div class="glass-card rounded-3xl p-10 mb-8">
+                <div class="mb-8">
+                    <h2 class="section-title">
+                        <i class="fas fa-lock mr-3 text-green-500"></i>Change Password
+                    </h2>
+                    <p class="section-subtitle">Update your password to keep your account secure</p>
+                </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <form action="{{ route('profile.updatePassword') }}" method="POST">
-
+                <form action="{{ route('profile.updatePassword') }}" method="POST" onsubmit="showPasswordLoading(this)">
                     @csrf
                     @method('PUT')
-                    <label for="current_password" class="block text-gray-700">Current Password:</label>
-                    <input type="password" id="current_password" name="current_password"
-                        class="w-full border-gray-300 rounded-lg p-2 mb-2" placeholder="Enter current password">
-                    @error('current_password')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
 
-                    <label for="new_password" class="block text-gray-700">New Password:</label>
-                    <input type="password" id="new_password" name="new_password"
-                        class="w-full border-gray-300 rounded-lg p-2 mb-2" placeholder="Enter new password">
-                    @error('new_password')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="form-group">
+                            <label for="current_password" class="form-label">
+                                <i class="fas fa-key mr-2 text-green-500"></i>Current Password
+                            </label>
+                            <input type="password" id="current_password" name="current_password" class="form-input"
+                                placeholder="Enter your current password">
+                            @error('current_password')
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <label for="confirm_password" class="block text-gray-700">Confirm Password:</label>
-                    <input type="password" id="confirm_password" name="confirm_password"
-                        class="w-full border-gray-300 rounded-lg p-2 mb-2" placeholder="Confirm new password">
-                    @error('confirm_password')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                        <div class="form-group">
+                            <label for="new_password" class="form-label">
+                                <i class="fas fa-shield-alt mr-2 text-green-500"></i>New Password
+                            </label>
+                            <input type="password" id="new_password" name="new_password" class="form-input"
+                                placeholder="Enter your new password">
+                            @error('new_password')
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg">Change Password</button>
+                    <div class="form-group">
+                        <label for="confirm_password" class="form-label">
+                            <i class="fas fa-check-circle mr-2 text-green-500"></i>Confirm New Password
+                        </label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-input"
+                            placeholder="Confirm your new password">
+                        @error('confirm_password')
+                            <p class="error-message">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="text-center mt-10">
+                        <button type="submit" class="btn-success">
+                            <i class="fas fa-key mr-3"></i>Change Password
+                        </button>
+                    </div>
                 </form>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <form action="{{ route('profile.delete') }}" method="POST">
+            <!-- Delete Account Section -->
+            <div class="glass-card rounded-3xl p-10">
+                <div class="mb-8">
+                    <h2 class="section-title text-red-600">
+                        <i class="fas fa-exclamation-triangle mr-3"></i>Delete Account
+                    </h2>
+                    <p class="section-subtitle">Permanently delete your account and all associated data</p>
+                </div>
+
+                <form action="{{ route('profile.delete') }}" method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
                     @csrf
                     @method('DELETE')
-                    <label for="password" class="block text-gray-700">Password:</label>
-                    <input type="password" id="password" name="password"
-                        class="w-full border-gray-300 rounded-lg p-2 mb-2" placeholder="Enter your password">
-                    @error('password')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
 
-                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg">Delete Account</button>
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock mr-2 text-red-500"></i>Confirm Password
+                        </label>
+                        <input type="password" id="password" name="password" class="form-input"
+                            placeholder="Enter your password to confirm deletion">
+                        @error('password')
+                            <p class="error-message">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="text-center mt-10">
+                        <button type="submit" class="btn-danger">
+                            <i class="fas fa-trash mr-3"></i>Delete Account
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
-    </main>
+    </div>
+
+    <script>
+        // Auto-hide success messages
+        document.addEventListener("DOMContentLoaded", function () {
+            const alert = document.querySelector('.alert-success');
+            if (alert) {
+                setTimeout(function () {
+                    alert.style.transition = "opacity 0.5s ease";
+                    alert.style.opacity = "0";
+                    setTimeout(function () {
+                        alert.remove();
+                    }, 500);
+                }, 5000);
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -56,45 +56,136 @@
             font-weight: normal;
         }
 
-        /* Fix sidebar and main content spacing */
-        .page-container {
-            padding-left: 280px !important;
-            /* Match sidebar width */
+        /* Modern Dropdown Styling */
+        .dropdown-menu {
+            @apply bg-white border border-gray-200 rounded-lg shadow-lg mt-2 py-2 min-w-[280px];
+            border: none;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
-        .page-container .main-content {
-            padding-left: 30px !important;
-            /* Add extra left padding for better spacing */
+        .dropdown-lg {
+            @apply min-w-[320px];
         }
 
-        /* Ensure the container has proper margins */
-        .container-fluid {
-            margin-left: 0;
-            margin-right: 0;
-            padding-left: 20px;
-            padding-right: 20px;
+        .dropdown-md {
+            @apply min-w-[280px];
+        }
+
+        .dropdown-item {
+            @apply px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150;
+        }
+
+        .list-media {
+            @apply space-y-1;
+        }
+
+        .list-item {
+            @apply px-4 py-3 hover:bg-gray-50 transition-colors duration-150;
+        }
+
+        .list-item a {
+            @apply flex items-center space-x-3 text-decoration-none;
+        }
+
+        .media-img {
+            @apply flex-shrink-0;
+        }
+
+        .media-img img {
+            @apply w-10 h-10 rounded-full object-cover;
+        }
+
+        .info {
+            @apply flex-1 min-w-0;
+        }
+
+        .info .title {
+            @apply block text-sm font-medium text-gray-900 truncate;
+        }
+
+        .info .sub-title {
+            @apply block text-sm text-gray-500 truncate;
+        }
+
+        .check-all {
+            @apply border-t border-gray-100 pt-2 mt-2;
+        }
+
+        .check-all a {
+            @apply text-sm text-blue-600 hover:text-blue-800 transition-colors duration-150;
+        }
+
+        /* Full Height Layout Structure */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar - Full Height */
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        /* Main Content Area */
+        .main-content-wrapper {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header - Same level as dashboard */
+        .header-container {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Content Area */
+        .content-container {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9fafb;
         }
 
         /* Responsive adjustments */
         @media only screen and (max-width: 992px) {
-            .page-container {
-                padding-left: 0px !important;
+            .side-nav {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
             }
 
-            .page-container .main-content {
-                padding-left: 15px !important;
+            .side-nav.show {
+                transform: translateX(0);
+            }
+
+            .main-content-wrapper {
+                margin-left: 0;
             }
         }
 
         @media only screen and (max-width: 767px) {
-            .page-container .main-content {
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-            }
-
-            .container-fluid {
-                padding-left: 10px;
-                padding-right: 10px;
+            .content-container {
+                padding: 15px;
             }
         }
     </style>
@@ -102,31 +193,38 @@
 </head>
 
 <body>
-    <div class="app header-default side-nav-dark">
-        <div class="layout">
+    <div class="app">
+        <!-- Side Nav START -->
+        @include('components.admin-sidebar')
+        <!-- Side Nav END -->
+
+        <!-- Main Content Wrapper START -->
+        <div class="main-content-wrapper">
             <!-- Header START -->
-            <div class="header navbar">
-                <div class="header-container">
-                    <div class="nav-logo">
-                        <a href="#">
-                            <div class="logo-container">
-                                <img src="{{ asset('assets/admin-dashboard/img/dumbell.png') }}" alt="Dumbell">
-                                <img src="{{ asset('assets/admin-dashboard/img/FITDROID.png') }}" alt="FITDROID">
+            <div class="header-container">
+                <div class="flex items-center justify-between px-6 py-4 h-16">
+                    <!-- Left spacer -->
+                    <div class="flex-1"></div>
+
+                    <!-- Navigation Icons with Search -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Search Bar -->
+                        <div class="relative">
+                            <input type="text" placeholder="Type to search..."
+                                class="w-64 pl-4 pr-10 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="lni-search text-gray-400 text-sm"></i>
                             </div>
-                        </a>
-                    </div>
+                        </div>
 
-
-
-                    <ul class="nav-right">
-                        <li class="search-box">
-                            <input class="form-control" type="text" placeholder="Type to search...">
-                            <i class="lni-search"></i>
-                        </li>
-                        <li class="massages dropdown dropdown-animated scale-left">
-                            <span class="counter">3</span>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="lni-envelope"></i>
+                        <!-- Messages -->
+                        <div class="relative">
+                            <span
+                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">3</span>
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                                data-toggle="dropdown">
+                                <i class="lni-envelope text-gray-600 text-lg"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-lg">
                                 <li>
@@ -189,11 +287,17 @@
                                     </span>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="notifications dropdown dropdown-animated scale-left">
-                            <span class="counter" id="notification-counter">0</span>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="lni-alarm"></i>
+                        </div>
+
+                        <!-- Notifications -->
+                        <div class="relative">
+                            <span
+                                class="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
+                                id="notification-counter">0</span>
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                                data-toggle="dropdown">
+                                <i class="lni-alarm text-gray-600 text-lg"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-lg">
                                 <li>
@@ -216,11 +320,15 @@
                                     </span>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="user-profile dropdown dropdown-animated scale-left">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        </div>
+
+                        <!-- User Profile -->
+                        <div class="relative">
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-200 hover:border-blue-500 transition-colors duration-200"
+                                data-toggle="dropdown">
                                 <img src="{{ asset(auth()->user()->profile_picture ?? 'assets/admin-dashboard/img/avatar/avatar.jpg') }}"
-                                    alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
+                                    alt="Profile Picture" class="w-full h-full object-cover rounded-full">
                             </a>
                             <ul class="dropdown-menu dropdown-md">
                                 <li>
@@ -273,41 +381,39 @@
                                     </form>
                                 </li>
                             </ul>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Header END -->
 
-            <!-- Side Nav START -->@include('components.admin-sidebar')<!-- Side Nav END -->
+            <!-- Content Container START -->
+            <div class="content-container">
+                <div class="container-fluid">
+                    <div class="row">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+            <!-- Content Container END -->
 
-            <!-- Page Container START -->
-            <div class="page-container">
-                <!-- Content Wrapper START -->
-                <div class="main-content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            @yield('content')
+            <!-- Footer START -->
+            <footer class="content-footer bg-white border-t border-gray-200 py-4">
+                <div class="container-fluid">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>Copyright © 2018 <b class="text-dark">UIdeck</b>. All Right Reserved</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="" class="text-sm text-gray-600 hover:text-gray-800">Term &amp; Conditions</a>
+                            <a href="" class="text-sm text-gray-600 hover:text-gray-800">Privacy &amp; Policy</a>
                         </div>
                     </div>
                 </div>
-                <!-- Content Wrapper END -->
-
-                <!-- Footer START -->
-                <footer class="content-footer">
-                    <div class="footer">
-                        <div class="copyright">
-                            <span>Copyright © 2018 <b class="text-dark">UIdeck</b>. All Right Reserved</span>
-                            <span class="go-right">
-                                <a href="" class="text-gray">Term &amp; Conditions</a>
-                                <a href="" class="text-gray">Privacy &amp; Policy</a>
-                            </span>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-            <!-- Page Container END -->
+            </footer>
+            <!-- Footer END -->
         </div>
+        <!-- Main Content Wrapper END -->
     </div>
 
     <!-- Preloader -->

@@ -1,5 +1,5 @@
 <div class="side-nav expand-lg bg-gradient-to-b from-gray-900 to-gray-800 text-white"
-    style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; height: 100vh; overflow: hidden; min-width: 280px; width: 280px; border: none; box-shadow: none; border-right: none;">
+    style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow: hidden; min-width: 280px; width: 280px; border: none; box-shadow: none; border-right: none;">
     <div class="side-nav-inner p-4 h-full overflow-y-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
         <style>
             .side-nav-inner::-webkit-scrollbar {

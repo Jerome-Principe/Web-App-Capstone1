@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Feedback extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['id', 'name', 'email', 'subject', 'message'];
+    protected $fillable = ['id', 'name', 'email', 'subject', 'message', 'rating', 'is_read'];
 
     // Ensure timestamps are enabled
     public $timestamps = true;
