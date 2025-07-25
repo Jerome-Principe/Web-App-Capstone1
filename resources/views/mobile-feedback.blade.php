@@ -9,89 +9,289 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Feedback For Mobile</title>
     <style>
+        /* Minimalist Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            background-color: #f8f9fc;
-            /* soft light gray background */
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .header-section {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin-bottom: 20px;
+        /* Minimalist Card Styles */
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid #e1e5e9;
         }
 
-        .header-section h1 {
-            font-size: 24px;
-            margin-right: 10px;
+        /* Minimalist Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Minimalist Table Styles */
+        .table-section h2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e1e5e9;
         }
 
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
-        .filter-options a {
-            margin-right: 15px;
+        .filter-links a {
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
         }
 
+        .filter-links a:hover {
+            background: #e3f2fd;
+        }
+
+        .filter-links a.active {
+            background: #007bff;
+            color: white;
+        }
+
+        /* Minimalist Checkbox */
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Minimalist Pagination */
+        .pagination {
+            margin-top: 24px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .page-link {
+            border: 1px solid #e1e5e9;
+            color: #007bff;
+            padding: 8px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .page-link:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .page-item.active .page-link {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background: #f8f9fa;
+            border-color: #e1e5e9;
+        }
+
+        /* Minimalist Alert */
+        .custom-alert-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
+            font-size: 14px;
+            margin-left: 16px;
+        }
+
+        /* Badge */
+        .badge {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .badge.bg-primary {
+            background: #007bff !important;
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h5 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Text utilities */
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        /* Enhanced table styles for full message display */
         .table-container {
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
+            max-width: 100%;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
-            font-size: 14px;
+            background: white;
+            min-width: 800px; /* Ensure minimum width for readability */
         }
 
-        th {
-            font-weight: bold;
-            background-color: transparent !important;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
-            text-align: center;
+        .table-container table th {
+            background: #f8f9fa !important;
+            color: #333 !important;
+            font-weight: 500 !important;
+            padding: 16px 12px !important;
+            text-align: center !important;
+            border-bottom: 1px solid #e1e5e9 !important;
+            font-size: 13px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
         }
 
-        td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: center;
+        .table-container table td {
+            padding: 16px 12px !important;
+            border-bottom: 1px solid #f1f3f4 !important;
+            vertical-align: middle !important;
+            text-align: center !important;
         }
 
-        tr:last-child td {
-            border-bottom: none;
+        .table-container tbody tr:hover {
+            background: #f8f9fa !important;
         }
 
-        /* Hover effect */
-        tbody tr:hover {
-            background-color: #eaeaea;
-            cursor: pointer;
+        /* Message column specific styling */
+        .table-container table td:last-child {
+            max-width: 400px !important;
+            word-wrap: break-word !important;
+            white-space: pre-wrap !important;
+            line-height: 1.4 !important;
+            padding: 16px 12px !important;
+            text-align: center !important;
         }
 
-        input[type="checkbox"] {
-            margin: 0;
+        /* Responsive table improvements */
+        @media (max-width: 1200px) {
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 1000px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                padding: 20px 16px;
+            }
+
+            .content-card {
+                padding: 24px 16px;
+            }
+
+            .filter-options {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .filter-links {
+                justify-content: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            table {
+                min-width: 1200px; /* Wider minimum for mobile to accommodate full content */
+            }
+        }
+
+        /* Fade animations */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
     </style>
 </head>
@@ -101,85 +301,94 @@
 @section('content')
 
     <body>
-        <div class="container">
-            <div class="header-section">
-                <h1>Feedback For Mobile</h1>
-            </div>
+        <div class="main-wrapper">
+            <div class="content-card">
+                <div class="table-section">
+                    <h2>Feedback For Mobile</h2>
 
-            <div class="filter-options">
-                <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
-                    <a href="#">Trashed</a>
-                </div>
+                    <div class="filter-options">
+                        <div class="filter-links">
+                            <a href="#" id="select-all-link" class="active">All (0)</a>
+                            <a href="#">Trashed</a>
+                        </div>
 
-                <div>
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <!-- Form to move selected mobile feedback to trash -->
-                        <form action="#" method="POST">
+                        <div>
                             @csrf
-                            <input type="hidden" name="selected" id="selectedIds">
-                            <button type="submit" class="btn btn-light border mx-2">
-                                <i class="fa fa-trash"></i> Move to Trash
-                            </button>
-                        </form>
+                            @method('DELETE')
+                            <div class="d-flex align-items-center">
+                                <!-- Form to move selected mobile feedback to trash -->
+                                <form action="#" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="selected" id="selectedIds">
+                                    <button type="submit" class="btn btn-light border mx-2">
+                                        <i class="fa fa-trash"></i> Move to Trash
+                                    </button>
+                                </form>
 
-                        <!-- Search Form -->
-                        <form class="d-flex" role="search" action="#" method="GET">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
+                                <!-- Search Form -->
+                                <form class="d-flex" role="search" action="#" method="GET">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                        style="height: 35px;">
+                                    <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;">
+                                        <input type="checkbox" onclick="toggleSelectAll(this)" />
+                                    </th>
+                                    <th style="width: 60px;">ID</th>
+                                    <th style="width: 120px;">Username</th>
+                                    <th style="width: 180px;">Email</th>
+                                    <th style="width: 200px;">Subject</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($mobileFeedbacks as $index => $mobileFeedback)
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="selected[]"
+                                                value="{{ $mobileFeedback->id }}" onchange="updateSelectionCount()" />
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ $mobileFeedback->id}}</span>
+                                        </td>
+                                        <td>
+                                            <strong>{{ $mobileFeedback->username}}</strong>
+                                        </td>
+                                        <td>{{ $mobileFeedback->email }}</td>
+                                        <td>{{ $mobileFeedback->subject }}</td>
+                                        <td style="max-width: 400px; word-wrap: break-word; white-space: pre-wrap;">{{ $mobileFeedback->message }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item {{ $mobileFeedbacks->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $mobileFeedbacks->previousPageUrl() }}" tabindex="-1">Previous</a>
+                                </li>
+
+                                @foreach ($mobileFeedbacks->getUrlRange(1, $mobileFeedbacks->lastPage()) as $page => $url)
+                                    <li class="page-item {{ $page == $mobileFeedbacks->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                <li class="page-item {{ !$mobileFeedbacks->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $mobileFeedbacks->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
-            </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Username</th>
-                            <th class="text-center">Email</th>
-                            <th class="text-center">Subject</th>
-                            <th class="text-center">Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($mobileFeedbacks as $index => $mobileFeedback)
-                            <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]"
-                                        value="{{ $mobileFeedback->id }}" onchange="updateSelectionCount()" />
-                                </td>
-                                <td class="text-center">{{ $mobileFeedback->id}}</td>
-                                <td class="text-center">{{ $mobileFeedback->username}}</td>
-                                <td class="text-center">{{ $mobileFeedback->email }}</td>
-                                <td class="text-center">{{ $mobileFeedback->subject }}</td>
-                                <td class="text-center">{{ $mobileFeedback->message }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $mobileFeedbacks->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $mobileFeedbacks->previousPageUrl() }}" tabindex="-1">Previous</a>
-                        </li>
-
-                        @foreach ($mobileFeedbacks->getUrlRange(1, $mobileFeedbacks->lastPage()) as $page => $url)
-                            <li class="page-item {{ $page == $mobileFeedbacks->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                            </li>
-                        @endforeach
-
-                        <li class="page-item {{ !$mobileFeedbacks->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $mobileFeedbacks->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </body>
@@ -201,26 +410,6 @@
             document.getElementById('selectedIds').value = selectedIds.join(',');
             console.log(selectedIds.join(',')); // Log selected IDs to debug
         }
-
-        // Add functionality for the "All (0)" link click
-        document.getElementById('select-all-link').addEventListener('click', function (e) {
-            e.preventDefault();
-            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
-            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
-            selectAllCheckbox.checked = isChecked;
-            toggleSelectAll(selectAllCheckbox);
-        });
-
-        // Ensure the form doesn't submit if no appointments are selected
-        document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
-            const selectedIds = document.getElementById('selectedIds').value;
-            if (!selectedIds) {
-                alert('Please select at least one appointments to restore.');
-                e.preventDefault(); // Prevent form submission
-            }
-        });
     </script>
-
-    </html>
 
 @endsection
