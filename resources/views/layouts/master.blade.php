@@ -396,22 +396,6 @@
                 </div>
             </div>
             <!-- Content Container END -->
-
-            <!-- Footer START -->
-            <footer class="content-footer bg-white border-t border-gray-200 py-4">
-                <div class="container-fluid">
-                    <div class="flex items-center justify-between">
-                        <div class="text-sm text-gray-600">
-                            <span>Copyright © 2018 <b class="text-dark">UIdeck</b>. All Right Reserved</span>
-                        </div>
-                        <div class="flex space-x-4">
-                            <a href="" class="text-sm text-gray-600 hover:text-gray-800">Term &amp; Conditions</a>
-                            <a href="" class="text-sm text-gray-600 hover:text-gray-800">Privacy &amp; Policy</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            <!-- Footer END -->
         </div>
         <!-- Main Content Wrapper END -->
     </div>
