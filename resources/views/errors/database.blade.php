@@ -53,10 +53,21 @@
 <body>
     <div class="error-card">
         <div class="error-icon">⚠️</div>
-        <h2 class="text-danger mb-3">Database Connection Error</h2>
+        <h2 class="text-danger mb-3">
+            @if(isset($isConnectionLimit) && $isConnectionLimit)
+                Database Connection Limit Reached
+            @else
+                Database Connection Error
+            @endif
+        </h2>
         <p class="text-muted mb-4">
-            We're experiencing high traffic right now. Our database connections are temporarily exhausted.
-            Please try again in a few moments.
+            @if(isset($isConnectionLimit) && $isConnectionLimit)
+                We've reached our database connection limit. This usually happens during high traffic periods.
+                Please wait a moment and try again. The system will automatically retry in {{ $retryAfter ?? 60 }} seconds.
+            @else
+                We're experiencing high traffic right now. Our database connections are temporarily exhausted.
+                Please try again in a few moments.
+            @endif
         </p>
         <div class="d-flex justify-content-center gap-3">
             <a href="{{ url()->previous() }}" class="retry-btn">Go Back</a>
@@ -68,10 +79,26 @@
     </div>
 
     <script>
-        // Auto-refresh after 30 seconds
+        // Auto-refresh after retry time (default 60 seconds)
+        var retryTime = {{ $retryAfter ?? 60 }} * 1000;
         setTimeout(function () {
             window.location.reload();
-        }, 30000);
+        }, retryTime);
+        
+        // Show countdown
+        var countdown = retryTime / 1000;
+        var countdownElement = document.createElement('p');
+        countdownElement.className = 'text-muted mt-2 small';
+        countdownElement.innerHTML = 'Retrying in <span id="countdown">' + countdown + '</span> seconds...';
+        document.querySelector('.error-card').appendChild(countdownElement);
+        
+        var countdownInterval = setInterval(function() {
+            countdown--;
+            document.getElementById('countdown').textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
     </script>
 </body>
 

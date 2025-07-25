@@ -60,9 +60,11 @@ return [
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-                PDO::ATTR_PERSISTENT => true, // Enable persistent connections
-                PDO::ATTR_TIMEOUT => 60, // Connection timeout
+                PDO::ATTR_PERSISTENT => false, // Disable persistent connections to avoid connection limit issues
+                PDO::ATTR_TIMEOUT => 30, // Reduced connection timeout
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET SESSION sql_mode='STRICT_TRANS_TABLES'",
+                PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
             ]) : [],
         ],
 
