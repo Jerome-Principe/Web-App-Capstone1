@@ -388,8 +388,17 @@
         }
 
         .table tbody tr:hover {
-            background-color: #f8f9fa;
+            background: #f8f9fa;
             transition: background-color 0.2s ease;
+        }
+
+        .table {
+            background: white;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e1e5e9;
         }
 
         .btn-group .btn {
@@ -422,8 +431,9 @@
 
         .card {
             border: none;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
         }
 
         .card-title {
@@ -437,15 +447,28 @@
         }
 
         .form-control:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+            outline: none;
+        }
+
+        .table-responsive {
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.2s ease;
         }
 
         /* Pagination styling */
         .pagination {
             margin: 0;
-            border-radius: 0.375rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .pagination .page-link {
