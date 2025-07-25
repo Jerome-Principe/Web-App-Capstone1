@@ -52,6 +52,9 @@ Route::get('/readmorebtn', function () {
 Route::get('/learnmorebtn', function () {
     return view('learnmorebtn');
 });
+Route::get('/status', function () {
+    return view('status');
+});
 
 // dashboard
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');

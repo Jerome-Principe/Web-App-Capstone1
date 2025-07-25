@@ -19,6 +19,12 @@ class DatabaseConnectionMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // Allow static pages to bypass database check
+        $staticRoutes = ['/', '/readmorebtn', '/learnmorebtn', '/status'];
+        if (in_array($request->path(), $staticRoutes)) {
+            return $next($request);
+        }
+
         $maxRetries = 3;
         $retryDelay = 1; // seconds
 
