@@ -7,97 +7,259 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Exercise Default List</title>
+    <title>Exercise Custom List</title>
     <style>
+        /* Minimalist Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            background-color: #f8f9fc;
-            /* Light background */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
+        /* Minimalist Card Styles */
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid #e1e5e9;
+        }
+
+        /* Minimalist Header */
         .header-section {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin-bottom: 20px;
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
         }
 
         .header-section h1 {
-            font-size: 24px;
-            margin-right: 10px;
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
         }
 
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
         .filter-options a {
-            margin-right: 15px;
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-options a:hover {
+            background: #e3f2fd;
+        }
+
+        .filter-options a.active {
+            background: #007bff;
+            color: white;
         }
 
         .table-container {
-            max-height: 700px;
-            overflow-y: auto;
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
+            background: white;
         }
 
         th {
-            font-weight: bold;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
-            text-align: center;
-            background-color: transparent !important;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
+            text-align: center !important;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: center;
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+            text-align: center !important;
+            min-width: 100px;
         }
 
-        /* Hover effect */
         tbody tr:hover {
-            background-color: #eaeaea;
-            cursor: pointer;
+            background: #f8f9fa;
         }
 
+        /* Minimalist Checkbox */
         input[type="checkbox"] {
-            margin: 0;
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
         }
 
-        .date-info {
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Minimalist Pagination */
+        .pagination {
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .page-link {
+            border: 1px solid #e1e5e9;
+            color: #007bff;
+            padding: 8px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .page-link:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .page-item.active .page-link {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background: #f8f9fa;
+            border-color: #e1e5e9;
+        }
+
+        /* Minimalist Alert */
+        .custom-alert-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
+            font-size: 14px;
+            margin-left: 16px;
+        }
+
+        /* Badge */
+        .badge {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-size: 12px;
-            color: gray;
+        }
+
+        .badge.bg-primary {
+            background: #007bff !important;
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h5 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
         }
 
         .modal {
             z-index: 1055;
+        }
+
+        /* Modal scrolling improvements */
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+            padding: 15px 20px;
+        }
+
+        /* Simple form styling */
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        /* Form validation styles */
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .form-control.is-valid {
+            border-color: #198754;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .content-card {
+                padding: 24px 16px;
+            }
+
+            .filter-options {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
@@ -240,20 +402,20 @@
         <!-- Modal for Adding Exercise Program -->
         <div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addExerciseModalLabel">Add New Exercise</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <form action="{{ route('exercise-custom.store') }}" method="POST">
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        <form action="{{ route('exercise-custom.store') }}" method="POST" id="exerciseCustomForm">
                             @csrf
 
                             <!-- User Details Section -->
                             <div class="mb-3">
                                 <label for="user_id" class="form-label">User Name</label>
-                                <select class="form-control" name="user_id" id="user_id">
+                                <select class="form-control" name="user_id" id="user_id" required>
                                     <option value="">Select User</option>
                                     @foreach($approvedUsers as $userId => $userName)
                                         <option value="{{ $userId }}" {{ old('user_id') == $userId ? 'selected' : '' }}>
@@ -276,74 +438,42 @@
                                     <option value="Strength Training">Strength Training</option>
                                     <option value="Cardiovascular exercises">Cardiovascular exercises</option>
                                     <option value="Plyometrics">Plyometrics</option>
-                                    <option value="Core Strength exercises">Core Strength exercises
-                                    </option>
+                                    <option value="Core Strength exercises">Core Strength exercises</option>
                                 </select>
                             </div>
 
-                            <!-- Collapsible Section for Details -->
-                            <div class="accordion" id="exerciseAccordion">
-                                <!-- General Details -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingDetails">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseDetails" aria-expanded="true"
-                                            aria-controls="collapseDetails">
-                                            General Details
-                                        </button>
-                                    </h2>
-                                    <div id="collapseDetails" class="accordion-collapse collapse show"
-                                        aria-labelledby="headingDetails">
-                                        <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <label for="guideline" class="form-label">Guideline</label>
-                                                <textarea type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline" required
-                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="exercise" class="form-label">Exercises</label>
-                                                <select class="form-control" id="exercise" name="exercise" required>
-                                                    <option value="">Select Exercise</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea type="text" class="form-control" id="description"
-                                                    name="description" placeholder="Exercise" required
-                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Exercise Details -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingExercise">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseExercise" aria-expanded="false"
-                                            aria-controls="collapseExercise">
-                                            Exercise Details
-                                        </button>
-                                    </h2>
-                                    <div id="collapseExercise" class="accordion-collapse collapse"
-                                        aria-labelledby="headingExercise">
-                                        <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <label for="duration" class="form-label">Duration</label>
-                                                <input type="text" class="form-control" id="duration" name="duration"
-                                                    placeholder="E.g., 30 minutes" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label for="guideline" class="form-label">Guideline</label>
+                                <textarea class="form-control" id="guideline" name="guideline"
+                                    placeholder="Enter guidelines..." required
+                                    style="height: 80px; resize: none;"></textarea>
                             </div>
-                            <!-- Modal Buttons -->
-                            <div class="d-flex justify-content-end mt-3">
-                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Add Exercise</button>
+
+                            <div class="mb-3">
+                                <label for="exercise" class="form-label">Exercises</label>
+                                <select class="form-control" id="exercise" name="exercise" required>
+                                    <option value="">Select Exercise</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description"
+                                    placeholder="Enter exercise description..." required
+                                    style="height: 80px; resize: none;"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="duration" class="form-label">Duration</label>
+                                <input type="text" class="form-control" id="duration" name="duration"
+                                    placeholder="E.g., 30 minutes" required>
                             </div>
                         </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" form="exerciseCustomForm" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </div>
@@ -351,6 +481,21 @@
 
         <!-- JavaScript to Update Exercise Dropdown -->
         <script>
+            function toggleSelectAll(source) {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = source.checked;
+                });
+                updateSelectionCount();
+            }
+
+            function updateSelectionCount() {
+                const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+                const count = checkboxes.length;
+                document.getElementById('select-all-link').innerText = `All (${count})`;
+            }
+
+            // JavaScript to Update Exercise Dropdown
             function updateExercise() {
                 const type = document.getElementById('type').value;
                 const exerciseSelect = document.getElementById('exercise');
@@ -389,6 +534,91 @@
                     exerciseSelect.appendChild(option);
                 });
             }
+
+            function updateExercises(exerciseId = '', selectedExercise = '') {
+                const type = document.getElementById('type' + exerciseId).value;
+                const exerciseSelect = document.getElementById('exercise' + exerciseId);
+
+                // Clear previous options
+                exerciseSelect.innerHTML = '<option value="">Select Exercise</option>';
+
+                let exercises = [];
+
+                switch (type) {
+                    case 'Strength Training':
+                        exercises = ['Bench press', 'Incline Bench press', 'Push-ups', 'Chest press machine', 'Chest flys', 'Barbell or dumbbells press', 'Arnold press',
+                            'Lateral raises', 'Face pulls', 'Front raises', 'Pull-ups or chin-ups', 'Lat pulldowns', 'Barbell rows', 'Deadlifts', 'Dumbbell rows', 'Bicep curls',
+                            'Tricep dips', 'Hammer curls', 'Skull crushers', 'Squats', 'Step-ups', 'Lunges', 'Leg press', 'Romanian deadlifts', 'Hamstring curls', 'Glute bridges',
+                            'Hip thrusts', 'Bulgarian split squats', 'Kettle bell swings'];
+                        break;
+                    case 'Cardiovascular exercises':
+                        exercises = ['Running', 'Cycling', 'Jump Rope', 'Brisk Walking', 'Swimming'];
+                        break;
+                    case 'Plyometrics':
+                        exercises = ['Pop Squat', 'Split Squat Jump', 'Alternating Lunge Squat', 'Reverse Lunge to Knee-Up Jump', 'Tuck Jump', 'Jump Squat With Heel Tap', 'Skater Hop',
+                            'Burpee', 'Box Jump', 'Crab Walk to Jump', 'Single-Leg Deadlift to Jump', 'Lateral Lunge to Single-Leg Hop', 'Hands-Release Push-Up', 'Broad Jump to Burpee',
+                            'Burpee Into Tuck Jump'];
+                        break;
+                    case 'Core Strength exercises':
+                        exercises = ['Bridge', 'Superman', 'Quadruped', 'Side plank', 'Modified plank', 'Abdominal Crunch', 'Single-leg abdominal press', 'Double-leg abdominal press'];
+                        break;
+                }
+
+                exercises.forEach(function (exercise) {
+                    const option = document.createElement('option');
+                    option.value = exercise;
+                    option.textContent = exercise;
+
+                    // Set the selected option based on the previous exercise selection
+                    if (exercise === selectedExercise) {
+                        option.selected = true;
+                    }
+
+                    exerciseSelect.appendChild(option);
+                });
+            }
+
+            // Simple modal and form handling
+            document.addEventListener('DOMContentLoaded', function () {
+                const addExerciseModal = document.getElementById('addExerciseModal');
+                const exerciseCustomForm = document.getElementById('exerciseCustomForm');
+
+                if (addExerciseModal) {
+                    // Reset form when modal is hidden
+                    addExerciseModal.addEventListener('hidden.bs.modal', function () {
+                        if (exerciseCustomForm) {
+                            exerciseCustomForm.reset();
+                        }
+                    });
+                }
+
+                // Simple form validation
+                if (exerciseCustomForm) {
+                    exerciseCustomForm.addEventListener('submit', function (e) {
+                        const requiredFields = exerciseCustomForm.querySelectorAll('[required]');
+                        let isValid = true;
+
+                        requiredFields.forEach(field => {
+                            if (!field.value.trim()) {
+                                isValid = false;
+                                field.classList.add('is-invalid');
+                            } else {
+                                field.classList.remove('is-invalid');
+                            }
+                        });
+
+                        if (!isValid) {
+                            e.preventDefault();
+                            alert('Please fill in all required fields.');
+                        }
+                    });
+                }
+
+                // Loop through each exercise and update the dropdown for each one
+                @foreach($exercisesCustom as $exerciseCustom)
+                    updateExercises('{{ $exerciseCustom->id }}', '{{ $exerciseCustom->exercise }}');
+                @endforeach
+                });
         </script>
 
 
@@ -396,21 +626,22 @@
         @foreach($exercisesCustom as $exerciseCustom)
             <div class="modal fade" id="editExerciseModal{{ $exerciseCustom->id }}" tabindex="-1"
                 aria-labelledby="editExerciseModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-md">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editExerciseModalLabel">Edit Exercise</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <form action="{{ route('exercise-custom.update', $exerciseCustom->id) }}" method="POST">
+                        <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                            <form action="{{ route('exercise-custom.update', $exerciseCustom->id) }}" method="POST"
+                                id="editExerciseCustomForm{{ $exerciseCustom->id }}">
                                 @csrf
                                 @method('PUT')
 
                                 <!-- User Details Section -->
                                 <div class="mb-3">
-                                    <label for="user_id" class="form-label">User Name</label>
-                                    <select class="form-control" name="user_id" id="user_id">
+                                    <label for="user_id{{ $exerciseCustom->id }}" class="form-label">User Name</label>
+                                    <select class="form-control" name="user_id" id="user_id{{ $exerciseCustom->id }}" required>
                                         <option value="">Select User</option>
                                         @foreach($approvedUsers as $userId => $userName)
                                             <option value="{{ $userId }}" {{ old('user_id', $exerciseCustom->user_id) == $userId ? 'selected' : '' }}>
@@ -421,175 +652,62 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="category" class="form-label">Category</label>
-                                    <input type="text" class="form-control" id="category" name="category" value="Exercise"
-                                        readonly>
+                                    <label for="category{{ $exerciseCustom->id }}" class="form-label">Category</label>
+                                    <input type="text" class="form-control" id="category{{ $exerciseCustom->id }}"
+                                        name="category" value="Exercise" readonly>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="type" class="form-label">Type</label>
+                                    <label for="type{{ $exerciseCustom->id }}" class="form-label">Type</label>
                                     <select class="form-control" id="type{{ $exerciseCustom->id }}" name="type" required
-                                        onchange="updateExercises('{{ $exerciseCustom->id }}')">
+                                        onchange="updateExercises('{{ $exerciseCustom->id }}', '{{ $exerciseCustom->exercise }}')">
                                         <option value="">Select Type</option>
                                         <option value="Strength Training" {{ $exerciseCustom->type == 'Strength Training' ? 'selected' : '' }}>Strength Training</option>
                                         <option value="Cardiovascular exercises" {{ $exerciseCustom->type == 'Cardiovascular exercises' ? 'selected' : '' }}>Cardiovascular exercises</option>
-                                        <option value="Plyometrics" {{ $exerciseCustom->type == 'Plyometrics' ? 'selected' : '' }}> Plyometrics</option>
+                                        <option value="Plyometrics" {{ $exerciseCustom->type == 'Plyometrics' ? 'selected' : '' }}>Plyometrics</option>
                                         <option value="Core Strength exercises" {{ $exerciseCustom->type == 'Core Strength exercises' ? 'selected' : '' }}>Core Strength exercises</option>
                                     </select>
                                 </div>
 
-                                <!-- Accordion for Details -->
-                                <div class="accordion" id="editExerciseAccordion{{ $exerciseCustom->id }}">
-                                    <!-- General Details -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="editHeadingDetails{{ $exerciseCustom->id }}">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#editCollapseDetails{{ $exerciseCustom->id }}"
-                                                aria-expanded="true"
-                                                aria-controls="editCollapseDetails{{ $exerciseCustom->id }}">
-                                                General Details
-                                            </button>
-                                        </h2>
-                                        <div id="editCollapseDetails{{ $exerciseCustom->id }}"
-                                            class="accordion-collapse collapse show"
-                                            aria-labelledby="editHeadingDetails{{ $exerciseCustom->id }}">
-                                            <div class="accordion-body">
-                                                <div class="mb-3">
-                                                    <label for="guideline{{ $exerciseCustom->id }}"
-                                                        class="form-label">Guideline</label>
-                                                    <textarea type="text" class="form-control"
-                                                        id="guideline{{ $exerciseCustom->id }}" name="guideline"
-                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $exerciseCustom->guideline }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="exercise" class="form-label">Exercises</label>
-                                                    <select class="form-control" id="exercise{{ $exerciseCustom->id }}"
-                                                        name="exercise" required>
-                                                        <option value="{{ $exerciseCustom->exercise }}" selected>
-                                                            {{ $exerciseCustom->exercise }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="description{{ $exerciseCustom->id }}"
-                                                        class="form-label">Description</label>
-                                                    <textarea type="text" class="form-control"
-                                                        id="description{{ $exerciseCustom->id }}" name="description"
-                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $exerciseCustom->description }}</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Exercise Details -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="editHeadingExercises{{ $exerciseCustom->id }}">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#editCollapseExercises{{ $exerciseCustom->id }}"
-                                                aria-expanded="false"
-                                                aria-controls="editCollapseExercises{{ $exerciseCustom->id }}">
-                                                Exercise Details
-                                            </button>
-                                        </h2>
-                                        <div id="editCollapseExercises{{ $exerciseCustom->id }}"
-                                            class="accordion-collapse collapse"
-                                            aria-labelledby="editHeadingExercises{{ $exerciseCustom->id }}">
-                                            <div class="accordion-body">
-                                                <div class="mb-3">
-                                                    <label for="duration{{ $exerciseCustom->id }}"
-                                                        class="form-label">Duration</label>
-                                                    <input type="text" class="form-control"
-                                                        id="duration{{ $exerciseCustom->id }}" name="duration"
-                                                        value="{{ $exerciseCustom->duration }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="guideline{{ $exerciseCustom->id }}" class="form-label">Guideline</label>
+                                    <textarea class="form-control" id="guideline{{ $exerciseCustom->id }}" name="guideline"
+                                        style="height: 80px; resize: none;">{{ $exerciseCustom->guideline }}</textarea>
                                 </div>
-                                <!-- Buttons Section -->
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Update Exercise</button>
+
+                                <div class="mb-3">
+                                    <label for="exercise{{ $exerciseCustom->id }}" class="form-label">Exercises</label>
+                                    <select class="form-control" id="exercise{{ $exerciseCustom->id }}" name="exercise"
+                                        required>
+                                        <option value="{{ $exerciseCustom->exercise }}" selected>{{ $exerciseCustom->exercise }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description{{ $exerciseCustom->id }}" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description{{ $exerciseCustom->id }}" name="description"
+                                        style="height: 80px; resize: none;">{{ $exerciseCustom->description }}</textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="duration{{ $exerciseCustom->id }}" class="form-label">Duration</label>
+                                    <input type="text" class="form-control" id="duration{{ $exerciseCustom->id }}"
+                                        name="duration" value="{{ $exerciseCustom->duration }}">
                                 </div>
                             </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" form="editExerciseCustomForm{{ $exerciseCustom->id }}"
+                                class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    // Loop through each exercise and update the dropdown for each one
-                    @foreach($exercisesCustom as $exerciseCustom)
-                        updateExercises('{{ $exerciseCustom->id }}', '{{ $exerciseCustom->exercise }}');
-                    @endforeach
-                                            });
-
-                function updateExercises(exerciseId = '', selectedExercise = '') {
-                    const type = document.getElementById('type' + exerciseId).value;
-                    const exerciseSelect = document.getElementById('exercise' + exerciseId);
-
-                    // Clear previous options
-                    exerciseSelect.innerHTML = '<option value="">Select Exercise</option>';
-
-                    let exercises = [];
-
-                    switch (type) {
-                        case 'Strength Training':
-                            exercises = ['Bench press', 'Incline Bench press', 'Push-ups', 'Chest press machine', 'Chest flys', 'Barbell or dumbbells press', 'Arnold press',
-                                'Lateral raises', 'Face pulls', 'Front raises', 'Pull-ups or chin-ups', 'Lat pulldowns', 'Barbell rows', 'Deadlifts', 'Dumbbell rows', 'Bicep curls',
-                                'Tricep dips', 'Hammer curls', 'Skull crushers', 'Squats', 'Step-ups', 'Lunges', 'Leg press', 'Romanian deadlifts', 'Hamstring curls', 'Glute bridges',
-                                'Hip thrusts', 'Bulgarian split squats', 'Kettle bell swings'];
-                            break;
-                        case 'Cardiovascular exercises':
-                            exercises = ['Running', 'Cycling', 'Jump Rope', 'Brisk Walking', 'Swimming'];
-                            break;
-                        case 'Plyometrics':
-                            exercises = ['Pop Squat', 'Split Squat Jump', 'Alternating Lunge Squat', 'Reverse Lunge to Knee-Up Jump', 'Tuck Jump', 'Jump Squat With Heel Tap', 'Skater Hop',
-                                'Burpee', 'Box Jump', 'Crab Walk to Jump', 'Single-Leg Deadlift to Jump', 'Lateral Lunge to Single-Leg Hop', 'Hands-Release Push-Up', 'Broad Jump to Burpee',
-                                'Burpee Into Tuck Jump'];
-                            break;
-                        case 'Core Strength exercises':
-                            exercises = ['Bridge', 'Superman', 'Quadruped', 'Side plank', 'Modified plank', 'Abdominal Crunch', 'Single-leg abdominal press', 'Double-leg abdominal press'];
-                            break;
-                    }
-
-                    exercises.forEach(function (exercise) {
-                        const option = document.createElement('option');
-                        option.value = exercise;
-                        option.textContent = exercise;
-
-                        // Set the selected option based on the previous exercise selection
-                        if (exercise === selectedExercise) {
-                            option.selected = true;
-                        }
-
-                        exerciseSelect.appendChild(option);
-                    });
-                }
-
-            </script>
-
-
-
         @endforeach
 
     </body>
-
-    <script>
-        function toggleSelectAll(source) {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = source.checked;
-            });
-            updateSelectionCount();
-        }
-
-        function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-            const count = checkboxes.length;
-            document.getElementById('select-all-link').innerText = `All (${count})`;
-        }
-    </script>
 
 @endsection

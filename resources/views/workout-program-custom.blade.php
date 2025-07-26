@@ -9,95 +9,257 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Workout Program Custom List</title>
     <style>
+        /* Minimalist Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            background-color: #f8f9fc;
-            /* Light background */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
+        /* Minimalist Card Styles */
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid #e1e5e9;
+        }
+
+        /* Minimalist Header */
         .header-section {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin-bottom: 20px;
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
         }
 
         .header-section h1 {
-            font-size: 24px;
-            margin-right: 10px;
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
         }
 
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
         .filter-options a {
-            margin-right: 15px;
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-options a:hover {
+            background: #e3f2fd;
+        }
+
+        .filter-options a.active {
+            background: #007bff;
+            color: white;
         }
 
         .table-container {
-            max-height: 700px;
-            overflow-y: auto;
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
+            background: white;
         }
 
         th {
-            font-weight: bold;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
-            text-align: center;
-            background-color: transparent !important;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
+            text-align: center !important;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: center;
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+            text-align: center !important;
+            min-width: 100px;
         }
 
-        /* Hover effect */
         tbody tr:hover {
-            background-color: #eaeaea;
-            cursor: pointer;
+            background: #f8f9fa;
         }
 
+        /* Minimalist Checkbox */
         input[type="checkbox"] {
-            margin: 0;
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
         }
 
-        .date-info {
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Minimalist Pagination */
+        .pagination {
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .page-link {
+            border: 1px solid #e1e5e9;
+            color: #007bff;
+            padding: 8px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .page-link:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .page-item.active .page-link {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background: #f8f9fa;
+            border-color: #e1e5e9;
+        }
+
+        /* Minimalist Alert */
+        .custom-alert-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
+            font-size: 14px;
+            margin-left: 16px;
+        }
+
+        /* Badge */
+        .badge {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-size: 12px;
-            color: gray;
+        }
+
+        .badge.bg-primary {
+            background: #007bff !important;
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h5 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
         }
 
         .modal {
             z-index: 1055;
+        }
+
+        /* Modal scrolling improvements */
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+            padding: 15px 20px;
+        }
+
+        /* Simple form styling */
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        /* Form validation styles */
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .form-control.is-valid {
+            border-color: #198754;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .content-card {
+                padding: 24px 16px;
+            }
+
+            .filter-options {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
@@ -242,20 +404,21 @@
         <!-- Modal for Adding Workout Program -->
         <div class="modal fade" id="addWorkoutProgramModal" tabindex="-1" aria-labelledby="addWorkoutProgramModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addWorkoutProgramModalLabel">Add New Workout Program</h5>
+                        <h5 class="modal-title" id="addWorkoutProgramModalLabel">Add New Workout Program Custom</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <form action="{{ route('workout-program-custom.store') }}" method="POST">
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        <form action="{{ route('workout-program-custom.store') }}" method="POST"
+                            id="workoutProgramCustomForm">
                             @csrf
 
                             <!-- User Details Section -->
                             <div class="mb-3">
                                 <label for="user_id" class="form-label">User Name</label>
-                                <select class="form-control" name="user_id" id="user_id">
+                                <select class="form-control" name="user_id" id="user_id" required>
                                     <option value="">Select User</option>
                                     @foreach($approvedUsers as $userId => $userName)
                                         <option value="{{ $userId }}" {{ old('user_id') == $userId ? 'selected' : '' }}>
@@ -284,85 +447,54 @@
                                     <option value="8-Week Muscle Growth Plan">8-Week Muscle Growth Plan</option>
                                     <option value="8-Week Beginner Fat Loss Plan">8-Week Beginner Fat Loss Plan</option>
                                     <option value="8-Week Advanced Strength Building Workout">8 Week Advanced Strength
-                                        Building Workout
-                                    </option>
+                                        Building Workout</option>
                                 </select>
                             </div>
 
-                            <!-- Collapsible Section for Details -->
-                            <div class="accordion" id="workoutProgramAccordion">
-                                <!-- General Details -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingDetails">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseDetails" aria-expanded="true"
-                                            aria-controls="collapseDetails">
-                                            General Details
-                                        </button>
-                                    </h2>
-                                    <div id="collapseDetails" class="accordion-collapse collapse show"
-                                        aria-labelledby="headingDetails">
-                                        <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <label for="guideline" class="form-label">Guideline</label>
-                                                <input type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="day" class="form-label">Day</label>
-                                                <select class="form-control" id="day" name="day" required>
-                                                    <option value="">Select Day</option>
-                                                    <option value="Monday">Monday</option>
-                                                    <option value="Tuesday">Tuesday</option>
-                                                    <option value="Wednesday">Wednesday</option>
-                                                    <option value="Thursday">Thursday</option>
-                                                    <option value="Friday">Friday</option>
-                                                    <option value="Saturday">Saturday</option>
-                                                    <option value="Sunday">Sunday</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="workout" class="form-label">Workout</label>
-                                                <textarea type="text" class="form-control" id="workout" name="workout"
-                                                    placeholder="Workout" required
-                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Workout Program Details -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingWorkouts">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseWorkouts" aria-expanded="false"
-                                            aria-controls="collapseWorkouts">
-                                            Workout Program Details
-                                        </button>
-                                    </h2>
-                                    <div id="collapseWorkouts" class="accordion-collapse collapse"
-                                        aria-labelledby="headingWorkouts">
-                                        <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <label for="difficulty" class="form-label">Difficulty</label>
-                                                <input type="text" class="form-control" id="difficulty" name="difficulty"
-                                                    placeholder="E.g., Beginner, Intermediate, Advanced" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="duration" class="form-label">Duration</label>
-                                                <input type="text" class="form-control" id="duration" name="duration"
-                                                    placeholder="E.g., 30 minutes" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label for="guideline" class="form-label">Guideline</label>
+                                <input type="text" class="form-control" id="guideline" name="guideline"
+                                    placeholder="Enter guidelines..." required>
                             </div>
-                            <!-- Modal Buttons -->
-                            <div class="d-flex justify-content-end mt-3">
-                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Add Workout Program Custom</button>
+
+                            <div class="mb-3">
+                                <label for="day" class="form-label">Day</label>
+                                <select class="form-control" id="day" name="day" required>
+                                    <option value="">Select Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="workout" class="form-label">Workout</label>
+                                <textarea class="form-control" id="workout" name="workout"
+                                    placeholder="Enter workout details..." required
+                                    style="height: 80px; resize: none;"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="difficulty" class="form-label">Difficulty</label>
+                                <input type="text" class="form-control" id="difficulty" name="difficulty"
+                                    placeholder="E.g., Beginner, Intermediate, Advanced" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="duration" class="form-label">Duration</label>
+                                <input type="text" class="form-control" id="duration" name="duration"
+                                    placeholder="E.g., 30 minutes" required>
                             </div>
                         </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" form="workoutProgramCustomForm" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </div>
@@ -372,22 +504,23 @@
         @foreach($workoutProgramsCustom as $workoutProgramCustom)
             <div class="modal fade" id="editWorkoutProgramModal{{ $workoutProgramCustom->id }}" tabindex="-1"
                 aria-labelledby="editWorkoutProgramModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-md">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editWorkoutProgramModalLabel">Edit Workout Program Custom</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <form action="{{ route('workout-program-custom.update', $workoutProgramCustom->id) }}"
-                                method="POST">
+                        <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                            <form action="{{ route('workout-program-custom.update', $workoutProgramCustom->id) }}" method="POST"
+                                id="editWorkoutProgramCustomForm{{ $workoutProgramCustom->id }}">
                                 @csrf
                                 @method('PUT')
 
                                 <!-- User Details Section -->
                                 <div class="mb-3">
-                                    <label for="user_id" class="form-label">User Name</label>
-                                    <select class="form-control" name="user_id" id="user_id">
+                                    <label for="user_id{{ $workoutProgramCustom->id }}" class="form-label">User Name</label>
+                                    <select class="form-control" name="user_id" id="user_id{{ $workoutProgramCustom->id }}"
+                                        required>
                                         <option value="">Select User</option>
                                         @foreach($approvedUsers as $userId => $userName)
                                             <option value="{{ $userId }}" {{ old('user_id', $workoutProgramCustom->user_id) == $userId ? 'selected' : '' }}>
@@ -399,9 +532,9 @@
 
                                 <!-- Category and Type Section -->
                                 <div class="mb-3">
-                                    <label for="category" class="form-label">Category</label>
-                                    <input type="text" class="form-control" id="category" name="category"
-                                        value="Workout Program" readonly>
+                                    <label for="category{{ $workoutProgramCustom->id }}" class="form-label">Category</label>
+                                    <input type="text" class="form-control" id="category{{ $workoutProgramCustom->id }}"
+                                        name="category" value="Workout Program" readonly>
                                 </div>
 
                                 @php
@@ -429,91 +562,49 @@
                                     </select>
                                 </div>
 
-                                <!-- Accordion for Details -->
-                                <div class="accordion" id="editWorkoutProgramAccordion{{ $workoutProgramCustom->id }}">
-                                    <!-- General Details -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="editHeadingDetails{{ $workoutProgramCustom->id }}">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#editCollapseDetails{{ $workoutProgramCustom->id }}"
-                                                aria-expanded="true"
-                                                aria-controls="editCollapseDetails{{ $workoutProgramCustom->id }}">
-                                                General Details
-                                            </button>
-                                        </h2>
-                                        <div id="editCollapseDetails{{ $workoutProgramCustom->id }}"
-                                            class="accordion-collapse collapse show"
-                                            aria-labelledby="editHeadingDetails{{ $workoutProgramCustom->id }}">
-                                            <div class="accordion-body">
-                                                <div class="mb-3">
-                                                    <label for="guideline{{ $workoutProgramCustom->id }}"
-                                                        class="form-label">Guideline</label>
-                                                    <input type="text" class="form-control"
-                                                        id="guideline{{ $workoutProgramCustom->id }}" name="guideline"
-                                                        value="{{ $workoutProgramCustom->guideline }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="day{{ $workoutProgramCustom->id }}"
-                                                        class="form-label">Day</label>
-                                                    <select class="form-control" id="day{{ $workoutProgramCustom->id }}"
-                                                        name="day">
-                                                        @php
-                                                            $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                                                        @endphp
-                                                        @foreach($days as $day)
-                                                            <option value="{{ $day }}" {{ $workoutProgramCustom->day == $day ? 'selected' : '' }}>{{ $day }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="workout{{ $workoutProgramCustom->id }}"
-                                                        class="form-label">Workout</label>
-                                                    <textarea class="form-control" id="workout{{ $workoutProgramCustom->id }}"
-                                                        name="workout"
-                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $workoutProgramCustom->workout }}</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Workout Program Details -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="editHeadingWorkouts{{ $workoutProgramCustom->id }}">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#editCollapseWorkouts{{ $workoutProgramCustom->id }}"
-                                                aria-expanded="false"
-                                                aria-controls="editCollapseWorkouts{{ $workoutProgramCustom->id }}">
-                                                Workout Program Details
-                                            </button>
-                                        </h2>
-                                        <div id="editCollapseWorkouts{{ $workoutProgramCustom->id }}"
-                                            class="accordion-collapse collapse"
-                                            aria-labelledby="editHeadingWorkouts{{ $workoutProgramCustom->id }}">
-                                            <div class="accordion-body">
-                                                <div class="mb-3">
-                                                    <label for="difficulty{{ $workoutProgramCustom->id }}"
-                                                        class="form-label">Difficulty</label>
-                                                    <input type="text" class="form-control"
-                                                        id="difficulty{{ $workoutProgramCustom->id }}" name="difficulty"
-                                                        value="{{ $workoutProgramCustom->difficulty }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="duration{{ $workoutProgramCustom->id }}"
-                                                        class="form-label">Duration</label>
-                                                    <input type="text" class="form-control"
-                                                        id="duration{{ $workoutProgramCustom->id }}" name="duration"
-                                                        value="{{ $workoutProgramCustom->duration }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="guideline{{ $workoutProgramCustom->id }}" class="form-label">Guideline</label>
+                                    <input type="text" class="form-control" id="guideline{{ $workoutProgramCustom->id }}"
+                                        name="guideline" value="{{ $workoutProgramCustom->guideline }}">
                                 </div>
-                                <!-- Buttons Section -->
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Update Workout Program Custom</button>
+
+                                <div class="mb-3">
+                                    <label for="day{{ $workoutProgramCustom->id }}" class="form-label">Day</label>
+                                    <select class="form-control" id="day{{ $workoutProgramCustom->id }}" name="day">
+                                        @php
+                                            $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                                        @endphp
+                                        @foreach($days as $day)
+                                            <option value="{{ $day }}" {{ $workoutProgramCustom->day == $day ? 'selected' : '' }}>
+                                                {{ $day }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="workout{{ $workoutProgramCustom->id }}" class="form-label">Workout</label>
+                                    <textarea class="form-control" id="workout{{ $workoutProgramCustom->id }}" name="workout"
+                                        style="height: 80px; resize: none;">{{ $workoutProgramCustom->workout }}</textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="difficulty{{ $workoutProgramCustom->id }}" class="form-label">Difficulty</label>
+                                    <input type="text" class="form-control" id="difficulty{{ $workoutProgramCustom->id }}"
+                                        name="difficulty" value="{{ $workoutProgramCustom->difficulty }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="duration{{ $workoutProgramCustom->id }}" class="form-label">Duration</label>
+                                    <input type="text" class="form-control" id="duration{{ $workoutProgramCustom->id }}"
+                                        name="duration" value="{{ $workoutProgramCustom->duration }}">
                                 </div>
                             </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" form="editWorkoutProgramCustomForm{{ $workoutProgramCustom->id }}"
+                                class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 </div>
@@ -536,6 +627,43 @@
             const count = checkboxes.length;
             document.getElementById('select-all-link').innerText = `All (${count})`;
         }
+
+        // Simple modal and form handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const addWorkoutProgramModal = document.getElementById('addWorkoutProgramModal');
+            const workoutProgramCustomForm = document.getElementById('workoutProgramCustomForm');
+            
+            if (addWorkoutProgramModal) {
+                // Reset form when modal is hidden
+                addWorkoutProgramModal.addEventListener('hidden.bs.modal', function() {
+                    if (workoutProgramCustomForm) {
+                        workoutProgramCustomForm.reset();
+                    }
+                });
+            }
+            
+            // Simple form validation
+            if (workoutProgramCustomForm) {
+                workoutProgramCustomForm.addEventListener('submit', function(e) {
+                    const requiredFields = workoutProgramCustomForm.querySelectorAll('[required]');
+                    let isValid = true;
+                    
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            isValid = false;
+                            field.classList.add('is-invalid');
+                        } else {
+                            field.classList.remove('is-invalid');
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                        alert('Please fill in all required fields.');
+                    }
+                });
+            }
+        });
     </script>
 
 @endsection

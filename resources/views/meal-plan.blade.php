@@ -9,95 +9,257 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Meal Plan</title>
     <style>
+        /* Minimalist Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            background-color: #f8f9fc;
-            /* Light background */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
+        /* Minimalist Card Styles */
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid #e1e5e9;
+        }
+
+        /* Minimalist Header */
         .header-section {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin-bottom: 20px;
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
         }
 
         .header-section h1 {
-            font-size: 24px;
-            margin-right: 10px;
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
         }
 
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
         .filter-options a {
-            margin-right: 15px;
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-options a:hover {
+            background: #e3f2fd;
+        }
+
+        .filter-options a.active {
+            background: #007bff;
+            color: white;
         }
 
         .table-container {
-            max-height: 700px;
-            overflow-y: auto;
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
+            background: white;
         }
 
         th {
-            font-weight: bold;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
-            text-align: center;
-            background-color: transparent !important;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
+            text-align: center !important;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: center;
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+            text-align: center !important;
+            min-width: 100px;
         }
 
-        /* Hover effect */
         tbody tr:hover {
-            background-color: #eaeaea;
-            cursor: pointer;
+            background: #f8f9fa;
         }
 
+        /* Minimalist Checkbox */
         input[type="checkbox"] {
-            margin: 0;
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
         }
 
-        .date-info {
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Minimalist Pagination */
+        .pagination {
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .page-link {
+            border: 1px solid #e1e5e9;
+            color: #007bff;
+            padding: 8px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .page-link:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .page-item.active .page-link {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background: #f8f9fa;
+            border-color: #e1e5e9;
+        }
+
+        /* Minimalist Alert */
+        .custom-alert-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
+            font-size: 14px;
+            margin-left: 16px;
+        }
+
+        /* Badge */
+        .badge {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-size: 12px;
-            color: gray;
+        }
+
+        .badge.bg-primary {
+            background: #007bff !important;
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h5 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
         }
 
         .modal {
             z-index: 1055;
+        }
+
+        /* Modal scrolling improvements */
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+            padding: 15px 20px;
+        }
+
+        /* Simple form styling */
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        /* Form validation styles */
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .form-control.is-valid {
+            border-color: #198754;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .content-card {
+                padding: 24px 16px;
+            }
+
+            .filter-options {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
@@ -241,14 +403,14 @@
         <!-- Modal for Adding Meal Plan -->
         <div class="modal fade" id="addMealPlanModal" tabindex="-1" aria-labelledby="addMealPlanModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addMealPlanModalLabel">Add New Meal Plan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <form action="{{ route('meal-plan.store') }}" method="POST">
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        <form action="{{ route('meal-plan.store') }}" method="POST" id="mealPlanForm">
                             @csrf
 
                             <div class="mb-3">
@@ -284,83 +446,51 @@
                                 </select>
                             </div>
 
-                            <!-- Collapsible Section for Details -->
-                            <div class="accordion" id="mealPlanAccordion">
-                                <!-- General Details -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingDetails">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseDetails" aria-expanded="true"
-                                            aria-controls="collapseDetails">
-                                            General Details
-                                        </button>
-                                    </h2>
-                                    <div id="collapseDetails" class="accordion-collapse collapse show"
-                                        aria-labelledby="headingDetails">
-                                        <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <label for="guideline" class="form-label">Guideline</label>
-                                                <textarea type="text" class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Guideline" required
-                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="day" class="form-label">Day</label>
-                                                <select class="form-control" id="day" name="day" required>
-                                                    <option value="">Select Day</option>
-                                                    <option value="Monday">Monday</option>
-                                                    <option value="Tuesday">Tuesday</option>
-                                                    <option value="Wednesday">Wednesday</option>
-                                                    <option value="Thursday">Thursday</option>
-                                                    <option value="Friday">Friday</option>
-                                                    <option value="Saturday">Saturday</option>
-                                                    <option value="Sunday">Sunday</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Meal Details -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingMeals">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseMeals" aria-expanded="false"
-                                            aria-controls="collapseMeals">
-                                            Meal Details
-                                        </button>
-                                    </h2>
-                                    <div id="collapseMeals" class="accordion-collapse collapse"
-                                        aria-labelledby="headingMeals">
-                                        <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <label for="breakfast" class="form-label">Breakfast</label>
-                                                <textarea type="text" class="form-control" id="breakfast" name="breakfast"
-                                                    placeholder="E.g., Pandesal " required
-                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="lunch" class="form-label">Lunch</label>
-                                                <textarea type="text" class="form-control" id="lunch" name="lunch"
-                                                    placeholder="E.g., Grilled meats" required
-                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="dinner" class="form-label">Dinner</label>
-                                                <textarea type="text" class="form-control" id="dinner" name="dinner"
-                                                    placeholder="E.g., Adobo" required
-                                                    style="height: 100px; resize: none; white-space: pre-wrap;"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label for="guideline" class="form-label">Guideline</label>
+                                <textarea class="form-control" id="guideline" name="guideline"
+                                    placeholder="Enter guidelines..." required
+                                    style="height: 80px; resize: none;"></textarea>
                             </div>
-                            <!-- Modal Buttons -->
-                            <div class="d-flex justify-content-end mt-3">
-                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Add Meal Plan</button>
+
+                            <div class="mb-3">
+                                <label for="day" class="form-label">Day</label>
+                                <select class="form-control" id="day" name="day" required>
+                                    <option value="">Select Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="breakfast" class="form-label">Breakfast</label>
+                                <textarea class="form-control" id="breakfast" name="breakfast"
+                                    placeholder="Enter breakfast details..." required
+                                    style="height: 80px; resize: none;"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="lunch" class="form-label">Lunch</label>
+                                <textarea class="form-control" id="lunch" name="lunch" placeholder="Enter lunch details..."
+                                    required style="height: 80px; resize: none;"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="dinner" class="form-label">Dinner</label>
+                                <textarea class="form-control" id="dinner" name="dinner"
+                                    placeholder="Enter dinner details..." required
+                                    style="height: 80px; resize: none;"></textarea>
                             </div>
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" form="mealPlanForm" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </div>
@@ -442,13 +572,13 @@
                                     <!-- Meal Details -->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="editHeadingMeals{{ $mealPlan->id }}">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#editCollapseMeals{{ $mealPlan->id }}" aria-expanded="false"
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#editCollapseMeals{{ $mealPlan->id }}" aria-expanded="true"
                                                 aria-controls="editCollapseMeals{{ $mealPlan->id }}">
                                                 Meal Details
                                             </button>
                                         </h2>
-                                        <div id="editCollapseMeals{{ $mealPlan->id }}" class="accordion-collapse collapse"
+                                        <div id="editCollapseMeals{{ $mealPlan->id }}" class="accordion-collapse collapse show"
                                             aria-labelledby="editHeadingMeals{{ $mealPlan->id }}">
                                             <div class="accordion-body">
                                                 <div class="mb-3">
@@ -501,6 +631,43 @@
             const count = checkboxes.length;
             document.getElementById('select-all-link').innerText = `All (${count})`;
         }
+
+        // Simple modal and form handling
+        document.addEventListener('DOMContentLoaded', function () {
+            const addMealPlanModal = document.getElementById('addMealPlanModal');
+            const mealPlanForm = document.getElementById('mealPlanForm');
+
+            if (addMealPlanModal) {
+                // Reset form when modal is hidden
+                addMealPlanModal.addEventListener('hidden.bs.modal', function () {
+                    if (mealPlanForm) {
+                        mealPlanForm.reset();
+                    }
+                });
+            }
+
+            // Simple form validation
+            if (mealPlanForm) {
+                mealPlanForm.addEventListener('submit', function (e) {
+                    const requiredFields = mealPlanForm.querySelectorAll('[required]');
+                    let isValid = true;
+
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            isValid = false;
+                            field.classList.add('is-invalid');
+                        } else {
+                            field.classList.remove('is-invalid');
+                        }
+                    });
+
+                    if (!isValid) {
+                        e.preventDefault();
+                        alert('Please fill in all required fields.');
+                    }
+                });
+            }
+        });
     </script>
 
 @endsection
