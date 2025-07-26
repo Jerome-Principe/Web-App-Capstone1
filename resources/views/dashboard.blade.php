@@ -489,12 +489,14 @@
 
         .card {
             border: none;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 32px rgba(80, 80, 120, 0.18), 0 2px 8px rgba(80, 80, 120, 0.15);
+            border-radius: 16px;
+            /* Slightly more rounded corners */
             transition: all 0.3s ease;
         }
 
         .card:hover {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 16px 48px rgba(80, 80, 120, 0.28), 0 4px 16px rgba(80, 80, 120, 0.20);
             transform: translateY(-2px);
         }
 
@@ -717,8 +719,8 @@
                     labels: ['Gold', 'Silver', 'Bronze'],
                     datasets: [{
                         data: [
-                                {{ $topMetrics['membershipTypes']['gold'] }},
-                                {{ $topMetrics['membershipTypes']['silver'] }},
+                                        {{ $topMetrics['membershipTypes']['gold'] }},
+                                        {{ $topMetrics['membershipTypes']['silver'] }},
                             {{ $topMetrics['membershipTypes']['bronze'] }}
                         ],
                         backgroundColor: ['#f6c23e', '#858796', '#e83e8c'],
@@ -745,8 +747,8 @@
                     labels: ['Memberships', 'Appointments', 'Walk-ins'],
                     datasets: [{
                         data: [
-                                {{ $monthlyStats['memberships']['current'] }},
-                                {{ $monthlyStats['appointments']['current'] }},
+                                        {{ $monthlyStats['memberships']['current'] }},
+                                        {{ $monthlyStats['appointments']['current'] }},
                             {{ $monthlyStats['walkins']['current'] }}
                         ],
                         backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
