@@ -77,6 +77,19 @@
             background: #e3f2fd;
         }
 
+        /* Button-style link for "All" filter */
+        .filter-links a.btn-style {
+            background: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid #007bff;
+            pointer-events: none;
+            cursor: default;
+        }
+
         .table-container {
             overflow-x: auto;
             border: 1px solid #e1e5e9;
@@ -207,7 +220,7 @@
             <div class="filter-options">
                 <div class="filter-links">
                     <!-- Link to view all -->
-                    <a href="#" id="select-all-link">All (0)</a>
+                    <a href="#" id="select-all-link" class="btn-style">All (0)</a>
 
                     <!-- Link to view all trashed announcements -->
                     <a href="#" id="select-all-link">Archived (0)</a>

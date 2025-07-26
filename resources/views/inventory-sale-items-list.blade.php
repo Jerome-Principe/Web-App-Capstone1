@@ -124,6 +124,59 @@
             accent-color: #007bff;
             margin: 0;
         }
+
+        /* Enhanced Total Price Styling */
+        .total-price-section {
+            margin: 24px 0;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 20px;
+        }
+
+        .total-price-card {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 10px 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 200px;
+            justify-content: space-between;
+        }
+
+        .total-label {
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .total-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Enhanced Date Display Styling */
+        .date-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .date-display i {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .date-display span {
+            color: #6c757d;
+            font-weight: 400;
+        }
     </style>
 </head>
 
@@ -233,7 +286,12 @@
                                 <td class="text-center">{{ $item->quantity }}</td>
                                 <td class="text-center">{{ $item->price }}</td>
                                 <td class="text-center">{{ $item->total }}</td>
-                                <td class="text-center">{{ $item->date }}</td>
+                                <td class="text-center">
+                                    <div class="date-display">
+                                        <i class="fa fa-calendar"></i>
+                                        <span>{{ \Carbon\Carbon::parse($item->date)->format('M d, Y') }}</span>
+                                    </div>
+                                </td>
                                 <td class="d-flex justify-content-center">
                                     <a href="{{ route('sales.edit', $item->id) }}" class="btn btn-sm btn-primary"><i
                                             class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
@@ -252,8 +310,11 @@
                     </tbody>
                 </table>
 
-                <div class="mt-3">
-                    <h5>Total Price = {{ $totalPrice }}</h5>
+                <div class="total-price-section">
+                    <div class="total-price-card">
+                        <span class="total-label">Total Price:</span>
+                        <span class="total-amount">₱{{ number_format($totalPrice, 2) }}</span>
+                    </div>
                 </div>
 
                 <nav aria-label="Page navigation example">

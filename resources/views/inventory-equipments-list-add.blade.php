@@ -20,11 +20,11 @@
         .container {
             max-width: 1000px;
             margin: 30px auto;
-            background-color: #f8f9fc;
-            /* Light background */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
         }
 
         .header-section {
@@ -42,57 +42,112 @@
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
         .filter-options a {
-            margin-right: 15px;
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-options a:hover {
+            background: #e3f2fd;
+        }
+
+        /* Button-style link for "All" filter */
+        .filter-links a.btn-style {
+            background: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid #007bff;
+            pointer-events: none;
+            cursor: default;
         }
 
         .table-container {
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
+            background: white;
         }
 
         th {
-            font-weight: bold;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
             text-align: center;
-            background-color: transparent !important;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
             text-align: center;
+            vertical-align: middle;
         }
 
         /* Hover effect */
         tbody tr:hover {
-            background-color: #eaeaea;
+            background: #f8f9fa;
             cursor: pointer;
         }
 
         input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
             margin: 0;
         }
 
         .date-info {
             font-size: 12px;
             color: gray;
+        }
+
+        /* Enhanced Date Display Styling */
+        .date-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .date-display i {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .date-display span {
+            color: #6c757d;
+            font-weight: 400;
         }
     </style>
 </head>
@@ -134,7 +189,7 @@
             <div class="filter-options">
                 <div class="filter-links">
                     <!-- Link to view all equipments -->
-                    <a href="#" id="select-all-link">All (0)</a>
+                    <a href="#" id="select-all-link" class="btn-style">All (0)</a>
 
                     <!-- Link to view all trashed equipments -->
                     <a href="{{ route('equipmentsAdd.trashed') }}">Archived
@@ -196,7 +251,12 @@
                                 <td class="text-center">{{ $equipment->id }}</td>
                                 <td class="text-center">{{ $equipment->item_name }}</td>
                                 <td class="text-center">{{ $equipment->quantity }}</td>
-                                <td class="text-center">{{ $equipment->date }}</td>
+                                <td class="text-center">
+                                    <div class="date-display">
+                                        <i class="fa fa-calendar"></i>
+                                        <span>{{ \Carbon\Carbon::parse($equipment->date)->format('M d, Y') }}</span>
+                                    </div>
+                                </td>
                                 <td class="text-center">
                                     <a href="{{ route('equipmentsAdd.edit', $equipment->id) }}"
                                         class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o mx-1"
