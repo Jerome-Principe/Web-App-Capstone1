@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use App\Helpers\DatabaseHelper;
 
 class MonitorDatabaseConnections extends Command
 {
@@ -13,63 +15,77 @@ class MonitorDatabaseConnections extends Command
      *
      * @var string
      */
-    protected $signature = 'db:monitor';
+    protected $signature = 'db:monitor {--alert-threshold=80 : Connection usage threshold for alerts}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Monitor database connections and log statistics';
+    protected $description = 'Monitor database connections and alert on high usage';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
+        $threshold = $this->option('alert-threshold');
+
+        $this->info('🔍 Monitoring database connections...');
+
         try {
-            $pdo = DB::connection()->getPdo();
+            $status = DatabaseHelper::getConnectionStatus();
 
-            // Get connection statistics
-            $stats = $pdo->query("SHOW STATUS LIKE 'Connections'")->fetch();
-            $maxConnections = $pdo->query("SHOW VARIABLES LIKE 'max_connections'")->fetch();
-            $maxUserConnections = $pdo->query("SHOW VARIABLES LIKE 'max_user_connections'")->fetch();
-
-            // Try to get max_connections_per_hour (may not be available on all hosts)
-            try {
-                $maxConnectionsPerHour = $pdo->query("SHOW VARIABLES LIKE 'max_connections_per_hour'")->fetch();
-            } catch (\Exception $e) {
-                $maxConnectionsPerHour = ['Value' => 'Not available'];
+            if (!$status['available']) {
+                $this->error('❌ Database is not available');
+                $this->error('Error: ' . ($status['error'] ?? 'Unknown error'));
+                return 1;
             }
 
-            $this->info('Database Connection Statistics:');
-            $this->line('Total Connections: ' . $stats['Value']);
-            $this->line('Max Connections: ' . $maxConnections['Value']);
-            $this->line('Max User Connections: ' . $maxUserConnections['Value']);
-            $this->line('Max Connections Per Hour: ' . $maxConnectionsPerHour['Value']);
+            $usage = $status['usage_percentage'] ?? 0;
+            $totalConnections = $status['total_connections'] ?? 0;
+            $maxConnections = $status['max_connections'] ?? 0;
 
-            // Calculate connection usage percentage
-            $usagePercentage = ($stats['Value'] / $maxConnections['Value']) * 100;
-            $this->line('Connection Usage: ' . number_format($usagePercentage, 2) . '%');
+            $this->info("📊 Connection Status:");
+            $this->line("   • Total Connections: {$totalConnections}");
+            $this->line("   • Max Connections: {$maxConnections}");
+            $this->line("   • Usage: " . number_format($usage, 1) . "%");
 
-            // Log the statistics
-            Log::info('Database connection statistics', [
-                'total_connections' => $stats['Value'],
-                'max_connections' => $maxConnections['Value'],
-                'max_user_connections' => $maxUserConnections['Value'],
-                'max_connections_per_hour' => $maxConnectionsPerHour['Value'],
-                'usage_percentage' => $usagePercentage
-            ]);
+            // Check if we're approaching the limit
+            if ($usage >= $threshold) {
+                $this->warn("⚠️  WARNING: Database connection usage is at " . number_format($usage, 1) . "%");
+                $this->warn("   This is above the alert threshold of {$threshold}%");
 
-            // Warning if usage is high
-            if ($usagePercentage > 80) {
-                $this->warn('WARNING: Database connection usage is high (' . number_format($usagePercentage, 2) . '%)');
-                Log::warning('High database connection usage detected: ' . number_format($usagePercentage, 2) . '%');
+                // Log the warning
+                Log::warning("Database connection usage is high: " . number_format($usage, 1) . "%");
+
+                // Set connection limit state if usage is very high
+                if ($usage >= 90) {
+                    DatabaseHelper::setConnectionLimitState();
+                    $this->error("🚨 CRITICAL: Setting connection limit state");
+                }
+
+                return 1;
             }
+
+            // Check if connection limit state should be cleared
+            if (DatabaseHelper::isConnectionLimitActive()) {
+                $this->info("🔄 Connection limit state is active");
+
+                // Clear if usage is back to normal
+                if ($usage < 50) {
+                    DatabaseHelper::clearConnectionLimitState();
+                    $this->info("✅ Connection limit state cleared - usage is back to normal");
+                }
+            }
+
+            $this->info("✅ Database connections are healthy");
+            return 0;
 
         } catch (\Exception $e) {
-            $this->error('Failed to monitor database connections: ' . $e->getMessage());
+            $this->error('❌ Error monitoring database: ' . $e->getMessage());
             Log::error('Database monitoring failed: ' . $e->getMessage());
+            return 1;
         }
     }
 }

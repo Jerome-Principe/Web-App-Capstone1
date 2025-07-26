@@ -20,18 +20,29 @@ class DatabaseConnectionMiddleware
     public function handle(Request $request, Closure $next)
     {
         // Allow static pages to bypass database check
-        $staticRoutes = ['/', '/readmorebtn', '/learnmorebtn', '/status'];
+        $staticRoutes = ['/', '/readmorebtn', '/learnmorebtn', '/status', '/login', '/register'];
         if (in_array($request->path(), $staticRoutes)) {
             return $next($request);
         }
 
-        $maxRetries = 3;
-        $retryDelay = 1; // seconds
+        // Check if we're in a connection limit state
+        if ($this->isConnectionLimitActive()) {
+            return $this->handleConnectionLimitError($request);
+        }
+
+        $maxRetries = 2; // Reduced retries to prevent connection exhaustion
+        $retryDelay = 0.5; // Reduced delay
 
         for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
             try {
-                // Test database connection before processing request
-                DB::connection()->getPdo();
+                // Test database connection with timeout
+                $pdo = DB::connection()->getPdo();
+
+                // Set connection timeout
+                $pdo->setAttribute(\PDO::ATTR_TIMEOUT, 5);
+
+                // Test with a simple query
+                $pdo->query('SELECT 1');
 
                 // If successful, proceed with the request
                 return $next($request);
@@ -43,10 +54,13 @@ class DatabaseConnectionMiddleware
                 // Check if it's a connection limit error
                 if (
                     strpos($errorMessage, 'max_connections_per_hour') !== false ||
-                    strpos($errorMessage, 'User') !== false && strpos($errorMessage, 'exceeded') !== false
+                    strpos($errorMessage, 'User') !== false && strpos($errorMessage, 'exceeded') !== false ||
+                    strpos($errorMessage, 'Too many connections') !== false
                 ) {
-
                     Log::warning("Database connection limit exceeded (attempt {$attempt}/{$maxRetries}): " . $errorMessage);
+
+                    // Set connection limit state
+                    $this->setConnectionLimitState();
 
                     // If this is the last attempt, return error page
                     if ($attempt === $maxRetries) {
@@ -54,8 +68,8 @@ class DatabaseConnectionMiddleware
                     }
 
                     // Wait before retrying
-                    sleep($retryDelay);
-                    $retryDelay *= 2; // Exponential backoff
+                    usleep($retryDelay * 1000000); // Convert to microseconds
+                    $retryDelay *= 1.5; // Gentle backoff
                     continue;
                 }
 
@@ -74,6 +88,39 @@ class DatabaseConnectionMiddleware
     }
 
     /**
+     * Check if connection limit is currently active
+     */
+    private function isConnectionLimitActive()
+    {
+        $cacheKey = 'db_connection_limit_active';
+        $limitData = Cache::get($cacheKey);
+
+        if (!$limitData) {
+            return false;
+        }
+
+        // Check if the limit period has expired (5 minutes)
+        if (time() - $limitData['timestamp'] > 300) {
+            Cache::forget($cacheKey);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Set connection limit state
+     */
+    private function setConnectionLimitState()
+    {
+        $cacheKey = 'db_connection_limit_active';
+        Cache::put($cacheKey, [
+            'timestamp' => time(),
+            'active' => true
+        ], 300); // 5 minutes
+    }
+
+    /**
      * Handle connection limit errors specifically
      */
     private function handleConnectionLimitError(Request $request)
@@ -88,16 +135,16 @@ class DatabaseConnectionMiddleware
 
         // Create a response with retry headers
         $response = response()->view('errors.database', [
-            'retryAfter' => 60, // Retry after 1 minute
+            'retryAfter' => 30, // Reduced retry time to 30 seconds
             'isConnectionLimit' => true
         ], 503);
 
         // Add retry headers
-        $response->header('Retry-After', 60);
-        $response->header('X-Retry-After', 60);
+        $response->header('Retry-After', 30);
+        $response->header('X-Retry-After', 30);
 
-        // Cache this response for 30 seconds to reduce database load
-        Cache::put($cacheKey, $response, 30);
+        // Cache this response for 15 seconds to reduce database load
+        Cache::put($cacheKey, $response, 15);
 
         return $response;
     }

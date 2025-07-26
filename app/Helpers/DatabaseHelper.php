@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseHelper
 {
@@ -35,12 +36,14 @@ class DatabaseHelper
     }
 
     /**
-     * Check if database is available
+     * Check if database is available with timeout
      */
     public static function isDatabaseAvailable()
     {
         try {
-            \Illuminate\Support\Facades\DB::connection()->getPdo();
+            $pdo = DB::connection()->getPdo();
+            $pdo->setAttribute(\PDO::ATTR_TIMEOUT, 3); // 3 second timeout
+            $pdo->query('SELECT 1');
             return true;
         } catch (\Exception $e) {
             return false;
@@ -48,7 +51,7 @@ class DatabaseHelper
     }
 
     /**
-     * Get connection limit status
+     * Get connection limit status with improved error handling
      */
     public static function getConnectionStatus()
     {
@@ -56,7 +59,7 @@ class DatabaseHelper
 
         // Check cache first
         $cached = self::getCachedOrFallback($cacheKey);
-        if ($cached && $cached['timestamp'] > time() - 60) {
+        if ($cached && $cached['timestamp'] > time() - 30) { // Reduced cache time to 30 seconds
             return $cached;
         }
 
@@ -65,38 +68,117 @@ class DatabaseHelper
             return $cached ?: [
                 'available' => false,
                 'error' => 'Database connection failed',
-                'timestamp' => time()
+                'timestamp' => time(),
+                'connection_limit' => false
             ];
         }
 
         try {
-            $pdo = \Illuminate\Support\Facades\DB::connection()->getPdo();
+            $pdo = DB::connection()->getPdo();
+            $pdo->setAttribute(\PDO::ATTR_TIMEOUT, 5);
 
-            // Get connection statistics
-            $stats = $pdo->query("SHOW STATUS LIKE 'Connections'")->fetch();
-            $maxConnections = $pdo->query("SHOW VARIABLES LIKE 'max_connections'")->fetch();
+            // Get connection statistics with error handling
+            $stats = null;
+            $maxConnections = null;
+
+            try {
+                $stats = $pdo->query("SHOW STATUS LIKE 'Connections'")->fetch();
+                $maxConnections = $pdo->query("SHOW VARIABLES LIKE 'max_connections'")->fetch();
+            } catch (\Exception $e) {
+                Log::warning('Could not fetch connection statistics: ' . $e->getMessage());
+            }
 
             $status = [
                 'available' => true,
-                'total_connections' => $stats['Value'],
-                'max_connections' => $maxConnections['Value'],
-                'usage_percentage' => ($stats['Value'] / $maxConnections['Value']) * 100,
-                'timestamp' => time()
+                'timestamp' => time(),
+                'connection_limit' => false
             ];
 
-            // Cache the status for 1 minute
-            self::cacheData($cacheKey, $status, 60);
+            if ($stats && $maxConnections) {
+                $status['total_connections'] = $stats['Value'];
+                $status['max_connections'] = $maxConnections['Value'];
+                $status['usage_percentage'] = ($stats['Value'] / $maxConnections['Value']) * 100;
+
+                // Check if we're approaching connection limit
+                if ($status['usage_percentage'] > 80) {
+                    $status['connection_limit'] = true;
+                    Log::warning('Database connection usage is high: ' . $status['usage_percentage'] . '%');
+                }
+            }
+
+            // Cache the status for 30 seconds
+            self::cacheData($cacheKey, $status, 30);
 
             return $status;
         } catch (\Exception $e) {
             $status = [
                 'available' => false,
                 'error' => $e->getMessage(),
-                'timestamp' => time()
+                'timestamp' => time(),
+                'connection_limit' => false
             ];
 
-            self::cacheData($cacheKey, $status, 60);
+            self::cacheData($cacheKey, $status, 30);
             return $status;
         }
+    }
+
+    /**
+     * Check if we're in a connection limit state
+     */
+    public static function isConnectionLimitActive()
+    {
+        $cacheKey = 'db_connection_limit_active';
+        $limitData = Cache::get($cacheKey);
+
+        if (!$limitData) {
+            return false;
+        }
+
+        // Check if the limit period has expired (3 minutes)
+        if (time() - $limitData['timestamp'] > 180) {
+            Cache::forget($cacheKey);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Set connection limit state
+     */
+    public static function setConnectionLimitState()
+    {
+        $cacheKey = 'db_connection_limit_active';
+        Cache::put($cacheKey, [
+            'timestamp' => time(),
+            'active' => true
+        ], 180); // 3 minutes
+    }
+
+    /**
+     * Clear connection limit state
+     */
+    public static function clearConnectionLimitState()
+    {
+        Cache::forget('db_connection_limit_active');
+    }
+
+    /**
+     * Get database health status
+     */
+    public static function getDatabaseHealth()
+    {
+        $status = self::getConnectionStatus();
+
+        if (!$status['available']) {
+            return 'unhealthy';
+        }
+
+        if ($status['connection_limit'] || self::isConnectionLimitActive()) {
+            return 'degraded';
+        }
+
+        return 'healthy';
     }
 }
