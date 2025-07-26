@@ -234,8 +234,8 @@
                         <form action="#" method="POST">
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
-                            <button type="submit" class="btn btn-light border mx-2">
-                                <i class="fa fa-trash"></i> Move to Trash
+                            <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
+                                <i class="fa fa-trash"></i> Move to Archive
                             </button>
                         </form>
 
@@ -434,9 +434,33 @@
             function updateSelectionCount() {
                 const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
                 const count = checkboxes.length;
-                document.getElementById('select-all-link').innerText = `All (${count})`;
-            }
-        </script>
+                const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
+                
+                document.getElementById('select-all-link').innerText = `All (${count}/${totalCount})`;
+
+                // Enable/disable move to archive button
+                const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
+                moveToArchiveBtn.disabled = count === 0;
+
+                // Update select all checkbox
+                const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+                selectAllCheckbox.checked = count === totalCount && totalCount > 0;
+                selectAllCheckbox.indeterminate = count > 0 && count < totalCount;
+                    }
+
+        // Add functionality for the "All" link click
+        document.getElementById('select-all-link').addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+            selectAllCheckbox.checked = !selectAllCheckbox.checked;
+            toggleSelectAll(selectAllCheckbox);
+        });
+
+        // Initialize selection count on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            updateSelectionCount();
+        });
+    </script>
 
     </body>
 

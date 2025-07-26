@@ -117,17 +117,20 @@
             color: #333;
             font-weight: 500;
             padding: 16px 12px;
-            text-align: left;
+            text-align: center !important;
             border-bottom: 1px solid #e1e5e9;
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            min-width: 100px;
         }
 
         td {
             padding: 16px 12px;
             border-bottom: 1px solid #f1f3f4;
             vertical-align: middle;
+            text-align: center !important;
+            min-width: 100px;
         }
 
         tbody tr:hover {
@@ -319,7 +322,7 @@
                                 class="d-flex align-items-center">
                                 @csrf
                                 <input type="hidden" name="selected" id="selectedIds">
-                                <button type="submit" class="btn btn-light border mx-2">
+                                <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
                                     <i class="fa fa-trash"></i> Move to Archive
                                 </button>
                             </form>
@@ -336,17 +339,17 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 40px;">
+                                    <th>
                                         <input type="checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
-                                    <th style="width: 60px;">ID</th>
+                                    <th>ID</th>
                                     <th>Instructor Name</th>
-                                    <th style="width: 100px;">Date</th>
-                                    <th style="width: 100px;">Time</th>
-                                    <th style="width: 120px;">Payment Method</th>
-                                    <th style="width: 120px;">Proof of Payment</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Payment Method</th>
+                                    <th>Proof of Payment</th>
                                     <th>Reason</th>
-                                    <th style="width: 140px;">Cancelled At</th>
+                                    <th>Cancelled At</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -437,6 +440,10 @@
 
                 const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
                 document.getElementById('selectedIds').value = selectedIds.join(',');
+
+                // Enable/disable move to archive button
+                const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
+                moveToArchiveBtn.disabled = count === 0;
 
                 // Update select all checkbox
                 const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');

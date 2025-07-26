@@ -529,7 +529,7 @@
                             <form action="{{ route('announcements.moveToTrash') }}" method="POST" class="d-inline">
                                 @csrf
                                 <input type="hidden" name="selected" id="selectedIds">
-                                <button type="submit" class="btn btn-danger btn-sm" id="moveToArchiveBtn" disabled>
+                                <button type="submit" class="btn btn-light border btn-sm" id="moveToArchiveBtn" disabled>
                                     <i class="fa fa-trash me-1"></i>Move to Archive
                                 </button>
                             </form>
@@ -757,12 +757,12 @@
                 const dropzone = document.getElementById('pdfDropzone');
                 if (file) {
                     dropzone.innerHTML = `
-                                <div class="dropzone-content">
-                                    <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                    <p class="mb-2"><strong>${file.name}</strong></p>
-                                    <p class="text-muted">File selected</p>
-                                </div>
-                            `;
+                                    <div class="dropzone-content">
+                                        <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                        <p class="mb-2"><strong>${file.name}</strong></p>
+                                        <p class="text-muted">File selected</p>
+                                    </div>
+                                `;
                 }
             }
 
@@ -785,8 +785,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                            View Current PDF
-                                        </a>`;
+                                                View Current PDF
+                                            </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';

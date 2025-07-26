@@ -110,7 +110,8 @@
             width: 100%;
             border-collapse: collapse;
             background: white;
-            min-width: 800px; /* Ensure minimum width for readability */
+            min-width: 800px;
+            /* Ensure minimum width for readability */
         }
 
         th {
@@ -281,7 +282,8 @@
             width: 100%;
             border-collapse: collapse;
             background: white;
-            min-width: 800px; /* Ensure minimum width for readability */
+            min-width: 800px;
+            /* Ensure minimum width for readability */
         }
 
         .table-container table th {
@@ -322,7 +324,7 @@
             .table-container {
                 overflow-x: auto;
             }
-            
+
             table {
                 min-width: 1000px;
             }
@@ -352,7 +354,8 @@
             }
 
             table {
-                min-width: 1200px; /* Wider minimum for mobile to accommodate full content */
+                min-width: 1200px;
+                /* Wider minimum for mobile to accommodate full content */
             }
         }
     </style>
@@ -401,7 +404,7 @@
                                 <form action="{{ route('feedback.moveToTrash') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="selected" id="selectedIds">
-                                    <button type="submit" class="btn btn-light border mx-2">
+                                    <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
                                         <i class="fa fa-trash"></i> Move to Archive
                                     </button>
                                 </form>
@@ -446,7 +449,8 @@
                                         <td>{{ $feedbacks->email }}</td>
                                         <td>{{ $feedbacks->subject }}</td>
                                         <td style="max-width: 400px; word-wrap: break-word; white-space: pre-wrap;">
-                                            {{ $feedbacks->message }}</td>
+                                            {{ $feedbacks->message }}
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -488,11 +492,34 @@
         function updateSelectionCount() {
             const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = selectedCheckboxes.length;
-            document.getElementById('select-all-link').textContent = `All (${count})`;
+            const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
+            
+            document.getElementById('select-all-link').textContent = `All (${count}/${totalCount})`;
             const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
             document.getElementById('selectedIds').value = selectedIds.join(',');
-            console.log(selectedIds.join(',')); // Log selected IDs to debug
+
+            // Enable/disable move to archive button
+            const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
+            moveToArchiveBtn.disabled = count === 0;
+
+            // Update select all checkbox
+            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+            selectAllCheckbox.checked = count === totalCount && totalCount > 0;
+            selectAllCheckbox.indeterminate = count > 0 && count < totalCount;
         }
+
+        // Add functionality for the "All" link click
+        document.getElementById('select-all-link').addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+            selectAllCheckbox.checked = !selectAllCheckbox.checked;
+            toggleSelectAll(selectAllCheckbox);
+        });
+
+        // Initialize selection count on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            updateSelectionCount();
+        });
     </script>
 
 @endsection

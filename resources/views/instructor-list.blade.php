@@ -194,7 +194,7 @@
                         <form action="{{ route('instructors.moveToTrash') }}" method="POST">
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
-                            <button type="submit" class="btn btn-light border mx-2">
+                            <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
                                 <i class="fa fa-trash"></i> Move to Archive
                             </button>
                         </form>
@@ -258,7 +258,8 @@
                                 <td colspan="9" class="text-center py-5">
                                     <div class="no-data-message">
                                         <i class="fa fa-users" style="font-size: 48px; color: #ccc; margin-bottom: 16px;"></i>
-                                        <h4 style="color: #666; font-weight: bold; margin-bottom: 8px;">No instructors found</h4>
+                                        <h4 style="color: #666; font-weight: bold; margin-bottom: 8px;">No instructors found
+                                        </h4>
                                         <p style="color: #999; margin: 0;">There are no instructors to display</p>
                                     </div>
                                 </td>
@@ -406,25 +407,37 @@
         function updateSelectionCount() {
             const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = selectedCheckboxes.length;
+            const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
 
             // Update the "All (count)" link text
             const allLink = document.getElementById('select-all-link');
-            allLink.textContent = `All (${count})`;
+            allLink.textContent = `All (${count}/${totalCount})`;
 
             // Update the selected IDs field to be submitted with the form
             const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
             document.getElementById('selectedIds').value = selectedIds.join(',');
+
+            // Enable/disable move to archive button
+            const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
+            moveToArchiveBtn.disabled = count === 0;
+
+            // Update select all checkbox
+            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+            selectAllCheckbox.checked = count === totalCount && totalCount > 0;
+            selectAllCheckbox.indeterminate = count > 0 && count < totalCount;
         }
 
-        // Add the event listener for the "All (0)" link click
+        // Add functionality for the "All" link click
         document.getElementById('select-all-link').addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent the default link behavior
-            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
-
-            // Toggle the "Select All" checkbox and update the count
-            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
-            selectAllCheckbox.checked = isChecked;
+            e.preventDefault();
+            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+            selectAllCheckbox.checked = !selectAllCheckbox.checked;
             toggleSelectAll(selectAllCheckbox);
+        });
+
+        // Initialize selection count on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            updateSelectionCount();
         });
 
     </script>

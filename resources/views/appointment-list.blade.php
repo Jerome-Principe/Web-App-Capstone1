@@ -331,7 +331,7 @@
                                 <form action="{{ route('appointments.moveToTrash') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="selected" id="selectedIds">
-                                    <button type="submit" class="btn btn-light border mx-2">
+                                    <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
                                         <i class="fa fa-trash"></i> Move to Archive
                                     </button>
                                 </form>
@@ -469,6 +469,10 @@
                 });
                 document.getElementById('selectedIds').value = selectedIds.join(','); // Update hidden field with comma-separated IDs
                 updateSelectAllLabel(count, totalCount); // Update the label with the correct count
+
+                // Enable/disable move to archive button
+                const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
+                moveToArchiveBtn.disabled = count === 0;
 
                 // Update select all checkbox
                 const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');

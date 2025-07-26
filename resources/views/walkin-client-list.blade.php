@@ -212,7 +212,7 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-                /* Date Time Display Styling */
+        /* Date Time Display Styling */
         .date-time-display {
             display: flex;
             align-items: center;
@@ -227,7 +227,8 @@
             font-size: 12px;
         }
 
-        .date-text, .time-text {
+        .date-text,
+        .time-text {
             color: #6c757d;
             font-weight: 400;
         }
@@ -243,7 +244,7 @@
                 flex-direction: column;
                 gap: 8px;
             }
-            
+
             .summary-divider {
                 display: none;
             }
@@ -300,7 +301,7 @@
                         <form action="{{ route('walkins.moveToTrash') }}" method="POST">
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
-                            <button type="submit" class="btn btn-light border mx-2">
+                            <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
                                 <i class="fa fa-trash"></i> Move to Archive
                             </button>
                         </form>
@@ -431,19 +432,33 @@
         function updateSelectionCount() {
             const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = selectedCheckboxes.length;
-            document.getElementById('select-all-link').textContent = `All (${count})`;
+            const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
+            
+            document.getElementById('select-all-link').textContent = `All (${count}/${totalCount})`;
             const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
             document.getElementById('selectedIds').value = selectedIds.join(',');
-            console.log(selectedIds.join(',')); // Log selected IDs to debug
+
+            // Enable/disable move to archive button
+            const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
+            moveToArchiveBtn.disabled = count === 0;
+
+            // Update select all checkbox
+            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+            selectAllCheckbox.checked = count === totalCount && totalCount > 0;
+            selectAllCheckbox.indeterminate = count > 0 && count < totalCount;
         }
 
-        // Add functionality for the "All (0)" link click
+        // Add functionality for the "All" link click
         document.getElementById('select-all-link').addEventListener('click', function (e) {
             e.preventDefault();
-            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
-            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
-            selectAllCheckbox.checked = isChecked;
+            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+            selectAllCheckbox.checked = !selectAllCheckbox.checked;
             toggleSelectAll(selectAllCheckbox);
+        });
+
+        // Initialize selection count on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            updateSelectionCount();
         });
 
         document.getElementById('date').addEventListener('change', function () {
