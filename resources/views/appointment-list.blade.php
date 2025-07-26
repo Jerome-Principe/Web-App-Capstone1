@@ -117,17 +117,20 @@
             color: #333;
             font-weight: 500;
             padding: 16px 12px;
-            text-align: left;
+            text-align: center !important;
             border-bottom: 1px solid #e1e5e9;
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            min-width: 100px;
         }
 
         td {
             padding: 16px 12px;
             border-bottom: 1px solid #f1f3f4;
             vertical-align: middle;
+            text-align: center !important;
+            min-width: 100px;
         }
 
         tbody tr:hover {
@@ -349,19 +352,19 @@
                             <thead>
                                 <tr>
                                     <!-- Checkbox to select all appointments -->
-                                    <th style="width: 40px;">
+                                    <th>
                                         <input type="checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
-                                    <th style="width: 60px;">ID</th>
+                                    <th>ID</th>
                                     <th>User</th>
                                     <th>Instructor</th>
-                                    <th style="width: 100px;">Date</th>
-                                    <th style="width: 100px;">Time</th>
-                                    <th style="width: 120px;">Payment Method</th>
-                                    <th style="width: 140px;">GCash Account Name</th>
-                                    <th style="width: 140px;">GCash Account Number</th>
-                                    <th style="width: 120px;">Proof of Payment</th>
-                                    <th style="width: 100px;">Status</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Payment Method</th>
+                                    <th>GCash Account Name</th>
+                                    <th>GCash Account Number</th>
+                                    <th>Proof of Payment</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
