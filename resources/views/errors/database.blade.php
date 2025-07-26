@@ -62,10 +62,10 @@
         </h2>
         <p class="text-muted mb-4">
             @if(isset($isConnectionLimit) && $isConnectionLimit)
-                We've reached our database connection limit. This usually happens during high traffic periods.
-                Please wait a moment and try again. The system will automatically retry in {{ $retryAfter ?? 60 }} seconds.
+                e reached our database connection limit. This usually happens during high traffic periods.
+                ent and try again. The system will matically retry in {{ $retryAfter ?? 60 }} seconds.
             @else
-                We're experiencing high traffic right now. Our database connections are temporarily exhausted.
+                We're experiencing high traffic right. Our database connections temporarily exhausted.
                 Please try again in a few moments.
             @endif
         </p>
@@ -84,15 +84,15 @@
         setTimeout(function () {
             window.location.reload();
         }, retryTime);
-        
+
         // Show countdown
         var countdown = retryTime / 1000;
         var countdownElement = document.createElement('p');
         countdownElement.className = 'text-muted mt-2 small';
         countdownElement.innerHTML = 'Retrying in <span id="countdown">' + countdown + '</span> seconds...';
         document.querySelector('.error-card').appendChild(countdownElement);
-        
-        var countdownInterval = setInterval(function() {
+
+        var countdownInterval = setInterval(function () {
             countdown--;
             document.getElementById('countdown').textContent = countdown;
             if (countdown <= 0) {

@@ -14,81 +14,165 @@
 
     <title>Goal Records</title>
     <style>
+        /* Minimalist Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            background-color: #f8f9fc;
-            /* Light background */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
+            max-width: 1600px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            border: 1px solid #e1e5e9;
         }
 
         .header-section {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 32px;
         }
 
         .header-section h1 {
-            font-size: 24px;
-            margin-right: 10px;
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0;
         }
 
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
         .filter-options a {
-            margin-right: 15px;
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-options a:hover {
+            background: #e3f2fd;
         }
 
         .table-container {
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
-            white-space: nowrap;
+            background: white;
         }
 
         th {
-            font-weight: bold;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
             text-align: center;
-            background-color: transparent !important;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             white-space: nowrap;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
             text-align: center;
+            vertical-align: middle;
             white-space: nowrap;
         }
 
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Minimalist Checkbox */
         input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
             margin: 0;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Minimalist Pagination */
+        .pagination {
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .page-link {
+            border: 1px solid #e1e5e9;
+            color: #007bff;
+            padding: 8px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .page-link:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .page-item.active .page-link {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background: #f8f9fa;
+            border-color: #e1e5e9;
+        }
+
+        /* Custom Alert Message */
+        .custom-alert-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 16px;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-alert-message.fade-out {
+            opacity: 0;
         }
     </style>
 </head>

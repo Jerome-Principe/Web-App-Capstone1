@@ -19,11 +19,11 @@
         .container {
             max-width: 1000px;
             margin: 30px auto;
-            background-color: #f8f9fc;
-            /* Light background */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
         }
 
         .header-section {
@@ -41,52 +41,72 @@
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
         .filter-options a {
-            margin-right: 15px;
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-options a:hover {
+            background: #e3f2fd;
         }
 
         .table-container {
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
+            background: white;
         }
 
         th {
-            font-weight: bold;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
             text-align: center;
-            background-color: transparent !important;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
             text-align: center;
+            vertical-align: middle;
         }
 
         /* Hover effect */
         tbody tr:hover {
-            background-color: #eaeaea;
-            cursor: pointer;
+            background: #f8f9fa;
         }
 
         input[type="checkbox"] {
-            margin: 0;
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
         }
 
         .date-info {
@@ -96,6 +116,29 @@
 
         .modal {
             z-index: 1055;
+        }
+
+        /* No Data Message Styling */
+        .no-data-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .no-data-message i {
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .no-data-message h4 {
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .no-data-message p {
+            font-size: 14px;
         }
     </style>
 </head>
@@ -181,34 +224,46 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($instructors as $instructor)
+                        @if($instructors->count() > 0)
+                            @foreach($instructors as $instructor)
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
+                                            onchange="updateSelectionCount()" />
+                                    </td>
+                                    <td class="text-center">
+                                        {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
+                                    </td>
+                                    <td class="text-center">{{ $instructor->first_name }}</td>
+                                    <td class="text-center">{{ $instructor->last_name }}</td>
+                                    <td class="text-center">{{ $instructor->contact_number }}</td>
+                                    <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
+                                    <td class="text-center">{{ $instructor->session }}</td>
+                                    <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#editInstructorModal{{ $instructor->id }}">Update
+                                        </button>
+                                        <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
+                                            style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this instructor?')">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
-                                        onchange="updateSelectionCount()" />
-                                </td>
-                                <td class="text-center">
-                                    {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
-                                </td>
-                                <td class="text-center">{{ $instructor->first_name }}</td>
-                                <td class="text-center">{{ $instructor->last_name }}</td>
-                                <td class="text-center">{{ $instructor->contact_number }}</td>
-                                <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $instructor->session }}</td>
-                                <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editInstructorModal{{ $instructor->id }}">Update
-                                    </button>
-                                    <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete this instructor?')">Delete</button>
-                                    </form>
+                                <td colspan="9" class="text-center py-5">
+                                    <div class="no-data-message">
+                                        <i class="fa fa-users" style="font-size: 48px; color: #ccc; margin-bottom: 16px;"></i>
+                                        <h4 style="color: #666; font-weight: bold; margin-bottom: 8px;">No instructors found</h4>
+                                        <p style="color: #999; margin: 0;">There are no instructors to display</p>
+                                    </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
 
