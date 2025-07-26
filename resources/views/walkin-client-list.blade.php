@@ -19,11 +19,11 @@
         .container {
             max-width: 1000px;
             margin: 30px auto;
-            background-color: #f8f9fc;
-            /* Light background */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
         }
 
         .header-section {
@@ -41,56 +41,198 @@
         .filter-options {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
             align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
         }
 
         .filter-links {
             display: flex;
+            gap: 16px;
         }
 
         .filter-options a {
-            margin-right: 15px;
             color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .filter-options a:hover {
+            background: #e3f2fd;
+        }
+
+        /* Button-style link for "All" filter */
+        .filter-links a.btn-style {
+            background: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid #007bff;
+            pointer-events: none;
+            cursor: default;
         }
 
         .table-container {
             overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: transparent;
+            background: white;
         }
 
         th {
-            font-weight: bold;
-            border-bottom: 1px solid #999;
-            padding: 12px 10px;
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
             text-align: center;
-            background-color: transparent !important;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
             text-align: center;
+            vertical-align: middle;
         }
 
         /* Hover effect */
         tbody tr:hover {
-            background-color: #eaeaea;
+            background: #f8f9fa;
             cursor: pointer;
         }
 
         input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
             margin: 0;
         }
 
         .summary {
-            margin-top: 20px;
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .summary h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Compact Summary Section */
+        .summary-section {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.12);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+        }
+
+        .summary-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .summary-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.85;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .summary-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+                /* Date Time Display Styling */
+        .date-time-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .date-time-display i {
+            color: #495057;
+            font-size: 12px;
+        }
+
+        .date-text, .time-text {
+            color: #6c757d;
+            font-weight: 400;
+        }
+
+        .separator {
+            color: #adb5bd;
+            margin: 0 2px;
+        }
+
+        /* Responsive design for summary */
+        @media (max-width: 768px) {
+            .summary-content {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .summary-divider {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -179,8 +321,7 @@
                             <th class="text-center">Age</th>
                             <th class="text-center">Amount</th>
                             <th class="text-center">Payment</th>
-                            <th class="text-center">Date</th>
-                            <th class="text-center">Time</th>
+                            <th class="text-center">Date & Time</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -197,8 +338,16 @@
                                 <td class="text-center">{{ $walkin->age }}</td>
                                 <td class="text-center">{{ $walkin->amount }}</td>
                                 <td class="text-center">{{ $walkin->payment }}</td>
-                                <td class="text-center">{{ $walkin->date }}</td>
-                                <td class="text-center">{{ $walkin->time }}</td>
+                                <td class="text-center">
+                                    <div class="date-time-display">
+                                        <i class="fas fa-calendar-alt me-1"></i>
+                                        <span
+                                            class="date-text">{{ \Carbon\Carbon::parse($walkin->date)->format('M d, Y') }}</span>
+                                        <span class="separator">|</span>
+                                        <span
+                                            class="time-text">{{ \Carbon\Carbon::parse($walkin->time)->format('h:i A') }}</span>
+                                    </div>
+                                </td>
                                 <td class="d-flex justify-content-center">
                                     <a href="{{ route('walkins.edit', $walkin->id) }}" class="btn btn-sm btn-primary"><i
                                             class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
@@ -216,10 +365,23 @@
                     </tbody>
                 </table>
 
-                <div class="mt-3">
-                    <h5>Date Selected: {{ $date ?? 'All Dates' }}</h5>
-                    <h5>Total Names: {{ $totalNames ?? $walkins->total() }}</h5>
-                    <h5>Total Amount: {{ $totalAmount ?? 0 }}</h5>
+                <div class="summary-section">
+                    <div class="summary-content">
+                        <div class="summary-item">
+                            <div class="summary-label">Date Selected</div>
+                            <div class="summary-value">{{ $date ?? 'All Dates' }}</div>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-item">
+                            <div class="summary-label">Total Names</div>
+                            <div class="summary-value">{{ $totalNames ?? $walkins->total() }}</div>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-item">
+                            <div class="summary-label">Total Amount</div>
+                            <div class="summary-value">₱{{ number_format($totalAmount ?? 0, 2) }}</div>
+                        </div>
+                    </div>
                 </div>
 
                 <nav aria-label="Page navigation example">
