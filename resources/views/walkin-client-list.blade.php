@@ -80,6 +80,20 @@
             cursor: default;
         }
 
+        /* Active filter styling - looks like button but not clickable */
+        .filter-links a.active-filter {
+            background: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            pointer-events: none;
+            cursor: default;
+            display: inline-block;
+        }
+
         .table-container {
             overflow-x: auto;
             border: 1px solid #e1e5e9;
@@ -272,7 +286,7 @@
 
             <div class="filter-options">
                 <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
+                    <a href="#" id="select-all-link" class="active-filter">All (0)</a>
                     <a href="{{ route('walkins.trashed') }}">Archived
                         ({{App\Models\Walkin::onlyTrashed()->count()}})
                     </a>
