@@ -270,135 +270,147 @@
 
     <body>
         <div class="container">
-            <div class="header-section">
-                <h1>Workout Program Custom List</h1>
-                <!-- Button to trigger modal -->
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
+            <div class="content-card">
+                <div class="header-section">
+                    <div class="d-flex align-items-center">
+                        <h1 class="mb-0 me-3">Workout Program Custom List</h1>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addWorkoutProgramModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>
                             Add New Workout Program Custom
                         </button>
                     </div>
-                </div>
 
-                @if(session('success'))
-                    <div class="custom-alert-message">
-                        {{ session('success') }}
+                    @if(session('success'))
+                        <div class="custom-alert-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            setTimeout(function () {
+                                const alert = document.querySelector('.custom-alert-message');
+                                if (alert) {
+                                    alert.classList.add('fade-out');
+                                }
+                            }, 3000);
+                        });
+                    </script>
+                </div>
+                <div class="filter-options">
+                    <div class="filter-links">
+                        <a href="#" id="select-all-link">All (0)</a>
+                        <a href="#">Archived (0)</a>
                     </div>
-                @endif
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                alert.classList.add('fade-out');
-                            }
-                        }, 3000);
-                    });
-                </script>
-            </div>
-            <div class="filter-options">
-                <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
-                    <a href="#">Archived (0)</a>
-                </div>
-
-                <div>
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                            onclick="return confirm('Are you sure you want to move all these workout programs to the archive?')"><i
-                                class="fa fa-trash"></i> Move to Archive</button>
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
+                    <div>
+                        @csrf
+                        @method('DELETE')
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
+                                onclick="return confirm('Are you sure you want to move all these workout programs to the archive?')"><i
+                                    class="fa fa-trash"></i> Move to Archive</button>
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                    style="height: 35px;">
+                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">User Name</th>
-                            <th class="text-center">Category</th>
-                            <th class="text-center">Type</th>
-                            <th class="text-center">Guideline</th>
-                            <th class="text-center">Day</th>
-                            <th class="text-center">Workout</th>
-                            <th class="text-center">Difficulty</th>
-                            <th class="text-center">Duration</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($workoutProgramsCustom as $workoutProgramCustom)
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center">
-                                    <input type="checkbox" name="selected[]" value="{{ $workoutProgramCustom->id }}" />
-                                </td>
-                                <td class="text-center">{{ $workoutProgramCustom->id }}</td>
-                                <td class="text-center">{{ $workoutProgramCustom->user->name ?? 'User Not Found' }}</td>
-                                <td class="text-center">{{ $workoutProgramCustom->category }}</td>
-                                <td class="text-center">{{ $workoutProgramCustom->type }}</td>
-                                <td class="text-center">{{ $workoutProgramCustom->guideline }}</td>
-                                <td class="text-center">{{ $workoutProgramCustom->day }}</td>
-                                <td class="text-center">{{ $workoutProgramCustom->workout }}</td>
-                                <td class="text-center">{{ $workoutProgramCustom->difficulty }}</td>
-                                <td class="text-center">{{ $workoutProgramCustom->duration }}</td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Edit Button -->
-                                        <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
-                                            data-bs-target="#editWorkoutProgramModal{{ $workoutProgramCustom->id }}">
-                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
-                                        </button>
-
-                                        <!-- Delete Button (Form for DELETE request) -->
-                                        <form action="{{ route('workout-program-custom.destroy', $workoutProgramCustom->id) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this workout program?')">
-                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">User Name</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Guideline</th>
+                                <th class="text-center">Day</th>
+                                <th class="text-center">Workout</th>
+                                <th class="text-center">Difficulty</th>
+                                <th class="text-center">Duration</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @if($workoutProgramsCustom->count() > 0)
+                                @foreach($workoutProgramsCustom as $workoutProgramCustom)
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" name="selected[]" value="{{ $workoutProgramCustom->id }}" />
+                                        </td>
+                                        <td class="text-center">{{ $workoutProgramCustom->id }}</td>
+                                        <td class="text-center">{{ $workoutProgramCustom->user->name ?? 'User Not Found' }}</td>
+                                        <td class="text-center">{{ $workoutProgramCustom->category }}</td>
+                                        <td class="text-center">{{ $workoutProgramCustom->type }}</td>
+                                        <td class="text-center">{{ $workoutProgramCustom->guideline }}</td>
+                                        <td class="text-center">{{ $workoutProgramCustom->day }}</td>
+                                        <td class="text-center">{{ $workoutProgramCustom->workout }}</td>
+                                        <td class="text-center">{{ $workoutProgramCustom->difficulty }}</td>
+                                        <td class="text-center">{{ $workoutProgramCustom->duration }}</td>
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-center">
+                                                <!-- Edit Button -->
+                                                <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
+                                                    data-bs-target="#editWorkoutProgramModal{{ $workoutProgramCustom->id }}">
+                                                    <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                                </button>
 
-                <!-- Pagination -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4 mb-4">
-                        <li class="page-item {{ $workoutProgramsCustom->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $workoutProgramsCustom->previousPageUrl() }}"
-                                tabindex="-1">Previous</a>
-                        </li>
+                                                <!-- Delete Button (Form for DELETE request) -->
+                                                <form action="{{ route('workout-program-custom.destroy', $workoutProgramCustom->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this workout program?')">
+                                                        <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <!-- No Data State -->
+                                <tr>
+                                    <td colspan="11" class="text-center py-5">
+                                        <div class="empty-state">
+                                            <i class="fas fa-running" style="font-size: 64px; color: #6c757d; margin-bottom: 20px; display: block;"></i>
+                                            <h4 class="text-dark mb-2">No custom workout programs found</h4>
+                                            <p class="text-muted">There are no custom workout program records to display.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
 
-                        @foreach(range(1, $workoutProgramsCustom->lastPage()) as $page)
-                            <li class="page-item {{ $page == $workoutProgramsCustom->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $workoutProgramsCustom->url($page) }}">{{ $page }}</a>
-                            </li>
-                        @endforeach
+                    @if($workoutProgramsCustom->count() > 0)
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $workoutProgramsCustom->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $workoutProgramsCustom->previousPageUrl() }}" tabindex="-1">Previous</a>
+                                </li>
 
-                        <li class="page-item {{ !$workoutProgramsCustom->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $workoutProgramsCustom->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                                @foreach(range(1, $workoutProgramsCustom->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $workoutProgramsCustom->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $workoutProgramsCustom->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                <li class="page-item {{ !$workoutProgramsCustom->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $workoutProgramsCustom->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    @endif
+                </div>
             </div>
-
         </div>
 
         <!-- Modal for Adding Workout Program -->

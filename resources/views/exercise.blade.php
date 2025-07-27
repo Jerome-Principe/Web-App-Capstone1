@@ -270,133 +270,147 @@
 
     <body>
         <div class="container">
-            <div class="header-section">
-                <h1>Exercise Default List</h1>
-                <!-- Button to trigger modal -->
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
+            <div class="content-card">
+                <div class="header-section">
+                    <div class="d-flex align-items-center">
+                        <h1 class="mb-0 me-3">Exercise Default List</h1>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addExerciseModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>
                             Add New Exercise
                         </button>
                     </div>
+
+                    @if(session('success'))
+                        <div class="custom-alert-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            setTimeout(function () {
+                                const alert = document.querySelector('.custom-alert-message');
+                                if (alert) {
+                                    alert.classList.add('fade-out');
+                                }
+                            }, 3000);
+                        });
+                    </script>
+
                 </div>
 
-                @if(session('success'))
-                    <div class="custom-alert-message">
-                        {{ session('success') }}
+                <div class="filter-options">
+                    <div class="filter-links">
+                        <a href="#" id="select-all-link">All (0)</a>
+                        <a href="#">Archived (0)</a>
                     </div>
-                @endif
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                alert.classList.add('fade-out');
-                            }
-                        }, 3000);
-                    });
-                </script>
-
-            </div>
-
-            <div class="filter-options">
-                <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
-                    <a href="#">Archived (0)</a>
-                </div>
-
-                <div>
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                            onclick="return confirm('Are you sure you want to move all these exercises to the archive?')"><i
-                                class="fa fa-trash"></i> Move to Archive
-                        </button>
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
+                    <div>
+                        @csrf
+                        @method('DELETE')
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
+                                onclick="return confirm('Are you sure you want to move all these exercises to the archive?')"><i
+                                    class="fa fa-trash"></i> Move to Archive
+                            </button>
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                    style="height: 35px;">
+                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Category</th>
-                            <th class="text-center">Type</th>
-                            <th class="text-center">Guideline</th>
-                            <th class="text-center">Exercises</th>
-                            <th class="text-center">Description</th>
-                            <th class="text-center">Duration</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($exercises as $exercise)
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center">
-                                    <input type="checkbox" name="selected[]" value="{{ $exercise->id }}" />
-                                </td>
-                                <td class="text-center">{{ $exercise->id }}</td>
-                                <td class="text-center">{{ $exercise->category }}</td>
-                                <td class="text-center">{{ $exercise->type }}</td>
-                                <td class="text-center">{{ $exercise->guideline }}</td>
-                                <td class="text-center">{{ $exercise->exercise }}</td>
-                                <td class="text-center">{{ $exercise->description }}</td>
-                                <td class="text-center">{{ $exercise->duration }}</td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Edit Button -->
-                                        <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
-                                            data-bs-target="#editExerciseModal{{ $exercise->id }}">
-                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
-                                        </button>
-
-                                        <!-- Delete Button (Form for DELETE request) -->
-                                        <form action="{{ route('exercise.destroy', $exercise->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this exercise?')">
-                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Guideline</th>
+                                <th class="text-center">Exercises</th>
+                                <th class="text-center">Description</th>
+                                <th class="text-center">Duration</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @if($exercises->count() > 0)
+                                @foreach($exercises as $exercise)
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" name="selected[]" value="{{ $exercise->id }}" />
+                                        </td>
+                                        <td class="text-center">{{ $exercise->id }}</td>
+                                        <td class="text-center">{{ $exercise->category }}</td>
+                                        <td class="text-center">{{ $exercise->type }}</td>
+                                        <td class="text-center">{{ $exercise->guideline }}</td>
+                                        <td class="text-center">{{ $exercise->exercise }}</td>
+                                        <td class="text-center">{{ $exercise->description }}</td>
+                                        <td class="text-center">{{ $exercise->duration }}</td>
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-center">
+                                                <!-- Edit Button -->
+                                                <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
+                                                    data-bs-target="#editExerciseModal{{ $exercise->id }}">
+                                                    <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                                </button>
 
-                <!-- Pagination -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4 mb-4">
-                        <li class="page-item {{ $exercises->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $exercises->previousPageUrl() }}" tabindex="-1">Previous</a>
-                        </li>
+                                                <!-- Delete Button (Form for DELETE request) -->
+                                                <form action="{{ route('exercise.destroy', $exercise->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this exercise?')">
+                                                        <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <!-- No Data State -->
+                                <tr>
+                                    <td colspan="9" class="text-center py-5">
+                                        <div class="empty-state">
+                                            <i class="fas fa-dumbbell"
+                                                style="font-size: 64px; color: #6c757d; margin-bottom: 20px; display: block;"></i>
+                                            <h4 class="text-dark mb-2">No exercises found</h4>
+                                            <p class="text-muted">There are no exercise records to display.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
 
-                        @foreach(range(1, $exercises->lastPage()) as $page)
-                            <li class="page-item {{ $page == $exercises->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $exercises->url($page) }}">{{ $page }}</a>
-                            </li>
-                        @endforeach
+                    @if($exercises->count() > 0)
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $exercises->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $exercises->previousPageUrl() }}" tabindex="-1">Previous</a>
+                                </li>
 
-                        <li class="page-item {{ !$exercises->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $exercises->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                                @foreach(range(1, $exercises->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $exercises->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $exercises->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                <li class="page-item {{ !$exercises->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $exercises->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    @endif
+                </div>
             </div>
-
         </div>
 
         <!-- Modal for Adding Exercise Program -->
@@ -585,7 +599,7 @@
                 @foreach($exercises as $exercise)
                     updateExercises('{{ $exercise->id }}', '{{ $exercise->exercise }}');
                 @endforeach 
-                        });
+                                            });
 
             function updateExercises(exerciseId = '', selectedExercise = '') {
                 const type = document.getElementById('type' + exerciseId).value;

@@ -270,133 +270,149 @@
 
     <body>
         <div class="container">
-            <div class="header-section">
-                <h1>Exercise Custom List</h1>
-                <!-- Button to trigger modal -->
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
+            <div class="content-card">
+                <div class="header-section">
+                    <div class="d-flex align-items-center">
+                        <h1 class="mb-0 me-3">Exercise Custom List</h1>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addExerciseModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>
                             Add New Exercise
                         </button>
                     </div>
-                </div>
 
-                @if(session('success'))
-                    <div class="custom-alert-message">
-                        {{ session('success') }}
+                    @if(session('success'))
+                        <div class="custom-alert-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            setTimeout(function () {
+                                const alert = document.querySelector('.custom-alert-message');
+                                if (alert) {
+                                    alert.classList.add('fade-out');
+                                }
+                            }, 3000);
+                        });
+                    </script>
+                </div>
+                <div class="filter-options">
+                    <div class="filter-links">
+                        <a href="#" id="select-all-link">All (0)</a>
+                        <a href="#">Archived (0)</a>
                     </div>
-                @endif
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                alert.classList.add('fade-out');
-                            }
-                        }, 3000);
-                    });
-                </script>
+                    <div>
+                        @csrf
+                        @method('DELETE')
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
+                                onclick="return confirm('Are you sure you want to move all these exercises to the archive?')">
+                                <i class="fa fa-trash"></i> Move to Archive
+                            </button>
 
-            </div>
-            <div class="filter-options">
-                <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
-                    <a href="#">Archived (0)</a>
-                </div>
-
-                <div>
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                            onclick="return confirm('Are you sure you want to move all these exercises to the archive?')"><i
-                                class="fa fa-trash"></i> Move to Archive</button>
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                    style="height: 35px;">
+                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">User Name</th>
-                            <th class="text-center">Category</th>
-                            <th class="text-center">Type</th>
-                            <th class="text-center">Guideline</th>
-                            <th class="text-center">Exercises</th>
-                            <th class="text-center">Description</th>
-                            <th class="text-center">Duration</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($exercisesCustom as $exerciseCustom)
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center">
-                                    <input type="checkbox" name="selected[]" value="{{ $exerciseCustom->id }}" />
-                                </td>
-                                <td class="text-center">{{ $exerciseCustom->id }}</td>
-                                <td class="text-center">{{ $exerciseCustom->user->name ?? 'User Not Found' }}</td>
-                                <td class="text-center">{{ $exerciseCustom->category }}</td>
-                                <td class="text-center">{{ $exerciseCustom->type }}</td>
-                                <td class="text-center">{{ $exerciseCustom->guideline }}</td>
-                                <td class="text-center">{{ $exerciseCustom->exercise }}</td>
-                                <td class="text-center">{{ $exerciseCustom->description }}</td>
-                                <td class="text-center">{{ $exerciseCustom->duration }}</td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Edit Button -->
-                                        <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
-                                            data-bs-target="#editExerciseModal{{ $exerciseCustom->id }}">
-                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
-                                        </button>
-
-                                        <!-- Delete Button (Form for DELETE request) -->
-                                        <form action="{{ route('exercise-custom.destroy', $exerciseCustom->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this exercise?')">
-                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">User Name</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Guideline</th>
+                                <th class="text-center">Exercises</th>
+                                <th class="text-center">Description</th>
+                                <th class="text-center">Duration</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @if($exercisesCustom->count() > 0)
+                                @foreach($exercisesCustom as $exerciseCustom)
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" name="selected[]" value="{{ $exerciseCustom->id }}" />
+                                        </td>
+                                        <td class="text-center">{{ $exerciseCustom->id }}</td>
+                                        <td class="text-center">{{ $exerciseCustom->user->name ?? 'User Not Found' }}</td>
+                                        <td class="text-center">{{ $exerciseCustom->category }}</td>
+                                        <td class="text-center">{{ $exerciseCustom->type }}</td>
+                                        <td class="text-center">{{ $exerciseCustom->guideline }}</td>
+                                        <td class="text-center">{{ $exerciseCustom->exercise }}</td>
+                                        <td class="text-center">{{ $exerciseCustom->description }}</td>
+                                        <td class="text-center">{{ $exerciseCustom->duration }}</td>
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-center">
+                                                <!-- Edit Button -->
+                                                <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
+                                                    data-bs-target="#editExerciseModal{{ $exerciseCustom->id }}">
+                                                    <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                                </button>
 
-                <!-- Pagination -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4 mb-4">
-                        <li class="page-item {{ $exercisesCustom->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $exercisesCustom->previousPageUrl() }}" tabindex="-1">Previous</a>
-                        </li>
+                                                <!-- Delete Button (Form for DELETE request) -->
+                                                <form action="{{ route('exercise-custom.destroy', $exerciseCustom->id) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this exercise?')">
+                                                        <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <!-- No Data State -->
+                                <tr>
+                                    <td colspan="10" class="text-center py-5">
+                                        <div class="empty-state">
+                                            <i class="fas fa-dumbbell"
+                                                style="font-size: 64px; color: #6c757d; margin-bottom: 20px; display: block;"></i>
+                                            <h4 class="text-dark mb-2">No custom exercises found</h4>
+                                            <p class="text-muted">There are no custom exercise records to display.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
 
-                        @foreach(range(1, $exercisesCustom->lastPage()) as $page)
-                            <li class="page-item {{ $page == $exercisesCustom->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $exercisesCustom->url($page) }}">{{ $page }}</a>
-                            </li>
-                        @endforeach
+                    @if($exercisesCustom->count() > 0)
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $exercisesCustom->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $exercisesCustom->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
+                                </li>
 
-                        <li class="page-item {{ !$exercisesCustom->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $exercisesCustom->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                                @foreach(range(1, $exercisesCustom->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $exercisesCustom->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $exercisesCustom->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                <li class="page-item {{ !$exercisesCustom->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $exercisesCustom->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    @endif
+                </div>
             </div>
-
         </div>
 
         <!-- Modal for Adding Exercise Program -->
@@ -618,7 +634,7 @@
                 @foreach($exercisesCustom as $exerciseCustom)
                     updateExercises('{{ $exerciseCustom->id }}', '{{ $exerciseCustom->exercise }}');
                 @endforeach
-                });
+                                    });
         </script>
 
 

@@ -270,136 +270,151 @@
 
     <body>
         <div class="container">
-            <div class="header-section">
-                <h1>Meal Plan Custom List</h1>
-                <!-- Button to trigger modal -->
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
+            <div class="content-card">
+                <div class="header-section">
+                    <div class="d-flex align-items-center">
+                        <h1 class="mb-0 me-3">Meal Plan Custom List</h1>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addMealPlanModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>
                             Add New Meal Plan
                         </button>
                     </div>
-                </div>
 
-                @if(session('success'))
-                    <div class="custom-alert-message">
-                        {{ session('success') }}
+                    @if(session('success'))
+                        <div class="custom-alert-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            setTimeout(function () {
+                                const alert = document.querySelector('.custom-alert-message');
+                                if (alert) {
+                                    alert.classList.add('fade-out');
+                                }
+                            }, 3000);
+                        });
+                    </script>
+                </div>
+                <div class="filter-options">
+                    <div class="filter-links">
+                        <a href="#" id="select-all-link">All (0)</a>
+                        <a href="#">Archived (0)</a>
                     </div>
-                @endif
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                alert.classList.add('fade-out');
-                            }
-                        }, 3000);
-                    });
-                </script>
-            </div>
-            <div class="filter-options">
-                <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
-                    <a href="#">Archived (0)</a>
-                </div>
+                    <div>
+                        @csrf
+                        @method('DELETE')
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
+                                onclick="return confirm('Are you sure you want to move all these meal plans to the archive?')">
+                                <i class="fa fa-trash"></i> Move to Archive
+                            </button>
 
-                <div>
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                            onclick="return confirm('Are you sure you want to move all these meal plans to the archive?')">
-                            <i class="fa fa-trash"></i> Move to Archive
-                        </button>
-
-                        <form class="d-flex" role="search">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                style="height: 35px;">
-                            <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                        </form>
+                            <form class="d-flex" role="search">
+                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                    style="height: 35px;">
+                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">User Name</th>
-                            <th class="text-center">Category</th>
-                            <th class="text-center">Type</th>
-                            <th class="text-center">Guideline</th>
-                            <th class="text-center">Day</th>
-                            <th class="text-center">Breakfast</th>
-                            <th class="text-center">Lunch</th>
-                            <th class="text-center">Dinner</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($mealPlansCustom as $mealPlanCustom)
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center">
-                                    <input type="checkbox" name="selected[]" value="{{ $mealPlanCustom->id }}" />
-                                </td>
-                                <td class="text-center">{{ $mealPlanCustom->id }}</td>
-                                <td class="text-center">{{ $mealPlanCustom->user->name ?? 'User Not Found' }}</td>
-                                <td class="text-center">{{ $mealPlanCustom->category }}</td>
-                                <td class="text-center">{{ $mealPlanCustom->type }}</td>
-                                <td class="text-center">{{ $mealPlanCustom->guideline }}</td>
-                                <td class="text-center">{{ $mealPlanCustom->day }}</td>
-                                <td class="text-center">{{ $mealPlanCustom->breakfast }}</td>
-                                <td class="text-center">{{ $mealPlanCustom->lunch }}</td>
-                                <td class="text-center">{{ $mealPlanCustom->dinner }}</td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Edit Button -->
-                                        <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
-                                            data-bs-target="#editMealPlanModal{{ $mealPlanCustom->id }}">
-                                            <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
-                                        </button>
-
-                                        <!-- Delete Button (Form for DELETE request) -->
-                                        <form action="{{ route('meal-plan-custom.destroy', $mealPlanCustom->id) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this meal plan?')">
-                                                <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">User Name</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Guideline</th>
+                                <th class="text-center">Day</th>
+                                <th class="text-center">Breakfast</th>
+                                <th class="text-center">Lunch</th>
+                                <th class="text-center">Dinner</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @if($mealPlansCustom->count() > 0)
+                                @foreach($mealPlansCustom as $mealPlanCustom)
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" name="selected[]" value="{{ $mealPlanCustom->id }}" />
+                                        </td>
+                                        <td class="text-center">{{ $mealPlanCustom->id }}</td>
+                                        <td class="text-center">{{ $mealPlanCustom->user->name ?? 'User Not Found' }}</td>
+                                        <td class="text-center">{{ $mealPlanCustom->category }}</td>
+                                        <td class="text-center">{{ $mealPlanCustom->type }}</td>
+                                        <td class="text-center">{{ $mealPlanCustom->guideline }}</td>
+                                        <td class="text-center">{{ $mealPlanCustom->day }}</td>
+                                        <td class="text-center">{{ $mealPlanCustom->breakfast }}</td>
+                                        <td class="text-center">{{ $mealPlanCustom->lunch }}</td>
+                                        <td class="text-center">{{ $mealPlanCustom->dinner }}</td>
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-center">
+                                                <!-- Edit Button -->
+                                                <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
+                                                    data-bs-target="#editMealPlanModal{{ $mealPlanCustom->id }}">
+                                                    <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                                </button>
 
-                <!-- Pagination -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4 mb-4">
-                        <li class="page-item {{ $mealPlansCustom->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $mealPlansCustom->previousPageUrl() }}" tabindex="-1">Previous</a>
-                        </li>
+                                                <!-- Delete Button (Form for DELETE request) -->
+                                                <form action="{{ route('meal-plan-custom.destroy', $mealPlanCustom->id) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this meal plan?')">
+                                                        <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <!-- No Data State -->
+                                <tr>
+                                    <td colspan="11" class="text-center py-5">
+                                        <div class="empty-state">
+                                            <i class="fas fa-users"
+                                                style="font-size: 64px; color: #6c757d; margin-bottom: 20px; display: block;"></i>
+                                            <h4 class="text-dark mb-2">No custom meal plans found</h4>
+                                            <p class="text-muted">There are no custom meal plan records to display.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
 
-                        @foreach(range(1, $mealPlansCustom->lastPage()) as $page)
-                            <li class="page-item {{ $page == $mealPlansCustom->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $mealPlansCustom->url($page) }}">{{ $page }}</a>
-                            </li>
-                        @endforeach
+                    @if($mealPlansCustom->count() > 0)
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $mealPlansCustom->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $mealPlansCustom->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
+                                </li>
 
-                        <li class="page-item {{ !$mealPlansCustom->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $mealPlansCustom->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                                @foreach(range(1, $mealPlansCustom->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $mealPlansCustom->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $mealPlansCustom->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                <li class="page-item {{ !$mealPlansCustom->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $mealPlansCustom->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    @endif
+                </div>
             </div>
-
         </div>
 
         <!-- Modal for Adding Meal Plan -->
