@@ -770,24 +770,25 @@
                                     style="color: #333; font-weight: 500; margin-bottom: 8px; display: block;">Rate your
                                     experience (1-5 stars):</label>
                                 <div class="star-rating" style="display: flex; gap: 8px; margin-bottom: 10px;">
-                                    <input type="radio" name="rating" value="5" id="star5" style="display: none;">
-                                    <label for="star5" class="star"
-                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
-
-                                    <input type="radio" name="rating" value="4" id="star4" style="display: none;">
-                                    <label for="star4" class="star"
-                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
-
-                                    <input type="radio" name="rating" value="3" id="star3" style="display: none;">
-                                    <label for="star3" class="star"
+                                    <div id="rating-display" style="margin-left: 10px; font-weight: bold; color: #333;"></div>
+                                    <input type="radio" name="rating" value="1" id="star1" style="display: none;">
+                                    <label for="star1" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
 
                                     <input type="radio" name="rating" value="2" id="star2" style="display: none;">
                                     <label for="star2" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
 
-                                    <input type="radio" name="rating" value="1" id="star1" style="display: none;">
-                                    <label for="star1" class="star"
+                                    <input type="radio" name="rating" value="3" id="star3" style="display: none;">
+                                    <label for="star3" class="star"
+                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
+
+                                    <input type="radio" name="rating" value="4" id="star4" style="display: none;">
+                                    <label for="star4" class="star"
+                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
+
+                                    <input type="radio" name="rating" value="5" id="star5" style="display: none;">
+                                    <label for="star5" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
                                 </div>
                                 <small style="color: #666; font-size: 12px;">Click on a star to rate your
@@ -798,7 +799,7 @@
                             </div>
                             <p class="form-message"></p>
                             <div class="single_form">
-                                <button class="main-btn">SUBMIT</button>
+                                <button class="main-btn" type="submit" onclick="return validateForm()">SUBMIT</button>
                             </div>
 
                             @if(session('success'))
@@ -825,6 +826,12 @@
 
                                             // Check the corresponding radio input
                                             radioInputs[index].checked = true;
+                                            
+                                            // Debug: Log the selected rating
+                                            console.log('Selected rating:', radioInputs[index].value);
+                                            
+                                            // Update the rating display
+                                            document.getElementById('rating-display').textContent = radioInputs[index].value + '/5';
                                         });
 
                                         // Hover effects
@@ -857,6 +864,17 @@
                                         }
                                     }, 3000); // 3000ms = 3 seconds
                                 });
+
+                                // Form validation function
+                                function validateForm() {
+                                    const selectedRating = document.querySelector('input[name="rating"]:checked');
+                                    if (!selectedRating) {
+                                        alert('Please select a rating before submitting.');
+                                        return false;
+                                    }
+                                    console.log('Submitting form with rating:', selectedRating.value);
+                                    return true;
+                                }
                             </script>
                         </form>
                     </div>

@@ -28,12 +28,17 @@ class FeedbackController extends Controller
         ]);
 
         // Create a new feedback entry in the database
+        $rating = $request->input('rating');
+
+        // Debug: Log the rating being saved
+        \Log::info('Feedback submission - Rating received: ' . $rating);
+
         Feedback::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
-            'rating' => $request->input('rating'),
+            'rating' => $rating,
         ]);
 
         // Redirect back with success message
