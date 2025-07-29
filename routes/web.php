@@ -127,10 +127,7 @@ Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'in
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // Dashboard route is already defined above with DashboardController
 
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {
