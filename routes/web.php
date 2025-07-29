@@ -90,7 +90,7 @@ Route::get('/transaction', function () {
 
 // Feedback routes
 Route::prefix('feedback')->name('feedback.')->group(function () {
-    Route::resource('/', FeedbackController::class)->except(['show']);
+    Route::resource('/', FeedbackController::class)->except(['show', 'edit', 'update']);
     Route::post('/submit', [FeedbackController::class, 'submit'])->name('submit');
     Route::post('/move-to-trash', [FeedbackController::class, 'moveToTrash'])->name('moveToTrash');
     Route::get('/trashed', [FeedbackController::class, 'trashed'])->name('trashed');

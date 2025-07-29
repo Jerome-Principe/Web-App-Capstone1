@@ -24,6 +24,7 @@ class FeedbackController extends Controller
             'email' => 'required|string|email|max:255',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
+            'rating' => 'required|integer|min:1|max:5',
         ]);
 
         // Create a new feedback entry in the database
@@ -32,6 +33,7 @@ class FeedbackController extends Controller
             'email' => $request->input('email'),
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
+            'rating' => $request->input('rating'),
         ]);
 
         // Redirect back with success message
@@ -43,6 +45,34 @@ class FeedbackController extends Controller
     {
         $feedback = Feedback::paginate(9); // Paginate feedback entries
         return view('feedback', compact('feedback')); // Return view with feedback data
+    }
+
+    // Show a specific feedback entry
+    public function show($id)
+    {
+        $feedback = Feedback::findOrFail($id);
+        return view('feedback-show', compact('feedback'));
+    }
+
+    // Show the form for creating a new feedback entry
+    public function create()
+    {
+        return view('feedback-create');
+    }
+
+    // Store a newly created feedback entry
+    public function store(Request $request)
+    {
+        return $this->submit($request);
+    }
+
+    // Delete a feedback entry
+    public function destroy($id)
+    {
+        $feedback = Feedback::findOrFail($id);
+        $feedback->delete();
+
+        return redirect()->route('feedback.index')->with('success', 'Feedback deleted successfully!');
     }
 
     // Move selected feedback to trash (soft delete)

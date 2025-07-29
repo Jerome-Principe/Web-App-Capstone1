@@ -766,6 +766,34 @@
                                 <input type="text" name="subject" placeholder="Subject" required>
                             </div>
                             <div class="single_form">
+                                <label for="rating"
+                                    style="color: #333; font-weight: 500; margin-bottom: 8px; display: block;">Rate your
+                                    experience (1-5 stars):</label>
+                                <div class="star-rating" style="display: flex; gap: 8px; margin-bottom: 10px;">
+                                    <input type="radio" name="rating" value="5" id="star5" style="display: none;">
+                                    <label for="star5" class="star"
+                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
+
+                                    <input type="radio" name="rating" value="4" id="star4" style="display: none;">
+                                    <label for="star4" class="star"
+                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
+
+                                    <input type="radio" name="rating" value="3" id="star3" style="display: none;">
+                                    <label for="star3" class="star"
+                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
+
+                                    <input type="radio" name="rating" value="2" id="star2" style="display: none;">
+                                    <label for="star2" class="star"
+                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
+
+                                    <input type="radio" name="rating" value="1" id="star1" style="display: none;">
+                                    <label for="star1" class="star"
+                                        style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
+                                </div>
+                                <small style="color: #666; font-size: 12px;">Click on a star to rate your
+                                    experience</small>
+                            </div>
+                            <div class="single_form">
                                 <textarea name="message" placeholder="Message" required></textarea>
                             </div>
                             <p class="form-message"></p>
@@ -781,6 +809,47 @@
 
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
+                                    // Star rating functionality
+                                    const stars = document.querySelectorAll('.star');
+                                    const radioInputs = document.querySelectorAll('input[name="rating"]');
+
+                                    stars.forEach((star, index) => {
+                                        star.addEventListener('click', () => {
+                                            // Reset all stars
+                                            stars.forEach(s => s.style.color = '#ddd');
+
+                                            // Color stars up to clicked star
+                                            for (let i = 0; i <= index; i++) {
+                                                stars[i].style.color = '#ffd700';
+                                            }
+
+                                            // Check the corresponding radio input
+                                            radioInputs[index].checked = true;
+                                        });
+
+                                        // Hover effects
+                                        star.addEventListener('mouseenter', () => {
+                                            // Color stars up to hovered star
+                                            for (let i = 0; i <= index; i++) {
+                                                stars[i].style.color = '#ffd700';
+                                            }
+                                        });
+
+                                        star.addEventListener('mouseleave', () => {
+                                            // Reset to selected state
+                                            const checkedInput = document.querySelector('input[name="rating"]:checked');
+                                            if (checkedInput) {
+                                                const checkedIndex = Array.from(radioInputs).indexOf(checkedInput);
+                                                stars.forEach((s, i) => {
+                                                    s.style.color = i <= checkedIndex ? '#ffd700' : '#ddd';
+                                                });
+                                            } else {
+                                                stars.forEach(s => s.style.color = '#ddd');
+                                            }
+                                        });
+                                    });
+
+                                    // Auto-hide success message
                                     setTimeout(function () {
                                         const alert = document.querySelector('.custom-alert-success');
                                         if (alert) {
