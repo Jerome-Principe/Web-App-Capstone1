@@ -111,7 +111,7 @@
             color: #333;
             font-weight: 500;
             padding: 16px 12px;
-            text-align: center;
+            text-align: center !important;
             border-bottom: 1px solid #e1e5e9;
             font-size: 13px;
             text-transform: uppercase;
@@ -122,7 +122,82 @@
             padding: 16px 12px;
             border-bottom: 1px solid #f1f3f4;
             vertical-align: middle;
-            text-align: center;
+            text-align: center !important;
+        }
+
+        /* Ensure all content inside cells is centered */
+        td *,
+        th * {
+            text-align: center !important;
+        }
+
+        /* Center flex containers */
+        td .d-flex,
+        th .d-flex {
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        /* Center button groups */
+        td .action-buttons {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 8px;
+        }
+
+        /* Perfect centering for checkboxes */
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Approve/Decline Button Styles */
+        .btn-approve {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-approve:hover {
+            background: #218838;
+            border-color: #1e7e34;
+            color: white;
+        }
+
+        .btn-decline {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-decline:hover {
+            background: #c82333;
+            border-color: #bd2130;
+            color: white;
         }
 
         tbody tr:hover {
@@ -458,7 +533,8 @@
 
                 <div class="filter-options">
                     <div class="filter-links">
-                        <a href="#" id="select-all-link" class="active">All (0)</a>
+                        <a href="#" id="select-all-link" class="active">All (<span id="selected-count">0</span>/<span
+                                id="total-count">{{ count($registerRfids) }}</span>)</a>
                         <a href="#">Archived</a>
                     </div>
 
@@ -466,11 +542,11 @@
                         @csrf
                         @method('DELETE')
                         <div class="d-flex align-items-center">
-                            <!-- Form to move selected walkins to trash -->
-                            <form action="#" method="POST">
+                            <!-- Form to move selected items to archive -->
+                            <form action="#" method="POST" id="bulk-action-form">
                                 @csrf
                                 <input type="hidden" name="selected" id="selectedIds">
-                                <button type="submit" class="btn btn-light border mx-2">
+                                <button type="submit" class="btn btn-light border mx-2" id="bulk-action-btn" disabled>
                                     <i class="fa fa-trash"></i> Move to Archive
                                 </button>
                             </form>
@@ -483,12 +559,12 @@
                     <table>
                         <thead>
                             <tr>
-                                <th style="width: 40px;"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                                <th style="width: 60px;">ID</th>
+                                <th><input type="checkbox" id="select-all-checkbox" /></th>
+                                <th>ID</th>
                                 <th>Username</th>
                                 <th>Serial Number</th>
                                 <th>Email</th>
-                                <th style="width: 120px;">Actions</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -507,18 +583,18 @@
                                     <td>{{ $registerRfid->email }}</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            <a href="#" class="btn-approve" data-bs-toggle="modal"
                                                 data-bs-target="#updateModal{{ $registerRfid->id }}">
-                                                <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                                <i class="fa fa-check" aria-hidden="true"></i>Approve
                                             </a>
 
                                             <form action="{{ route('register-rfid.destroy', $registerRfid->id) }}" method="POST"
                                                 style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                                    onclick="return confirm('Are you sure you want to delete this walk-in client?')"><i
-                                                        class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                                <button type="submit" class="btn-decline"
+                                                    onclick="return confirm('Are you sure you want to delete this RFID record?')">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>Decline
                                                 </button>
                                             </form>
                                         </div>
@@ -597,6 +673,67 @@
                     serialInput.focus();
                 }
             });
+
+            // Checkbox functionality
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            const individualCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            const selectedCountSpan = document.getElementById('selected-count');
+            const totalCountSpan = document.getElementById('total-count');
+            const bulkActionBtn = document.getElementById('bulk-action-btn');
+            const selectedIdsInput = document.getElementById('selectedIds');
+
+            // Function to update the selected count
+            function updateSelectedCount() {
+                const selectedCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+                const selectedCount = selectedCheckboxes.length;
+                const totalCount = individualCheckboxes.length;
+                
+                selectedCountSpan.textContent = selectedCount;
+                totalCountSpan.textContent = totalCount;
+                
+                // Enable/disable bulk action button
+                bulkActionBtn.disabled = selectedCount === 0;
+                
+                // Update select all checkbox state
+                if (selectedCount === 0) {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                } else if (selectedCount === totalCount) {
+                    selectAllCheckbox.checked = true;
+                    selectAllCheckbox.indeterminate = false;
+                } else {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = true;
+                }
+                
+                // Update selected IDs for bulk action
+                const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+                selectedIdsInput.value = selectedIds.join(',');
+            }
+
+            // Select all functionality
+            function toggleSelectAll(source) {
+                const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = source.checked;
+                });
+                updateSelectedCount();
+            }
+
+            // Individual checkbox change
+            individualCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedCount);
+            });
+
+            // Select all checkbox change
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    toggleSelectAll(this);
+                });
+            }
+
+            // Initialize the count
+            updateSelectedCount();
         });
 
     </script>
