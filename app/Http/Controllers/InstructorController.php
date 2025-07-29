@@ -35,12 +35,12 @@ class InstructorController extends Controller
 
         // Create new instructor
         Instructor::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'contact_number' => $request->contact_number,
-            'expertise' => $request->expertise,
-            'session' => $request->session,
-            'rates' => $request->rates,
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'contact_number' => $request->input('contact_number'),
+            'expertise' => $request->input('expertise'),
+            'session' => $request->input('session'),
+            'rates' => $request->input('rates'),
         ]);
 
         return redirect()->back()->with('success', 'Instructor created successfully!');
@@ -64,7 +64,14 @@ class InstructorController extends Controller
         ]);
 
         $instructor = Instructor::findOrFail($id);
-        $instructor->update($request->all());
+        $instructor->update($request->only([
+            'first_name',
+            'last_name', 
+            'contact_number',
+            'expertise',
+            'session',
+            'rates'
+        ]));
 
         return redirect()->route('instructors.index')->with('success', 'Instructor updated successfully!');
     }
