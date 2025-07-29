@@ -333,7 +333,7 @@
                                 </a>
                             </div>
                             <div class="col-6 mb-3">
-                                <a href="{{ route('appointments.index') }}" class="btn btn-outline-info btn-block">
+                                <a href="{{ route('appointment-pending-list') }}" class="btn btn-outline-info btn-block">
                                     <i class="fa fa-calendar mr-2"></i>
                                     Pending Appointments
                                     <span class="badge badge-info ml-2">{{ $quickActions['pendingAppointments'] }}</span>
@@ -719,8 +719,8 @@
                     labels: ['Gold', 'Silver', 'Bronze'],
                     datasets: [{
                         data: [
-                                        {{ $topMetrics['membershipTypes']['gold'] }},
-                                        {{ $topMetrics['membershipTypes']['silver'] }},
+                                            {{ $topMetrics['membershipTypes']['gold'] }},
+                                            {{ $topMetrics['membershipTypes']['silver'] }},
                             {{ $topMetrics['membershipTypes']['bronze'] }}
                         ],
                         backgroundColor: ['#f6c23e', '#858796', '#e83e8c'],
@@ -747,8 +747,8 @@
                     labels: ['Memberships', 'Appointments', 'Walk-ins'],
                     datasets: [{
                         data: [
-                                        {{ $monthlyStats['memberships']['current'] }},
-                                        {{ $monthlyStats['appointments']['current'] }},
+                                            {{ $monthlyStats['memberships']['current'] }},
+                                            {{ $monthlyStats['appointments']['current'] }},
                             {{ $monthlyStats['walkins']['current'] }}
                         ],
                         backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
