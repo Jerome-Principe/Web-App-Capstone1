@@ -585,7 +585,7 @@
                                         <div class="action-buttons">
                                             <a href="#" class="btn-approve" data-bs-toggle="modal"
                                                 data-bs-target="#updateModal{{ $registerRfid->id }}">
-                                                <i class="fa fa-check" aria-hidden="true"></i>Approve
+                                                <i class="fa fa-check" aria-hidden="true"></i>Update
                                             </a>
 
                                             <form action="{{ route('register-rfid.destroy', $registerRfid->id) }}" method="POST"
@@ -594,7 +594,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn-decline"
                                                     onclick="return confirm('Are you sure you want to delete this RFID record?')">
-                                                    <i class="fa fa-times" aria-hidden="true"></i>Decline
+                                                    <i class="fa fa-times" aria-hidden="true"></i>Delete
                                                 </button>
                                             </form>
                                         </div>
@@ -687,13 +687,13 @@
                 const selectedCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
                 const selectedCount = selectedCheckboxes.length;
                 const totalCount = individualCheckboxes.length;
-                
+
                 selectedCountSpan.textContent = selectedCount;
                 totalCountSpan.textContent = totalCount;
-                
+
                 // Enable/disable bulk action button
                 bulkActionBtn.disabled = selectedCount === 0;
-                
+
                 // Update select all checkbox state
                 if (selectedCount === 0) {
                     selectAllCheckbox.checked = false;
@@ -705,7 +705,7 @@
                     selectAllCheckbox.checked = false;
                     selectAllCheckbox.indeterminate = true;
                 }
-                
+
                 // Update selected IDs for bulk action
                 const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
                 selectedIdsInput.value = selectedIds.join(',');
@@ -727,7 +727,7 @@
 
             // Select all checkbox change
             if (selectAllCheckbox) {
-                selectAllCheckbox.addEventListener('change', function() {
+                selectAllCheckbox.addEventListener('change', function () {
                     toggleSelectAll(this);
                 });
             }
