@@ -155,49 +155,83 @@
             display: block;
         }
 
-        /* Approve/Decline Button Styles */
+        /* Enhanced Button Styles */
         .btn-approve {
-            background: #28a745;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
-            border-color: #28a745;
-            border-radius: 4px;
-            padding: 8px 16px;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             text-decoration: none;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-approve:hover {
-            background: #218838;
-            border-color: #1e7e34;
+            background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-approve:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-approve i {
+            font-size: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-approve:hover i {
+            transform: scale(1.1);
         }
 
         .btn-decline {
-            background: #dc3545;
+            background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
             color: white;
-            border-color: #dc3545;
-            border-radius: 4px;
-            padding: 8px 16px;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             text-decoration: none;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-decline:hover {
-            background: #c82333;
-            border-color: #bd2130;
+            background: linear-gradient(135deg, #c82333 0%, #c0392b 100%);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-decline:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-decline i {
+            font-size: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-decline:hover i {
+            transform: scale(1.1);
         }
 
         tbody tr:hover {
@@ -585,7 +619,7 @@
                                         <div class="action-buttons">
                                             <a href="#" class="btn-approve" data-bs-toggle="modal"
                                                 data-bs-target="#updateModal{{ $registerRfid->id }}">
-                                                <i class="fa fa-check" aria-hidden="true"></i>Update
+                                                <i class="fas fa-edit" aria-hidden="true"></i>Update
                                             </a>
 
                                             <form action="{{ route('register-rfid.destroy', $registerRfid->id) }}" method="POST"
@@ -594,7 +628,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn-decline"
                                                     onclick="return confirm('Are you sure you want to delete this RFID record?')">
-                                                    <i class="fa fa-times" aria-hidden="true"></i>Delete
+                                                    <i class="fas fa-trash-alt" aria-hidden="true"></i>Delete
                                                 </button>
                                             </form>
                                         </div>

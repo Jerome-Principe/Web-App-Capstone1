@@ -115,7 +115,7 @@
             color: #333;
             font-weight: 500;
             padding: 16px 12px;
-            text-align: center;
+            text-align: center !important;
             border-bottom: 1px solid #e1e5e9;
             font-size: 13px;
             text-transform: uppercase;
@@ -126,7 +126,34 @@
             padding: 16px 12px;
             border-bottom: 1px solid #f1f3f4;
             vertical-align: middle;
+            text-align: center !important;
+        }
+
+        /* Ensure all content inside cells is centered */
+        td *,
+        th * {
+            text-align: center !important;
+        }
+
+        /* Center flex containers */
+        td .d-flex,
+        th .d-flex {
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        /* Center badge elements */
+        td .badge,
+        th .badge {
+            display: inline-block;
             text-align: center;
+        }
+
+        /* Center strong elements */
+        td strong,
+        th strong {
+            text-align: center;
+            display: block;
         }
 
         tbody tr:hover {
@@ -211,12 +238,12 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 60px;">ID</th>
+                                    <th>ID</th>
                                     <th>Username</th>
                                     <th>RFID Number</th>
-                                    <th style="width: 100px;">Time In</th>
-                                    <th style="width: 100px;">Time Out</th>
-                                    <th style="width: 120px;">Date Logged</th>
+                                    <th>Time In</th>
+                                    <th>Time Out</th>
+                                    <th>Date Logged</th>
                                 </tr>
                             </thead>
                             <tbody>
