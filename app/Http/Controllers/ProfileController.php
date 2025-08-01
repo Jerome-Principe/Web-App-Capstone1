@@ -46,10 +46,6 @@ class ProfileController extends Controller
             $user->profile_picture = 'uploads/profile_pictures/' . $fileName;
         }
 
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
         $user->save();
 
         return Redirect::route('profile.edit')->with('success', 'Profile updated successfully.');
