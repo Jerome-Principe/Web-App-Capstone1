@@ -55,14 +55,76 @@ class RequestMembershipController extends Controller
         // Get the authenticated user
         $user = $request->user();
 
-        // Find the membership linked to this user
-        $membership = RequestMembership::where('membership_id', $user->id)->first();
+        // Find the user's membership request
+        $membership = RequestMembership::where('email', $user->email)->first();
 
         if (!$membership) {
             return response()->json(['message' => 'Membership not found'], 404);
         }
 
-        return response()->json($membership, 200);
+        return response()->json($membership);
     }
 
+    /**
+     * Update user profile information via mobile API
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        // Find the user's membership request
+        $membership = RequestMembership::where('email', $user->email)->first();
+
+        if (!$membership) {
+            return response()->json(['message' => 'Membership not found'], 404);
+        }
+
+        // Validate the request
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'date' => 'required|date',
+            'gender' => 'required|string|in:Male,Female,Other',
+            'age' => 'nullable|integer|min:1|max:120',
+            'weight' => 'nullable|numeric|min:0|max:500',
+            'height' => 'nullable|numeric|min:0|max:10',
+            'address' => 'required|string|max:500',
+            'postal_code' => 'required|string|max:20',
+            'email' => 'required|email|unique:request_memberships,email,' . $membership->id,
+            'work' => 'nullable|string|max:255',
+            'mobile' => 'required|string|max:20',
+        ]);
+
+        try {
+            // Update only the allowed fields (excluding gym_source and membership_type)
+            $membership->update($request->only([
+                'first_name',
+                'last_name',
+                'middle_name',
+                'date',
+                'gender',
+                'age',
+                'weight',
+                'height',
+                'address',
+                'postal_code',
+                'email',
+                'work',
+                'mobile'
+            ]));
+
+            return response()->json([
+                'message' => 'Profile updated successfully!',
+                'membership' => $membership->fresh()
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Error updating profile:', ['error' => $e->getMessage()]);
+            return response()->json([
+                'message' => 'Failed to update profile.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

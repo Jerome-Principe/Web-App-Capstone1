@@ -82,8 +82,10 @@ Route::post('/mobile/create-account', [MobileCreateAccountController::class, 'cr
 Route::post('/mobile/login', [MobileCreateAccountController::class, 'login']);
 Route::post('/mobile/logout', [MobileCreateAccountController::class, 'logout'])->middleware('auth:sanctum');
 
+// Profile Management API Routes
 Route::post('/mobile/memberships', [RequestMembershipController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/mobile/user-membership', [RequestMembershipController::class, 'getUserMembership']);
+Route::middleware('auth:sanctum')->put('/mobile/update-profile', [RequestMembershipController::class, 'updateProfile']);
 
 Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
 
