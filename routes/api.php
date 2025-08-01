@@ -22,6 +22,7 @@ use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\RecoveryEmailController;
+use App\Http\Controllers\MobilePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,11 @@ Route::post('/mobile/check-email', [RecoveryEmailController::class, 'checkEmail'
 Route::post('/mobile/send-recovery-otp', [RecoveryEmailController::class, 'sendRecoveryOtp']);
 Route::post('/mobile/recovery-verify-otp', [RecoveryEmailController::class, 'verifyOtp']);
 Route::post('/mobile/set-new-password', [RecoveryEmailController::class, 'setNewPassword']);
+
+// Mobile Password Change Routes
+Route::post('/mobile/change-password', [MobilePasswordController::class, 'changePassword']);
+Route::post('/mobile/verify-current-password', [MobilePasswordController::class, 'verifyCurrentPassword']);
+Route::get('/mobile/security-info', [MobilePasswordController::class, 'getSecurityInfo']);
 
 Route::get('/mobile/rfid/user', [RFIDController::class, 'getAttendanceByUsername']);
 Route::get('/mobile/rfid', [RFIDController::class, 'index']);
