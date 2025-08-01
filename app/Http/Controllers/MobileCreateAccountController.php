@@ -93,8 +93,8 @@ class MobileCreateAccountController extends Controller
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
-        // Delete the current token
-        $request->user()->currentAccessToken()->delete();
+        // Delete all tokens for the current user
+        $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
