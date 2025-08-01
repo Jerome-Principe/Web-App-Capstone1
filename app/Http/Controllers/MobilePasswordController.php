@@ -10,13 +10,23 @@ use Illuminate\Support\Facades\Validator;
 class MobilePasswordController extends Controller
 {
     /**
-     * Change password for mobile users
+     * Change password for authenticated mobile users
      */
     public function changePassword(Request $request)
     {
+        // Check if user is authenticated
+        if (!$request->user()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Authentication required',
+            ], 401);
+        }
+
+        // Get authenticated user
+        $user = $request->user();
+
         // Validate the request
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
             'current_password' => 'required|string',
             'new_password' => 'required|string|min:8',
             'confirm_password' => 'required|string|same:new_password',
@@ -28,16 +38,6 @@ class MobilePasswordController extends Controller
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
             ], 422);
-        }
-
-        // Find the user in pending memberships
-        $user = PendingMembership::where('email', $request->email)->first();
-
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found',
-            ], 404);
         }
 
         // Verify current password
@@ -56,6 +56,21 @@ class MobilePasswordController extends Controller
             ], 400);
         }
 
+        // Check if new password is already used by other accounts
+        $existingUserWithSamePassword = PendingMembership::where('id', '!=', $user->id)
+            ->get()
+            ->filter(function ($otherUser) use ($request) {
+                return Hash::check($request->new_password, $otherUser->password);
+            })
+            ->first();
+
+        if ($existingUserWithSamePassword) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This password is already used by another account. Please choose a different password.',
+            ], 400);
+        }
+
         try {
             // Update the password
             $user->password = Hash::make($request->new_password);
@@ -65,6 +80,7 @@ class MobilePasswordController extends Controller
                 'success' => true,
                 'message' => 'Password successfully updated',
                 'data' => [
+                    'id' => $user->id,
                     'email' => $user->email,
                     'first_name' => $user->first_name,
                     'last_name' => $user->last_name,
@@ -87,8 +103,18 @@ class MobilePasswordController extends Controller
      */
     public function verifyCurrentPassword(Request $request)
     {
+        // Check if user is authenticated
+        if (!$request->user()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Authentication required',
+            ], 401);
+        }
+
+        // Get authenticated user
+        $user = $request->user();
+
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
             'current_password' => 'required|string',
         ]);
 
@@ -98,15 +124,6 @@ class MobilePasswordController extends Controller
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
             ], 422);
-        }
-
-        $user = PendingMembership::where('email', $request->email)->first();
-
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found',
-            ], 404);
         }
 
         if (!Hash::check($request->current_password, $user->password)) {
@@ -127,30 +144,21 @@ class MobilePasswordController extends Controller
      */
     public function getSecurityInfo(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-        ]);
-
-        if ($validator->fails()) {
+        // Check if user is authenticated
+        if (!$request->user()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
+                'message' => 'Authentication required',
+            ], 401);
         }
 
-        $user = PendingMembership::where('email', $request->email)->first();
-
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found',
-            ], 404);
-        }
+        // Get authenticated user
+        $user = $request->user();
 
         return response()->json([
             'success' => true,
             'data' => [
+                'id' => $user->id,
                 'email' => $user->email,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
