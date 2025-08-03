@@ -72,9 +72,13 @@ class MealPlanCustomController extends Controller
             'breakfast' => 'nullable|string',
             'lunch' => 'required|string',
             'dinner' => 'required|string',
+            'status' => 'nullable|in:Incomplete,Completed',
         ]);
 
-        MealPlanCustom::create($request->all());
+        $data = $request->all();
+        $data['status'] = $request->input('status', 'Incomplete');
+
+        MealPlanCustom::create($data);
 
         return redirect()->back()->with('success', 'Meal plan Custom item added successfully!');
     }
@@ -96,6 +100,7 @@ class MealPlanCustomController extends Controller
             'breakfast' => 'nullable|string',
             'lunch' => 'required|string',
             'dinner' => 'required|string',
+            'status' => 'required|in:Incomplete,Completed',
         ]);
 
         $mealPlanCustom = MealPlanCustom::findOrFail($id);

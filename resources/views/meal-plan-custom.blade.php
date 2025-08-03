@@ -335,6 +335,7 @@
                                 <th class="text-center">Breakfast</th>
                                 <th class="text-center">Lunch</th>
                                 <th class="text-center">Dinner</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -354,6 +355,11 @@
                                         <td class="text-center">{{ $mealPlanCustom->breakfast }}</td>
                                         <td class="text-center">{{ $mealPlanCustom->lunch }}</td>
                                         <td class="text-center">{{ $mealPlanCustom->dinner }}</td>
+                                        <td class="text-center">
+                                            <span class="badge {{ $mealPlanCustom->status === 'Completed' ? 'bg-success' : 'bg-warning' }}">
+                                                {{ $mealPlanCustom->status }}
+                                            </span>
+                                        </td>
                                         <td class="text-center">
                                             <div class="d-flex justify-content-center">
                                                 <!-- Edit Button -->
@@ -379,7 +385,7 @@
                             @else
                                 <!-- No Data State -->
                                 <tr>
-                                    <td colspan="11" class="text-center py-5">
+                                    <td colspan="12" class="text-center py-5">
                                         <div class="empty-state">
                                             <i class="fas fa-users"
                                                 style="font-size: 64px; color: #6c757d; margin-bottom: 20px; display: block;"></i>
@@ -518,6 +524,14 @@
                                     placeholder="Enter dinner details..." required
                                     style="height: 80px; resize: none;"></textarea>
                             </div>
+
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-control" id="status" name="status" required>
+                                    <option value="Incomplete" selected>Incomplete</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
                         </form>
                     </div>
 
@@ -619,6 +633,14 @@
                                     <label for="dinner{{ $mealPlanCustom->id }}" class="form-label">Dinner</label>
                                     <textarea class="form-control" id="dinner{{ $mealPlanCustom->id }}" name="dinner"
                                         style="height: 80px; resize: none;">{{ $mealPlanCustom->dinner }}</textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="status{{ $mealPlanCustom->id }}" class="form-label">Status</label>
+                                    <select class="form-control" id="status{{ $mealPlanCustom->id }}" name="status" required>
+                                        <option value="Incomplete" {{ $mealPlanCustom->status == 'Incomplete' ? 'selected' : '' }}>Incomplete</option>
+                                        <option value="Completed" {{ $mealPlanCustom->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                    </select>
                                 </div>
                             </form>
                         </div>
