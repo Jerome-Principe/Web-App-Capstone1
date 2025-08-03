@@ -131,5 +131,8 @@ Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $reques
 });
 
 // Announcement API Routes
-Route::get('/mobile/announcements', [AnnouncementController::class, 'index']);
-Route::get('/mobile/announcements', [AnnouncementController::class, 'store']);
+Route::get('/mobile/announcements', [AnnouncementController::class, 'apiIndex']);
+Route::get('/mobile/announcements/{id}', [AnnouncementController::class, 'apiShow']);
+Route::middleware('auth:sanctum')->post('/mobile/announcements', [AnnouncementController::class, 'apiStore']);
+Route::middleware('auth:sanctum')->put('/mobile/announcements/{id}', [AnnouncementController::class, 'apiUpdate']);
+Route::middleware('auth:sanctum')->delete('/mobile/announcements/{id}', [AnnouncementController::class, 'apiDestroy']);

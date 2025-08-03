@@ -152,4 +152,136 @@ class AnnouncementController extends Controller
             return back()->with('error', 'Failed to permanently delete the Announcement.');
         }
     }
+
+    // API Methods
+    /**
+     * Get all announcements for API
+     */
+    public function apiIndex()
+    {
+        try {
+            $announcements = Announcement::orderBy('created_at', 'desc')->get();
+
+            // Return array directly for mobile app compatibility
+            return response()->json($announcements);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve announcements',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get specific announcement for API
+     */
+    public function apiShow($id)
+    {
+        try {
+            $announcement = Announcement::findOrFail($id);
+
+            return response()->json($announcement);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Announcement not found',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
+
+    /**
+     * Store new announcement via API
+     */
+    public function apiStore(Request $request)
+    {
+        try {
+            $request->validate([
+                'notification_text' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+            ]);
+
+            $data = $request->only(['notification_text', 'description']);
+
+            // Handle PDF upload
+            if ($request->hasFile('pdf_file')) {
+                $data['pdf_file'] = $request->file('pdf_file')->store('pdfs', 'public');
+            }
+
+            $announcement = Announcement::create($data);
+
+            return response()->json([
+                'success' => true,
+                'data' => $announcement,
+                'message' => 'Announcement created successfully'
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create announcement',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update announcement via API
+     */
+    public function apiUpdate(Request $request, $id)
+    {
+        try {
+            $announcement = Announcement::findOrFail($id);
+
+            $request->validate([
+                'notification_text' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+            ]);
+
+            $data = $request->only(['notification_text', 'description']);
+
+            // Handle PDF upload
+            if ($request->hasFile('pdf_file')) {
+                $data['pdf_file'] = $request->file('pdf_file')->store('pdfs', 'public');
+            }
+
+            $announcement->update($data);
+
+            return response()->json([
+                'success' => true,
+                'data' => $announcement,
+                'message' => 'Announcement updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update announcement',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete announcement via API
+     */
+    public function apiDestroy($id)
+    {
+        try {
+            $announcement = Announcement::findOrFail($id);
+            $announcement->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Announcement deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete announcement',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
