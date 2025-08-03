@@ -23,6 +23,7 @@ use App\Http\Controllers\GoalController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\RecoveryEmailController;
 use App\Http\Controllers\MobilePasswordController;
+use App\Http\Controllers\AnnouncementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,3 +129,7 @@ Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $reques
         'email' => $request->user()->email,
     ]);
 });
+
+// Announcement API Routes
+Route::get('/mobile/announcements', [AnnouncementController::class, 'index']);
+Route::get('/mobile/announcements', [AnnouncementController::class, 'store']);
