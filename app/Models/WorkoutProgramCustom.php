@@ -20,6 +20,7 @@ class WorkoutProgramCustom extends Model
         'workout',
         'difficulty',
         'duration',
+        'progress',
     ];
 
     public function user()

@@ -19,6 +19,7 @@ class ExerciseCustom extends Model
         'exercise',
         'description',
         'duration',
+        'progress',
     ];
 
     public function user()

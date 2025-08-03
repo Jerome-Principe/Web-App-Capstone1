@@ -334,6 +334,7 @@
                                 <th class="text-center">Exercises</th>
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Duration</th>
+                                <th class="text-center">Progress</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -352,6 +353,12 @@
                                         <td class="text-center">{{ $exerciseCustom->exercise }}</td>
                                         <td class="text-center">{{ $exerciseCustom->description }}</td>
                                         <td class="text-center">{{ $exerciseCustom->duration }}</td>
+                                        <td class="text-center">
+                                            <span
+                                                class="badge {{ $exerciseCustom->progress === 'Completed' ? 'bg-success' : 'bg-warning' }}">
+                                                {{ $exerciseCustom->progress ?? 'Incomplete' }}
+                                            </span>
+                                        </td>
                                         <td class="text-center">
                                             <div class="d-flex justify-content-center">
                                                 <!-- Edit Button -->
@@ -377,7 +384,7 @@
                             @else
                                 <!-- No Data State -->
                                 <tr>
-                                    <td colspan="10" class="text-center py-5">
+                                    <td colspan="11" class="text-center py-5">
                                         <div class="empty-state">
                                             <i class="fas fa-dumbbell"
                                                 style="font-size: 64px; color: #6c757d; margin-bottom: 20px; display: block;"></i>
@@ -483,6 +490,14 @@
                                 <label for="duration" class="form-label">Duration</label>
                                 <input type="text" class="form-control" id="duration" name="duration"
                                     placeholder="E.g., 30 minutes" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="progress" class="form-label">Progress</label>
+                                <select class="form-control" id="progress" name="progress" required>
+                                    <option value="Incomplete" selected>Incomplete</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
                             </div>
                         </form>
                     </div>
@@ -634,7 +649,7 @@
                 @foreach($exercisesCustom as $exerciseCustom)
                     updateExercises('{{ $exerciseCustom->id }}', '{{ $exerciseCustom->exercise }}');
                 @endforeach
-                                    });
+                                        });
         </script>
 
 
@@ -710,6 +725,15 @@
                                     <label for="duration{{ $exerciseCustom->id }}" class="form-label">Duration</label>
                                     <input type="text" class="form-control" id="duration{{ $exerciseCustom->id }}"
                                         name="duration" value="{{ $exerciseCustom->duration }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="progress{{ $exerciseCustom->id }}" class="form-label">Progress</label>
+                                    <select class="form-control" id="progress{{ $exerciseCustom->id }}" name="progress"
+                                        required>
+                                        <option value="Incomplete" {{ $exerciseCustom->progress == 'Incomplete' ? 'selected' : '' }}>Incomplete</option>
+                                        <option value="Completed" {{ $exerciseCustom->progress == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                    </select>
                                 </div>
                             </form>
                         </div>

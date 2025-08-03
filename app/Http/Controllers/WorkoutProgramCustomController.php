@@ -72,9 +72,13 @@ class WorkoutProgramCustomController extends Controller
             'workout' => 'nullable|string',
             'difficulty' => 'required|string',
             'duration' => 'required|string',
+            'progress' => 'nullable|in:Incomplete,Completed',
         ]);
 
-        WorkoutProgramCustom::create($request->all());
+        $data = $request->all();
+        $data['progress'] = $request->input('progress', 'Incomplete');
+
+        WorkoutProgramCustom::create($data);
 
         return redirect()->back()->with('success', 'Workout Program Custom item added successfully!');
     }
@@ -96,6 +100,7 @@ class WorkoutProgramCustomController extends Controller
             'workout' => 'nullable|string',
             'difficulty' => 'required|string',
             'duration' => 'required|string',
+            'progress' => 'required|in:Incomplete,Completed',
         ]);
 
         $workoutProgramCustom = WorkoutProgramCustom::findOrFail($id);

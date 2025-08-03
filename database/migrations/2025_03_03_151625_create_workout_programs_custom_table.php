@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->text('workout');
             $table->string('difficulty');
             $table->string('duration');
+            $table->enum('progress', ['Incomplete', 'Completed'])->default('Incomplete');
             $table->timestamps();
         });
     }

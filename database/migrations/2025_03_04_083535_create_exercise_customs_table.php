@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('exercise')->nullable();
             $table->text('description')->nullable();
             $table->string('duration');
+            $table->enum('progress', ['Incomplete', 'Completed'])->default('Incomplete');
             $table->timestamps();
         });
     }
