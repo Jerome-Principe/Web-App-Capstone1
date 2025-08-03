@@ -359,7 +359,7 @@
                                                 </button>
 
                                                 <!-- Delete Button (Form for DELETE request) -->
-                                                <form action="{{ route('workout-program.destroy', $workoutProgram->id) }}"
+                                                <form action="{{ route('workout-programs.destroy', $workoutProgram->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
