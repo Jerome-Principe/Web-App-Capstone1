@@ -19,7 +19,7 @@ class MealPlanCustom extends Model
         'breakfast',
         'lunch',
         'dinner',
-        'status',
+        'progress',
     ];
 
     public function user()

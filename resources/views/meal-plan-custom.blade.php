@@ -335,7 +335,7 @@
                                 <th class="text-center">Breakfast</th>
                                 <th class="text-center">Lunch</th>
                                 <th class="text-center">Dinner</th>
-                                <th class="text-center">Status</th>
+                                <th class="text-center">Progress</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -356,8 +356,9 @@
                                         <td class="text-center">{{ $mealPlanCustom->lunch }}</td>
                                         <td class="text-center">{{ $mealPlanCustom->dinner }}</td>
                                         <td class="text-center">
-                                            <span class="badge {{ $mealPlanCustom->status === 'Completed' ? 'bg-success' : 'bg-warning' }}">
-                                                {{ $mealPlanCustom->status }}
+                                            <span
+                                                class="badge {{ $mealPlanCustom->progress === 'Completed' ? 'bg-success' : 'bg-warning' }}">
+                                                {{ $mealPlanCustom->progress }}
                                             </span>
                                         </td>
                                         <td class="text-center">
@@ -526,8 +527,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="status" class="form-label">Status</label>
-                                <select class="form-control" id="status" name="status" required>
+                                <label for="progress" class="form-label">Progress</label>
+                                <select class="form-control" id="progress" name="progress" required>
                                     <option value="Incomplete" selected>Incomplete</option>
                                     <option value="Completed">Completed</option>
                                 </select>
@@ -636,10 +637,11 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="status{{ $mealPlanCustom->id }}" class="form-label">Status</label>
-                                    <select class="form-control" id="status{{ $mealPlanCustom->id }}" name="status" required>
-                                        <option value="Incomplete" {{ $mealPlanCustom->status == 'Incomplete' ? 'selected' : '' }}>Incomplete</option>
-                                        <option value="Completed" {{ $mealPlanCustom->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                    <label for="progress{{ $mealPlanCustom->id }}" class="form-label">Progress</label>
+                                    <select class="form-control" id="progress{{ $mealPlanCustom->id }}" name="progress"
+                                        required>
+                                        <option value="Incomplete" {{ $mealPlanCustom->progress == 'Incomplete' ? 'selected' : '' }}>Incomplete</option>
+                                        <option value="Completed" {{ $mealPlanCustom->progress == 'Completed' ? 'selected' : '' }}>Completed</option>
                                     </select>
                                 </div>
                             </form>

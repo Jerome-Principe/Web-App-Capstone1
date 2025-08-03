@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->text('breakfast')->nullable();
             $table->text('lunch')->nullable();
             $table->text('dinner')->nullable();
-            $table->enum('status', ['Incomplete', 'Completed'])->default('Incomplete');
+            $table->enum('progress', ['Incomplete', 'Completed'])->default('Incomplete');
             $table->timestamps();
         });
     }
