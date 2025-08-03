@@ -33,7 +33,10 @@ class AnnouncementController extends Controller
 
         // Handle PDF upload
         if ($request->hasFile('pdf_file')) {
-            $data['pdf_file'] = $request->file('pdf_file')->store('pdfs', 'public');
+            $file = $request->file('pdf_file');
+            $originalName = $file->getClientOriginalName();
+            $fileName = time() . '_' . $originalName;
+            $data['pdf_file'] = $file->storeAs('pdfs', $fileName, 'public');
         }
 
         Announcement::create($data);
@@ -64,7 +67,10 @@ class AnnouncementController extends Controller
         ]);
 
         if ($request->hasFile('pdf_file')) {
-            $pdfPath = $request->file('pdf_file')->store('pdfs', 'public');
+            $file = $request->file('pdf_file');
+            $originalName = $file->getClientOriginalName();
+            $fileName = time() . '_' . $originalName;
+            $pdfPath = $file->storeAs('pdfs', $fileName, 'public');
             $announcement->pdf_file = $pdfPath;
         }
 
@@ -207,7 +213,10 @@ class AnnouncementController extends Controller
 
             // Handle PDF upload
             if ($request->hasFile('pdf_file')) {
-                $data['pdf_file'] = $request->file('pdf_file')->store('pdfs', 'public');
+                $file = $request->file('pdf_file');
+                $originalName = $file->getClientOriginalName();
+                $fileName = time() . '_' . $originalName;
+                $data['pdf_file'] = $file->storeAs('pdfs', $fileName, 'public');
             }
 
             $announcement = Announcement::create($data);
@@ -244,7 +253,10 @@ class AnnouncementController extends Controller
 
             // Handle PDF upload
             if ($request->hasFile('pdf_file')) {
-                $data['pdf_file'] = $request->file('pdf_file')->store('pdfs', 'public');
+                $file = $request->file('pdf_file');
+                $originalName = $file->getClientOriginalName();
+                $fileName = time() . '_' . $originalName;
+                $data['pdf_file'] = $file->storeAs('pdfs', $fileName, 'public');
             }
 
             $announcement->update($data);
