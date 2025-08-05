@@ -63,21 +63,29 @@ class MealPlanCustomMobileController extends Controller
     public function complete(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer',
             'category' => 'required|string',
             'type' => 'required|string',
         ]);
 
-        $userId = $request->input('user_id');
+        $userId = $request->user()->id;
         $category = $request->input('category');
         $type = $request->input('type');
 
         try {
+            // Log the parameters for debugging
+            \Log::info('Meal plan complete request', [
+                'user_id' => $userId,
+                'category' => $category,
+                'type' => $type
+            ]);
+
             // Update all meal plans for this user, category, and type to 'Completed'
             $updatedCount = MealPlanCustom::where('user_id', $userId)
                 ->where('category', $category)
                 ->where('type', $type)
                 ->update(['progress' => 'Completed']);
+
+            \Log::info('Meal plan update result', ['updated_count' => $updatedCount]);
 
             if ($updatedCount > 0) {
                 return response()->json([

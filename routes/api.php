@@ -110,7 +110,7 @@ Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'fetchCan
 
 Route::get('/mobile/meal-plan-custom', [MealPlanCustomMobileController::class, 'index']);
 Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store']);
-Route::post('/mobile/meal-plan-complete', [MealPlanCustomMobileController::class, 'complete']);
+Route::middleware('auth:sanctum')->post('/mobile/meal-plan-complete', [MealPlanCustomMobileController::class, 'complete']);
 
 Route::get('/mobile/workout-program-custom', [WorkoutProgramCustomMobileController::class, 'index']);
 Route::post('/mobile/workout-program-custom', [WorkoutProgramCustomController::class, 'store']);
