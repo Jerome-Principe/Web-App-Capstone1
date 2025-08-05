@@ -24,6 +24,7 @@ use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\RecoveryEmailController;
 use App\Http\Controllers\MobilePasswordController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\MobileProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,9 +129,17 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $request) {
     return response()->json([
         'id' => $request->user()->id,
-        'name' => $request->user()->first_name . ' ' . $request->user()->last_name,
+        'name' => $request->user()->name,
         'email' => $request->user()->email,
+        'profileImageUrl' => $request->user()->profile_picture ? url($request->user()->profile_picture) : null,
     ]);
+});
+
+// Mobile Profile Picture Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/mobile/upload/profile-image', [MobileProfileController::class, 'uploadProfileImage']);
+    Route::get('/mobile/profile', [MobileProfileController::class, 'getUserProfile']);
+    Route::delete('/mobile/profile/image', [MobileProfileController::class, 'deleteProfileImage']);
 });
 
 // Announcement API Routes
