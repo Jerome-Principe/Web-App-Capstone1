@@ -117,6 +117,7 @@ Route::post('/mobile/workout-program-custom', [WorkoutProgramCustomController::c
 
 Route::get('/mobile/exercise-custom', [ExerciseCustomMobileController::class, 'index']);
 Route::post('/mobile/exercise-custom', [ExerciseCustomController::class, 'store']);
+Route::middleware('auth:sanctum')->post('/mobile/exercise-complete', [ExerciseCustomMobileController::class, 'complete']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
