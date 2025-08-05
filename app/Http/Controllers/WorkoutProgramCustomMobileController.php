@@ -60,4 +60,51 @@ class WorkoutProgramCustomMobileController extends Controller
         return response()->json(['data' => $defaultWorkoutPrograms], 200);
     }
 
+    public function complete(Request $request)
+    {
+        $request->validate([
+            'category' => 'required|string',
+            'type' => 'required|string',
+        ]);
+
+        $userId = $request->user()->id;
+        $category = $request->input('category');
+        $type = $request->input('type');
+
+        try {
+            // Log the parameters for debugging
+            \Log::info('Workout program complete request', [
+                'user_id' => $userId,
+                'category' => $category,
+                'type' => $type
+            ]);
+
+            // Update all workout programs for this user, category, and type to 'Completed'
+            $updatedCount = WorkoutProgramCustom::where('user_id', $userId)
+                ->where('category', $category)
+                ->where('type', $type)
+                ->update(['progress' => 'Completed']);
+
+            \Log::info('Workout program update result', ['updated_count' => $updatedCount]);
+
+            if ($updatedCount > 0) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Workout program marked as completed successfully',
+                    'updated_count' => $updatedCount
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No workout programs found to update'
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update workout program progress',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

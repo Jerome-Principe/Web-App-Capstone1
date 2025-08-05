@@ -114,6 +114,7 @@ Route::middleware('auth:sanctum')->post('/mobile/meal-plan-complete', [MealPlanC
 
 Route::get('/mobile/workout-program-custom', [WorkoutProgramCustomMobileController::class, 'index']);
 Route::post('/mobile/workout-program-custom', [WorkoutProgramCustomController::class, 'store']);
+Route::middleware('auth:sanctum')->post('/mobile/workout-program-complete', [WorkoutProgramCustomMobileController::class, 'complete']);
 
 Route::get('/mobile/exercise-custom', [ExerciseCustomMobileController::class, 'index']);
 Route::post('/mobile/exercise-custom', [ExerciseCustomController::class, 'store']);
