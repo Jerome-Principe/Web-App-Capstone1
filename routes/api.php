@@ -69,7 +69,7 @@ Route::post('/mobile/recovery-verify-otp', [RecoveryEmailController::class, 'ver
 Route::post('/mobile/set-new-password', [RecoveryEmailController::class, 'setNewPassword']);
 
 // Mobile Password Change Routes (Require Authentication)
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::post('/mobile/change-password', [MobilePasswordController::class, 'changePassword']);
     Route::post('/mobile/verify-current-password', [MobilePasswordController::class, 'verifyCurrentPassword']);
     Route::get('/mobile/security-info', [MobilePasswordController::class, 'getSecurityInfo']);
@@ -82,12 +82,12 @@ Route::post('/mobile/rfid', [RFIDController::class, 'store']);
 Route::get('/mobile/membership-pendings', [MembershipPendingController::class, 'mGetMembershipPending']);
 Route::post('/mobile/create-account', [MobileCreateAccountController::class, 'createAccount']);
 Route::post('/mobile/login', [MobileCreateAccountController::class, 'login']);
-Route::post('/mobile/logout', [MobileCreateAccountController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/mobile/logout', [MobileCreateAccountController::class, 'logout'])->middleware('auth:api');
 
 // Profile Management API Routes
 Route::post('/mobile/memberships', [RequestMembershipController::class, 'store']);
-Route::middleware('auth:sanctum')->get('/mobile/user-membership', [RequestMembershipController::class, 'getUserMembership']);
-Route::middleware('auth:sanctum')->put('/mobile/update-profile', [RequestMembershipController::class, 'updateProfile']);
+Route::middleware('auth:api')->get('/mobile/user-membership', [RequestMembershipController::class, 'getUserMembership']);
+Route::middleware('auth:api')->put('/mobile/update-profile', [RequestMembershipController::class, 'updateProfile']);
 
 Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
 
@@ -111,22 +111,22 @@ Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'fetchCan
 
 Route::get('/mobile/meal-plan-custom', [MealPlanCustomMobileController::class, 'index']);
 Route::post('/mobile/meal-plan-custom', [MealPlanCustomController::class, 'store']);
-Route::middleware('auth:sanctum')->post('/mobile/meal-plan-complete', [MealPlanCustomMobileController::class, 'complete']);
+Route::middleware('auth:api')->post('/mobile/meal-plan-complete', [MealPlanCustomMobileController::class, 'complete']);
 
 Route::get('/mobile/workout-program-custom', [WorkoutProgramCustomMobileController::class, 'index']);
 Route::post('/mobile/workout-program-custom', [WorkoutProgramCustomController::class, 'store']);
-Route::middleware('auth:sanctum')->post('/mobile/workout-program-complete', [WorkoutProgramCustomMobileController::class, 'complete']);
+Route::middleware('auth:api')->post('/mobile/workout-program-complete', [WorkoutProgramCustomMobileController::class, 'complete']);
 
 Route::get('/mobile/exercise-custom', [ExerciseCustomMobileController::class, 'index']);
 Route::post('/mobile/exercise-custom', [ExerciseCustomController::class, 'store']);
-Route::middleware('auth:sanctum')->post('/mobile/exercise-complete', [ExerciseCustomMobileController::class, 'complete']);
+Route::middleware('auth:api')->post('/mobile/exercise-complete', [ExerciseCustomMobileController::class, 'complete']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::put('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve']);
     Route::put('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline']);
 });
 
-Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $request) {
+Route::middleware('auth:api')->get('/mobile/user', function (Request $request) {
     return response()->json([
         'id' => $request->user()->id,
         'name' => $request->user()->name,
@@ -136,7 +136,7 @@ Route::middleware('auth:sanctum')->get('/mobile/user', function (Request $reques
 });
 
 // Mobile Profile Picture Routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::post('/mobile/upload/profile-image', [MobileProfileController::class, 'uploadProfileImage']);
     Route::get('/mobile/profile', [MobileProfileController::class, 'getUserProfile']);
     Route::delete('/mobile/profile/image', [MobileProfileController::class, 'deleteProfileImage']);
@@ -145,6 +145,6 @@ Route::middleware('auth:sanctum')->group(function () {
 // Announcement API Routes
 Route::get('/mobile/announcements', [AnnouncementController::class, 'apiIndex']);
 Route::get('/mobile/announcements/{id}', [AnnouncementController::class, 'apiShow']);
-Route::middleware('auth:sanctum')->post('/mobile/announcements', [AnnouncementController::class, 'apiStore']);
-Route::middleware('auth:sanctum')->put('/mobile/announcements/{id}', [AnnouncementController::class, 'apiUpdate']);
-Route::middleware('auth:sanctum')->delete('/mobile/announcements/{id}', [AnnouncementController::class, 'apiDestroy']);
+Route::middleware('auth:api')->post('/mobile/announcements', [AnnouncementController::class, 'apiStore']);
+Route::middleware('auth:api')->put('/mobile/announcements/{id}', [AnnouncementController::class, 'apiUpdate']);
+Route::middleware('auth:api')->delete('/mobile/announcements/{id}', [AnnouncementController::class, 'apiDestroy']);

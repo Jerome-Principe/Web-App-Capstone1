@@ -17,6 +17,7 @@ class PendingMembership extends Model
         'last_name',
         'email',
         'password',
+        'profile_picture',
         'start_date',
         'expiry_date',
         'membership_type',
