@@ -225,19 +225,19 @@
                 <a class="dropdown-toggle flex items-center px-3 py-2.5 text-gray-200 hover:bg-gradient-to-r hover:from-pink-600 hover:to-pink-700 hover:text-white rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
                     href="#">
                     <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i class="fa fa-calendar-check-o text-pink-400 group-hover:text-white transition-colors"></i>
+                        <i class="fa fa-money text-pink-400 group-hover:text-white transition-colors"></i>
                     </span>
                     <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Events</span>
+                        style="font-family: inherit; text-rendering: optimizeLegibility;">Expenses</span>
                     <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
                         <i class="lni-chevron-right text-gray-400 group-hover:text-white text-xs"></i>
                     </span>
                 </a>
                 <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
                     <li>
-                        <a href="#"
+                        <a href="/expenses"
                             class="block px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded transition-all duration-200 font-medium text-sm">View
-                            Events</a>
+                            Expenses</a>
                     </li>
                 </ul>
             </li>

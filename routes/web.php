@@ -31,6 +31,7 @@ use App\Http\Controllers\MobileFeedbackController;
 use App\Http\Controllers\RegisterRFIDController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\ExpenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -367,4 +368,23 @@ Route::prefix('api/notifications')->name('notifications.')->group(function () {
     Route::delete('/{notification}', [App\Http\Controllers\NotificationController::class, 'destroy'])->name('destroy');
     Route::post('/{notification}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('markAsRead');
     Route::post('/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+});
+
+// Expenses routes
+Route::prefix('expenses')->name('expenses.')->group(function () {
+    // Main resource routes (excluding 'show')
+    Route::resource('/', ExpenseController::class)
+        ->parameters(['' => 'expense'])
+        ->except(['show']);
+
+    // Additional custom routes using a controller group
+    Route::controller(ExpenseController::class)->group(function () {
+        Route::get('/trashed', 'trashed')->name('trashed');
+        Route::post('/move-to-trash', 'moveToTrash')->name('moveToTrash');
+        Route::post('/restore-selected', 'restoreBulk')->name('restoreBulk');
+        Route::post('/restore/{id}', 'restore')->name('restore');
+        Route::delete('/force-delete/{id}', 'forceDelete')->name('forceDelete');
+        Route::get('/filter', 'filterByDate')->name('filterByDate');
+        Route::get('/export-pdf', 'exportPdfByDate')->name('exportPdfByDate');
+    });
 });
