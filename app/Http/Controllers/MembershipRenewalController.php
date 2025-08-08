@@ -10,6 +10,7 @@ use App\Models\PendingMembership;
 use App\Models\RequestMembership;
 use App\Models\MembershipPayment;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MembershipRenewalController extends Controller
 {
@@ -237,7 +238,7 @@ class MembershipRenewalController extends Controller
                 ->get();
 
             // Generate PDF using DomPDF
-            $pdf = \PDF::loadView('pdf.membership-renewal', compact('renewals'));
+            $pdf = Pdf::loadView('pdf.membership-renewal', compact('renewals'));
             return $pdf->download('membership-renewal-' . now()->format('Y-m-d') . '.pdf');
 
         } catch (\Exception $e) {
