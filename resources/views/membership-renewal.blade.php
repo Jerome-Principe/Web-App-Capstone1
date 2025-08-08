@@ -304,156 +304,157 @@
 @extends('layouts.master')
 
 @section('content')
+    <div class="main-wrapper">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>MEMBERSHIP RENEWAL</h1>
+            <p>Review and manage membership renewal applications</p>
+        </div>
 
-    <body>
-        <div class="main-wrapper">
-            <!-- Page Header -->
-            <div class="page-header">
-                <h1>MEMBERSHIP RENEWAL</h1>
-                <p>Review and manage membership renewal applications</p>
-            </div>
+        <!-- Membership Renewal Section -->
+        <div class="content-card">
+            <div class="table-section">
+                <h2>Membership Renewal Applications</h2>
 
-            <!-- Membership Renewal Section -->
-            <div class="content-card">
-                <div class="table-section">
-                    <h2>Membership Renewal Applications</h2>
-
-                    <!-- Filter and Export Section -->
-                    <div class="filter-export-section">
-                        <div class="date-filter">
-                            <label for="date-filter">Select Date:</label>
-                            <input type="date" id="date-filter" name="date-filter" placeholder="MM/DD/YYYY">
-                            <button type="button" class="btn-filter" onclick="filterByDate()">
-                                <i class="fa fa-filter"></i> Filter
-                            </button>
-                        </div>
-
-                        <div class="export-buttons">
-                            <button type="button" class="btn-export" onclick="exportToPDF()">
-                                <i class="fa fa-file-pdf"></i> Export PDF
-                            </button>
-                        </div>
+                <!-- Filter and Export Section -->
+                <div class="filter-export-section">
+                    <div class="date-filter">
+                        <label for="date-filter">Select Date:</label>
+                        <input type="date" id="date-filter" name="date-filter" placeholder="MM/DD/YYYY">
+                        <button type="button" class="btn-filter" onclick="filterByDate()">
+                            <i class="fa fa-filter"></i> Filter
+                        </button>
                     </div>
 
-                    <!-- Membership Renewal Table Section -->
-                    <div class="table-container">
-                        <table>
-                            <thead>
+                    <div class="export-buttons">
+                        <button type="button" class="btn-export" onclick="exportToPDF()">
+                            <i class="fa fa-file-pdf"></i> Export PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Membership Renewal Table Section -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Membership Type</th>
+                                <th>Payment Method</th>
+                                <th>GCash #</th>
+                                <th>Acc. Name</th>
+                                <th>Ref. #</th>
+                                <th>Proof of Payment</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($renewals ?? [] as $renewal)
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Membership Type</th>
-                                    <th>Payment Method</th>
-                                    <th>GCash #</th>
-                                    <th>Acc. Name</th>
-                                    <th>Ref. #</th>
-                                    <th>Proof of Payment</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($renewals ?? [] as $renewal)
-                                    <tr>
-                                        <td>
-                                            <span class="badge bg-primary">{{ $renewal->id ?? 'N/A' }}</span>
-                                        </td>
-                                        <td>
-                                            <strong>{{ $renewal->name ?? 'N/A' }}</strong>
-                                        </td>
-                                        <td>{{ $renewal->membership_type ?? 'N/A' }}</td>
-                                        <td>{{ $renewal->payment_method ?? 'N/A' }}</td>
-                                        <td>{{ $renewal->gcash_number ?? 'N/A' }}</td>
-                                        <td>{{ $renewal->account_name ?? 'N/A' }}</td>
-                                        <td>{{ $renewal->reference_number ?? 'N/A' }}</td>
-                                        <td>
-                                            @if(isset($renewal->proof_of_payment_url) && $renewal->proof_of_payment_url)
-                                                <a href="{{ url($renewal->proof_of_payment_url) }}" target="_blank"
-                                                    class="btn btn-sm btn-outline-primary">
-                                                    <i class="fa fa-eye"></i> View Proof
-                                                </a>
-                                            @else
-                                                <span class="text-muted">No proof uploaded</span>
-                                            @endif
-                                        </td>
-                                        <td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ $renewal->id ?? 'N/A' }}</span>
+                                    </td>
+                                    <td>
+                                        <strong>{{ $renewal->name ?? 'N/A' }}</strong>
+                                    </td>
+                                    <td>{{ $renewal->membership_type ?? 'N/A' }}</td>
+                                    <td>{{ $renewal->payment_method ?? 'N/A' }}</td>
+                                    <td>{{ $renewal->gcash_number ?? 'N/A' }}</td>
+                                    <td>{{ $renewal->account_name ?? 'N/A' }}</td>
+                                    <td>{{ $renewal->reference_number ?? 'N/A' }}</td>
+                                    <td>
+                                        @if(isset($renewal->proof_of_payment_url) && $renewal->proof_of_payment_url)
+                                            <a href="{{ url($renewal->proof_of_payment_url) }}" target="_blank"
+                                                class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-eye"></i> View Proof
+                                            </a>
+                                        @else
+                                            <span class="text-muted">No proof uploaded</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($renewal->status === 'Pending')
                                             <div class="action-buttons">
-                                                <form action="{{ route('membership-renewal.approve', $renewal->id ?? 1) }}"
-                                                    method="POST" style="display:inline;">
+                                                <form action="{{ route('membership-renewal.approve', $renewal->id) }}" method="POST"
+                                                    style="display:inline;">
                                                     @csrf
                                                     <button type="submit" class="btn-approve">
                                                         <i class="fa fa-check"></i> Approve
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('membership-renewal.decline', $renewal->id ?? 1) }}"
-                                                    method="POST" style="display:inline;">
+                                                <form action="{{ route('membership-renewal.decline', $renewal->id) }}" method="POST"
+                                                    style="display:inline;">
                                                     @csrf
                                                     <button type="submit" class="btn-decline">
                                                         <i class="fa fa-times"></i> Decline
                                                     </button>
                                                 </form>
                                             </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="9">
-                                            <div class="empty-state">
-                                                <i class="fa fa-users"></i>
-                                                <h5>No renewal applications found</h5>
-                                                <p>There are no membership renewal applications to display</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                        @else
+                                            <span class="badge {{ $renewal->status === 'Approved' ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $renewal->status }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="9">
+                                        <div class="empty-state">
+                                            <i class="fa fa-users"></i>
+                                            <h5>No renewal applications found</h5>
+                                            <p>There are no membership renewal applications to display</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            // Function to filter by date
-            function filterByDate() {
-                const dateFilter = document.getElementById('date-filter');
-                const selectedDate = dateFilter.value;
+    <script>
+        // Function to filter by date
+        function filterByDate() {
+            const dateFilter = document.getElementById('date-filter');
+            const selectedDate = dateFilter.value;
 
-                if (selectedDate) {
-                    // You can implement the actual filtering logic here
-                    console.log('Filtering by date:', selectedDate);
-                    // Redirect to the same page with date parameter
-                    window.location.href = window.location.pathname + '?date=' + selectedDate;
-                } else {
-                    alert('Please select a date to filter');
-                }
+            if (selectedDate) {
+                // You can implement the actual filtering logic here
+                console.log('Filtering by date:', selectedDate);
+                // Redirect to the same page with date parameter
+                window.location.href = window.location.pathname + '?date=' + selectedDate;
+            } else {
+                alert('Please select a date to filter');
             }
+        }
 
-            // Function to export to PDF
-            function exportToPDF() {
-                const dateFilter = document.getElementById('date-filter');
-                const selectedDate = dateFilter.value;
+        // Function to export to PDF
+        function exportToPDF() {
+            const dateFilter = document.getElementById('date-filter');
+            const selectedDate = dateFilter.value;
 
-                // You can implement the actual PDF export logic here
-                console.log('Exporting to PDF with date:', selectedDate);
+            // You can implement the actual PDF export logic here
+            console.log('Exporting to PDF with date:', selectedDate);
 
-                // Example: redirect to PDF export route
-                let exportUrl = '{{ route("membership-renewal.export-pdf") }}';
-                if (selectedDate) {
-                    exportUrl += '?date=' + selectedDate;
-                }
-                window.open(exportUrl, '_blank');
+            // Example: redirect to PDF export route
+            let exportUrl = '{{ route("membership-renewal.export-pdf") }}';
+            if (selectedDate) {
+                exportUrl += '?date=' + selectedDate;
             }
+            window.open(exportUrl, '_blank');
+        }
 
-            // Initialize date filter with current date if no date is selected
-            document.addEventListener("DOMContentLoaded", function () {
-                const dateFilter = document.getElementById('date-filter');
-                if (!dateFilter.value) {
-                    const today = new Date().toISOString().split('T')[0];
-                    dateFilter.value = today;
-                }
-            });
-        </script>
-
-    </body>
-
+        // Initialize date filter with current date if no date is selected
+        document.addEventListener("DOMContentLoaded", function () {
+            const dateFilter = document.getElementById('date-filter');
+            if (!dateFilter.value) {
+                const today = new Date().toISOString().split('T')[0];
+                dateFilter.value = today;
+            }
+        });
+    </script>
 @endsection

@@ -25,6 +25,7 @@ use App\Http\Controllers\RecoveryEmailController;
 use App\Http\Controllers\MobilePasswordController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\MobileProfileController;
+use App\Http\Controllers\MembershipRenewalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +95,9 @@ Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
 
 Route::post('/mobile/membership-payments', [MembershipPaymentController::class, 'store']);
 Route::get('/mobile/membership-payments', [MembershipPaymentController::class, 'index']);
+
+Route::post('/mobile/membership-renewals', [MembershipRenewalController::class, 'store']);
+Route::get('/mobile/membership-renewals', [MembershipRenewalController::class, 'index']);
 
 Route::post('/mobile/instructors', [InstructorController::class, 'store']);
 Route::get('/mobile/instructors', [InstructorController::class, 'index']);

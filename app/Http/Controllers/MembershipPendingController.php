@@ -93,6 +93,12 @@ class MembershipPendingController extends Controller
                 };
             });
 
+        // Add income from approved membership renewals
+        $renewalIncome = \App\Models\MembershipRenewal::where('status', 'Approved')
+            ->sum('amount');
+
+        $totalIncome += $renewalIncome;
+
         return view('membership-list', compact('memberships', 'totalIncome'));
     }
 
@@ -196,6 +202,13 @@ class MembershipPendingController extends Controller
             };
         });
 
+        // Add income from approved membership renewals for the same date
+        $renewalIncome = \App\Models\MembershipRenewal::where('status', 'Approved')
+            ->whereDate('created_at', $date)
+            ->sum('amount');
+
+        $totalIncome += $renewalIncome;
+
         return view('membership-list', compact('memberships', 'totalIncome'));
     }
 
@@ -219,6 +232,13 @@ class MembershipPendingController extends Controller
                 default => 0,
             };
         });
+
+        // Add income from approved membership renewals
+        $renewalIncome = $date
+            ? \App\Models\MembershipRenewal::where('status', 'Approved')->whereDate('created_at', $date)->sum('amount')
+            : \App\Models\MembershipRenewal::where('status', 'Approved')->sum('amount');
+
+        $totalIncome += $renewalIncome;
 
         // Generate PDF
         $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date', 'totalIncome'));
