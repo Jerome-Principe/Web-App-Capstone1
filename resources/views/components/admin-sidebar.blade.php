@@ -419,7 +419,7 @@
                             class="block px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded transition-all duration-200 font-medium text-sm">Payment</a>
                     </li>
                     <li>
-                        <a href="{{ route('membership.renewal') }}"
+                        <a href="#"
                             class="block px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded transition-all duration-200 font-medium text-sm">Renewal
                             Membership</a>
                     </li>
