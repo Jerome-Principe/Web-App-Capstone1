@@ -32,6 +32,7 @@ use App\Http\Controllers\RegisterRFIDController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\MembershipRenewalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -353,6 +354,15 @@ Route::resource('membership-pendings', MembershipPendingController::class);
 Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');
 Route::post('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline'])->name('membership-pendings.decline');
 Route::post('/membership-pendings/destroy-all', [MembershipPendingController::class, 'destroyAll'])->name('membership-pendings.destroyAll');
+
+// Membership Renewal Routes
+Route::prefix('membership-renewal')->name('membership-renewal.')->group(function () {
+    Route::get('/', [MembershipRenewalController::class, 'index'])->name('index');
+    Route::post('/{id}/approve', [MembershipRenewalController::class, 'approve'])->name('approve');
+    Route::post('/{id}/decline', [MembershipRenewalController::class, 'decline'])->name('decline');
+    Route::get('/export-pdf', [MembershipRenewalController::class, 'exportPdf'])->name('export-pdf');
+    Route::get('/filter', [MembershipRenewalController::class, 'filterByDate'])->name('filter');
+});
 
 // Admin Users
 Route::resource('admin-users', AdminUserController::class);
