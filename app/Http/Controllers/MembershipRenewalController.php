@@ -62,16 +62,16 @@ class MembershipRenewalController extends Controller
                 $paymentData['proof_of_payment_url'] = null;
             } else {
                 // For GCash payments, validate required fields
-                if (!$request->gcash_number || !$request->account_name || !$request->reference_number) {
+                if (!$request->gcash_number || !$request->account_name) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'GCash number, account name, and reference number are required for GCash payments.'
+                        'message' => 'GCash number and account name are required for GCash payments.'
                     ], 400);
                 }
 
                 $paymentData['gcash_number'] = $request->gcash_number;
                 $paymentData['account_name'] = $request->account_name;
-                $paymentData['reference_number'] = $request->reference_number;
+                $paymentData['reference_number'] = $request->reference_number ?? 'GCASH_' . time();
 
                 // Handle proof of payment upload
                 if ($request->hasFile('proof_of_payment')) {
