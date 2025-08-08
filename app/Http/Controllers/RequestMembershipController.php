@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\RequestMembership;
 use Illuminate\Http\Request;
+use App\Models\PendingMembership; // Added this import
 
 class RequestMembershipController extends Controller
 {
@@ -63,6 +64,39 @@ class RequestMembershipController extends Controller
         }
 
         return response()->json($membership);
+    }
+
+    /**
+     * Get user's membership details including start_date, expiry_date, and membership_type
+     */
+    public function getUserMembershipDetails(Request $request)
+    {
+        // Get the authenticated user
+        $user = $request->user();
+
+        // Find the user's membership details from PendingMembership
+        $membership = PendingMembership::where('email', $user->email)
+            ->where('status', 'Approved')
+            ->first();
+
+        if (!$membership) {
+            return response()->json(['message' => 'Membership not found'], 404);
+        }
+
+        // Get the related RequestMembership for membership_type
+        $requestMembership = $membership->requestMembership;
+
+        $membershipDetails = [
+            'first_name' => $membership->first_name,
+            'last_name' => $membership->last_name,
+            'email' => $membership->email,
+            'start_date' => $membership->start_date,
+            'expiry_date' => $membership->expiry_date,
+            'membership_type' => $requestMembership?->membership_type ?? $membership->membership_type,
+            'status' => $membership->status,
+        ];
+
+        return response()->json($membershipDetails);
     }
 
     /**

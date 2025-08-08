@@ -87,6 +87,7 @@ Route::post('/mobile/logout', [MobileCreateAccountController::class, 'logout'])-
 // Profile Management API Routes
 Route::post('/mobile/memberships', [RequestMembershipController::class, 'store']);
 Route::middleware('auth:api')->get('/mobile/user-membership', [RequestMembershipController::class, 'getUserMembership']);
+Route::middleware('auth:api')->get('/mobile/user-membership-details', [RequestMembershipController::class, 'getUserMembershipDetails']);
 Route::middleware('auth:api')->put('/mobile/update-profile', [RequestMembershipController::class, 'updateProfile']);
 
 Route::post('/mobile/medical-forms', [MedicalFormController::class, 'store']);
