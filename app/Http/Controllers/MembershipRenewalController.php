@@ -102,19 +102,25 @@ class MembershipRenewalController extends Controller
      */
     public function index(Request $request)
     {
-        $renewals = MembershipRenewal::with('pendingMembership')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        // If date filter is applied
-        if ($request->has('date') && $request->date) {
+        try {
             $renewals = MembershipRenewal::with('pendingMembership')
-                ->whereDate('created_at', $request->date)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
-        }
 
-        return view('membership-renewal', compact('renewals'));
+            // If date filter is applied
+            if ($request->has('date') && $request->date) {
+                $renewals = MembershipRenewal::with('pendingMembership')
+                    ->whereDate('created_at', $request->date)
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+            }
+
+            return view('membership-renewal', compact('renewals'));
+        } catch (\Exception $e) {
+            \Log::error('Error loading membership renewals: ' . $e->getMessage());
+            $renewals = collect([]); // Empty collection as fallback
+            return view('membership-renewal', compact('renewals'));
+        }
     }
 
     /**

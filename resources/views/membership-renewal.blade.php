@@ -350,7 +350,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($renewals ?? [] as $renewal)
+                            @forelse($renewals ?? collect([]) as $renewal)
                                 <tr>
                                     <td>
                                         <span class="badge bg-primary">{{ $renewal->id ?? 'N/A' }}</span>
