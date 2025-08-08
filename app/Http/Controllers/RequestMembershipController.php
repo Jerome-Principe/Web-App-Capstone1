@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\RequestMembership;
+use App\Models\PendingMembership;
 use Illuminate\Http\Request;
 
 class RequestMembershipController extends Controller
@@ -63,6 +64,42 @@ class RequestMembershipController extends Controller
         }
 
         return response()->json($membership);
+    }
+
+    /**
+     * Get user's active membership details for mobile app
+     */
+    public function getActiveMembership(Request $request)
+    {
+        $user = $request->user();
+
+        // Find the user's active membership in pending_memberships table
+        $membership = PendingMembership::where('email', $user->email)
+            ->where('status', 'Approved')
+            ->first();
+
+        if (!$membership) {
+            return response()->json(['message' => 'No active membership found'], 404);
+        }
+
+        // Calculate days remaining
+        $expiryDate = \Carbon\Carbon::parse($membership->expiry_date);
+        $today = \Carbon\Carbon::now();
+        $daysRemaining = max(0, $today->diffInDays($expiryDate, false));
+
+        return response()->json([
+            'membership' => [
+                'id' => $membership->id,
+                'type' => $membership->membership_type,
+                'start_date' => $membership->start_date,
+                'expiry_date' => $membership->expiry_date,
+                'status' => $membership->status,
+                'days_remaining' => $daysRemaining,
+                'first_name' => $membership->first_name,
+                'last_name' => $membership->last_name,
+                'email' => $membership->email
+            ]
+        ]);
     }
 
     /**
