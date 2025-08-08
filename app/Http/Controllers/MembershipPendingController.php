@@ -220,9 +220,62 @@ class MembershipPendingController extends Controller
             };
         });
 
-        // Generate PDF
-        $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date', 'totalIncome'));
-        return $pdf->download('membership-list.pdf');
+        $pdf = PDF::loadView('membership-list-pdf', compact('memberships', 'totalIncome', 'date'));
+        return $pdf->download('membership-list-' . ($date ?? 'all-dates') . '.pdf');
+    }
+
+    /**
+     * Show membership renewal page
+     */
+    public function showRenewal()
+    {
+        return view('membership-renewal');
+    }
+
+    /**
+     * Show payment page
+     */
+    public function showPayment(Request $request)
+    {
+        $type = $request->get('type', 'Gold');
+        $amount = $request->get('amount', 3500);
+
+        return view('membership-payment', compact('type', 'amount'));
+    }
+
+    /**
+     * Process membership renewal payment
+     */
+    public function processPayment(Request $request)
+    {
+        $request->validate([
+            'membership_type' => 'required|in:Gold,Silver,Bronze',
+            'payment_method' => 'required|in:Cash,GCash',
+            'amount' => 'required|numeric|min:0',
+            'account_name' => 'required_if:payment_method,GCash',
+            'account_number' => 'required_if:payment_method,GCash',
+            'proof_of_payment' => 'required_if:payment_method,GCash|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        try {
+            // Here you would typically:
+            // 1. Create a payment record
+            // 2. Update membership details
+            // 3. Send notifications
+            // 4. Handle file upload for GCash proof
+
+            if ($request->payment_method === 'GCash' && $request->hasFile('proof_of_payment')) {
+                $file = $request->file('proof_of_payment');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->storeAs('public/payment_proofs', $filename);
+            }
+
+            return redirect()->route('membership.list')
+                ->with('success', 'Payment request submitted successfully! Please wait for confirmation.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to process payment. Please try again.');
+        }
     }
 
 

@@ -349,6 +349,11 @@ Route::prefix('membership-pendings')->group(function () {
     Route::get('/list/export-pdf', [MembershipPendingController::class, 'exportPdfByDate'])->name('membership.list.exportPdfByDate');
 });
 
+// Membership Renewal Routes
+Route::get('/membership/renewal', [MembershipPendingController::class, 'showRenewal'])->name('membership.renewal');
+Route::get('/membership/payment', [MembershipPendingController::class, 'showPayment'])->name('membership.payment');
+Route::post('/membership/process-payment', [MembershipPendingController::class, 'processPayment'])->name('membership.process-payment');
+
 Route::resource('membership-pendings', MembershipPendingController::class);
 Route::post('/membership-pendings/{id}/approve', [MembershipPendingController::class, 'approve'])->name('membership-pendings.approve');
 Route::post('/membership-pendings/{id}/decline', [MembershipPendingController::class, 'decline'])->name('membership-pendings.decline');
