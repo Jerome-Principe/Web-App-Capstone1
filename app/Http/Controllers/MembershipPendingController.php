@@ -80,15 +80,10 @@ class MembershipPendingController extends Controller
             ->paginate(10);
 
         // Calculate total income from approved memberships and renewals
-        // For memberships with renewals, count only renewal amounts
-        // For memberships without renewals, count original membership amounts
-        $allRenewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
-            ->pluck('membership_id')
-            ->unique();
+        // Count ALL approved memberships + ALL approved renewals
 
-        // Income from original memberships (excluding renewed ones)
+        // Income from ALL approved original memberships
         $originalIncome = PendingMembership::where('status', 'Approved')
-            ->whereNotIn('id', $allRenewedMembershipIds)
             ->get()
             ->sum(function ($membership) {
                 $membershipType = optional($membership->requestMembership)->membership_type ?? '';

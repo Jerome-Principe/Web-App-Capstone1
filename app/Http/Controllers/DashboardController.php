@@ -44,16 +44,10 @@ class DashboardController extends Controller
             $todayAttendance = AttendanceRecord::whereDate('date_logged', $currentDate->toDateString())->count();
 
             // Total Revenue (from approved memberships and renewals)
-            // For memberships with renewals, count only renewal amounts
-            // For memberships without renewals, count original membership amounts
-            $membershipIds = PendingMembership::where('status', 'Approved')->pluck('id');
-            $renewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
-                ->pluck('membership_id')
-                ->unique();
+            // Count ALL approved memberships + ALL approved renewals
 
-            // Revenue from original memberships (excluding renewed ones)
+            // Revenue from ALL approved original memberships
             $originalRevenue = PendingMembership::where('status', 'Approved')
-                ->whereNotIn('id', $renewedMembershipIds)
                 ->get()
                 ->sum(function ($membership) {
                     $membershipType = optional($membership->requestMembership)->membership_type ?? '';
@@ -72,17 +66,10 @@ class DashboardController extends Controller
             $totalRevenue = $originalRevenue + $renewalRevenue;
 
             // Monthly Revenue (similar logic as total revenue)
-            $monthlyRenewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
-                ->whereYear('created_at', $currentDate->year)
-                ->whereMonth('created_at', $currentDate->month)
-                ->pluck('membership_id')
-                ->unique();
-
-            // Revenue from original memberships created this month (excluding renewed ones)
+            // Revenue from original memberships created this month
             $monthlyOriginalRevenue = PendingMembership::where('status', 'Approved')
                 ->whereYear('created_at', $currentDate->year)
                 ->whereMonth('created_at', $currentDate->month)
-                ->whereNotIn('id', $renewedMembershipIds) // Exclude all renewed memberships, not just this month
                 ->get()
                 ->sum(function ($membership) {
                     $membershipType = optional($membership->requestMembership)->membership_type ?? '';
