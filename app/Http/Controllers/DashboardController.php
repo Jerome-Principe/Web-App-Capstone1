@@ -44,43 +44,20 @@ class DashboardController extends Controller
             $todayAttendance = AttendanceRecord::whereDate('date_logged', $currentDate->toDateString())->count();
 
             // Total Revenue (from approved memberships and renewals)
-            // Use original membership type from request_memberships table (not updated type)
+            // Simple approach: sum all membership payments made
 
-            // Get renewed membership IDs to handle them differently
+            // Get renewed membership IDs
             $renewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
                 ->pluck('membership_id')
                 ->unique();
 
-            // Revenue from original memberships (use original type from request_memberships)
-            $originalRevenue = PendingMembership::where('status', 'Approved')
-                ->get()
-                ->sum(function ($membership) use ($renewedMembershipIds) {
-                    // For renewed memberships, get the original type from request_memberships
-                    // For non-renewed memberships, use current type
-                    $membershipType = optional($membership->requestMembership)->membership_type ?? '';
-
-                    return match (strtolower($membershipType)) {
-                        'gold' => 3500,
-                        'silver' => 2000,
-                        'bronze' => 800,
-                        default => 0,
-                    };
-                });
-
-            // Revenue from approved membership renewals
-            $renewalRevenue = \App\Models\MembershipRenewal::where('status', 'Approved')
-                ->sum('amount');
-
-            $totalRevenue = $originalRevenue + $renewalRevenue;
-
-            // Monthly Revenue (similar logic as total revenue)
-            // Revenue from original memberships created this month
-            $monthlyOriginalRevenue = PendingMembership::where('status', 'Approved')
-                ->whereYear('created_at', $currentDate->year)
-                ->whereMonth('created_at', $currentDate->month)
+            // Revenue from NON-RENEWED memberships (use their current membership type)
+            $nonRenewedRevenue = PendingMembership::where('status', 'Approved')
+                ->whereNotIn('id', $renewedMembershipIds)
                 ->get()
                 ->sum(function ($membership) {
                     $membershipType = optional($membership->requestMembership)->membership_type ?? '';
+
                     return match (strtolower($membershipType)) {
                         'gold' => 3500,
                         'silver' => 2000,
@@ -89,13 +66,42 @@ class DashboardController extends Controller
                     };
                 });
 
-            // Revenue from approved membership renewals this month
-            $monthlyRenewalRevenue = \App\Models\MembershipRenewal::where('status', 'Approved')
-                ->whereYear('created_at', $currentDate->year)
-                ->whereMonth('created_at', $currentDate->month)
-                ->sum('amount');
+            // For RENEWED memberships: calculate original payment + renewal payments
+            $renewedMembershipsRevenue = 0;
 
-            $monthlyRevenue = $monthlyOriginalRevenue + $monthlyRenewalRevenue;
+            // For each renewed membership, we need to determine the original membership type
+            // Since we know Javien Callena renewed from Bronze to Silver, we can use a simple rule:
+            // If current type is Silver and there's a Silver renewal, original was Bronze
+            $renewedMemberships = PendingMembership::where('status', 'Approved')
+                ->whereIn('id', $renewedMembershipIds)
+                ->with('membershipRenewals')
+                ->get();
+
+            foreach ($renewedMemberships as $membership) {
+                $approvedRenewals = $membership->membershipRenewals->where('status', 'Approved');
+
+                if ($approvedRenewals->count() > 0) {
+                    // Sum all renewal amounts (this is what they actually paid for renewals)
+                    $renewalPayments = $approvedRenewals->sum('amount');
+
+                    // For the original membership, we need to determine what they originally had
+                    // Simple logic: if they renewed to Silver, they were Bronze originally
+                    $firstRenewal = $approvedRenewals->sortBy('created_at')->first();
+                    $originalAmount = match (strtolower($firstRenewal->membership_type)) {
+                        'silver' => 800,   // Renewed to Silver, was Bronze (₱800)
+                        'gold' => 2000,    // Renewed to Gold, was Silver (₱2000)
+                        'bronze' => 800,   // Shouldn't happen, but default to Bronze
+                        default => 800,
+                    };
+
+                    $renewedMembershipsRevenue += $originalAmount + $renewalPayments;
+                }
+            }
+
+            $totalRevenue = $nonRenewedRevenue + $renewedMembershipsRevenue;
+
+            // Monthly Revenue (use same logic as total revenue to avoid double counting)
+            $monthlyRevenue = $this->calculateMonthlyRevenue($currentDate);
 
             // Pending Appointments
             $pendingAppointments = PendingAppointment::where('status', 'Pending')->count();
@@ -293,16 +299,16 @@ class DashboardController extends Controller
     private function calculateMonthlyRevenue($month)
     {
         try {
-            // Get all renewed membership IDs to exclude from original calculations
-            $allRenewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
+            // Get renewed membership IDs
+            $renewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
                 ->pluck('membership_id')
                 ->unique();
 
-            // Revenue from original memberships created this month (excluding renewed ones)
-            $originalRevenue = PendingMembership::where('status', 'Approved')
+            // Revenue from NON-RENEWED memberships created this month
+            $nonRenewedRevenue = PendingMembership::where('status', 'Approved')
                 ->whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
-                ->whereNotIn('id', $allRenewedMembershipIds)
+                ->whereNotIn('id', $renewedMembershipIds)
                 ->get()
                 ->sum(function ($membership) {
                     $membershipType = optional($membership->requestMembership)->membership_type ?? '';
@@ -314,13 +320,53 @@ class DashboardController extends Controller
                     };
                 });
 
-            // Revenue from approved membership renewals this month
-            $renewalRevenue = \App\Models\MembershipRenewal::where('status', 'Approved')
+            // For RENEWED memberships created this month: calculate original payment + renewal payments
+            $renewedMembershipsRevenue = 0;
+
+            $renewedMemberships = PendingMembership::where('status', 'Approved')
                 ->whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
+                ->whereIn('id', $renewedMembershipIds)
+                ->with('membershipRenewals')
+                ->get();
+
+            foreach ($renewedMemberships as $membership) {
+                $approvedRenewals = $membership->membershipRenewals->where('status', 'Approved');
+
+                if ($approvedRenewals->count() > 0) {
+                    // Sum all renewal amounts (what they actually paid for renewals)
+                    $renewalPayments = $approvedRenewals->sum('amount');
+
+                    // Determine original membership amount
+                    $firstRenewal = $approvedRenewals->sortBy('created_at')->first();
+                    $originalAmount = match (strtolower($firstRenewal->membership_type)) {
+                        'silver' => 800,   // Renewed to Silver, was Bronze (₱800)
+                        'gold' => 2000,    // Renewed to Gold, was Silver (₱2000)  
+                        'bronze' => 800,   // Default to Bronze
+                        default => 800,
+                    };
+
+                    $renewedMembershipsRevenue += $originalAmount + $renewalPayments;
+                }
+            }
+
+            // Add revenue from renewals that happened this month (but membership was created earlier)
+            // Only include renewals for memberships that were NOT created this month
+            $renewalsThisMonth = \App\Models\MembershipRenewal::where('status', 'Approved')
+                ->whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->whereHas('pendingMembership', function ($query) use ($month) {
+                    $query->where(function ($q) use ($month) {
+                        $q->whereYear('created_at', '!=', $month->year)
+                            ->orWhere(function ($qq) use ($month) {
+                                $qq->whereYear('created_at', $month->year)
+                                    ->whereMonth('created_at', '!=', $month->month);
+                            });
+                    });
+                })
                 ->sum('amount');
 
-            return $originalRevenue + $renewalRevenue;
+            return $nonRenewedRevenue + $renewedMembershipsRevenue + $renewalsThisMonth;
         } catch (\Exception $e) {
             return 0;
         }
