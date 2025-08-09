@@ -171,8 +171,8 @@ class MembershipRenewalController extends Controller
                 ]);
             }
 
-            // Transfer payment data to membership_payments table
-            $this->transferPaymentData($renewal);
+            // Note: We no longer transfer renewal payment data to membership_payments table
+            // to avoid duplicate data in the payment list
 
             DB::commit();
 
@@ -207,22 +207,27 @@ class MembershipRenewalController extends Controller
 
     /**
      * Transfer payment data to membership_payments table.
+     * DEPRECATED: No longer used to avoid duplicate data in payment list
      */
     private function transferPaymentData(MembershipRenewal $renewal)
     {
-        // Create or update payment record
-        MembershipPayment::updateOrCreate(
-            [
-                'membership_id' => $renewal->membership_id,
-                'reference_number' => $renewal->reference_number ?? 'CASH_' . time(),
-            ],
-            [
-                'gcash_number' => $renewal->gcash_number,
-                'account_name' => $renewal->account_name,
-                'reference_number' => $renewal->reference_number ?? 'CASH_' . time(),
-                'proof_of_payment_url' => $renewal->proof_of_payment_url,
-            ]
-        );
+        // This method is no longer used to prevent duplicate payment records
+        // Renewal payment data stays in the membership_renewals table only
+        return;
+
+        // OLD CODE (commented out):
+        // MembershipPayment::updateOrCreate(
+        //     [
+        //         'membership_id' => $renewal->membership_id,
+        //         'reference_number' => $renewal->reference_number ?? 'CASH_' . time(),
+        //     ],
+        //     [
+        //         'gcash_number' => $renewal->gcash_number,
+        //         'account_name' => $renewal->account_name,
+        //         'reference_number' => $renewal->reference_number ?? 'CASH_' . time(),
+        //         'proof_of_payment_url' => $renewal->proof_of_payment_url,
+        //     ]
+        // );
     }
 
     /**
