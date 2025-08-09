@@ -79,8 +79,16 @@ class MembershipPendingController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(10);
 
-        // Calculate total income from approved memberships
-        $totalIncome = PendingMembership::where('status', 'Approved')
+        // Calculate total income from approved memberships and renewals
+        // For memberships with renewals, count only renewal amounts
+        // For memberships without renewals, count original membership amounts
+        $allRenewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
+            ->pluck('membership_id')
+            ->unique();
+
+        // Income from original memberships (excluding renewed ones)
+        $originalIncome = PendingMembership::where('status', 'Approved')
+            ->whereNotIn('id', $allRenewedMembershipIds)
             ->get()
             ->sum(function ($membership) {
                 $membershipType = optional($membership->requestMembership)->membership_type ?? '';
@@ -93,11 +101,11 @@ class MembershipPendingController extends Controller
                 };
             });
 
-        // Add income from approved membership renewals
+        // Income from approved membership renewals
         $renewalIncome = \App\Models\MembershipRenewal::where('status', 'Approved')
             ->sum('amount');
 
-        $totalIncome += $renewalIncome;
+        $totalIncome = $originalIncome + $renewalIncome;
 
         return view('membership-list', compact('memberships', 'totalIncome'));
     }
@@ -191,7 +199,15 @@ class MembershipPendingController extends Controller
             ->paginate(10);
 
         // Calculate total income for filtered results
-        $totalIncome = $memberships->sum(function ($membership) {
+        // Get all renewed membership IDs to exclude from original calculations
+        $allRenewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
+            ->pluck('membership_id')
+            ->unique();
+
+        // Income from original memberships on this date (excluding renewed ones)
+        $originalIncome = $memberships->filter(function ($membership) use ($allRenewedMembershipIds) {
+            return !$allRenewedMembershipIds->contains($membership->id);
+        })->sum(function ($membership) {
             $membershipType = optional($membership->requestMembership)->membership_type ?? '';
 
             return match (strtolower($membershipType)) {
@@ -202,12 +218,12 @@ class MembershipPendingController extends Controller
             };
         });
 
-        // Add income from approved membership renewals for the same date
+        // Income from approved membership renewals for the same date
         $renewalIncome = \App\Models\MembershipRenewal::where('status', 'Approved')
             ->whereDate('created_at', $date)
             ->sum('amount');
 
-        $totalIncome += $renewalIncome;
+        $totalIncome = $originalIncome + $renewalIncome;
 
         return view('membership-list', compact('memberships', 'totalIncome'));
     }

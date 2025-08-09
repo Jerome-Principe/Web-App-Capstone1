@@ -75,6 +75,22 @@ class PendingMembership extends Model
     }
 
     /**
+     * Relationship: MembershipRenewal.
+     */
+    public function membershipRenewals()
+    {
+        return $this->hasMany(\App\Models\MembershipRenewal::class, 'membership_id');
+    }
+
+    /**
+     * Check if this membership has approved renewals.
+     */
+    public function hasApprovedRenewals()
+    {
+        return $this->membershipRenewals()->where('status', 'Approved')->exists();
+    }
+
+    /**
      * Relationship: MembershipPayment.
      */
     public function membershipPayments()
