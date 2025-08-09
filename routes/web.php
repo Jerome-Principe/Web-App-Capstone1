@@ -362,6 +362,7 @@ Route::prefix('membership-renewal')->name('membership-renewal.')->group(function
     Route::post('/{id}/decline', [MembershipRenewalController::class, 'decline'])->name('decline');
     Route::get('/export-pdf', [MembershipRenewalController::class, 'exportPdf'])->name('export-pdf');
     Route::get('/filter', [MembershipRenewalController::class, 'filterByDate'])->name('filter');
+    Route::post('/fix-types', [MembershipRenewalController::class, 'fixMembershipTypes'])->name('fix-types');
 });
 
 // Admin Users

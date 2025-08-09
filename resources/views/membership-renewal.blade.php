@@ -330,6 +330,10 @@
                         <button type="button" class="btn-export" onclick="exportToPDF()">
                             <i class="fa fa-file-pdf"></i> Export PDF
                         </button>
+                        <button type="button" class="btn-fix" onclick="fixMembershipTypes()"
+                            style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 14px; cursor: pointer; margin-left: 8px;">
+                            <i class="fa fa-wrench"></i> Fix Types
+                        </button>
                     </div>
                 </div>
 
@@ -446,6 +450,26 @@
                 exportUrl += '?date=' + selectedDate;
             }
             window.open(exportUrl, '_blank');
+        }
+
+        // Function to fix membership types
+        function fixMembershipTypes() {
+            if (confirm('This will update membership types for all approved renewals. Are you sure you want to continue?')) {
+                // Create a form and submit it
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ route("membership-renewal.fix-types") }}';
+
+                // Add CSRF token
+                const csrfToken = document.createElement('input');
+                csrfToken.type = 'hidden';
+                csrfToken.name = '_token';
+                csrfToken.value = '{{ csrf_token() }}';
+                form.appendChild(csrfToken);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
         }
 
         // Initialize date filter with current date if no date is selected

@@ -260,4 +260,56 @@ class MembershipRenewalController extends Controller
 
         return redirect()->route('membership-renewal.index', ['date' => $date]);
     }
+
+    /**
+     * Fix membership types for existing approved renewals.
+     */
+    public function fixMembershipTypes()
+    {
+        try {
+            // Get all approved renewals
+            $approvedRenewals = MembershipRenewal::where('status', 'Approved')
+                ->with(['pendingMembership', 'pendingMembership.requestMembership'])
+                ->get();
+
+            $updatedCount = 0;
+
+            foreach ($approvedRenewals as $renewal) {
+                $pendingMembership = $renewal->pendingMembership;
+                $requestMembership = $pendingMembership?->requestMembership;
+
+                if (!$pendingMembership || !$requestMembership) {
+                    continue;
+                }
+
+                $renewalType = strtolower($renewal->membership_type);
+                $currentPendingType = strtolower($pendingMembership->membership_type ?? '');
+                $currentRequestType = strtolower($requestMembership->membership_type ?? '');
+
+                $needsUpdate = false;
+
+                // Check if pending_memberships table needs update
+                if ($currentPendingType !== $renewalType) {
+                    $pendingMembership->update(['membership_type' => $renewal->membership_type]);
+                    $needsUpdate = true;
+                }
+
+                // Check if request_memberships table needs update
+                if ($currentRequestType !== $renewalType) {
+                    $requestMembership->update(['membership_type' => $renewal->membership_type]);
+                    $needsUpdate = true;
+                }
+
+                if ($needsUpdate) {
+                    $updatedCount++;
+                }
+            }
+
+            return redirect()->back()->with('success', "Membership types fixed successfully! Updated {$updatedCount} memberships.");
+
+        } catch (\Exception $e) {
+            \Log::error('Fix membership types failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to fix membership types: ' . $e->getMessage());
+        }
+    }
 }
