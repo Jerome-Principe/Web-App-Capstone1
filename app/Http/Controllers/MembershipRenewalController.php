@@ -154,22 +154,16 @@ class MembershipRenewalController extends Controller
                 'new_expiry_date' => $newExpiryDate,
             ]);
 
-            // Update membership in pending_memberships table
+            // Update membership in pending_memberships table (only expiry date, keep original type for revenue calculation)
             $pendingMembership = $renewal->pendingMembership;
             if ($pendingMembership) {
                 $pendingMembership->update([
-                    'membership_type' => $renewal->membership_type,
                     'expiry_date' => $newExpiryDate,
                 ]);
             }
 
-            // Update membership in request_memberships table
-            $requestMembership = RequestMembership::where('membership_id', $renewal->membership_id)->first();
-            if ($requestMembership) {
-                $requestMembership->update([
-                    'membership_type' => $renewal->membership_type,
-                ]);
-            }
+            // Do not update the original membership type in request_memberships table
+            // The current membership type is tracked in the renewal record
 
             // Transfer payment data to membership_payments table
             $this->transferPaymentData($renewal);

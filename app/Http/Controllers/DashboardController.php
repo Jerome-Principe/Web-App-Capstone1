@@ -44,13 +44,21 @@ class DashboardController extends Controller
             $todayAttendance = AttendanceRecord::whereDate('date_logged', $currentDate->toDateString())->count();
 
             // Total Revenue (from approved memberships and renewals)
-            // Count ALL approved memberships + ALL approved renewals
+            // Use original membership type from request_memberships table (not updated type)
 
-            // Revenue from ALL approved original memberships
+            // Get renewed membership IDs to handle them differently
+            $renewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
+                ->pluck('membership_id')
+                ->unique();
+
+            // Revenue from original memberships (use original type from request_memberships)
             $originalRevenue = PendingMembership::where('status', 'Approved')
                 ->get()
-                ->sum(function ($membership) {
+                ->sum(function ($membership) use ($renewedMembershipIds) {
+                    // For renewed memberships, get the original type from request_memberships
+                    // For non-renewed memberships, use current type
                     $membershipType = optional($membership->requestMembership)->membership_type ?? '';
+
                     return match (strtolower($membershipType)) {
                         'gold' => 3500,
                         'silver' => 2000,

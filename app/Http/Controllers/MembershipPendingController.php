@@ -80,9 +80,9 @@ class MembershipPendingController extends Controller
             ->paginate(10);
 
         // Calculate total income from approved memberships and renewals
-        // Count ALL approved memberships + ALL approved renewals
+        // Use original membership type for revenue calculation
 
-        // Income from ALL approved original memberships
+        // Income from original memberships (using original type from request_memberships)
         $originalIncome = PendingMembership::where('status', 'Approved')
             ->get()
             ->sum(function ($membership) {
