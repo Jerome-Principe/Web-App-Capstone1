@@ -138,8 +138,8 @@ class ExpenseController extends Controller
     public function filterByDate(Request $request)
     {
         $date = $request->input('date'); // Get the selected date
-        $expenses = Expense::whereDate('date', $date)->paginate(10); // Filter expenses by date
-        $totalAmount = $expenses->sum('amount'); // Calculate the total amount
+        $expenses = Expense::where('date', $date)->paginate(10); // Filter expenses by date
+        $totalAmount = Expense::where('date', $date)->sum('amount'); // Calculate the total amount
 
         return view('expenses', compact('expenses', 'totalAmount', 'date'));
     }
@@ -152,7 +152,7 @@ class ExpenseController extends Controller
 
         // Check if a date is provided; if not, fetch all records
         if ($date) {
-            $expenses = Expense::whereDate('date', $date)->get();
+            $expenses = Expense::where('date', $date)->get();
         } else {
             $expenses = Expense::all(); // Get all records
         }
