@@ -371,7 +371,7 @@
                                             <strong>{{ $membership->first_name }}</strong>
                                         </td>
                                         <td>{{ $membership->middle_name ?? 'N/A' }}</td>
-                                        <td>{{ $membership->date ?? 'N/A' }}</td>
+                                        <td>{{ $membership->date ? \Carbon\Carbon::parse($membership->date)->format('M d, Y') : 'N/A' }}</td>
                                         <td>
                                             <span class="badge">{{ $membership->gender ?? 'N/A' }}</span>
                                         </td>
