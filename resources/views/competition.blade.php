@@ -114,6 +114,7 @@
             width: 100%;
             border-collapse: collapse;
             background: white;
+            table-layout: fixed;
         }
 
         th {
@@ -144,6 +145,15 @@
             width: 16px;
             height: 16px;
             accent-color: #007bff;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Checkbox column alignment */
+        th:first-child,
+        td:first-child {
+            text-align: center;
+            width: 50px;
         }
 
         /* Action Buttons */
