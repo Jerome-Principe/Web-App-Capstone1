@@ -70,8 +70,6 @@ class DashboardController extends Controller
             $renewedMembershipsRevenue = 0;
 
             // For each renewed membership, we need to determine the original membership type
-            // Since we know Javien Callena renewed from Bronze to Silver, we can use a simple rule:
-            // If current type is Silver and there's a Silver renewal, original was Bronze
             $renewedMemberships = PendingMembership::where('status', 'Approved')
                 ->whereIn('id', $renewedMembershipIds)
                 ->with('membershipRenewals')
@@ -84,15 +82,9 @@ class DashboardController extends Controller
                     // Sum all renewal amounts (this is what they actually paid for renewals)
                     $renewalPayments = $approvedRenewals->sum('amount');
 
-                    // For the original membership, we need to determine what they originally had
-                    // Simple logic: if they renewed to Silver, they were Bronze originally
-                    $firstRenewal = $approvedRenewals->sortBy('created_at')->first();
-                    $originalAmount = match (strtolower($firstRenewal->membership_type)) {
-                        'silver' => 800,   // Renewed to Silver, was Bronze (₱800)
-                        'gold' => 2000,    // Renewed to Gold, was Silver (₱2000)
-                        'bronze' => 800,   // Shouldn't happen, but default to Bronze
-                        default => 800,
-                    };
+                    // Determine original membership amount
+                    // Since all users start with Bronze membership (₱800), we use that as the base
+                    $originalAmount = 800; // All users start with Bronze membership
 
                     $renewedMembershipsRevenue += $originalAmount + $renewalPayments;
                 }
@@ -338,13 +330,8 @@ class DashboardController extends Controller
                     $renewalPayments = $approvedRenewals->sum('amount');
 
                     // Determine original membership amount
-                    $firstRenewal = $approvedRenewals->sortBy('created_at')->first();
-                    $originalAmount = match (strtolower($firstRenewal->membership_type)) {
-                        'silver' => 800,   // Renewed to Silver, was Bronze (₱800)
-                        'gold' => 2000,    // Renewed to Gold, was Silver (₱2000)  
-                        'bronze' => 800,   // Default to Bronze
-                        default => 800,
-                    };
+                    // Since all users start with Bronze membership (₱800), we use that as the base
+                    $originalAmount = 800; // All users start with Bronze membership
 
                     $renewedMembershipsRevenue += $originalAmount + $renewalPayments;
                 }

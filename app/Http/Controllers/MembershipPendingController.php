@@ -118,14 +118,8 @@ class MembershipPendingController extends Controller
                 $renewalPayments = $approvedRenewals->sum('amount');
 
                 // For the original membership, determine what they originally had
-                // Simple logic: if they renewed to Silver, they were Bronze originally
-                $firstRenewal = $approvedRenewals->sortBy('created_at')->first();
-                $originalAmount = match (strtolower($firstRenewal->membership_type)) {
-                    'silver' => 800,   // Renewed to Silver, was Bronze (₱800)
-                    'gold' => 2000,    // Renewed to Gold, was Silver (₱2000)
-                    'bronze' => 800,   // Shouldn't happen, but default to Bronze
-                    default => 800,
-                };
+                // Since all users start with Bronze membership (₱800), we use that as the base
+                $originalAmount = 800; // All users start with Bronze membership
 
                 $renewedMembershipsRevenue += $originalAmount + $renewalPayments;
             }
@@ -259,13 +253,8 @@ class MembershipPendingController extends Controller
                 $renewalPayments = $approvedRenewals->sum('amount');
 
                 // For the original membership, determine what they originally had
-                $firstRenewal = $approvedRenewals->sortBy('created_at')->first();
-                $originalAmount = match (strtolower($firstRenewal->membership_type)) {
-                    'silver' => 800,   // Renewed to Silver, was Bronze (₱800)
-                    'gold' => 2000,    // Renewed to Gold, was Silver (₱2000)
-                    'bronze' => 800,   // Shouldn't happen, but default to Bronze
-                    default => 800,
-                };
+                // Since all users start with Bronze membership (₱800), we use that as the base
+                $originalAmount = 800; // All users start with Bronze membership
 
                 $renewedMembershipsRevenue += $originalAmount + $renewalPayments;
             }
@@ -285,8 +274,16 @@ class MembershipPendingController extends Controller
             ? PendingMembership::where('status', 'Approved')->whereDate('created_at', $date)->get()
             : PendingMembership::where('status', 'Approved')->get();
 
-        // Calculate total income ONLY from approved memberships
-        $totalIncome = $memberships->sum(function ($membership) {
+        // Calculate total income using same logic as dashboard to ensure consistency
+        // Get renewed membership IDs
+        $renewedMembershipIds = \App\Models\MembershipRenewal::where('status', 'Approved')
+            ->pluck('membership_id')
+            ->unique();
+
+        // Revenue from NON-RENEWED memberships (use their original membership type)
+        $nonRenewedRevenue = $memberships->filter(function ($membership) use ($renewedMembershipIds) {
+            return !$renewedMembershipIds->contains($membership->id);
+        })->sum(function ($membership) {
             $membershipType = optional($membership->requestMembership)->membership_type ?? '';
 
             return match (strtolower($membershipType)) {
@@ -297,12 +294,29 @@ class MembershipPendingController extends Controller
             };
         });
 
-        // Add income from approved membership renewals
-        $renewalIncome = $date
-            ? \App\Models\MembershipRenewal::where('status', 'Approved')->whereDate('created_at', $date)->sum('amount')
-            : \App\Models\MembershipRenewal::where('status', 'Approved')->sum('amount');
+        // For RENEWED memberships: calculate original payment + renewal payments
+        $renewedMembershipsRevenue = 0;
 
-        $totalIncome += $renewalIncome;
+        $renewedMemberships = $memberships->filter(function ($membership) use ($renewedMembershipIds) {
+            return $renewedMembershipIds->contains($membership->id);
+        });
+
+        foreach ($renewedMemberships as $membership) {
+            $approvedRenewals = $membership->membershipRenewals?->where('status', 'Approved') ?? collect();
+
+            if ($approvedRenewals->count() > 0) {
+                // Sum all renewal amounts (this is what they actually paid for renewals)
+                $renewalPayments = $approvedRenewals->sum('amount');
+
+                // For the original membership, determine what they originally had
+                // Since all users start with Bronze membership (₱800), we use that as the base
+                $originalAmount = 800; // All users start with Bronze membership
+
+                $renewedMembershipsRevenue += $originalAmount + $renewalPayments;
+            }
+        }
+
+        $totalIncome = $nonRenewedRevenue + $renewedMembershipsRevenue;
 
         // Generate PDF
         $pdf = Pdf::loadView('membership-list-pdf', compact('memberships', 'date', 'totalIncome'));
