@@ -305,24 +305,26 @@
                     </div>
                 @endif
 
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $items->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $items->previousPageUrl() }}" tabindex="-1">Previous</a>
-                        </li>
-
-                        @foreach(range(1, $items->lastPage()) as $page)
-                            <li class="page-item {{ $page == $items->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $items->url($page) }}">{{ $page }}</a>
-                            </li>
-                        @endforeach
-
-                        <li class="page-item {{ !$items->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $items->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item {{ $items->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $items->previousPageUrl() }}" tabindex="-1">Previous</a>
+                    </li>
+
+                    @foreach(range(1, $items->lastPage()) as $page)
+                        <li class="page-item {{ $page == $items->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $items->url($page) }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+
+                    <li class="page-item {{ !$items->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $items->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
     </body>
 
