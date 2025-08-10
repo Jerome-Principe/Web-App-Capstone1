@@ -122,18 +122,20 @@
             color: #333;
             font-weight: 500;
             padding: 16px 12px;
-            text-align: center;
+            text-align: center !important;
             border-bottom: 1px solid #e1e5e9;
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            min-width: 100px;
         }
 
         td {
             padding: 16px 12px;
             border-bottom: 1px solid #f1f3f4;
-            text-align: center;
+            text-align: center !important;
             vertical-align: middle;
+            min-width: 100px;
         }
 
         /* Hover effect */
