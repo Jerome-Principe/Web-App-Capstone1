@@ -126,14 +126,7 @@
         }
 
         /* Total Price Display - Exact match from screenshot */
-        .total-price-section {
-            margin: 24px 0 32px 0;
-            display: flex;
-            justify-content: center;
-            padding: 0;
-        }
-
-        .total-price-card {
+        .total-income {
             background: #e8f5e8;
             border: 1px solid #c3e6cb;
             border-radius: 4px;
@@ -142,7 +135,7 @@
             text-align: center;
         }
 
-        .total-price-card h5 {
+        .total-income h5 {
             color: #155724;
             margin: 0;
             font-weight: 500;
@@ -305,11 +298,12 @@
                     </tbody>
                 </table>
 
-                <div class="total-price-section">
-                    <div class="total-price-card">
+                <!-- Total Price Display -->
+                @if(isset($totalPrice))
+                    <div class="total-income">
                         <h5><i class="fa fa-money-bill-wave"></i> Total Price: ₱{{ number_format($totalPrice, 2) }}</h5>
                     </div>
-                </div>
+                @endif
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4">
