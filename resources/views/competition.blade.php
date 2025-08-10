@@ -132,21 +132,21 @@
         td {
             padding: 16px 12px;
             border-bottom: 1px solid #f1f3f4;
-            vertical-align: middle;
             text-align: center;
+            vertical-align: middle;
         }
 
+        /* Hover effect */
         tbody tr:hover {
             background: #f8f9fa;
+            cursor: pointer;
         }
 
-        /* Minimalist Checkbox */
         input[type="checkbox"] {
             width: 16px;
             height: 16px;
             accent-color: #007bff;
-            margin: 0 auto;
-            display: block;
+            margin: 0;
         }
 
         /* Checkbox column alignment */
