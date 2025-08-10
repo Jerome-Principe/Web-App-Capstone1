@@ -125,7 +125,7 @@
             margin: 0;
         }
 
-        /* Enhanced Total Price Styling - Clean Centered Design */
+        /* Enhanced Total Price Styling - Matching Total Income Design */
         .total-price-section {
             margin: 24px 0 32px 0;
             display: flex;
@@ -134,35 +134,34 @@
         }
 
         .total-price-card {
-            background: #f8f9fa;
-            color: #1a5f3c;
-            padding: 20px 32px;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(26, 95, 60, 0.1);
+            background: #e8f5e8;
+            color: #155724;
+            padding: 16px;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
             display: flex;
             align-items: center;
-            gap: 16px;
-            min-width: 280px;
+            gap: 8px;
             justify-content: center;
             font-weight: 500;
-            border: 1px solid #e9ecef;
+            text-align: center;
         }
 
         .total-icon {
-            font-size: 24px;
-            color: #1a5f3c;
+            font-size: 16px;
+            color: #155724;
         }
 
         .total-label {
             font-size: 16px;
             font-weight: 500;
-            color: #1a5f3c;
+            color: #155724;
         }
 
         .total-amount {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a5f3c;
+            font-size: 16px;
+            font-weight: 500;
+            color: #155724;
         }
 
         /* Pagination Styling */
