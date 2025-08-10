@@ -113,9 +113,10 @@
                         <td>{{ $membership->first_name }}</td>
                         <td>{{ $membership->last_name }}</td>
                         <td>{{ $membership->email }}</td>
-                        <td>{{ $membership->start_date ? \Carbon\Carbon::parse($membership->start_date)->format('Y-m-d') : 'N/A' }}
+                        <td>{{ $membership->start_date ? \Carbon\Carbon::parse($membership->start_date)->format('M d, Y') : 'N/A' }}
                         </td>
-                        <td>{{ $membership->expiry_date ?? 'N/A' }}</td>
+                        <td>{{ $membership->expiry_date ? \Carbon\Carbon::parse($membership->expiry_date)->format('M d, Y') : 'N/A' }}
+                        </td>
                         <td>{{ ucfirst(optional($membership->requestMembership)->membership_type ?? 'N/A') }}</td>
                         <td class="{{ $membership->status == 'Declined' ? 'declined-status' : '' }}">
                             {{ $membership->status }}

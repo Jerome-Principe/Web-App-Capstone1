@@ -426,7 +426,7 @@
                                         <td>
                                             @if($membership->start_date)
                                                 <span class="badge bg-info">
-                                                    {{ \Carbon\Carbon::parse($membership->start_date)->format('Y-m-d') }}
+                                                    {{ \Carbon\Carbon::parse($membership->start_date)->format('M d, Y') }}
                                                 </span>
                                             @else
                                                 <span class="text-muted">N/A</span>
@@ -435,7 +435,7 @@
                                         <td>
                                             @if($membership->expiry_date)
                                                 <span class="badge bg-warning">
-                                                    {{ \Carbon\Carbon::parse($membership->expiry_date)->format('Y-m-d') }}
+                                                    {{ \Carbon\Carbon::parse($membership->expiry_date)->format('M d, Y') }}
                                                 </span>
                                             @else
                                                 <span class="text-muted">N/A</span>
