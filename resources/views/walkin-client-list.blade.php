@@ -252,7 +252,7 @@
 
         /* Pagination styling */
         .pagination {
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
     </style>
 </head>
@@ -404,23 +404,25 @@
                     </div>
                 </div>
 
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $walkins->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $walkins->previousPageUrl() }}" tabindex="-1">Previous</a>
-                        </li>
-
-                        @foreach(range(1, $walkins->lastPage()) as $page)
-                            <li class="page-item {{ $page == $walkins->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $walkins->url($page) }}">{{ $page }}</a>
+                <div class="pagination-container">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4">
+                            <li class="page-item {{ $walkins->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $walkins->previousPageUrl() }}" tabindex="-1">Previous</a>
                             </li>
-                        @endforeach
 
-                        <li class="page-item {{ !$walkins->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $walkins->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                            @foreach(range(1, $walkins->lastPage()) as $page)
+                                <li class="page-item {{ $page == $walkins->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $walkins->url($page) }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            <li class="page-item {{ !$walkins->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $walkins->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </body>
