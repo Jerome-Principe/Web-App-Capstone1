@@ -125,7 +125,7 @@
             margin: 0;
         }
 
-        /* Enhanced Total Price Styling - Matching Total Income Design */
+        /* Total Price Display - Exact match from screenshot */
         .total-price-section {
             margin: 24px 0 32px 0;
             display: flex;
@@ -135,33 +135,17 @@
 
         .total-price-card {
             background: #e8f5e8;
-            color: #155724;
-            padding: 16px;
-            border-radius: 4px;
             border: 1px solid #c3e6cb;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
-            font-weight: 500;
+            border-radius: 4px;
+            padding: 16px;
+            margin-top: 24px;
             text-align: center;
         }
 
-        .total-icon {
-            font-size: 16px;
+        .total-price-card h5 {
             color: #155724;
-        }
-
-        .total-label {
-            font-size: 16px;
+            margin: 0;
             font-weight: 500;
-            color: #155724;
-        }
-
-        .total-amount {
-            font-size: 16px;
-            font-weight: 500;
-            color: #155724;
         }
 
         /* Pagination Styling */
@@ -323,9 +307,7 @@
 
                 <div class="total-price-section">
                     <div class="total-price-card">
-                        <i class="fas fa-money-bill-wave total-icon"></i>
-                        <span class="total-label">Total Price:</span>
-                        <span class="total-amount">₱{{ number_format($totalPrice, 2) }}</span>
+                        <h5><i class="fa fa-money-bill-wave"></i> Total Price: ₱{{ number_format($totalPrice, 2) }}</h5>
                     </div>
                 </div>
 
