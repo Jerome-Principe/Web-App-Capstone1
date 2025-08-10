@@ -141,11 +141,6 @@
             font-weight: 500;
         }
 
-        /* Pagination Styling */
-        .pagination {
-            margin-bottom: 2rem !important;
-        }
-
         /* Enhanced Date Display Styling */
         .date-display {
             display: flex;
@@ -308,7 +303,7 @@
             </div>
 
             <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
+                <ul class="pagination justify-content-center mt-4 mb-4">
                     <li class="page-item {{ $items->onFirstPage() ? 'disabled' : '' }}">
                         <a class="page-link" href="{{ $items->previousPageUrl() }}" tabindex="-1">Previous</a>
                     </li>
