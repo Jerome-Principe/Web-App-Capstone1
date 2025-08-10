@@ -125,7 +125,7 @@
             margin: 0;
         }
 
-        /* Enhanced Total Price Styling */
+        /* Enhanced Total Price Styling - Clean Centered Design */
         .total-price-section {
             margin: 24px 0 32px 0;
             display: flex;
@@ -134,29 +134,35 @@
         }
 
         .total-price-card {
-            background: #70c89a;
-            color: white;
-            padding: 16px 24px;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(112, 200, 154, 0.3);
+            background: #f8f9fa;
+            color: #1a5f3c;
+            padding: 20px 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(26, 95, 60, 0.1);
             display: flex;
             align-items: center;
-            gap: 12px;
-            min-width: 250px;
-            justify-content: space-between;
+            gap: 16px;
+            min-width: 280px;
+            justify-content: center;
             font-weight: 500;
+            border: 1px solid #e9ecef;
+        }
+
+        .total-icon {
+            font-size: 24px;
+            color: #1a5f3c;
         }
 
         .total-label {
             font-size: 16px;
             font-weight: 500;
-            opacity: 0.9;
+            color: #1a5f3c;
         }
 
         .total-amount {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a5f3c;
         }
 
         /* Pagination Styling */
@@ -318,6 +324,7 @@
 
                 <div class="total-price-section">
                     <div class="total-price-card">
+                        <i class="fas fa-money-bill-wave total-icon"></i>
                         <span class="total-label">Total Price:</span>
                         <span class="total-amount">₱{{ number_format($totalPrice, 2) }}</span>
                     </div>
