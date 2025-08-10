@@ -121,7 +121,7 @@
             color: #333;
             font-weight: 500;
             padding: 16px 12px;
-            text-align: left;
+            text-align: center;
             border-bottom: 1px solid #e1e5e9;
             font-size: 13px;
             text-transform: uppercase;
@@ -132,6 +132,7 @@
             padding: 16px 12px;
             border-bottom: 1px solid #f1f3f4;
             vertical-align: middle;
+            text-align: center;
         }
 
         tbody tr:hover {
@@ -391,17 +392,17 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 40px;">
+                                    <th>
                                         <input type="checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
-                                    <th style="width: 60px;">ID</th>
+                                    <th>ID</th>
                                     <th>Name</th>
-                                    <th style="width: 80px;">Age</th>
-                                    <th style="width: 100px;">Gender</th>
-                                    <th style="width: 120px;">Height (cm)</th>
-                                    <th style="width: 120px;">Weight (kg)</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Height (cm)</th>
+                                    <th>Weight (kg)</th>
                                     <th>Type of Competition</th>
-                                    <th style="width: 150px;">Actions</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
