@@ -369,10 +369,11 @@
                                 </form>
 
                                 <!-- Date Filter Form -->
-                                <form id="date-filter-form" method="GET" action="{{ route('membership.list.filterByDate') }}" class="d-flex align-items-center">
+                                <form id="date-filter-form" method="GET"
+                                    action="{{ route('membership.list.filterByDate') }}" class="d-flex align-items-center">
                                     <label for="date" class="form-label me-2">Select Date:</label>
-                                    <input type="date" name="date" id="date" class="form-control me-2"
-                                        style="width: 200px;" required>
+                                    <input type="date" name="date" id="date" class="form-control me-2" style="width: 200px;"
+                                        required>
                                     <button type="submit" class="btn btn-primary me-2">Filter</button>
                                 </form>
 
@@ -474,7 +475,8 @@
                         <!-- Total Income Display -->
                         @if(isset($totalIncome))
                             <div class="total-income">
-                                <h5><i class="fa fa-money-bill-wave"></i> Total Income: ₱{{ number_format($totalIncome, 2) }}</h5>
+                                <h5><i class="fa fa-money-bill-wave"></i> Total Income: ₱{{ number_format($totalIncome, 2) }}
+                                </h5>
                             </div>
                         @endif
 

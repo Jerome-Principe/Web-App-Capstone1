@@ -444,7 +444,7 @@
                                                     data-height="{{ $competition->height }}"
                                                     data-weight="{{ $competition->weight }}"
                                                     data-activity="{{ $competition->type_of_competition }}">
-                                                    <i class="fa fa-pencil-square-o me-1"></i>Edit
+                                                    <i class="fa fa-pencil-square-o me-1"></i>Update
                                                 </button>
                                                 <form action="{{ route('competitions.destroy', $competition->id) }}"
                                                     method="POST" class="d-inline">

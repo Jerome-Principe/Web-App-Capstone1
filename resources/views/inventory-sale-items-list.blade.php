@@ -127,23 +127,24 @@
 
         /* Enhanced Total Price Styling */
         .total-price-section {
-            margin: 24px 0;
+            margin: 24px 0 32px 0;
             display: flex;
-            justify-content: flex-end;
-            padding-right: 20px;
+            justify-content: center;
+            padding: 0;
         }
 
         .total-price-card {
-            background: linear-gradient(135deg, #007bff, #0056b3);
+            background: #70c89a;
             color: white;
-            padding: 10px 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+            padding: 16px 24px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(112, 200, 154, 0.3);
             display: flex;
             align-items: center;
             gap: 12px;
-            min-width: 200px;
+            min-width: 250px;
             justify-content: space-between;
+            font-weight: 500;
         }
 
         .total-label {
@@ -156,6 +157,11 @@
             font-size: 20px;
             font-weight: 700;
             color: #ffffff;
+        }
+
+        /* Pagination Styling */
+        .pagination {
+            margin-bottom: 2rem !important;
         }
 
         /* Enhanced Date Display Styling */

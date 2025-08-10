@@ -249,6 +249,11 @@
                 display: none;
             }
         }
+
+        /* Pagination styling */
+        .pagination {
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 @extends('layouts.master')
@@ -433,7 +438,7 @@
             const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = selectedCheckboxes.length;
             const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
-            
+
             document.getElementById('select-all-link').textContent = `All (${count}/${totalCount})`;
             const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
             document.getElementById('selectedIds').value = selectedIds.join(',');
