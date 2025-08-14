@@ -274,20 +274,14 @@
     <body>
         <div class="container">
             <div class="header-section">
-                <div class="d-flex justify-content-between align-items-center w-100">
-                    <div>
-                        <h1>Expenses Management</h1>
-                        <p class="text-muted mb-0">Today: {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
-                    </div>
-                    <div>
-                        <div class="d-flex justify-content-end position-relative">
-                            <button type="button" class="btn btn-primary px-2" data-bs-toggle="modal"
-                                data-bs-target="#addExpenseModal">
-                                <i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
-                            </button>
-                        </div>
-                    </div>
+                <div class="d-flex align-items-center gap-3">
+                    <h1 class="mb-0">Expenses Management</h1>
+                    <button type="button" class="btn btn-primary px-3" data-bs-toggle="modal"
+                        data-bs-target="#addExpenseModal">
+                        <i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
+                    </button>
                 </div>
+                <p class="text-muted mb-0 mt-2">Today: {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
