@@ -131,7 +131,7 @@
         <h3>Report Summary</h3>
         <div class="summary-info">
             <span>Date Range:</span>
-            <span>{{ $date ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}</span>
+            <span>{{ $date && $date !== 'All Dates' ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}</span>
         </div>
         <div class="summary-info">
             <span>Total Items:</span>
