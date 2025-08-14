@@ -7,18 +7,15 @@
                 <!-- Header Section -->
                 <div class="card">
                     <div class="card-body">
-                        <div
-                            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-                            <div class="mb-3 mb-md-0">
-                                <h2 class="card-title mb-1">Admin User Information</h2>
-                                <p class="text-muted mb-0">Manage and monitor all user accounts in the system</p>
-                            </div>
-                            <div class="d-flex align-items-center">
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <h1 class="card-title mb-0">Admin User Information</h1>
                                 <a href="/register" class="btn btn-primary d-inline-flex align-items-center">
                                     <i class="fa fa-plus mr-2"></i>
                                     Add New User
                                 </a>
                             </div>
+                            <p class="text-muted mb-0">Manage and monitor all user accounts in the system</p>
                         </div>
 
                         <!-- Success Message -->
