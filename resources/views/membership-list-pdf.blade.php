@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .header {
@@ -23,12 +23,13 @@
         .header h1 {
             margin: 0;
             color: #333;
-            font-size: 24px;
+            font-size: 20px;
         }
 
         .header p {
             margin: 5px 0;
             color: #666;
+            font-size: 10px;
         }
 
         .summary {
@@ -41,12 +42,14 @@
         .summary h3 {
             margin: 0 0 10px 0;
             color: #333;
+            font-size: 12px;
         }
 
         .summary-info {
             display: flex;
             justify-content: space-between;
             margin-bottom: 5px;
+            font-size: 10px;
         }
 
         .summary-info span {
@@ -59,21 +62,30 @@
             margin-top: 20px;
             table-layout: fixed;
             page-break-inside: auto;
+            font-size: 9px;
         }
 
         th,
         td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 6px;
             text-align: center;
             word-wrap: break-word;
             word-break: keep-all;
+            vertical-align: middle;
         }
 
         th {
             background-color: #f2f2f2;
             font-weight: bold;
             text-align: center;
+            font-size: 9px;
+            line-height: 1.2;
+        }
+
+        td {
+            font-size: 9px;
+            line-height: 1.2;
         }
 
         tr:nth-child(even) {
@@ -105,9 +117,9 @@
         .total-amount {
             text-align: center !important;
             border: 2px solid #007bff !important;
-            padding: 8px !important;
+            padding: 6px !important;
             background-color: #f5f5f5;
-            font-size: 14px;
+            font-size: 11px;
             color: #333;
         }
 
