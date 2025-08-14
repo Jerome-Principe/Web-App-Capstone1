@@ -365,8 +365,8 @@
                                 <td class="text-center">₱{{ number_format($expense->amount, 2) }}</td>
                                 <td class="text-center">{{ $expense->payment_method }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-sm btn-primary"
-                                        onclick="openEditModal({{ $expense->id }}, '{{ $expense->date }}', '{{ addslashes($expense->expense_description) }}', {{ $expense->amount }}, '{{ $expense->payment_method }}')">
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#editExpenseModal{{ $expense->id }}">
                                         <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
                                     </button>
                                     <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST"
@@ -504,72 +504,81 @@
         </div>
 
         <!-- Edit Expense Modal -->
-        <div class="modal fade" id="editExpenseModal" tabindex="-1" aria-labelledby="editExpenseModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editExpenseModalLabel">Edit Expenses</h5>
-                        <button type="button" class="btn-close" onclick="closeModal('editExpenseModal')"
-                            aria-label="Close"></button>
+        @foreach($expenses as $expense)
+            <div class="modal fade" id="editExpenseModal{{ $expense->id }}" tabindex="-1"
+                aria-labelledby="editExpenseModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editExpenseModalLabel">Edit Expenses</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="POST" action="{{ route('expenses.update', $expense->id) }}"
+                            id="editExpenseForm{{ $expense->id }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="edit_modal_date{{ $expense->id }}" class="form-label">Date</label>
+                                    <input type="date" class="form-control @error('date') is-invalid @enderror"
+                                        id="edit_modal_date{{ $expense->id }}" name="date" value="{{ $expense->date }}"
+                                        required>
+                                    @error('date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="edit_modal_expense_description{{ $expense->id }}" class="form-label">Expense
+                                        Description</label>
+                                    <input type="text" class="form-control @error('expense_description') is-invalid @enderror"
+                                        id="edit_modal_expense_description{{ $expense->id }}" name="expense_description"
+                                        value="{{ $expense->expense_description }}" required>
+                                    @error('expense_description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="edit_modal_amount{{ $expense->id }}" class="form-label">Amount</label>
+                                    <input type="number" step="0.01" class="form-control @error('amount') is-invalid @enderror"
+                                        id="edit_modal_amount{{ $expense->id }}" name="amount" value="{{ $expense->amount }}"
+                                        required>
+                                    @error('amount')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="edit_modal_payment_method{{ $expense->id }}" class="form-label">Payment
+                                        Method</label>
+                                    <select class="form-control @error('payment_method') is-invalid @enderror"
+                                        id="edit_modal_payment_method{{ $expense->id }}" name="payment_method" required>
+                                        <option value="">Select Payment Method</option>
+                                        <option value="Cash" {{ $expense->payment_method == 'Cash' ? 'selected' : '' }}>Cash
+                                        </option>
+                                        <option value="Credit Card" {{ $expense->payment_method == 'Credit Card' ? 'selected' : '' }}>Credit Card</option>
+                                        <option value="Debit Card" {{ $expense->payment_method == 'Debit Card' ? 'selected' : '' }}>Debit Card</option>
+                                        <option value="Bank Transfer" {{ $expense->payment_method == 'Bank Transfer' ? 'selected' : '' }}>Bank Transfer</option>
+                                        <option value="Check" {{ $expense->payment_method == 'Check' ? 'selected' : '' }}>Check
+                                        </option>
+                                        <option value="Digital Wallet" {{ $expense->payment_method == 'Digital Wallet' ? 'selected' : '' }}>Digital Wallet</option>
+                                    </select>
+                                    @error('payment_method')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" form="editExpenseForm{{ $expense->id }}" class="btn btn-primary">Update
+                                    Expense</button>
+                            </div>
+                        </form>
                     </div>
-                    <form method="POST" id="editExpenseForm">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="edit_modal_date" class="form-label">Date</label>
-                                <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                    id="edit_modal_date" name="date" required>
-                                @error('date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="edit_modal_expense_description" class="form-label">Expense Description</label>
-                                <input type="text" class="form-control @error('expense_description') is-invalid @enderror"
-                                    id="edit_modal_expense_description" name="expense_description" required>
-                                @error('expense_description')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="edit_modal_amount" class="form-label">Amount</label>
-                                <input type="number" step="0.01" class="form-control @error('amount') is-invalid @enderror"
-                                    id="edit_modal_amount" name="amount" required>
-                                @error('amount')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="edit_modal_payment_method" class="form-label">Payment Method</label>
-                                <select class="form-control @error('payment_method') is-invalid @enderror"
-                                    id="edit_modal_payment_method" name="payment_method" required>
-                                    <option value="">Select Payment Method</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Credit Card">Credit Card</option>
-                                    <option value="Debit Card">Debit Card</option>
-                                    <option value="Bank Transfer">Bank Transfer</option>
-                                    <option value="Check">Check</option>
-                                    <option value="Digital Wallet">Digital Wallet</option>
-                                </select>
-                                @error('payment_method')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                onclick="closeModal('editExpenseModal')">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Update Expense</button>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
+        @endforeach
     </body>
 
     <!-- Bootstrap JavaScript -->
@@ -660,99 +669,13 @@
             }
         });
 
-        // Edit Modal functionality
-        function openEditModal(id, date, description, amount, paymentMethod) {
-            // Set the form action URL
-            document.getElementById('editExpenseForm').action = `/expenses/${id}`;
-
-            // Format the date for the date input field (YYYY-MM-DD format)
-            let formattedDate = date;
-            if (date && date !== 'undefined' && date !== 'null') {
-                // If date is in "M d, Y" format (e.g., "Aug 16, 2025"), convert to "YYYY-MM-DD"
-                if (date.includes(',')) {
-                    const dateObj = new Date(date);
-                    if (!isNaN(dateObj.getTime())) {
-                        formattedDate = dateObj.toISOString().split('T')[0];
-                    }
-                }
-            } else {
-                // If no date provided, use today's date
-                formattedDate = new Date().toISOString().split('T')[0];
-            }
-
-            // Populate the form fields
-            document.getElementById('edit_modal_date').value = formattedDate;
-            document.getElementById('edit_modal_expense_description').value = description;
-            document.getElementById('edit_modal_amount').value = amount;
-            document.getElementById('edit_modal_payment_method').value = paymentMethod;
-
-            // Show the modal
-            const editModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
-            editModal.show();
-        }
-
-        // Close modal function
+        // Close modal function (kept for add expense modal)
         function closeModal(modalId) {
             const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
             if (modal) {
                 modal.hide();
             }
         }
-
-        // Handle edit form submission
-        document.getElementById('editExpenseForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // Get form data
-            const formData = new FormData(this);
-
-            // Submit the form using fetch
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Close the modal
-                        closeModal('editExpenseModal');
-
-                        // Show success message and reload page
-                        alert('Expense updated successfully!');
-                        window.location.reload();
-                    } else {
-                        alert('Error updating expense: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error updating expense. Please try again.');
-                });
-        });
-
-
-
-        // Clear edit modal form when hidden
-        document.addEventListener('DOMContentLoaded', function () {
-            const editModal = document.getElementById('editExpenseModal');
-
-            editModal.addEventListener('hidden.bs.modal', function () {
-                // Clear any error states
-                const invalidInputs = editModal.querySelectorAll('.is-invalid');
-                invalidInputs.forEach(input => {
-                    input.classList.remove('is-invalid');
-                });
-
-                // Clear the form fields
-                document.getElementById('edit_modal_date').value = '';
-                document.getElementById('edit_modal_expense_description').value = '';
-                document.getElementById('edit_modal_amount').value = '';
-                document.getElementById('edit_modal_payment_method').value = '';
-            });
-        });
 
     </script>
 
