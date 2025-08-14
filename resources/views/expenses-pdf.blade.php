@@ -84,11 +84,6 @@
         .total-row {
             background-color: #f5f5f5 !important;
             font-weight: bold;
-            border: 1px solid #ddd !important;
-        }
-
-        .total-row td {
-            border: 1px solid #ddd !important;
         }
 
         .total-label {
