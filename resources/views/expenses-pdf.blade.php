@@ -84,10 +84,11 @@
         .total-row {
             background-color: #e9ecef !important;
             font-weight: bold;
+            border: 2px solid #333 !important;
         }
 
         .total-row td {
-            border: none !important;
+            border: 2px solid #333 !important;
         }
 
         .total-label {
@@ -95,7 +96,7 @@
         }
 
         .total-amount {
-            text-align: right !important;
+            text-align: center !important;
             border: 2px solid #333 !important;
             padding: 10px !important;
             border-radius: 5px;
@@ -165,8 +166,8 @@
             @if($expenses->count() > 0)
                 <tr class="total-row">
                     <td colspan="3" class="total-label"><strong>Total:</strong></td>
-                    <td class="total-amount"><strong>{{ number_format($totalAmount, 2) }}</strong></td>
                     <td></td>
+                    <td class="total-amount"><strong>{{ number_format($totalAmount, 2) }}</strong></td>
                 </tr>
             @endif
         </tbody>
