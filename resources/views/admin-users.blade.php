@@ -148,7 +148,7 @@
                                                         <a href="{{ route('admin-users.edit', $user->id) }}"
                                                             class="btn btn-sm btn-outline-primary">
                                                             <i class="fa fa-pencil mr-1"></i>
-                                                            Edit
+                                                            Update
                                                         </a>
                                                         <form action="{{ route('admin-users.destroy', $user->id) }}" method="POST"
                                                             class="d-inline">
