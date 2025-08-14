@@ -389,7 +389,7 @@
                     <div class="summary-content">
                         <div class="summary-item">
                             <div class="summary-label">Date Selected</div>
-                            <div class="summary-value">{{ $date ?? 'All Dates' }}</div>
+                            <div class="summary-value">{{ $date ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}</div>
                         </div>
                         <div class="summary-divider"></div>
                         <div class="summary-item">

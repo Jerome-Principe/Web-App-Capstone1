@@ -14,8 +14,9 @@ class ExpenseController extends Controller
         // Order expenses by creation date, showing newest first
         $expenses = Expense::orderBy('id', 'desc')->paginate(10); // 10 per page
         $totalAmount = Expense::sum('amount'); // Calculate total amount of expenses
+        $date = null; // Set default date to null for index view
 
-        return view('expenses', compact('expenses', 'totalAmount'));
+        return view('expenses', compact('expenses', 'totalAmount', 'date'));
     }
 
     // Store a new expense in the database

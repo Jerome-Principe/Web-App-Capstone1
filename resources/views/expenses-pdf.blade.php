@@ -106,7 +106,7 @@
         <h3>Report Summary</h3>
         <div class="summary-info">
             <span>Date Range:</span>
-            <span>{{ $date }}</span>
+            <span>{{ $date ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}</span>
         </div>
         <div class="summary-info">
             <span>Total Expenses:</span>
@@ -121,7 +121,7 @@
     <table>
         <thead>
             <tr>
-                <th>#</th>
+                <th>ID</th>
                 <th>Date</th>
                 <th>Expense Description</th>
                 <th>Amount</th>
@@ -145,9 +145,9 @@
 
             @if($expenses->count() > 0)
                 <tr class="total-row">
-                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
-                    <td class="amount"><strong>₱{{ number_format($totalAmount, 2) }}</strong></td>
-                    <td></td>
+                    <td colspan="3" style="text-align: right; border: none;"><strong>Total:</strong></td>
+                    <td class="amount" style="border: none;"><strong>₱{{ number_format($totalAmount, 2) }}</strong></td>
+                    <td style="border: none;"></td>
                 </tr>
             @endif
         </tbody>
