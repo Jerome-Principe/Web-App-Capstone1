@@ -281,7 +281,6 @@
                         <i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
                     </button>
                 </div>
-                <p class="text-muted mb-0 mt-2">Today: {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
