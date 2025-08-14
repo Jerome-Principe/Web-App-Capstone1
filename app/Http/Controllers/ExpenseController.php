@@ -164,7 +164,7 @@ class ExpenseController extends Controller
         // Generate the PDF
         $pdf = Pdf::loadView('expenses-pdf', [
             'expenses' => $expenses,
-            'date' => $date ?? 'All Dates',
+            'date' => $date,
             'totalAmount' => $totalAmount,
         ]);
 

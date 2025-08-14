@@ -164,7 +164,7 @@ class WalkinController extends Controller
         // Generate the PDF
         $pdf = Pdf::loadView('walkin-client-pdf', [
             'walkins' => $walkins,
-            'date' => $date ?? 'All Dates',
+            'date' => $date,
             'totalAmount' => $totalAmount,
             'totalNames' => $totalNames,
         ]);
