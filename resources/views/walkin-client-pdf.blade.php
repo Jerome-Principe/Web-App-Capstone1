@@ -39,7 +39,7 @@
 
 <body>
     <h1>Walk-in Clients Report</h1>
-    <p>Date: {{ $date }}</p>
+    <p>Date: {{ $date ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}</p>
 
     <table>
         <thead>
