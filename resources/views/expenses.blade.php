@@ -508,7 +508,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editExpenseModalLabel">Edit Expense</h5>
-                        <button type="button" class="btn-close" onclick="closeEditModal()" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="POST" id="editExpenseForm">
                         @csrf
@@ -559,7 +559,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Update Expense</button>
                         </div>
                     </form>
@@ -654,8 +654,23 @@
             // Set the form action URL
             document.getElementById('editExpenseForm').action = `/expenses/${id}`;
 
+            // Format the date for the date input field (YYYY-MM-DD format)
+            let formattedDate = date;
+            if (date && date !== 'undefined' && date !== 'null') {
+                // If date is in "M d, Y" format (e.g., "Aug 16, 2025"), convert to "YYYY-MM-DD"
+                if (date.includes(',')) {
+                    const dateObj = new Date(date);
+                    if (!isNaN(dateObj.getTime())) {
+                        formattedDate = dateObj.toISOString().split('T')[0];
+                    }
+                }
+            } else {
+                // If no date provided, use today's date
+                formattedDate = new Date().toISOString().split('T')[0];
+            }
+
             // Populate the form fields
-            document.getElementById('edit_modal_date').value = date;
+            document.getElementById('edit_modal_date').value = formattedDate;
             document.getElementById('edit_modal_expense_description').value = description;
             document.getElementById('edit_modal_amount').value = amount;
             document.getElementById('edit_modal_payment_method').value = paymentMethod;
@@ -700,13 +715,7 @@
                 });
         });
 
-        // Add manual close functionality for edit modal
-        function closeEditModal() {
-            const editModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
-            if (editModal) {
-                editModal.hide();
-            }
-        }
+
 
         // Clear edit modal form when hidden
         document.addEventListener('DOMContentLoaded', function () {
@@ -718,6 +727,12 @@
                 invalidInputs.forEach(input => {
                     input.classList.remove('is-invalid');
                 });
+
+                // Clear the form fields
+                document.getElementById('edit_modal_date').value = '';
+                document.getElementById('edit_modal_expense_description').value = '';
+                document.getElementById('edit_modal_amount').value = '';
+                document.getElementById('edit_modal_payment_method').value = '';
             });
         });
 
