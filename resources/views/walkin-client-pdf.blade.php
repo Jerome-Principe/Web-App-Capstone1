@@ -137,7 +137,7 @@
     <table>
         <thead>
             <tr>
-                <th>#</th>
+                <th>ID</th>
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Amount</th>

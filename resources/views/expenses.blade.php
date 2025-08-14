@@ -276,7 +276,8 @@
                 <h1>Expenses Management</h1>
                 <div>
                     <div class="d-flex justify-content-end position-relative">
-                        <button type="button" class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+                        <button type="button" class="btn btn-primary px-2" data-bs-toggle="modal"
+                            data-bs-target="#addExpenseModal">
                             <i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
                         </button>
                     </div>
@@ -363,9 +364,10 @@
                                 <td class="text-center">₱{{ number_format($expense->amount, 2) }}</td>
                                 <td class="text-center">{{ $expense->payment_method }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="{{ route('expenses.edit', $expense->id) }}" class="btn btn-sm btn-primary">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="openEditModal({{ $expense->id }}, '{{ $expense->date }}', '{{ $expense->expense_description }}', {{ $expense->amount }}, '{{ $expense->payment_method }}')">
                                         <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
-                                    </a>
+                                    </button>
                                     <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
@@ -389,7 +391,9 @@
                     <div class="summary-content">
                         <div class="summary-item">
                             <div class="summary-label">Date Selected</div>
-                            <div class="summary-value">{{ $date ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}</div>
+                            <div class="summary-value">
+                                {{ $date ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}
+                            </div>
                         </div>
                         <div class="summary-divider"></div>
                         <div class="summary-item">
@@ -427,7 +431,8 @@
         </div>
 
         <!-- Add Expense Modal -->
-        <div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -449,8 +454,8 @@
                             <div class="mb-3">
                                 <label for="modal_expense_description" class="form-label">Expense Description</label>
                                 <input type="text" class="form-control @error('expense_description') is-invalid @enderror"
-                                    id="modal_expense_description" name="expense_description" value="{{ old('expense_description') }}"
-                                    required>
+                                    id="modal_expense_description" name="expense_description"
+                                    value="{{ old('expense_description') }}" required>
                                 @error('expense_description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -467,16 +472,18 @@
 
                             <div class="mb-3">
                                 <label for="modal_payment_method" class="form-label">Payment Method</label>
-                                <select class="form-control @error('payment_method') is-invalid @enderror" id="modal_payment_method"
-                                    name="payment_method" required>
+                                <select class="form-control @error('payment_method') is-invalid @enderror"
+                                    id="modal_payment_method" name="payment_method" required>
                                     <option value="">Select Payment Method</option>
                                     <option value="Cash" {{ old('payment_method') == 'Cash' ? 'selected' : '' }}>Cash</option>
                                     <option value="Credit Card" {{ old('payment_method') == 'Credit Card' ? 'selected' : '' }}>
                                         Credit Card</option>
-                                    <option value="Debit Card" {{ old('payment_method') == 'Debit Card' ? 'selected' : '' }}>Debit
+                                    <option value="Debit Card" {{ old('payment_method') == 'Debit Card' ? 'selected' : '' }}>
+                                        Debit
                                         Card</option>
                                     <option value="Bank Transfer" {{ old('payment_method') == 'Bank Transfer' ? 'selected' : '' }}>Bank Transfer</option>
-                                    <option value="Check" {{ old('payment_method') == 'Check' ? 'selected' : '' }}>Check</option>
+                                    <option value="Check" {{ old('payment_method') == 'Check' ? 'selected' : '' }}>Check
+                                    </option>
                                     <option value="Digital Wallet" {{ old('payment_method') == 'Digital Wallet' ? 'selected' : '' }}>Digital Wallet</option>
                                 </select>
                                 @error('payment_method')
@@ -487,6 +494,72 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Add Expense</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Expense Modal -->
+        <div class="modal fade" id="editExpenseModal" tabindex="-1" aria-labelledby="editExpenseModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editExpenseModalLabel">Edit Expense</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" id="editExpenseForm">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="edit_modal_date" class="form-label">Date</label>
+                                <input type="date" class="form-control @error('date') is-invalid @enderror"
+                                    id="edit_modal_date" name="date" required>
+                                @error('date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_modal_expense_description" class="form-label">Expense Description</label>
+                                <input type="text" class="form-control @error('expense_description') is-invalid @enderror"
+                                    id="edit_modal_expense_description" name="expense_description" required>
+                                @error('expense_description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_modal_amount" class="form-label">Amount</label>
+                                <input type="number" step="0.01" class="form-control @error('amount') is-invalid @enderror"
+                                    id="edit_modal_amount" name="amount" required>
+                                @error('amount')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_modal_payment_method" class="form-label">Payment Method</label>
+                                <select class="form-control @error('payment_method') is-invalid @enderror"
+                                    id="edit_modal_payment_method" name="payment_method" required>
+                                    <option value="">Select Payment Method</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="Debit Card">Debit Card</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="Check">Check</option>
+                                    <option value="Digital Wallet">Digital Wallet</option>
+                                </select>
+                                @error('payment_method')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Expense</button>
                         </div>
                     </form>
                 </div>
@@ -512,7 +585,7 @@
             const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = selectedCheckboxes.length;
             const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
-            
+
             document.getElementById('select-all-link').textContent = `All (${count}/${totalCount})`;
             const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
             document.getElementById('selectedIds').value = selectedIds.join(',');
@@ -550,10 +623,10 @@
         });
 
         // Modal functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Get the modal
             const modal = document.getElementById('addExpenseModal');
-            
+
             // When the modal is shown, set today's date as default
             modal.addEventListener('shown.bs.modal', function () {
                 const today = new Date().toISOString().split('T')[0];
@@ -566,9 +639,38 @@
                 document.getElementById('modal_expense_description').value = '';
                 document.getElementById('modal_amount').value = '';
                 document.getElementById('modal_payment_method').value = '';
-                
+
                 // Clear any error states
                 const invalidInputs = modal.querySelectorAll('.is-invalid');
+                invalidInputs.forEach(input => {
+                    input.classList.remove('is-invalid');
+                });
+            });
+        });
+
+        // Edit Modal functionality
+        function openEditModal(id, date, description, amount, paymentMethod) {
+            // Set the form action URL
+            document.getElementById('editExpenseForm').action = `/expenses/${id}`;
+
+            // Populate the form fields
+            document.getElementById('edit_modal_date').value = date;
+            document.getElementById('edit_modal_expense_description').value = description;
+            document.getElementById('edit_modal_amount').value = amount;
+            document.getElementById('edit_modal_payment_method').value = paymentMethod;
+
+            // Show the modal
+            const editModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
+            editModal.show();
+        }
+
+        // Clear edit modal form when hidden
+        document.addEventListener('DOMContentLoaded', function () {
+            const editModal = document.getElementById('editExpenseModal');
+
+            editModal.addEventListener('hidden.bs.modal', function () {
+                // Clear any error states
+                const invalidInputs = editModal.querySelectorAll('.is-invalid');
                 invalidInputs.forEach(input => {
                     input.classList.remove('is-invalid');
                 });
