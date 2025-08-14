@@ -125,7 +125,7 @@ class GoalController extends Controller
 
     public function moveToTrash(Request $request)
     {
-        $selectedIds = $request->input('selected', []);
+        $selectedIds = $request->input('selected', '');
 
         if (empty($selectedIds)) {
             if (request()->wantsJson()) {
@@ -134,7 +134,20 @@ class GoalController extends Controller
             return redirect()->route('goals.index')->with('error', 'No goals selected for archiving.');
         }
 
-        Goal::whereIn('id', $selectedIds)->delete();
+        // Convert comma-separated string to array
+        $selectedIdsArray = explode(',', $selectedIds);
+
+        // Filter out empty values
+        $selectedIdsArray = array_filter($selectedIdsArray);
+
+        if (empty($selectedIdsArray)) {
+            if (request()->wantsJson()) {
+                return response()->json(['error' => 'No valid goals selected'], 400);
+            }
+            return redirect()->route('goals.index')->with('error', 'No valid goals selected for archiving.');
+        }
+
+        Goal::whereIn('id', $selectedIdsArray)->delete();
 
         if (request()->wantsJson()) {
             return response()->json([
