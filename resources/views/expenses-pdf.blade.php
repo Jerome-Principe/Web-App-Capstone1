@@ -84,15 +84,18 @@
         .total-row {
             background-color: #f5f5f5 !important;
             font-weight: bold;
+            border: 2px solid #007bff !important;
+            border-radius: 5px;
         }
 
         .total-label {
             text-align: center !important;
+            border: 2px solid #007bff !important;
         }
 
         .total-amount {
             text-align: center !important;
-            border: none !important;
+            border: 2px solid #007bff !important;
             padding: 8px !important;
             background-color: #f5f5f5;
             font-size: 14px;
