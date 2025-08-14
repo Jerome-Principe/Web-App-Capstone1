@@ -36,6 +36,7 @@
             padding: 10px;
             background-color: #f8f9fa;
             border-radius: 5px;
+            border: 1px solid #ddd;
         }
 
         .summary h3 {
@@ -47,6 +48,12 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 5px;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .summary-info:last-child {
+            border-bottom: none;
         }
 
         .summary-info span {
