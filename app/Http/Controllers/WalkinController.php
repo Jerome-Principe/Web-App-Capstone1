@@ -14,8 +14,10 @@ class WalkinController extends Controller
         // Order walk-ins by creation date, showing newest first
         $walkins = Walkin::orderBy('id', 'desc')->paginate(5); // 5 per page
         $totalAmount = Walkin::sum('amount'); // Calculate total amount of walk-ins
+        $date = null; // Set default date to null for index view
+        $totalNames = $walkins->total(); // Get total count for pagination
 
-        return view('walkin-client-list', compact('walkins', 'totalAmount'));
+        return view('walkin-client-list', compact('walkins', 'totalAmount', 'date', 'totalNames'));
     }
 
     // Store a new walk-in client in the database
