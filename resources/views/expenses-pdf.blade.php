@@ -86,6 +86,18 @@
             font-weight: bold;
         }
 
+        .total-row td {
+            border: none !important;
+        }
+
+        .total-label {
+            text-align: right !important;
+        }
+
+        .total-amount {
+            text-align: right !important;
+        }
+
         .footer {
             margin-top: 30px;
             text-align: center;
@@ -114,7 +126,7 @@
         </div>
         <div class="summary-info">
             <span>Total Amount:</span>
-            <span>₱{{ number_format($totalAmount, 2) }}</span>
+            <span>P{{ number_format($totalAmount, 2) }}</span>
         </div>
     </div>
 
@@ -134,7 +146,7 @@
                     <td style="text-align: center;">{{ $index + 1 }}</td>
                     <td>{{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}</td>
                     <td>{{ $expense->expense_description }}</td>
-                    <td class="amount">₱{{ number_format($expense->amount, 2) }}</td>
+                    <td class="amount">P{{ number_format($expense->amount, 2) }}</td>
                     <td>{{ $expense->payment_method }}</td>
                 </tr>
             @empty
@@ -145,9 +157,9 @@
 
             @if($expenses->count() > 0)
                 <tr class="total-row">
-                    <td colspan="3" style="text-align: right; border: none;"><strong>Total:</strong></td>
-                    <td class="amount" style="border: none;"><strong>₱{{ number_format($totalAmount, 2) }}</strong></td>
-                    <td style="border: none;"></td>
+                    <td colspan="3" class="total-label"><strong>Total:</strong></td>
+                    <td class="total-amount"><strong>P{{ number_format($totalAmount, 2) }}</strong></td>
+                    <td></td>
                 </tr>
             @endif
         </tbody>
