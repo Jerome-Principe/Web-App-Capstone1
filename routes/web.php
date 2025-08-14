@@ -75,23 +75,22 @@ Route::resource('/mobile-feedback', MobileFeedbackController::class);
 
 // Goal Routes
 Route::prefix('goals')->name('goals.')->group(function () {
-    // Main goal resource routes
-    Route::resource('/', GoalController::class)->names([
-        'index' => 'index',
-        'create' => 'create',
-        'store' => 'store',
-        'show' => 'show',
-        'edit' => 'edit',
-        'update' => 'update',
-        'destroy' => 'destroy',
-    ]);
+    // Main resource routes (excluding 'show')
+    Route::get('/', [GoalController::class, 'index'])->name('index');
+    Route::get('/create', [GoalController::class, 'create'])->name('create');
+    Route::post('/', [GoalController::class, 'store'])->name('store');
+    Route::get('/{goal}/edit', [GoalController::class, 'edit'])->name('edit');
+    Route::put('/{goal}', [GoalController::class, 'update'])->name('update');
+    Route::delete('/{goal}', [GoalController::class, 'destroy'])->name('destroy');
 
-    // Trash/Archive related routes
-    Route::post('/move-to-trash', [GoalController::class, 'moveToTrash'])->name('moveToTrash');
-    Route::get('/trashed', [GoalController::class, 'trashed'])->name('trashed');
-    Route::post('/restore/{id}', [GoalController::class, 'restore'])->name('restore');
-    Route::post('/restoreBulk', [GoalController::class, 'restoreBulk'])->name('restoreBulk');
-    Route::delete('/forceDelete/{id}', [GoalController::class, 'forceDelete'])->name('forceDelete');
+    // Additional custom routes using a controller group
+    Route::controller(GoalController::class)->group(function () {
+        Route::get('/trashed', 'trashed')->name('trashed');
+        Route::post('/move-to-trash', 'moveToTrash')->name('moveToTrash');
+        Route::post('/restoreBulk', 'restoreBulk')->name('restoreBulk');
+        Route::post('/restore/{id}', 'restore')->name('restore');
+        Route::delete('/forceDelete/{id}', 'forceDelete')->name('forceDelete');
+    });
 });
 
 //Competition

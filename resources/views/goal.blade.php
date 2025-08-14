@@ -220,7 +220,8 @@
             <div class="filter-options">
                 <div class="filter-links">
                     <!-- Link to view all -->
-                    <a href="{{ route('goals.index') }}" class="btn-style">All ({{ App\Models\Goal::count() }})</a>
+                    <a href="{{ route('goals.index') }}" class="btn-style" id="select-all-link">All
+                        ({{ App\Models\Goal::count() }})</a>
 
                     <!-- Link to view archived goals -->
                     <a href="{{ route('goals.trashed') }}">Archived ({{ App\Models\Goal::onlyTrashed()->count() }})</a>
@@ -436,16 +437,20 @@
                 const count = checkboxes.length;
                 const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
 
-                document.getElementById('select-all-link').innerText = `All (${count}/${totalCount})`;
+                document.getElementById('select-all-link').textContent = `All (${count}/${totalCount})`;
 
                 // Enable/disable move to archive button
                 const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
-                moveToArchiveBtn.disabled = count === 0;
+                if (moveToArchiveBtn) {
+                    moveToArchiveBtn.disabled = count === 0;
+                }
 
                 // Update select all checkbox
                 const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
-                selectAllCheckbox.checked = count === totalCount && totalCount > 0;
-                selectAllCheckbox.indeterminate = count > 0 && count < totalCount;
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.checked = count === totalCount && totalCount > 0;
+                    selectAllCheckbox.indeterminate = count > 0 && count < totalCount;
+                }
 
                 // Update hidden input with selected IDs
                 const selectedIds = Array.from(checkboxes).map(input => input.value);
