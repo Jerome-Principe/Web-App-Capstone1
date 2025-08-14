@@ -77,7 +77,7 @@ Route::resource('/mobile-feedback', MobileFeedbackController::class);
 Route::resource('/goals', GoalController::class);
 
 //Competition
-Route::resource('/competitions', CompetitionController::class)->middleware('db.connection');
+Route::resource('/competitions', CompetitionController::class);
 
 Route::get('/feedback', function () {
     return view('feedback');
