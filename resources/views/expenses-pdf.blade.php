@@ -97,7 +97,7 @@
 
         .total-amount {
             text-align: center !important;
-            border: 1px solid #ddd !important;
+            border: none !important;
             padding: 8px !important;
             background-color: #f5f5f5;
             font-size: 14px;
@@ -163,7 +163,7 @@
 
             @if($expenses->count() > 0)
                 <tr class="total-row">
-                    <td colspan="3" class="total-label"><strong>Total:</strong></td>
+                    <td colspan="3" class="total-label"><strong>Total Amount:</strong></td>
                     <td></td>
                     <td class="total-amount"><strong>{{ number_format($totalAmount, 2) }}</strong></td>
                 </tr>
