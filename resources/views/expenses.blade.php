@@ -274,13 +274,18 @@
     <body>
         <div class="container">
             <div class="header-section">
-                <h1>Expenses Management</h1>
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
-                        <button type="button" class="btn btn-primary px-2" data-bs-toggle="modal"
-                            data-bs-target="#addExpenseModal">
-                            <i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
-                        </button>
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div>
+                        <h1>Expenses Management</h1>
+                        <p class="text-muted mb-0">Today: {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-end position-relative">
+                            <button type="button" class="btn btn-primary px-2" data-bs-toggle="modal"
+                                data-bs-target="#addExpenseModal">
+                                <i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -360,7 +365,7 @@
                                     <input type="checkbox" name="selected[]" value="{{ $expense->id }}"
                                         onchange="updateSelectionCount()" />
                                 </td>
-                                <td class="text-center">{{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($expense->date)->format('F d, Y') }}</td>
                                 <td class="text-center">{{ $expense->expense_description }}</td>
                                 <td class="text-center">₱{{ number_format($expense->amount, 2) }}</td>
                                 <td class="text-center">{{ $expense->payment_method }}</td>
@@ -521,7 +526,8 @@
                                 <div class="mb-3">
                                     <label for="edit_modal_date{{ $expense->id }}" class="form-label">Date</label>
                                     <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                        id="edit_modal_date{{ $expense->id }}" name="date" value="{{ $expense->date }}"
+                                        id="edit_modal_date{{ $expense->id }}" name="date"
+                                        value="{{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d') }}"
                                         required>
                                     @error('date')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -676,6 +682,26 @@
                 modal.hide();
             }
         }
+
+        // Function to set current date for edit modals
+        function setCurrentDateForEditModals() {
+            const today = new Date().toISOString().split('T')[0];
+            const editModals = document.querySelectorAll('[id^="editExpenseModal"]');
+
+            editModals.forEach(modal => {
+                modal.addEventListener('shown.bs.modal', function () {
+                    const dateInput = this.querySelector('input[type="date"]');
+                    if (dateInput && !dateInput.value) {
+                        dateInput.value = today;
+                    }
+                });
+            });
+        }
+
+        // Initialize date functionality when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            setCurrentDateForEditModals();
+        });
 
     </script>
 
