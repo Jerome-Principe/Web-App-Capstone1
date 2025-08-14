@@ -63,7 +63,7 @@
         td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: left;
+            text-align: center;
         }
 
         th {
@@ -96,6 +96,10 @@
 
         .total-amount {
             text-align: right !important;
+            border: 2px solid #333 !important;
+            padding: 10px !important;
+            border-radius: 5px;
+            background-color: #fff;
         }
 
         .footer {
@@ -126,7 +130,7 @@
         </div>
         <div class="summary-info">
             <span>Total Amount:</span>
-            <span>P{{ number_format($totalAmount, 2) }}</span>
+            <span>₱{{ number_format($totalAmount, 2) }}</span>
         </div>
     </div>
 
@@ -143,7 +147,7 @@
         <tbody>
             @forelse($expenses as $index => $expense)
                 <tr>
-                    <td style="text-align: center;">{{ $index + 1 }}</td>
+                    <td>{{ $index + 1 }}</td>
                     <td>{{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}</td>
                     <td>{{ $expense->expense_description }}</td>
                     <td class="amount">P{{ number_format($expense->amount, 2) }}</td>
@@ -158,7 +162,7 @@
             @if($expenses->count() > 0)
                 <tr class="total-row">
                     <td colspan="3" class="total-label"><strong>Total:</strong></td>
-                    <td class="total-amount"><strong>P{{ number_format($totalAmount, 2) }}</strong></td>
+                    <td class="total-amount"><strong>₱{{ number_format($totalAmount, 2) }}</strong></td>
                     <td></td>
                 </tr>
             @endif
