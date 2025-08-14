@@ -82,13 +82,13 @@
         }
 
         .total-row {
-            background-color: #e9ecef !important;
+            background-color: #f5f5f5 !important;
             font-weight: bold;
-            border: 2px solid #333 !important;
+            border: 1px solid #ddd !important;
         }
 
         .total-row td {
-            border: 2px solid #333 !important;
+            border: 1px solid #ddd !important;
         }
 
         .total-label {
@@ -97,13 +97,11 @@
 
         .total-amount {
             text-align: center !important;
-            border: 2px solid #333 !important;
-            padding: 10px !important;
-            border-radius: 5px;
-            background-color: #fff;
-            font-size: 16px;
+            border: 1px solid #ddd !important;
+            padding: 8px !important;
+            background-color: #f5f5f5;
+            font-size: 14px;
             color: #333;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .footer {
