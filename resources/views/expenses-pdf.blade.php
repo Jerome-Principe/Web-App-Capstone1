@@ -163,7 +163,7 @@
 
             @if($expenses->count() > 0)
                 <tr class="total-row">
-                    <td colspan="3" class="total-label"><strong>Total Amount:</strong></td>
+                    <td colspan="3" class="total-label"><strong>Total Amount</strong></td>
                     <td></td>
                     <td class="total-amount"><strong>{{ number_format($totalAmount, 2) }}</strong></td>
                 </tr>
