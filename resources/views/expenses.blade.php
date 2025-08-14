@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -365,7 +366,7 @@
                                 <td class="text-center">{{ $expense->payment_method }}</td>
                                 <td class="d-flex justify-content-center">
                                     <button type="button" class="btn btn-sm btn-primary"
-                                        onclick="openEditModal({{ $expense->id }}, '{{ $expense->date }}', '{{ $expense->expense_description }}', {{ $expense->amount }}, '{{ $expense->payment_method }}')">
+                                        onclick="openEditModal({{ $expense->id }}, '{{ $expense->date }}', '{{ addslashes($expense->expense_description) }}', {{ $expense->amount }}, '{{ $expense->payment_method }}')">
                                         <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
                                     </button>
                                     <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST"
@@ -507,7 +508,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editExpenseModalLabel">Edit Expense</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" onclick="closeEditModal()" aria-label="Close"></button>
                     </div>
                     <form method="POST" id="editExpenseForm">
                         @csrf
@@ -558,7 +559,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
                             <button type="submit" class="btn btn-primary">Update Expense</button>
                         </div>
                     </form>
@@ -662,6 +663,49 @@
             // Show the modal
             const editModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
             editModal.show();
+        }
+
+        // Handle edit form submission
+        document.getElementById('editExpenseForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+
+            // Submit the form using fetch
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Close the modal
+                        const editModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
+                        editModal.hide();
+
+                        // Show success message and reload page
+                        alert('Expense updated successfully!');
+                        window.location.reload();
+                    } else {
+                        alert('Error updating expense: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating expense. Please try again.');
+                });
+        });
+
+        // Add manual close functionality for edit modal
+        function closeEditModal() {
+            const editModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
+            if (editModal) {
+                editModal.hide();
+            }
         }
 
         // Clear edit modal form when hidden
