@@ -123,6 +123,81 @@ class GoalController extends Controller
         return redirect()->route('goals.index')->with('success', 'Goal deleted successfully!');
     }
 
+    public function moveToTrash(Request $request)
+    {
+        $selectedIds = $request->input('selected', []);
+
+        if (empty($selectedIds)) {
+            if (request()->wantsJson()) {
+                return response()->json(['error' => 'No goals selected'], 400);
+            }
+            return redirect()->route('goals.index')->with('error', 'No goals selected for archiving.');
+        }
+
+        Goal::whereIn('id', $selectedIds)->delete();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Goals moved to archive successfully!',
+            ]);
+        }
+
+        return redirect()->route('goals.index')->with('success', 'Goals moved to archive successfully!');
+    }
+
+    public function trashed()
+    {
+        $trashedGoals = Goal::onlyTrashed()->orderBy('id', 'desc')->paginate(10);
+        return view('trashed-goals', compact('trashedGoals'));
+    }
+
+    public function restore($id)
+    {
+        $goal = Goal::onlyTrashed()->findOrFail($id);
+        $goal->restore();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Goal restored successfully!',
+            ]);
+        }
+
+        return redirect()->route('goals.trashed')->with('success', 'Goal restored successfully!');
+    }
+
+    public function restoreBulk(Request $request)
+    {
+        $selectedIds = explode(',', $request->selected);
+
+        if (empty($selectedIds) || $selectedIds[0] === '') {
+            return redirect()->route('goals.trashed')->with('error', 'No goals selected for restoration.');
+        }
+
+        Goal::onlyTrashed()->whereIn('id', $selectedIds)->restore();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Goals restored successfully!',
+            ]);
+        }
+
+        return redirect()->route('goals.trashed')->with('success', 'Goals restored successfully!');
+    }
+
+    public function forceDelete($id)
+    {
+        $goal = Goal::onlyTrashed()->findOrFail($id);
+        $goal->forceDelete();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Goal permanently deleted!',
+            ]);
+        }
+
+        return redirect()->route('goals.trashed')->with('success', 'Goal permanently deleted!');
+    }
+
     public function getGoalsByUsername(Request $request)
     {
         $username = $request->query('username'); // Get ?username= from query

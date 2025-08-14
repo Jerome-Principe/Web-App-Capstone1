@@ -73,8 +73,26 @@ Route::resource('/register-rfid', RegisterRFIDController::class);
 //Mobile Feedback
 Route::resource('/mobile-feedback', MobileFeedbackController::class);
 
-//Goal
-Route::resource('/goals', GoalController::class);
+// Goal Routes
+Route::prefix('goals')->name('goals.')->group(function () {
+    // Main goal resource routes
+    Route::resource('/', GoalController::class)->names([
+        'index' => 'index',
+        'create' => 'create',
+        'store' => 'store',
+        'show' => 'show',
+        'edit' => 'edit',
+        'update' => 'update',
+        'destroy' => 'destroy',
+    ]);
+
+    // Trash/Archive related routes
+    Route::post('/move-to-trash', [GoalController::class, 'moveToTrash'])->name('moveToTrash');
+    Route::get('/trashed', [GoalController::class, 'trashed'])->name('trashed');
+    Route::post('/restore/{id}', [GoalController::class, 'restore'])->name('restore');
+    Route::post('/restoreBulk', [GoalController::class, 'restoreBulk'])->name('restoreBulk');
+    Route::delete('/forceDelete/{id}', [GoalController::class, 'forceDelete'])->name('forceDelete');
+});
 
 //Competition
 Route::resource('/competitions', CompetitionController::class);

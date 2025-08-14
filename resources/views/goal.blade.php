@@ -220,10 +220,10 @@
             <div class="filter-options">
                 <div class="filter-links">
                     <!-- Link to view all -->
-                    <a href="#" id="select-all-link" class="btn-style">All (0)</a>
+                    <a href="{{ route('goals.index') }}" class="btn-style">All ({{ App\Models\Goal::count() }})</a>
 
-                    <!-- Link to view all trashed announcements -->
-                    <a href="#" id="select-all-link">Archived (0)</a>
+                    <!-- Link to view archived goals -->
+                    <a href="{{ route('goals.trashed') }}">Archived ({{ App\Models\Goal::onlyTrashed()->count() }})</a>
 
                 </div>
 
@@ -231,7 +231,7 @@
                     @csrf
                     @method('DELETE')
                     <div class="d-flex align-items-center">
-                        <form action="#" method="POST">
+                        <form action="{{ route('goals.moveToTrash') }}" method="POST" id="move-to-archive-form">
                             @csrf
                             <input type="hidden" name="selected" id="selectedIds">
                             <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
@@ -435,7 +435,7 @@
                 const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
                 const count = checkboxes.length;
                 const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
-                
+
                 document.getElementById('select-all-link').innerText = `All (${count}/${totalCount})`;
 
                 // Enable/disable move to archive button
@@ -446,21 +446,34 @@
                 const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
                 selectAllCheckbox.checked = count === totalCount && totalCount > 0;
                 selectAllCheckbox.indeterminate = count > 0 && count < totalCount;
-                    }
 
-        // Add functionality for the "All" link click
-        document.getElementById('select-all-link').addEventListener('click', function (e) {
-            e.preventDefault();
-            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
-            selectAllCheckbox.checked = !selectAllCheckbox.checked;
-            toggleSelectAll(selectAllCheckbox);
-        });
+                // Update hidden input with selected IDs
+                const selectedIds = Array.from(checkboxes).map(input => input.value);
+                document.getElementById('selectedIds').value = selectedIds.join(',');
+            }
 
-        // Initialize selection count on page load
-        document.addEventListener("DOMContentLoaded", function () {
-            updateSelectionCount();
-        });
-    </script>
+            // Add functionality for the "All" link click
+            document.getElementById('select-all-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+                selectAllCheckbox.checked = !selectAllCheckbox.checked;
+                toggleSelectAll(selectAllCheckbox);
+            });
+
+            // Initialize selection count on page load
+            document.addEventListener("DOMContentLoaded", function () {
+                updateSelectionCount();
+            });
+
+            // Prevent form submission if no goals are selected
+            document.getElementById('move-to-archive-form').addEventListener('submit', function (e) {
+                const selectedIds = document.getElementById('selectedIds').value;
+                if (!selectedIds) {
+                    alert('Please select at least one goal to move to archive.');
+                    e.preventDefault(); // Prevent form submission
+                }
+            });
+        </script>
 
     </body>
 
