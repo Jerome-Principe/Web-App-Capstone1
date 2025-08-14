@@ -438,7 +438,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addExpenseModalLabel">Add New Expense</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" onclick="closeModal('addExpenseModal')"
+                            aria-label="Close"></button>
                     </div>
                     <form method="POST" action="{{ route('expenses.store') }}">
                         @csrf
@@ -493,7 +494,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeModal('addExpenseModal')">Cancel</button>
                             <button type="submit" class="btn btn-primary">Add Expense</button>
                         </div>
                     </form>
@@ -508,7 +510,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editExpenseModalLabel">Edit Expenses</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" onclick="closeModal('editExpenseModal')"
+                            aria-label="Close"></button>
                     </div>
                     <form method="POST" id="editExpenseForm">
                         @csrf
@@ -559,7 +562,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeModal('editExpenseModal')">Cancel</button>
                             <button type="submit" class="btn btn-primary">Update Expense</button>
                         </div>
                     </form>
@@ -647,6 +651,13 @@
                     input.classList.remove('is-invalid');
                 });
             });
+
+            // Set current date for the main date filter input
+            const dateFilterInput = document.getElementById('date');
+            if (dateFilterInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateFilterInput.value = today;
+            }
         });
 
         // Edit Modal functionality
@@ -680,6 +691,14 @@
             editModal.show();
         }
 
+        // Close modal function
+        function closeModal(modalId) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+            if (modal) {
+                modal.hide();
+            }
+        }
+
         // Handle edit form submission
         document.getElementById('editExpenseForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -699,8 +718,7 @@
                 .then(data => {
                     if (data.success) {
                         // Close the modal
-                        const editModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
-                        editModal.hide();
+                        closeModal('editExpenseModal');
 
                         // Show success message and reload page
                         alert('Expense updated successfully!');
