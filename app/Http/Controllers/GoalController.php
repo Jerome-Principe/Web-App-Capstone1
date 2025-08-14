@@ -10,6 +10,15 @@ class GoalController extends Controller
     public function index()
     {
         $goals = Goal::orderBy('id', 'desc')->paginate(10); // Order by newest ID first
+
+        // Check if the request expects JSON (API) or a view (web)
+        if (request()->wantsJson()) {
+            return response()->json([
+                'data' => $goals,
+            ]);
+        }
+
+        // For web requests, return the view
         return view('goal', compact('goals'));
     }
 
@@ -33,7 +42,7 @@ class GoalController extends Controller
         // Auto-assign status
         $status = $request->current_weight == $request->goal_weight ? 'Done' : 'In Progress';
 
-        Goal::create([
+        $goal = Goal::create([
             'status' => $status,
             'name' => $request->name,
             'starting_weight' => $request->starting_weight,
@@ -44,6 +53,15 @@ class GoalController extends Controller
             'activity' => $request->activity,
         ]);
 
+        // Check if the request expects JSON (API) or a view (web)
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Goal created successfully!',
+                'data' => $goal,
+            ]);
+        }
+
+        // For web requests, redirect back to the goals page with success message
         return redirect()->route('goals.index')->with('success', 'Goal created successfully!');
     }
 
@@ -78,15 +96,30 @@ class GoalController extends Controller
             'activity' => $request->activity,
         ]);
 
-        return response()->json([
-            'message' => 'Goal updated successfully!',
-            'data' => $goal,
-        ]);
+        // Check if the request expects JSON (API) or a view (web)
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Goal updated successfully!',
+                'data' => $goal,
+            ]);
+        }
+
+        // For web requests, redirect back to the goals page with success message
+        return redirect()->route('goals.index')->with('success', 'Goal updated successfully!');
     }
 
     public function destroy(Goal $goal)
     {
         $goal->delete();
+
+        // Check if the request expects JSON (API) or a view (web)
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Goal deleted successfully!',
+            ]);
+        }
+
+        // For web requests, redirect back to the goals page with success message
         return redirect()->route('goals.index')->with('success', 'Goal deleted successfully!');
     }
 
