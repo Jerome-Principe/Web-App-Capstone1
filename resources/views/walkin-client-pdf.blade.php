@@ -36,7 +36,6 @@
             padding: 10px;
             background-color: #f8f9fa;
             border-radius: 5px;
-            border: 1px solid #ddd;
         }
 
         .summary h3 {
@@ -48,12 +47,6 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 5px;
-            padding: 8px 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .summary-info:last-child {
-            border-bottom: none;
         }
 
         .summary-info span {
@@ -91,15 +84,17 @@
         .total-row {
             background-color: #f5f5f5 !important;
             font-weight: bold;
+            border: 2px solid #333 !important;
         }
 
         .total-label {
             text-align: center !important;
+            border: 2px solid #333 !important;
         }
 
         .total-amount {
             text-align: center !important;
-            border: none !important;
+            border: 2px solid #333 !important;
             padding: 8px !important;
             background-color: #f5f5f5;
             font-size: 14px;
