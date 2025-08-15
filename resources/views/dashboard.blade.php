@@ -129,7 +129,7 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Total Revenue</div>
+                                    Membership Revenue</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">₱{{ number_format($totalRevenue) }}
                                 </div>
                                 <div class="text-xs text-muted mt-1">
@@ -719,8 +719,8 @@
                     labels: ['Gold', 'Silver', 'Bronze'],
                     datasets: [{
                         data: [
-                                            {{ $topMetrics['membershipTypes']['gold'] }},
-                                            {{ $topMetrics['membershipTypes']['silver'] }},
+                                                {{ $topMetrics['membershipTypes']['gold'] }},
+                                                {{ $topMetrics['membershipTypes']['silver'] }},
                             {{ $topMetrics['membershipTypes']['bronze'] }}
                         ],
                         backgroundColor: ['#f6c23e', '#858796', '#e83e8c'],
@@ -747,8 +747,8 @@
                     labels: ['Memberships', 'Appointments', 'Walk-ins'],
                     datasets: [{
                         data: [
-                                            {{ $monthlyStats['memberships']['current'] }},
-                                            {{ $monthlyStats['appointments']['current'] }},
+                                                {{ $monthlyStats['memberships']['current'] }},
+                                                {{ $monthlyStats['appointments']['current'] }},
                             {{ $monthlyStats['walkins']['current'] }}
                         ],
                         backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
