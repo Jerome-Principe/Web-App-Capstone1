@@ -125,6 +125,9 @@
         <div class="container">
             <div class="header-section">
                 <h1>Archived</h1>
+                <small style="color: #6c757d; font-style: italic; margin-left: 10px;">
+                    <i class="fas fa-sort-amount-down"></i> Sorted by most recent first
+                </small>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
@@ -188,7 +191,10 @@
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
+                            <th class="text-center">
+                                ID <i class="fas fa-sort-amount-down" style="color: #6c757d; font-size: 0.8em;"
+                                    title="Sorted by most recent first"></i>
+                            </th>
                             <th class="text-center">Username</th>
                             <th class="text-center">Email</th>
                             <th class="text-center">Subject</th>

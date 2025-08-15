@@ -9,7 +9,7 @@ class MobileFeedbackController extends Controller
 {
     public function index()
     {
-        $mobileFeedbacks = MobileFeedback::paginate(10);
+        $mobileFeedbacks = MobileFeedback::orderBy('created_at', 'desc')->paginate(10);
         $trashedCount = MobileFeedback::onlyTrashed()->count();
         return view('mobile-feedback', compact('mobileFeedbacks', 'trashedCount'));
     }
@@ -38,7 +38,7 @@ class MobileFeedbackController extends Controller
 
     public function trashed()
     {
-        $trashedMobileFeedbacks = MobileFeedback::onlyTrashed()->paginate(10);
+        $trashedMobileFeedbacks = MobileFeedback::onlyTrashed()->orderBy('created_at', 'desc')->paginate(10);
         $activeCount = MobileFeedback::count();
         return view('trashed-mobile-feedback', compact('trashedMobileFeedbacks', 'activeCount'));
     }

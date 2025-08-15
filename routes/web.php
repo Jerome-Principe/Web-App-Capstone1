@@ -135,7 +135,10 @@ Route::get('/transaction', function () {
 
 // Feedback routes
 Route::prefix('feedback')->name('feedback.')->group(function () {
-    Route::resource('/', FeedbackController::class)->except(['show', 'edit', 'update']);
+    Route::get('/', [FeedbackController::class, 'index'])->name('index');
+    Route::post('/', [FeedbackController::class, 'store'])->name('store');
+    Route::get('/create', [FeedbackController::class, 'create'])->name('create');
+    Route::delete('/{id}', [FeedbackController::class, 'destroy'])->name('destroy');
     Route::post('/submit', [FeedbackController::class, 'submit'])->name('submit');
     Route::post('/move-to-trash', [FeedbackController::class, 'moveToTrash'])->name('moveToTrash');
     Route::get('/trashed', [FeedbackController::class, 'trashed'])->name('trashed');

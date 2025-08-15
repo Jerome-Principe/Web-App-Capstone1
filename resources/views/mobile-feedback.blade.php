@@ -524,6 +524,9 @@
                 <div class="page-header">
                     <h1>Feedback For Mobile</h1>
                     <p>Manage and review mobile feedback and ratings</p>
+                    <small style="color: var(--info-color); font-style: italic;">
+                        <i class="fas fa-sort-amount-down"></i> Sorted by most recent first
+                    </small>
                 </div>
 
                 @if(session('success'))
@@ -573,7 +576,11 @@
                                     <th>
                                         <input type="checkbox" class="custom-checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
-                                    <th>ID</th>
+                                    <th>
+                                        ID <i class="fas fa-sort-amount-down"
+                                            style="color: var(--info-color); font-size: 0.8em;"
+                                            title="Sorted by most recent first"></i>
+                                    </th>
                                     <th>Username</th>
                                     <th>Email</th>
                                     <th>Subject</th>
@@ -613,8 +620,8 @@
                                                     @csrf
                                                     <input type="hidden" name="selected" value="{{ $mobileFeedback->id }}">
                                                     <button type="submit" class="btn-action btn-delete" title="Move to Archive"
-                                                        onclick="return confirm('Are you sure you want to move this feedback to archive?')">
-                                                        <i class="fas fa-archive"></i> Archive
+                                                        onclick="return confirm('Are you sure you want to delete this feedback?')">
+                                                        <i class="fas fa-archive"></i> Delete
                                                     </button>
                                                 </form>
                                             </div>
