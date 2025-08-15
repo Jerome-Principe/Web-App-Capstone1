@@ -70,8 +70,15 @@ Route::resource('/attendance-records', AttendanceRecordController::class);
 //Attendance Rercord List
 Route::resource('/register-rfid', RegisterRFIDController::class);
 
-//Mobile Feedback
-Route::resource('/mobile-feedback', MobileFeedbackController::class);
+// Mobile Feedback routes
+Route::prefix('mobile-feedback')->group(function () {
+    Route::resource('/', MobileFeedbackController::class)->names('mobile-feedback');
+    Route::get('/trashed', [MobileFeedbackController::class, 'trashed'])->name('mobile-feedback.trashed');
+    Route::post('/move-to-archive', [MobileFeedbackController::class, 'moveToArchive'])->name('mobile-feedback.moveToArchive');
+    Route::post('/{id}/restore', [MobileFeedbackController::class, 'restore'])->name('mobile-feedback.restore');
+    Route::post('/restore-bulk', [MobileFeedbackController::class, 'restoreBulk'])->name('mobile-feedback.restoreBulk');
+    Route::delete('/{id}/force-delete', [MobileFeedbackController::class, 'forceDelete'])->name('mobile-feedback.forceDelete');
+});
 
 // Goal Routes
 Route::prefix('goals')->name('goals.')->group(function () {

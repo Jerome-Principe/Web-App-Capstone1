@@ -539,13 +539,14 @@
                             <a href="#" class="filter-tab active" id="select-all-link">
                                 All (<span id="selection-count">0</span>/<span id="total-count">0</span>)
                             </a>
-                            <a href="#" class="filter-tab">
-                                Archived (0)
+                            <a href="{{ route('mobile-feedback.trashed') }}" class="filter-tab">
+                                Archived ({{ App\Models\MobileFeedback::onlyTrashed()->count() }})
                             </a>
                         </div>
 
                         <div class="filter-actions">
-                            <form action="#" method="POST" style="display: inline;">
+                            <form action="{{ route('mobile-feedback.moveToArchive') }}" method="POST"
+                                style="display: inline;">
                                 @csrf
                                 <input type="hidden" name="selected" id="selectedIds">
                                 <button type="submit" class="btn-clean btn-light-clean" id="moveToArchiveBtn" disabled>
@@ -607,12 +608,13 @@
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                <form action="#" method="POST" style="display: inline;"
-                                                    onsubmit="return confirm('Are you sure you want to delete this feedback?')">
+                                                <form action="{{ route('mobile-feedback.moveToArchive') }}" method="POST"
+                                                    style="display: inline;">
                                                     @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn-action btn-delete" title="Delete Feedback">
-                                                        <i class="fas fa-trash"></i> Delete
+                                                    <input type="hidden" name="selected" value="{{ $mobileFeedback->id }}">
+                                                    <button type="submit" class="btn-action btn-delete" title="Move to Archive"
+                                                        onclick="return confirm('Are you sure you want to move this feedback to archive?')">
+                                                        <i class="fas fa-archive"></i> Archive
                                                     </button>
                                                 </form>
                                             </div>
@@ -724,6 +726,15 @@
                 const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
                 selectAllCheckbox.checked = !selectAllCheckbox.checked;
                 toggleSelectAll(selectAllCheckbox);
+            });
+
+            // Form validation for move to archive
+            document.querySelector('form[action*="moveToArchive"]').addEventListener('submit', function (e) {
+                const selectedIds = document.getElementById('selectedIds').value;
+                if (!selectedIds) {
+                    alert('Please select at least one mobile feedback to move to archive.');
+                    e.preventDefault();
+                }
             });
         </script>
     </body>
