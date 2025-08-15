@@ -13,6 +13,13 @@ class StockItemController extends Controller
         $stockItems = StockItem::orderBy('id', 'desc')->paginate(9);
         $totalPrice = StockItem::sum('total');
 
+        // Add information about related sales for each stock item
+        foreach ($stockItems as $stockItem) {
+            $relatedSalesCount = \App\Models\SaleItem::where('item_name', $stockItem->item_name)->count();
+            $stockItem->has_related_sales = $relatedSalesCount > 0;
+            $stockItem->related_sales_count = $relatedSalesCount;
+        }
+
         return view('inventory-stock-items-list', compact('stockItems', 'totalPrice'));
     }
 
@@ -81,9 +88,17 @@ class StockItemController extends Controller
     public function destroy($id)
     {
         $stockItem = StockItem::findOrFail($id);
-        $stockItem->delete();
 
-        return redirect()->route('stock-items.index')->with('success', 'Stock items deleted successfully.');
+        // Check if there are any related sale items
+        $relatedSales = \App\Models\SaleItem::where('item_name', $stockItem->item_name)->get();
+
+        if ($relatedSales->count() > 0) {
+            $saleItemNames = $relatedSales->pluck('item_name')->unique()->implode(', ');
+            return redirect()->back()->with('error', 'Cannot delete stock item "' . $stockItem->item_name . '" because it has ' . $relatedSales->count() . ' related sale records. Sale items: ' . $saleItemNames . '. Please delete the sale records first or contact an administrator.');
+        }
+
+        $stockItem->delete();
+        return redirect()->route('stock-items.index')->with('success', 'Stock item "' . $stockItem->item_name . '" deleted successfully.');
     }
 
 

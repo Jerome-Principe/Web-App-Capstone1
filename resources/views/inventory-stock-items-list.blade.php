@@ -144,6 +144,22 @@
             color: #6c757d;
             font-weight: 400;
         }
+
+        /* Disabled button styling */
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn:disabled:hover {
+            opacity: 0.6;
+        }
+
+        /* Badge styling */
+        .badge {
+            font-size: 0.75em;
+            padding: 0.35em 0.65em;
+        }
     </style>
 </head>
 
@@ -168,6 +184,12 @@
                     </div>
                 @endif
 
+                @if(session('error'))
+                    <div class="custom-alert-message" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         setTimeout(function () {
@@ -178,6 +200,11 @@
                         }, 3000);
                     });
                 </script>
+
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-info-circle"></i>
+                    <strong>Note:</strong> Stock items with related sales records cannot be deleted. You must delete the related sales records first, or the system will prevent deletion to maintain data integrity.
+                </div>
             </div>
 
             <div class="filter-options">
@@ -214,6 +241,7 @@
                             <th class="text-center">Item Name</th>
                             <th class="text-center">Quantity</th>
                             <th class="text-center">Price</th>
+                            <th class="text-center">Related Sales</th>
                             <th class="text-center">Date</th>
                             <th class="text-center">Actions</th>
                         </tr>
@@ -232,6 +260,13 @@
                                 </td>
                                 <td class="text-center">{{ $stockItem->price }}</td>
                                 <td class="text-center">
+                                    @if($stockItem->has_related_sales)
+                                        <span class="badge bg-warning text-dark">{{ $stockItem->related_sales_count }} Related Sales</span>
+                                    @else
+                                        <span class="badge bg-success">No Related Sales</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
                                     <div class="date-display">
                                         <i class="fa fa-calendar"></i>
                                         <span>{{ \Carbon\Carbon::parse($stockItem->date)->format('M d, Y') }}</span>
@@ -245,8 +280,10 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                            onclick="return confirm('Are you sure you want to delete this stock item?')"><i
-                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                            onclick="return confirm('Are you sure you want to delete this stock item?')"
+                                            {{ $stockItem->has_related_sales ? 'disabled' : '' }}
+                                            title="{{ $stockItem->has_related_sales ? 'Cannot delete: This item has related sales records' : 'Delete this stock item' }}">
+                                            <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
                                         </button>
                                     </form>
                                 </td>
