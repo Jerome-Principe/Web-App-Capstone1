@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Archived</title>
     <style>
         body {
@@ -18,7 +17,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1400px;
             margin: 30px auto;
             background-color: white;
             padding: 20px;
@@ -57,11 +56,13 @@
 
         .table-container {
             overflow-x: auto;
+            white-space: nowrap;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 1200px;
         }
 
         th,
@@ -84,36 +85,34 @@
             color: gray;
         }
 
-        /* Empty State */
+        .modal {
+            z-index: 1055;
+        }
+
         .empty-state {
             text-align: center;
-            padding: 60px 24px;
-            color: #666;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e1e5e9;
-            margin: 20px 0;
+            padding: 40px 20px;
+            color: #6c757d;
         }
 
         .empty-state i {
-            font-size: 64px;
-            color: #333;
-            margin-bottom: 24px;
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 20px;
             display: block;
         }
 
         .empty-state h5 {
             font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 12px;
-            color: #333;
-            margin: 0 0 12px 0;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #495057;
         }
 
         .empty-state p {
             font-size: 14px;
             margin: 0;
-            color: #666;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -133,6 +132,12 @@
                     </div>
                 @endif
 
+                @if(session('error'))
+                    <div class="custom-alert-message error">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         setTimeout(function () {
@@ -143,14 +148,15 @@
                         }, 3000);
                     });
                 </script>
+
             </div>
 
+            <!-- Filter options -->
             <div class="filter-options">
                 <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
+                    <a href="{{ route('membership-pendings.index') }}">All ({{ App\Models\PendingMembership::count() }})</a>
                     <a href="{{ route('membership-pendings.trashed') }}">Archived
-                        ({{App\Models\PendingMembership::onlyTrashed()->count()}})
-                    </a>
+                        ({{ App\Models\PendingMembership::onlyTrashed()->count() }})</a>
                 </div>
 
                 <div>
@@ -167,7 +173,7 @@
                             </button>
                         </form>
 
-                        <!-- Search Form -->
+                        <!-- Search functionality -->
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">
@@ -177,82 +183,87 @@
                 </div>
             </div>
 
-            @if($trashedMemberships->count() > 0)
-                <div class="table-container">
-                    <table>
-                        <thead>
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($trashedMemberships as $membership)
                             <tr>
-                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">First Name</th>
-                                <th class="text-center">Last Name</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Actions</th>
+                                <td class="text-center">
+                                    <input type="checkbox" name="selected[]" value="{{ $membership->id }}"
+                                        onchange="updateSelectionCount()" />
+                                </td>
+                                <td class="text-center">
+                                    {{ ($trashedMemberships->currentPage() - 1) * $trashedMemberships->perPage() + $loop->index + 1 }}
+                                </td>
+                                <td class="text-center">{{ $membership->first_name }}</td>
+                                <td class="text-center">{{ $membership->last_name }}</td>
+                                <td class="text-center">{{ $membership->email }}</td>
+                                <td class="text-center">{{ $membership->status }}</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <form action="{{ route('membership-pendings.restore', $membership->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                        </form>
+                                        <form action="{{ route('membership-pendings.forceDelete', $membership->id) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure you want to permanently delete this membership?')">
+                                                Delete Permanently
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($trashedMemberships as $index => $membership)
-                                <tr>
-                                    <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
-                                            onchange="updateSelectionCount()" />
-                                    </td>
-                                    <td class="text-center">
-                                        {{ ($trashedMemberships->currentPage() - 1) * $trashedMemberships->perPage() + $index + 1 }}
-                                    </td>
-                                    <td class="text-center">{{ $membership->first_name }}</td>
-                                    <td class="text-center">{{ $membership->last_name }}</td>
-                                    <td class="text-center">{{ $membership->email }}</td>
-                                    <td class="text-center">{{ $membership->status }}</td>
-                                    <td class="text-center">
-                                        <div class="d-flex justify-content-center gap-2">
-                                            <form action="{{ route('membership-pendings.restore', $membership->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-success btn-sm">Restore</button>
-                                            </form>
-                                            <form action="{{ route('membership-pendings.forceDelete', $membership->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Are you sure you want to permanently delete?')">Delete
-                                                    Permanently
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-            @else
-                    <!-- Empty State -->
-                    <div class="empty-state">
-                        <i class="fas fa-trophy"></i>
-                        <h5>No archived membership records found</h5>
-                        <p>No membership records have been archived yet.</p>
-                    </div>
-                @endif
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">
+                                    <div class="empty-state">
+                                        <i class="fa fa-id-card"></i>
+                                        <h5>No archived membership records found</h5>
+                                        <p>No membership records have been archived yet</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
 
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $trashedMemberships->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $trashedMemberships->previousPageUrl() }}" tabindex="-1">Previous
-                            </a>
-                        </li>
-
-                        @foreach(range(1, $trashedMemberships->lastPage()) as $page)
-                            <li class="page-item {{ $page == $trashedMemberships->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{$trashedMemberships->url($page) }}">{{ $page }}</a>
+                @if($trashedMemberships->hasPages())
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4 mb-4">
+                            <li class="page-item {{ $trashedMemberships->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $trashedMemberships->previousPageUrl() }}"
+                                    tabindex="-1">Previous</a>
                             </li>
-                        @endforeach
 
-                        <li class="page-item {{ !$trashedMemberships->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $trashedMemberships->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                            @foreach(range(1, $trashedMemberships->lastPage()) as $page)
+                                <li class="page-item {{ $page == $trashedMemberships->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $trashedMemberships->url($page) }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            <li class="page-item {{ !$trashedMemberships->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $trashedMemberships->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                @endif
 
             </div>
         </div>
@@ -270,28 +281,21 @@
         function updateSelectionCount() {
             const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = selectedCheckboxes.length;
-            document.getElementById('select-all-link').textContent = `All (${count})`;
             const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
             document.getElementById('selectedIds').value = selectedIds.join(',');
-            console.log(selectedIds.join(',')); // Log selected IDs to debug
         }
 
-        // Add functionality for the "All (0)" link click
-        document.getElementById('select-all-link').addEventListener('click', function (e) {
-            e.preventDefault();
-            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
-            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
-            selectAllCheckbox.checked = isChecked;
-            toggleSelectAll(selectAllCheckbox);
-        });
-
-        // Ensure the form doesn't submit if no membership list are selected
+        // Ensure the form doesn't submit if no membership records are selected
         document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
             const selectedIds = document.getElementById('selectedIds').value;
             if (!selectedIds) {
-                alert('Please select at least one membership list to restore.');
+                alert('Please select at least one membership record to restore.');
                 e.preventDefault(); // Prevent form submission
             }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateSelectionCount();
         });
     </script>
 

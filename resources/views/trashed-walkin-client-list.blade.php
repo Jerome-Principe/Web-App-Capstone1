@@ -154,7 +154,6 @@
             <!-- Filter options -->
             <div class="filter-options">
                 <div class="filter-links">
-                    <a href="{{ route('walkins.index') }}">All ({{ App\Models\Walkin::count() }})</a>
                     <a href="{{ route('walkins.trashed') }}">Archived
                         ({{ App\Models\Walkin::onlyTrashed()->count() }})</a>
                 </div>
