@@ -302,17 +302,10 @@
                 <div class="filter-options">
                     <div class="filter-links">
                         <a href="#" id="select-all-link">All (0)</a>
-                        <a href="#">Archived (0)</a>
                     </div>
 
                     <div>
-                        @csrf
-                        @method('DELETE')
                         <div class="d-flex align-items-center">
-                            <button type="submit" class="btn btn-light border mx-2" style="height: 35px;"
-                                onclick="return confirm('Are you sure you want to move all these exercises to the archive?')"><i
-                                    class="fa fa-trash"></i> Move to Archive
-                            </button>
                             <form class="d-flex" role="search">
                                 <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                     style="height: 35px;">
@@ -599,7 +592,7 @@
                 @foreach($exercises as $exercise)
                     updateExercises('{{ $exercise->id }}', '{{ $exercise->exercise }}');
                 @endforeach 
-                                            });
+                                                });
 
             function updateExercises(exerciseId = '', selectedExercise = '') {
                 const type = document.getElementById('type' + exerciseId).value;
