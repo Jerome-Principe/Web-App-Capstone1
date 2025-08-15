@@ -248,15 +248,6 @@
                                         class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o mx-1"
                                             aria-hidden="true"></i>Update
                                     </a>
-                                    <form action="{{ route('equipments-defect.destroy', $equipmentDefect->id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                            onclick="return confirm('Are you sure you want to delete this equipment?')"><i
-                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
-                                        </button>
-                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -318,15 +309,6 @@
         // Initialize selection count on page load
         document.addEventListener("DOMContentLoaded", function () {
             updateSelectionCount();
-        });
-
-        // Ensure the form doesn't submit if no appointments are selected
-        document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
-            const selectedIds = document.getElementById('selectedIds').value;
-            if (!selectedIds) {
-                alert('Please select at least one appointments to restore.');
-                e.preventDefault(); // Prevent form submission
-            }
         });
 
         document.getElementById('date').addEventListener('change', function () {

@@ -297,10 +297,10 @@ Route::prefix('machines')->name('machines.')->group(function () {
 
 // Equipments Defect routes
 Route::prefix('equipments-defect')->name('equipments-defect.')->group(function () {
-    // Main resource routes
+    // Main resource routes (excluding 'show' and 'destroy')
     Route::resource('/', EquipmentDefectController::class)
         ->parameters(['' => 'equipments-defect'])
-        ->except(['show']);
+        ->except(['show', 'destroy']);
 
     // Filter and Export routes
     Route::get('/filter', [EquipmentDefectController::class, 'filterByDate'])->name('filterByDate');

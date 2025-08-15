@@ -90,26 +90,6 @@ class EquipmentDefectController extends Controller
         return redirect()->route('equipments-defect.index')->with('success', 'Equipment defect updated and quantity adjusted successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        $equipmentDefect = EquipmentDefect::find($id);
-        $equipment = Equipment::find($equipmentDefect->equipment_id);
-
-        // Restore the defect quantity to the equipment
-        $equipment->quantity += $equipmentDefect->quantity;
-        $equipment->save();
-
-        // Delete the defect record
-        $equipmentDefect->delete();
-
-        return redirect()->route('equipments-defect.index')->with('success', 'Defect deleted and quantity restored.');
-    }
-
-
-
     public function filterByDate(Request $request)
     {
         $request->validate([
