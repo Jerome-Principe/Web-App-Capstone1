@@ -259,10 +259,10 @@ Route::prefix('stock-items')->name('stock-items.')->group(function () {
 
 // SaleItems routes
 Route::prefix('sales')->name('sales.')->group(function () {
-    // Main resource routes (excluding 'show')
+    // Main resource routes (excluding 'show' and 'destroy')
     Route::resource('/', SaleItemController::class)
         ->parameters(['' => 'sale'])
-        ->except(['show']);
+        ->except(['show', 'destroy']);
 
     // Additional custom routes using a controller group
     Route::controller(SaleItemController::class)->group(function () {
@@ -312,10 +312,10 @@ Route::resource('stock-items', StockItemController::class);
 
 // Machines Defect routes
 Route::prefix('machine-defects')->name('machine-defects.')->group(function () {
-    // Main resource routes
+    // Main resource routes (excluding 'show' and 'destroy')
     Route::resource('/', MachineDefectController::class)
         ->parameters(['' => 'machine-defects'])
-        ->except(['show']);
+        ->except(['show', 'destroy']);
 
     // Filter and Export routes
     Route::get('/filter', [MachineDefectController::class, 'filterByDate'])->name('filterByDate');

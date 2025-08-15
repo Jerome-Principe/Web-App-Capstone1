@@ -103,15 +103,6 @@ class SaleItemController extends Controller
         return redirect()->route('sales.index')->with('success', 'Sales updated successfully.');
     }
 
-    public function destroy($id)
-    {
-        $item = SaleItem::findOrFail($id);
-        $item->delete();
-        return redirect()->route('sales.index')->with('success', 'Sales deleted successfully.');
-    }
-
-
-
     public function filterByDate(Request $request)
     {
         $date = $request->input('date');

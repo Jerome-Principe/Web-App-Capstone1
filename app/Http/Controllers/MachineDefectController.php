@@ -92,19 +92,6 @@ class MachineDefectController extends Controller
         return redirect()->back()->with('error', 'Machine not found.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-        $machineDefect = MachineDefect::find($id);
-        $machineDefect->delete();
-        return redirect()->route('machine-defects.index')->with('success', 'Machine deleted successfully');
-    }
-
-
-
     public function filterByDate(Request $request)
     {
         $request->validate([
