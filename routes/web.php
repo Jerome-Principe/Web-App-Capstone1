@@ -93,8 +93,25 @@ Route::prefix('goals')->name('goals.')->group(function () {
     });
 });
 
-//Competition
-Route::resource('/competitions', CompetitionController::class);
+// Competition Routes
+Route::prefix('competitions')->name('competitions.')->group(function () {
+    // Main resource routes (excluding 'show')
+    Route::get('/', [CompetitionController::class, 'index'])->name('index');
+    Route::get('/create', [CompetitionController::class, 'create'])->name('create');
+    Route::post('/', [CompetitionController::class, 'store'])->name('store');
+    Route::get('/{competition}/edit', [CompetitionController::class, 'edit'])->name('edit');
+    Route::put('/{competition}', [CompetitionController::class, 'update'])->name('update');
+    Route::delete('/{competition}', [CompetitionController::class, 'destroy'])->name('destroy');
+
+    // Additional custom routes using a controller group
+    Route::controller(CompetitionController::class)->group(function () {
+        Route::get('/trashed', 'trashed')->name('trashed');
+        Route::post('/move-to-trash', 'moveToTrash')->name('moveToTrash');
+        Route::post('/restoreBulk', 'restoreBulk')->name('restoreBulk');
+        Route::post('/restore/{id}', 'restore')->name('restore');
+        Route::delete('/forceDelete/{id}', 'forceDelete')->name('forceDelete');
+    });
+});
 
 Route::get('/feedback', function () {
     return view('feedback');

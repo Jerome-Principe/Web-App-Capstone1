@@ -380,16 +380,17 @@
 
                     <div class="filter-options">
                         <div class="filter-links">
-                            <a href="#" id="select-all-link" class="active">
-                                All ({{ $competitions->count() }})
+                            <a href="{{ route('competitions.index') }}" id="select-all-link" class="active">
+                                All ({{ App\Models\Competition::count() }})
                             </a>
-                            <a href="#" id="archived-link">
-                                Archived (0)
+                            <a href="{{ route('competitions.trashed') }}">
+                                Archived ({{ App\Models\Competition::onlyTrashed()->count() }})
                             </a>
                         </div>
 
                         <div>
-                            <form action="#" method="POST" class="d-inline">
+                            <form action="{{ route('competitions.moveToTrash') }}" method="POST" class="d-inline"
+                                id="move-to-archive-form">
                                 @csrf
                                 <input type="hidden" name="selected" id="selectedIds">
                                 <button type="submit" class="btn btn-danger btn-sm" id="moveToArchiveBtn" disabled>
@@ -620,6 +621,20 @@
 
                 const form = document.getElementById('editCompetitionForm');
                 form.action = `/competitions/${id}`;
+            });
+
+            // Prevent form submission if no competitions are selected
+            document.getElementById('move-to-archive-form').addEventListener('submit', function (e) {
+                const selectedIds = document.getElementById('selectedIds').value;
+                if (!selectedIds) {
+                    alert('Please select at least one competition to move to archive.');
+                    e.preventDefault(); // Prevent form submission
+                }
+            });
+
+            // Initialize selection count on page load
+            document.addEventListener("DOMContentLoaded", function () {
+                updateSelectionCount();
             });
         </script>
 

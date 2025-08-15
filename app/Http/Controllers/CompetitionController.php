@@ -56,4 +56,92 @@ class CompetitionController extends Controller
 
         return redirect()->back()->with('success', 'Competition record deleted successfully!');
     }
+
+    public function moveToTrash(Request $request)
+    {
+        $selectedIds = $request->input('selected', '');
+
+        if (empty($selectedIds)) {
+            if (request()->wantsJson()) {
+                return response()->json(['error' => 'No competitions selected'], 400);
+            }
+            return redirect()->route('competitions.index')->with('error', 'No competitions selected for archiving.');
+        }
+
+        // Convert comma-separated string to array
+        $selectedIdsArray = explode(',', $selectedIds);
+
+        // Filter out empty values
+        $selectedIdsArray = array_filter($selectedIdsArray);
+
+        if (empty($selectedIdsArray)) {
+            if (request()->wantsJson()) {
+                return response()->json(['error' => 'No valid competitions selected'], 400);
+            }
+            return redirect()->route('competitions.index')->with('error', 'No valid competitions selected for archiving.');
+        }
+
+        Competition::whereIn('id', $selectedIdsArray)->delete();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Competitions moved to archive successfully!',
+            ]);
+        }
+
+        return redirect()->route('competitions.index')->with('success', 'Competitions moved to archive successfully!');
+    }
+
+    public function trashed()
+    {
+        $trashedCompetitions = Competition::onlyTrashed()->orderBy('id', 'desc')->paginate(10);
+        return view('trashed-competition', compact('trashedCompetitions'));
+    }
+
+    public function restore($id)
+    {
+        $competition = Competition::onlyTrashed()->findOrFail($id);
+        $competition->restore();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Competition restored successfully!',
+            ]);
+        }
+
+        return redirect()->route('competitions.trashed')->with('success', 'Competition restored successfully!');
+    }
+
+    public function restoreBulk(Request $request)
+    {
+        $selectedIds = explode(',', $request->selected);
+
+        if (empty($selectedIds) || $selectedIds[0] === '') {
+            return redirect()->route('competitions.trashed')->with('error', 'No competitions selected for restoration.');
+        }
+
+        Competition::onlyTrashed()->whereIn('id', $selectedIds)->restore();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Competitions restored successfully!',
+            ]);
+        }
+
+        return redirect()->route('competitions.trashed')->with('success', 'Competitions restored successfully!');
+    }
+
+    public function forceDelete($id)
+    {
+        $competition = Competition::onlyTrashed()->findOrFail($id);
+        $competition->forceDelete();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Competition permanently deleted!',
+            ]);
+        }
+
+        return redirect()->route('competitions.trashed')->with('success', 'Competition permanently deleted!');
+    }
 }
