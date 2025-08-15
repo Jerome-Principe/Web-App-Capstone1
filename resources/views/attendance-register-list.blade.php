@@ -156,8 +156,8 @@
         }
 
         /* Enhanced Button Styles */
-        .btn-approve {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        .btn-update {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -169,33 +169,33 @@
             align-items: center;
             gap: 8px;
             text-decoration: none;
-            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
             position: relative;
             overflow: hidden;
         }
 
-        .btn-approve:hover {
-            background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+        .btn-update:hover {
+            background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
         }
 
-        .btn-approve:active {
+        .btn-update:active {
             transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
         }
 
-        .btn-approve i {
+        .btn-update i {
             font-size: 14px;
             transition: transform 0.2s ease;
         }
 
-        .btn-approve:hover i {
+        .btn-update:hover i {
             transform: scale(1.1);
         }
 
-        .btn-decline {
+        .btn-delete {
             background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
             color: white;
             border: none;
@@ -213,24 +213,24 @@
             overflow: hidden;
         }
 
-        .btn-decline:hover {
+        .btn-delete:hover {
             background: linear-gradient(135deg, #c82333 0%, #c0392b 100%);
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
         }
 
-        .btn-decline:active {
+        .btn-delete:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
         }
 
-        .btn-decline i {
+        .btn-delete i {
             font-size: 14px;
             transition: transform 0.2s ease;
         }
 
-        .btn-decline:hover i {
+        .btn-delete:hover i {
             transform: scale(1.1);
         }
 
@@ -567,25 +567,7 @@
 
                 <div class="filter-options">
                     <div class="filter-links">
-                        <a href="#" id="select-all-link" class="active">All (<span id="selected-count">0</span>/<span
-                                id="total-count">{{ count($registerRfids) }}</span>)</a>
-                        <a href="#">Archived</a>
-                    </div>
-
-                    <div>
-                        @csrf
-                        @method('DELETE')
-                        <div class="d-flex align-items-center">
-                            <!-- Form to move selected items to archive -->
-                            <form action="#" method="POST" id="bulk-action-form">
-                                @csrf
-                                <input type="hidden" name="selected" id="selectedIds">
-                                <button type="submit" class="btn btn-light border mx-2" id="bulk-action-btn" disabled>
-                                    <i class="fa fa-trash"></i> Move to Archive
-                                </button>
-                            </form>
-
-                        </div>
+                        <a href="#" class="active">All ({{ count($registerRfids) }})</a>
                     </div>
                 </div>
 
@@ -593,7 +575,6 @@
                     <table>
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="select-all-checkbox" /></th>
                                 <th>ID</th>
                                 <th>Username</th>
                                 <th>Serial Number</th>
@@ -604,9 +585,6 @@
                         <tbody>
                             @foreach($registerRfids as $index => $registerRfid)
                                 <tr>
-                                    <td><input type="checkbox" name="selected[]" value="{{ $registerRfid->id }}"
-                                            onchange="updateSelectionCount()" />
-                                    </td>
                                     <td>
                                         <span class="badge bg-primary">{{ $registerRfid->id }}</span>
                                     </td>
@@ -617,18 +595,18 @@
                                     <td>{{ $registerRfid->email }}</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <a href="#" class="btn-approve" data-bs-toggle="modal"
+                                            <a href="#" class="btn-update" data-bs-toggle="modal"
                                                 data-bs-target="#updateModal{{ $registerRfid->id }}">
-                                                <i class="fas fa-edit" aria-hidden="true"></i>Update
+                                                <i class="fas fa-pencil" aria-hidden="true"></i>Update
                                             </a>
 
                                             <form action="{{ route('register-rfid.destroy', $registerRfid->id) }}" method="POST"
                                                 style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-decline"
+                                                <button type="submit" class="btn-delete"
                                                     onclick="return confirm('Are you sure you want to delete this RFID record?')">
-                                                    <i class="fas fa-trash-alt" aria-hidden="true"></i>Delete
+                                                    <i class="fas fa-trash" aria-hidden="true"></i>Delete
                                                 </button>
                                             </form>
                                         </div>
@@ -708,66 +686,11 @@
                 }
             });
 
-            // Checkbox functionality
-            const selectAllCheckbox = document.getElementById('select-all-checkbox');
-            const individualCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-            const selectedCountSpan = document.getElementById('selected-count');
+            // Update the total count display
             const totalCountSpan = document.getElementById('total-count');
-            const bulkActionBtn = document.getElementById('bulk-action-btn');
-            const selectedIdsInput = document.getElementById('selectedIds');
-
-            // Function to update the selected count
-            function updateSelectedCount() {
-                const selectedCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
-                const selectedCount = selectedCheckboxes.length;
-                const totalCount = individualCheckboxes.length;
-
-                selectedCountSpan.textContent = selectedCount;
-                totalCountSpan.textContent = totalCount;
-
-                // Enable/disable bulk action button
-                bulkActionBtn.disabled = selectedCount === 0;
-
-                // Update select all checkbox state
-                if (selectedCount === 0) {
-                    selectAllCheckbox.checked = false;
-                    selectAllCheckbox.indeterminate = false;
-                } else if (selectedCount === totalCount) {
-                    selectAllCheckbox.checked = true;
-                    selectAllCheckbox.indeterminate = false;
-                } else {
-                    selectAllCheckbox.checked = false;
-                    selectAllCheckbox.indeterminate = true;
-                }
-
-                // Update selected IDs for bulk action
-                const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
-                selectedIdsInput.value = selectedIds.join(',');
+            if (totalCountSpan) {
+                totalCountSpan.textContent = '{{ count($registerRfids) }}';
             }
-
-            // Select all functionality
-            function toggleSelectAll(source) {
-                const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = source.checked;
-                });
-                updateSelectedCount();
-            }
-
-            // Individual checkbox change
-            individualCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateSelectedCount);
-            });
-
-            // Select all checkbox change
-            if (selectAllCheckbox) {
-                selectAllCheckbox.addEventListener('change', function () {
-                    toggleSelectAll(this);
-                });
-            }
-
-            // Initialize the count
-            updateSelectedCount();
         });
 
     </script>
