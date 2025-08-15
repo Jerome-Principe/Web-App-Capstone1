@@ -574,7 +574,7 @@
                                 All (<span id="selection-count">0</span>/<span id="total-count">0</span>)
                             </a>
                             <a href="{{ route('feedback.trashed') }}" class="filter-tab">
-                                Trashed ({{ App\Models\Feedback::onlyTrashed()->count() }})
+                                Archived ({{ App\Models\Feedback::onlyTrashed()->count() }})
                             </a>
                         </div>
 

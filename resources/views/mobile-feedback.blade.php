@@ -540,7 +540,7 @@
                                 All (<span id="selection-count">0</span>/<span id="total-count">0</span>)
                             </a>
                             <a href="#" class="filter-tab">
-                                Trashed (0)
+                                Archived (0)
                             </a>
                         </div>
 

@@ -83,6 +83,38 @@
             font-size: 12px;
             color: gray;
         }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+            color: #666;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+            margin: 20px 0;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #333;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .empty-state h5 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #333;
+            margin: 0 0 12px 0;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -145,54 +177,63 @@
                 </div>
             </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">First Name</th>
-                            <th class="text-center">Last Name</th>
-                            <th class="text-center">Email</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($trashedMemberships as $index => $membership)
+            @if($trashedMemberships->count() > 0)
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
-                                        onchange="updateSelectionCount()" />
-                                </td>
-                                <td class="text-center">
-                                    {{ ($trashedMemberships->currentPage() - 1) * $trashedMemberships->perPage() + $index + 1 }}
-                                </td>
-                                <td class="text-center">{{ $membership->first_name }}</td>
-                                <td class="text-center">{{ $membership->last_name }}</td>
-                                <td class="text-center">{{ $membership->email }}</td>
-                                <td class="text-center">{{ $membership->status }}</td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <form action="{{ route('membership-pendings.restore', $membership->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success btn-sm">Restore</button>
-                                        </form>
-                                        <form action="{{ route('membership-pendings.forceDelete', $membership->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to permanently delete?')">Delete
-                                                Permanently
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">First Name</th>
+                                <th class="text-center">Last Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach($trashedMemberships as $index => $membership)
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $membership->id }}"
+                                            onchange="updateSelectionCount()" />
+                                    </td>
+                                    <td class="text-center">
+                                        {{ ($trashedMemberships->currentPage() - 1) * $trashedMemberships->perPage() + $index + 1 }}
+                                    </td>
+                                    <td class="text-center">{{ $membership->first_name }}</td>
+                                    <td class="text-center">{{ $membership->last_name }}</td>
+                                    <td class="text-center">{{ $membership->email }}</td>
+                                    <td class="text-center">{{ $membership->status }}</td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <form action="{{ route('membership-pendings.restore', $membership->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                            </form>
+                                            <form action="{{ route('membership-pendings.forceDelete', $membership->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Are you sure you want to permanently delete?')">Delete
+                                                    Permanently
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+            @else
+                    <!-- Empty State -->
+                    <div class="empty-state">
+                        <i class="fas fa-trophy"></i>
+                        <h5>No archived membership records found</h5>
+                        <p>No membership records have been archived yet.</p>
+                    </div>
+                @endif
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4">

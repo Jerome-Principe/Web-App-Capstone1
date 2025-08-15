@@ -86,6 +86,38 @@
         .modal {
             z-index: 1055;
         }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+            color: #666;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+            margin: 20px 0;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #333;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .empty-state h5 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #333;
+            margin: 0 0 12px 0;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -137,57 +169,66 @@
                 </div>
             </div>
 
-            <!-- Table -->
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">First Name</th>
-                            <th class="text-center">Last Name</th>
-                            <th class="text-center">Contact Number</th>
-                            <th class="text-center">Expertise</th>
-                            <th class="text-center">Session</th>
-                            <th class="text-center">Rates</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($trashedInstructors as $instructor)
+            <!-- Table or Empty State -->
+            @if($trashedInstructors->count() > 0)
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }} "
-                                        onchange="updateSelectionCount()">
-                                </td>
-                                <td class="text-center">
-                                    {{ ($trashedInstructors->currentPage() - 1) * $trashedInstructors->perPage() + $loop->index + 1 }}
-                                </td>
-                                <td class="text-center">{{ $instructor->first_name }}</td>
-                                <td class="text-center">{{ $instructor->last_name }}</td>
-                                <td class="text-center">{{ $instructor->contact_number }}</td>
-                                <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $instructor->session }}</td>
-                                <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
-                                <td class="text-center">
-                                    <form action="{{ route('instructors.restore', $instructor->id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
-                                    </form>
-                                    <form action="{{ route('instructors.forceDelete', $instructor->id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure you want delete permanently?')">Delete
-                                            Permanently
-                                        </button>
-                                    </form>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">First Name</th>
+                                <th class="text-center">Last Name</th>
+                                <th class="text-center">Contact Number</th>
+                                <th class="text-center">Expertise</th>
+                                <th class="text-center">Session</th>
+                                <th class="text-center">Rates</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach($trashedInstructors as $instructor)
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }} "
+                                            onchange="updateSelectionCount()">
+                                    </td>
+                                    <td class="text-center">
+                                        {{ ($trashedInstructors->currentPage() - 1) * $trashedInstructors->perPage() + $loop->index + 1 }}
+                                    </td>
+                                    <td class="text-center">{{ $instructor->first_name }}</td>
+                                    <td class="text-center">{{ $instructor->last_name }}</td>
+                                    <td class="text-center">{{ $instructor->contact_number }}</td>
+                                    <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
+                                    <td class="text-center">{{ $instructor->session }}</td>
+                                    <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
+                                    <td class="text-center">
+                                        <form action="{{ route('instructors.restore', $instructor->id) }}" method="POST"
+                                            style="display:inline-block;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                        </form>
+                                        <form action="{{ route('instructors.forceDelete', $instructor->id) }}" method="POST"
+                                            style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure you want delete permanently?')">Delete
+                                                Permanently
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+            @else
+                    <!-- Empty State -->
+                    <div class="empty-state">
+                        <i class="fas fa-trophy"></i>
+                        <h5>No archived instructors found</h5>
+                        <p>No instructor records have been archived yet.</p>
+                    </div>
+                @endif
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4 mb-4">

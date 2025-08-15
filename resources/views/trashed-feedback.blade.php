@@ -174,26 +174,33 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 48px 24px;
+            padding: 60px 24px;
             color: #666;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+            margin: 20px 0;
         }
 
         .empty-state i {
-            font-size: 48px;
-            color: #ddd;
-            margin-bottom: 16px;
+            font-size: 64px;
+            color: #333;
+            margin-bottom: 24px;
+            display: block;
         }
 
         .empty-state h5 {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: #333;
+            margin: 0 0 12px 0;
         }
 
         .empty-state p {
             font-size: 14px;
             margin: 0;
+            color: #666;
         }
 
         /* Text utilities */
