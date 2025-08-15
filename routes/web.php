@@ -223,11 +223,6 @@ Route::prefix('stock-items')->name('stock-items.')->group(function () {
 
     // Additional custom routes using a controller group
     Route::controller(StockItemController::class)->group(function () {
-        Route::get('/trashed', 'trashed')->name('trashed');
-        Route::post('/move-to-trash', 'moveToTrash')->name('moveToTrash');
-        Route::post('/restore-selected', 'restoreBulk')->name('restoreBulk');
-        Route::post('/restore/{id}', 'restore')->name('restore');
-        Route::delete('/forece-delete/{id}', 'forceDelete')->name('forceDelete');
         Route::get('/filter', 'filterByDate')->name('filterByDate');
         Route::get('/export-pdf', 'exportPdfByDate')->name('exportPdfByDate');
     });
@@ -242,11 +237,6 @@ Route::prefix('sales')->name('sales.')->group(function () {
 
     // Additional custom routes using a controller group
     Route::controller(SaleItemController::class)->group(function () {
-        Route::get('/trashed', 'trashed')->name('trashed');
-        Route::post('/move-to-trash', 'moveToTrash')->name('moveToTrash');
-        Route::post('/restore-bulk', 'restoreBulk')->name('restoreBulk');
-        Route::post('/restore/{id}', 'restore')->name('restore');
-        Route::delete('/force-delete/{id}', 'forceDelete')->name('forceDelete');
         Route::get('/filter', 'filterByDate')->name('filterByDate');
         Route::get('/export-pdf', 'exportPdfByDate')->name('exportPdfByDate');
     });
@@ -258,13 +248,6 @@ Route::prefix('equipmentsAdd')->name('equipmentsAdd.')->group(function () {
     Route::resource('/', EquipmentController::class)
         ->parameters(['' => 'equipments'])
         ->except(['show']);
-
-    // Additional routes
-    Route::get('/trashed', [EquipmentController::class, 'trashed'])->name('trashed');
-    Route::post('/move-to-trash', [EquipmentController::class, 'moveToTrash'])->name('moveToTrash');
-    Route::post('/restore-bulk', [EquipmentController::class, 'restoreBulk'])->name('restoreBulk');
-    Route::post('/restore/{id}', [EquipmentController::class, 'restore'])->name('restore');
-    Route::delete('/force-delete/{id}', [EquipmentController::class, 'forceDelete'])->name('forceDelete');
 
     // Filter and Export routes
     Route::get('/filter', [EquipmentController::class, 'filterByDate'])->name('filterByDate');
@@ -278,13 +261,6 @@ Route::prefix('machines')->name('machines.')->group(function () {
         ->parameters(['' => 'machines'])
         ->except(['show']);
 
-    // Additional routes
-    Route::get('/trashed', [MachineController::class, 'trashed'])->name('trashed');
-    Route::post('/move-to-trash', [MachineController::class, 'moveToTrash'])->name('moveToTrash');
-    Route::post('/restore-bulk', [MachineController::class, 'restoreBulk'])->name('restoreBulk');
-    Route::post('/restore/{id}', [MachineController::class, 'restore'])->name('restore');
-    Route::delete('/force-delete/{id}', [MachineController::class, 'forceDelete'])->name('forceDelete');
-
     // Filter and Export routes
     Route::get('/filter', [MachineController::class, 'filterByDate'])->name('filterByDate');
     Route::get('/export-pdf', [MachineController::class, 'exportPdfByDate'])->name('exportPdfByDate');
@@ -296,13 +272,6 @@ Route::prefix('equipments-defect')->name('equipments-defect.')->group(function (
     Route::resource('/', EquipmentDefectController::class)
         ->parameters(['' => 'equipments-defect'])
         ->except(['show']);
-
-    // Additional routes
-    Route::get('/trashed', [EquipmentDefectController::class, 'trashed'])->name('trashed');
-    Route::post('/move-to-trash', [EquipmentDefectController::class, 'moveToTrash'])->name('moveToTrash');
-    Route::post('/restore-bulk', [EquipmentDefectController::class, 'restoreBulk'])->name('restoreBulk');
-    Route::post('/restore/{id}', [EquipmentDefectController::class, 'restore'])->name('restore');
-    Route::delete('/force-delete/{id}', [EquipmentDefectController::class, 'forceDelete'])->name('forceDelete');
 
     // Filter and Export routes
     Route::get('/filter', [EquipmentDefectController::class, 'filterByDate'])->name('filterByDate');
@@ -318,13 +287,6 @@ Route::prefix('machine-defects')->name('machine-defects.')->group(function () {
     Route::resource('/', MachineDefectController::class)
         ->parameters(['' => 'machine-defects'])
         ->except(['show']);
-
-    // Additional routes
-    Route::get('/trashed', [MachineDefectController::class, 'trashed'])->name('trashed');
-    Route::post('/move-to-trash', [MachineDefectController::class, 'moveToTrash'])->name('moveToTrash');
-    Route::post('/restore-bulk', [MachineDefectController::class, 'restoreBulk'])->name('restoreBulk');
-    Route::post('/restore/{id}', [MachineDefectController::class, 'restore'])->name('restore');
-    Route::delete('/force-delete/{id}', [MachineDefectController::class, 'forceDelete'])->name('forceDelete');
 
     // Filter and Export routes
     Route::get('/filter', [MachineDefectController::class, 'filterByDate'])->name('filterByDate');

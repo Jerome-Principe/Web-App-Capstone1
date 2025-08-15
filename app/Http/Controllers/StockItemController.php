@@ -86,68 +86,7 @@ class StockItemController extends Controller
         return redirect()->route('stock-items.index')->with('success', 'Stock items deleted successfully.');
     }
 
-    public function moveToTrash(Request $request)
-    {
-        $selectedIds = explode(',', $request->input('selected'));
 
-        if (!empty($selectedIds)) {
-            StockItem::whereIn('id', $selectedIds)->delete();
-            return redirect()->route('stock-items.index')->with('success', 'Selected stocks moved to trash.');
-        }
-
-        return redirect()->back()->with('error', 'No stocks selected.');
-    }
-
-    public function trashed()
-    {
-        $trashedstockItems = StockItem::onlyTrashed()->paginate(10);
-        $totalPrice = 0;
-
-        foreach ($trashedstockItems as $stockItem) {
-            $stockItem->total = $stockItem->price * $stockItem->quantity;
-            $totalPrice += $stockItem->total;
-        }
-
-        return view('trashed-stock-items-list', compact('trashedstockItems', 'totalPrice'));
-    }
-
-    public function restoreBulk(Request $request)
-    {
-        $stockItemIds = explode(',', $request->input('selected'));
-
-        if (empty($stockItemIds)) {
-            return back()->with('error', 'Please select at least one Stock to restore.');
-        }
-
-        try {
-            StockItem::onlyTrashed()->whereIn('id', $stockItemIds)->restore();
-            return redirect()->route('stock-items.trashed')->with('success', 'Selected stock restored successfully.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore selected stock.');
-        }
-    }
-
-    public function restore($id)
-    {
-        try {
-            $stockItem = StockItem::onlyTrashed()->findOrFail($id);
-            $stockItem->restore();
-            return redirect()->route('stock-items.trashed')->with('success', 'Stock restored successfully.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore the stock.');
-        }
-    }
-
-    public function forceDelete($id)
-    {
-        try {
-            $stockItem = StockItem::onlyTrashed()->findOrFail($id);
-            $stockItem->forceDelete();
-            return redirect()->route('stock-items.trashed')->with('success', 'Stock permanently deleted.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to permanently delete the stock.');
-        }
-    }
 
     public function filterByDate(Request $request)
     {

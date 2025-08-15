@@ -103,48 +103,7 @@ class MachineDefectController extends Controller
         return redirect()->route('machine-defects.index')->with('success', 'Machine deleted successfully');
     }
 
-    // Display a listing of trashed machines defects
-    public function trashed()
-    {
-        $trashedMachineDefects = MachineDefect::onlyTrashed()->with('machine')->paginate(10);
-        return view('trashed-machines-list-defect', compact('trashedMachineDefects'));
-    }
 
-    // Move selected machines to trash
-    public function moveToTrash(Request $request)
-    {
-        $ids = explode(',', $request->input('selected'));
-        MachineDefect::whereIn('id', $ids)->delete();
-
-        return redirect()->route('machine-defects.index')->with('success', 'Selected machine defects moved to trash.');
-    }
-
-    // Restore a single trashed machines defect
-    public function restore($id)
-    {
-        $machineDefect = MachineDefect::onlyTrashed()->findOrFail($id);
-        $machineDefect->restore();
-
-        return redirect()->route('machine-defects.trashed')->with('success', 'Machine defect restored successfully.');
-    }
-
-    // Restore multiple trashed machines defects
-    public function restoreBulk(Request $request)
-    {
-        $ids = explode(',', $request->input('selected'));
-        MachineDefect::onlyTrashed()->whereIn('id', $ids)->restore();
-
-        return redirect()->route('machine-defects.trashed')->with('success', 'Selected machine defects restored successfully.');
-    }
-
-    // Permanently delete a single trashed machines defect
-    public function forceDelete($id)
-    {
-        $machineDefect = MachineDefect::onlyTrashed()->findOrFail($id);
-        $machineDefect->forceDelete();
-
-        return redirect()->route('machine-defects.trashed')->with('success', 'Machine defect permanently deleted.');
-    }
 
     public function filterByDate(Request $request)
     {

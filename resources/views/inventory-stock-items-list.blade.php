@@ -184,42 +184,23 @@
                 <div class="filter-links">
                     <!-- Link to view all stocks -->
                     <a href="#" id="select-all-link" class="btn-style">All (0)</a>
-
-                    <!-- Link to view all trashed stocks -->
-                    <a href="{{ route('stock-items.trashed') }}">Archived
-                        ({{ App\Models\StockItem::onlyTrashed()->count() }})
-                    </a>
                 </div>
 
                 <div>
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <!-- Form to move selected drinks to trash -->
-                        <form action="{{ route('stock-items.moveToTrash') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="selected" id="selectedIds">
-                            <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
-                                <i class="fa fa-trash"></i> Move to Archive
-                            </button>
+                    <!-- Date Filter Form -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <form id="date-filter-form" method="GET" action="{{ route('stock-items.filterByDate') }}">
+                            <label for="date" class="form-label">Select Date:</label>
+                            <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                style="width: 200px;" required>
+                            <button type="submit" class="btn btn-primary ms-2">Filter</button>
                         </form>
 
-                        <!-- Date Filter Form -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <form id="date-filter-form" method="GET" action="{{ route('stock-items.filterByDate') }}">
-                                <label for="date" class="form-label">Select Date:</label>
-                                <input type="date" name="date" id="date" class="form-control d-inline-block"
-                                    style="width: 200px;" required>
-                                <button type="submit" class="btn btn-primary ms-2">Filter</button>
-                            </form>
-
-                            <!-- Export PDF by Date -->
-                            <form method="GET" action="{{ route('stock-items.exportPdfByDate') }}">
-                                <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
-                                <button type="submit" class="btn btn-success ms-2">Export PDF</button>
-                            </form>
-                        </div>
-
+                        <!-- Export PDF by Date -->
+                        <form method="GET" action="{{ route('stock-items.exportPdfByDate') }}">
+                            <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                            <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -310,14 +291,8 @@
             const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = selectedCheckboxes.length;
             const totalCount = document.querySelectorAll('input[name="selected[]"]').length;
-            
-            document.getElementById('select-all-link').textContent = `All (${count}/${totalCount})`;
-            const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
-            document.getElementById('selectedIds').value = selectedIds.join(',');
 
-            // Enable/disable move to archive button
-            const moveToArchiveBtn = document.getElementById('moveToArchiveBtn');
-            moveToArchiveBtn.disabled = count === 0;
+            document.getElementById('select-all-link').textContent = `All (${count}/${totalCount})`;
 
             // Update select all checkbox
             const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');

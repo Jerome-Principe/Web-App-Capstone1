@@ -70,75 +70,7 @@ class EquipmentController extends Controller
         return redirect()->route('equipmentsAdd.index')->with('success', 'Equipment deleted successfully.');
     }
 
-    /**
-     * Soft delete selected equipments (move to trash).
-     */
-    public function moveToTrash(Request $request)
-    {
-        $selectedIds = explode(',', $request->input('selected'));
-        if (!empty($selectedIds)) {
-            Equipment::whereIn('id', $selectedIds)->delete(); // Soft delete the selected equipments
-            return redirect()->route('equipmentsAdd.index')->with('success', 'Selected equipments moved to trash.');
-        }
 
-        return redirect()->back()->with('error', 'No equipments selected.');
-    }
-
-    /**
-     * Display the trashed equipments (soft deleted).
-     */
-    public function trashed()
-    {
-        $trashedEquipments = Equipment::onlyTrashed()->paginate(10);
-        return view('trashed-equipments-list', compact('trashedEquipments'));
-    }
-
-    /**
-     * Restore selected equipments from trash (soft delete).
-     */
-    public function restoreBulk(Request $request)
-    {
-        $equipmentIds = explode(',', $request->input('selected'));
-
-        if (empty($equipmentIds)) {
-            return back()->with('error', 'Please select at least one equipment to restore.');
-        }
-
-        try {
-            Equipment::onlyTrashed()->whereIn('id', $equipmentIds)->restore();
-            return redirect()->route('equipmentsAdd.trashed')->with('success', 'Selected equipments restored successfully.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore selected equipments.');
-        }
-    }
-
-    /**
-     * Restore a single equipment from trash (soft delete).
-     */
-    public function restore($id)
-    {
-        try {
-            $equipment = Equipment::onlyTrashed()->findOrFail($id);
-            $equipment->restore();
-            return redirect()->route('equipmentsAdd.trashed')->with('success', 'Equipment restored successfully.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore the equipment.');
-        }
-    }
-
-    /**
-     * Permanently delete a single equipment from trash.
-     */
-    public function forceDelete($id)
-    {
-        try {
-            $equipment = Equipment::onlyTrashed()->findOrFail($id);
-            $equipment->forceDelete();
-            return redirect()->route('equipmentsAdd.trashed')->with('success', 'Equipment permanently deleted.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to permanently delete the equipment.');
-        }
-    }
 
     public function filterByDate(Request $request)
     {

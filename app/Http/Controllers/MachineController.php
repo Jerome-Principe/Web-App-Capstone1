@@ -77,75 +77,7 @@ class MachineController extends Controller
         return redirect()->route('machines.index')->with('success', 'Machine deleted successfully.');
     }
 
-    /**
-     * Soft delete selected machines (move to trash).
-     */
-    public function moveToTrash(Request $request)
-    {
-        $selectedIds = explode(',', $request->input('selected'));
-        if (!empty($selectedIds)) {
-            Machine::whereIn('id', $selectedIds)->delete(); // Soft delete the selected machines
-            return redirect()->route('machines.index')->with('success', 'Selected machines moved to trash.');
-        }
 
-        return redirect()->back()->with('error', 'No machines selected.');
-    }
-
-    /**
-     * Display the trashed machines (soft deleted).
-     */
-    public function trashed()
-    {
-        $trashedMachines = Machine::onlyTrashed()->paginate(10);
-        return view('trashed-machines-list', compact('trashedMachines'));
-    }
-
-    /**
-     * Restore selected machines from trash (soft delete).
-     */
-    public function restoreBulk(Request $request)
-    {
-        $machineIds = explode(',', $request->input('selected'));
-
-        if (empty($machineIds)) {
-            return back()->with('error', 'Please select at least one machine to restore.');
-        }
-
-        try {
-            Machine::onlyTrashed()->whereIn('id', $machineIds)->restore();
-            return redirect()->route('machines.trashed')->with('success', 'Selected machines restored successfully.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore selected machines.');
-        }
-    }
-
-    /**
-     * Restore a single machines from trash (soft delete).
-     */
-    public function restore($id)
-    {
-        try {
-            $machine = Machine::onlyTrashed()->findOrFail($id);
-            $machine->restore();
-            return redirect()->route('machine.trashed')->with('success', 'Machine restored successfully.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore the machine.');
-        }
-    }
-
-    /**
-     * Permanently delete a single machines from trash.
-     */
-    public function forceDelete($id)
-    {
-        try {
-            $machine = Machine::onlyTrashed()->findOrFail($id);
-            $machine->forceDelete();
-            return redirect()->route('machines.trashed')->with('success', 'machine permanently deleted.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to permanently delete the machine.');
-        }
-    }
 
     public function filterByDate(Request $request)
     {

@@ -110,68 +110,7 @@ class SaleItemController extends Controller
         return redirect()->route('sales.index')->with('success', 'Sales deleted successfully.');
     }
 
-    public function moveToTrash(Request $request)
-    {
-        $selectedIds = explode(',', $request->input('selected'));
 
-        if (!empty($selectedIds)) {
-            SaleItem::whereIn('id', $selectedIds)->delete();
-            return redirect()->route('sales.index')->with('success', 'Selected sales moved to trash.');
-        }
-
-        return redirect()->back()->with('error', 'No sales selected.');
-    }
-
-    public function trashed()
-    {
-        $trashedItems = SaleItem::onlyTrashed()->paginate(10);
-        $totalPrice = 0;
-
-        foreach ($trashedItems as $item) {
-            $item->total = $item->price * $item->quantity;
-            $totalPrice += $item->total;
-        }
-
-        return view('trashed-sale-items-list', compact('trashedItems', 'totalPrice'));
-    }
-
-    public function restoreBulk(Request $request)
-    {
-        $itemIds = explode(',', $request->input('selected'));
-
-        if (empty($itemIds)) {
-            return back()->with('error', 'Please select at least one Sales to restore.');
-        }
-
-        try {
-            SaleItem::onlyTrashed()->whereIn('id', $itemIds)->restore();
-            return redirect()->route('sales.trashed')->with('success', 'Selected sales restored successfully.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore selected sales.');
-        }
-    }
-
-    public function restore($id)
-    {
-        try {
-            $item = SaleItem::onlyTrashed()->findOrFail($id);
-            $item->restore();
-            return redirect()->route('sales.trashed')->with('success', 'Sales restored successfully.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to restore the sales.');
-        }
-    }
-
-    public function forceDelete($id)
-    {
-        try {
-            $item = SaleItem::onlyTrashed()->findOrFail($id);
-            $item->forceDelete();
-            return redirect()->route('sales.trashed')->with('success', 'Sales permanently deleted.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to permanently delete the sales.');
-        }
-    }
 
     public function filterByDate(Request $request)
     {
