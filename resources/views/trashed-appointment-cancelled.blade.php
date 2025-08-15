@@ -87,6 +87,32 @@
         .modal {
             z-index: 1055;
         }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .empty-state h5 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+            color: #6c757d;
+        }
     </style>
 </head>
 
@@ -169,7 +195,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($trashedAppointments as $appointment)
+                        @forelse($trashedAppointments as $appointment)
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $appointment->id }} "
                                         onchange="updateSelectionCount()">
@@ -207,7 +233,17 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="10" class="text-center">
+                                    <div class="empty-state">
+                                        <i class="fa fa-calendar-times"></i>
+                                        <h5>No archived cancelled appointments found</h5>
+                                        <p>No cancelled appointment records have been archived yet</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
 

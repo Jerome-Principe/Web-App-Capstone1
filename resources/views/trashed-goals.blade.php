@@ -131,6 +131,32 @@
                 transform: translateY(-20px);
             }
         }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .empty-state h5 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+            color: #6c757d;
+        }
     </style>
 </head>
 
@@ -256,7 +282,13 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="11" class="text-center">No archived goals found.</td>
+                                <td colspan="11" class="text-center">
+                                    <div class="empty-state">
+                                        <i class="fa fa-balance-scale"></i>
+                                        <h5>No archived goals found</h5>
+                                        <p>No goal records have been archived yet</p>
+                                    </div>
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>

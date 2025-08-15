@@ -88,6 +88,32 @@
         .modal {
             z-index: 1055;
         }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .empty-state h5 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+            color: #6c757d;
+        }
     </style>
 </head>
 
@@ -224,7 +250,13 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="12" class="text-center">No archived expenses found.</td>
+                                <td colspan="12" class="text-center">
+                                    <div class="empty-state">
+                                        <i class="fa fa-money-bill-wave"></i>
+                                        <h5>No archived expenses found</h5>
+                                        <p>No expense records have been archived yet</p>
+                                    </div>
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
