@@ -558,6 +558,9 @@
                 <div class="page-header">
                     <h1>Feedback Management</h1>
                     <p>Manage and review customer feedback and ratings</p>
+                    <small style="color: var(--info-color); font-style: italic;">
+                        <i class="fas fa-sort-amount-down"></i> Sorted by most recent first
+                    </small>
                 </div>
 
                 @if(session('success'))
@@ -606,7 +609,11 @@
                                     <th>
                                         <input type="checkbox" class="custom-checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
-                                    <th>ID</th>
+                                    <th>
+                                        ID <i class="fas fa-sort-amount-down"
+                                            style="color: var(--info-color); font-size: 0.8em;"
+                                            title="Sorted by most recent first"></i>
+                                    </th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Subject</th>

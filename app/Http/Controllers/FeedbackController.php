@@ -11,7 +11,7 @@ class FeedbackController extends Controller
     public function index()
     {
         // Order feedback by creation date, showing newest first
-        $feedback = Feedback::orderBy('id', 'desc')->paginate(2); // Retrieve 2 feedback entries per page
+        $feedback = Feedback::orderBy('created_at', 'desc')->paginate(10); // Retrieve 10 feedback entries per page
         return view('feedback', compact('feedback')); // Return view with feedback data
     }
 
@@ -48,7 +48,7 @@ class FeedbackController extends Controller
     // Display feedback list (same as index function, could be merged)
     function feedback()
     {
-        $feedback = Feedback::paginate(9); // Paginate feedback entries
+        $feedback = Feedback::orderBy('created_at', 'desc')->paginate(10); // Paginate feedback entries, sorted by most recent first
         return view('feedback', compact('feedback')); // Return view with feedback data
     }
 
@@ -102,8 +102,8 @@ class FeedbackController extends Controller
     // Display trashed (soft deleted) feedback entries
     public function trashed()
     {
-        // Retrieve trashed feedback entries with pagination
-        $trashedFeedback = Feedback::onlyTrashed()->paginate(10);
+        // Retrieve trashed feedback entries with pagination, sorted by most recent first
+        $trashedFeedback = Feedback::onlyTrashed()->orderBy('created_at', 'desc')->paginate(10);
         return view('trashed-feedback', compact('trashedFeedback')); // Return view with trashed feedback data
     }
 
