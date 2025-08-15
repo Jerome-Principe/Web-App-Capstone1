@@ -10,7 +10,8 @@ class MobileFeedbackController extends Controller
     public function index()
     {
         $mobileFeedbacks = MobileFeedback::paginate(10);
-        return view('mobile-feedback', compact('mobileFeedbacks'));
+        $trashedCount = MobileFeedback::onlyTrashed()->count();
+        return view('mobile-feedback', compact('mobileFeedbacks', 'trashedCount'));
     }
 
     public function store(Request $request)
@@ -33,5 +34,62 @@ class MobileFeedbackController extends Controller
         $mobileFeedback->delete();
 
         return redirect()->route('mobile-feedback.index')->with('success', 'Feedback deleted successfully.');
+    }
+
+    public function trashed()
+    {
+        $trashedMobileFeedbacks = MobileFeedback::onlyTrashed()->paginate(10);
+        $activeCount = MobileFeedback::count();
+        return view('trashed-mobile-feedback', compact('trashedMobileFeedbacks', 'activeCount'));
+    }
+
+    public function moveToArchive(Request $request)
+    {
+        $selectedIds = $request->input('selected');
+
+        if (is_string($selectedIds)) {
+            $selectedIds = explode(',', $selectedIds);
+        }
+
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', 'No feedback selected.');
+        }
+
+        MobileFeedback::whereIn('id', $selectedIds)->delete();
+
+        return redirect()->route('mobile-feedback.index')->with('success', 'Selected feedback moved to archive successfully.');
+    }
+
+    public function restore($id)
+    {
+        $mobileFeedback = MobileFeedback::onlyTrashed()->findOrFail($id);
+        $mobileFeedback->restore();
+
+        return redirect()->route('mobile-feedback.trashed')->with('success', 'Feedback restored successfully.');
+    }
+
+    public function restoreBulk(Request $request)
+    {
+        $selectedIds = $request->input('selected');
+
+        if (is_string($selectedIds)) {
+            $selectedIds = explode(',', $selectedIds);
+        }
+
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', 'No feedback selected.');
+        }
+
+        MobileFeedback::onlyTrashed()->whereIn('id', $selectedIds)->restore();
+
+        return redirect()->route('mobile-feedback.trashed')->with('success', 'Selected feedback restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $mobileFeedback = MobileFeedback::onlyTrashed()->findOrFail($id);
+        $mobileFeedback->forceDelete();
+
+        return redirect()->route('mobile-feedback.trashed')->with('success', 'Feedback permanently deleted successfully.');
     }
 }

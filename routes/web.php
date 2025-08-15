@@ -72,7 +72,9 @@ Route::resource('/register-rfid', RegisterRFIDController::class);
 
 // Mobile Feedback routes
 Route::prefix('mobile-feedback')->group(function () {
-    Route::resource('/', MobileFeedbackController::class)->names('mobile-feedback');
+    Route::get('/', [MobileFeedbackController::class, 'index'])->name('mobile-feedback.index');
+    Route::post('/', [MobileFeedbackController::class, 'store'])->name('mobile-feedback.store');
+    Route::delete('/{id}', [MobileFeedbackController::class, 'destroy'])->name('mobile-feedback.destroy');
     Route::get('/trashed', [MobileFeedbackController::class, 'trashed'])->name('mobile-feedback.trashed');
     Route::post('/move-to-archive', [MobileFeedbackController::class, 'moveToArchive'])->name('mobile-feedback.moveToArchive');
     Route::post('/{id}/restore', [MobileFeedbackController::class, 'restore'])->name('mobile-feedback.restore');

@@ -540,7 +540,7 @@
                                 All (<span id="selection-count">0</span>/<span id="total-count">0</span>)
                             </a>
                             <a href="{{ route('mobile-feedback.trashed') }}" class="filter-tab">
-                                Archived ({{ App\Models\MobileFeedback::onlyTrashed()->count() }})
+                                Archived ({{ $trashedCount ?? 0 }})
                             </a>
                         </div>
 

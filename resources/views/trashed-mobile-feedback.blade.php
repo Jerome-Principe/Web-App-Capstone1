@@ -154,9 +154,9 @@
             <!-- Filter options -->
             <div class="filter-options">
                 <div class="filter-links">
-                    <a href="{{ route('mobile-feedback.index') }}">All ({{ App\Models\MobileFeedback::count() }})</a>
+                    <a href="{{ route('mobile-feedback.index') }}">All ({{ $activeCount ?? 0 }})</a>
                     <a href="{{ route('mobile-feedback.trashed') }}">Archived
-                        ({{ App\Models\MobileFeedback::onlyTrashed()->count() }})</a>
+                        ({{ $trashedMobileFeedbacks->total() }})</a>
                 </div>
 
                 <div>
