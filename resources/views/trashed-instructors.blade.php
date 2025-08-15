@@ -17,7 +17,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1400px;
             margin: 30px auto;
             background-color: white;
             padding: 20px;
@@ -56,11 +56,13 @@
 
         .table-container {
             overflow-x: auto;
+            white-space: nowrap;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 1200px;
         }
 
         th,
@@ -87,36 +89,30 @@
             z-index: 1055;
         }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 24px;
-            color: #666;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e1e5e9;
-            margin: 20px 0;
+            padding: 40px 20px;
+            color: #6c757d;
         }
 
         .empty-state i {
-            font-size: 64px;
-            color: #333;
-            margin-bottom: 24px;
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 20px;
             display: block;
         }
 
         .empty-state h5 {
             font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 12px;
-            color: #333;
-            margin: 0 0 12px 0;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #495057;
         }
 
         .empty-state p {
             font-size: 14px;
             margin: 0;
-            color: #666;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -135,15 +131,32 @@
                         {{ session('success') }}
                     </div>
                 @endif
+
+                @if(session('error'))
+                    <div class="custom-alert-message error">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        setTimeout(function () {
+                            const alert = document.querySelector('.custom-alert-message');
+                            if (alert) {
+                                alert.classList.add('fade-out');
+                            }
+                        }, 3000);
+                    });
+                </script>
+
             </div>
 
             <!-- Filter options -->
             <div class="filter-options">
                 <div class="filter-links">
-                    <a href="#" id="select-all-link">All (0)</a>
+                    <a href="{{ route('instructors.index') }}">All ({{ App\Models\Instructor::count() }})</a>
                     <a href="{{ route('instructors.trashed') }}">Archived
-                        ({{ App\Models\Instructor::onlyTrashed()->count() }})
-                    </a>
+                        ({{ App\Models\Instructor::onlyTrashed()->count() }})</a>
                 </div>
 
                 <div>
@@ -159,7 +172,7 @@
                             </button>
                         </form>
 
-                        <!-- Other actions (move to trash, search, etc.) -->
+                        <!-- Search functionality -->
                         <form class="d-flex" role="search">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search"
                                 style="height: 35px;">
@@ -169,85 +182,91 @@
                 </div>
             </div>
 
-            <!-- Table or Empty State -->
-            @if($trashedInstructors->count() > 0)
-                <div class="table-container">
-                    <table>
-                        <thead>
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Contact Number</th>
+                            <th class="text-center">Expertise</th>
+                            <th class="text-center">Session</th>
+                            <th class="text-center">Rates</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($trashedInstructors as $instructor)
                             <tr>
-                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">First Name</th>
-                                <th class="text-center">Last Name</th>
-                                <th class="text-center">Contact Number</th>
-                                <th class="text-center">Expertise</th>
-                                <th class="text-center">Session</th>
-                                <th class="text-center">Rates</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($trashedInstructors as $instructor)
-                                <tr>
-                                    <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }} "
-                                            onchange="updateSelectionCount()">
-                                    </td>
-                                    <td class="text-center">
-                                        {{ ($trashedInstructors->currentPage() - 1) * $trashedInstructors->perPage() + $loop->index + 1 }}
-                                    </td>
-                                    <td class="text-center">{{ $instructor->first_name }}</td>
-                                    <td class="text-center">{{ $instructor->last_name }}</td>
-                                    <td class="text-center">{{ $instructor->contact_number }}</td>
-                                    <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
-                                    <td class="text-center">{{ $instructor->session }}</td>
-                                    <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
-                                    <td class="text-center">
+                                <td class="text-center">
+                                    <input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
+                                        onchange="updateSelectionCount()" />
+                                </td>
+                                <td class="text-center">
+                                    {{ ($trashedInstructors->currentPage() - 1) * $trashedInstructors->perPage() + $loop->index + 1 }}
+                                </td>
+                                <td class="text-center">{{ $instructor->first_name }}</td>
+                                <td class="text-center">{{ $instructor->last_name }}</td>
+                                <td class="text-center">{{ $instructor->contact_number }}</td>
+                                <td class="text-center">{{ $instructor->expertise ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $instructor->session }}</td>
+                                <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
                                         <form action="{{ route('instructors.restore', $instructor->id) }}" method="POST"
-                                            style="display:inline-block;">
+                                            class="d-inline">
                                             @csrf
                                             <button type="submit" class="btn btn-success btn-sm">Restore</button>
                                         </form>
                                         <form action="{{ route('instructors.forceDelete', $instructor->id) }}" method="POST"
-                                            style="display:inline-block;">
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want delete permanently?')">Delete
-                                                Permanently
+                                                onclick="return confirm('Are you sure you want to permanently delete this instructor?')">
+                                                Delete Permanently
                                             </button>
                                         </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-            @else
-                    <!-- Empty State -->
-                    <div class="empty-state">
-                        <i class="fas fa-trophy"></i>
-                        <h5>No archived instructors found</h5>
-                        <p>No instructor records have been archived yet.</p>
-                    </div>
-                @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="9" class="text-center">
+                                    <div class="empty-state">
+                                        <i class="fa fa-chalkboard-teacher"></i>
+                                        <h5>No archived instructors found</h5>
+                                        <p>No instructor records have been archived yet</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
 
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4 mb-4">
-                        <li class="page-item {{ $trashedInstructors->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $trashedInstructors->previousPageUrl() }}"
-                                tabindex="-1">Previous</a>
-                        </li>
-
-                        @foreach(range(1, $trashedInstructors->lastPage()) as $page)
-                            <li class="page-item {{ $page == $trashedInstructors->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $trashedInstructors->url($page) }}">{{ $page }}</a>
+                @if($trashedInstructors->hasPages())
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4 mb-4">
+                            <li class="page-item {{ $trashedInstructors->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $trashedInstructors->previousPageUrl() }}"
+                                    tabindex="-1">Previous</a>
                             </li>
-                        @endforeach
 
-                        <li class="page-item {{ !$trashedInstructors->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $trashedInstructors->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                            @foreach(range(1, $trashedInstructors->lastPage()) as $page)
+                                <li class="page-item {{ $page == $trashedInstructors->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $trashedInstructors->url($page) }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            <li class="page-item {{ !$trashedInstructors->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $trashedInstructors->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                @endif
 
             </div>
         </div>
@@ -265,20 +284,9 @@
         function updateSelectionCount() {
             const selectedCheckboxes = document.querySelectorAll('input[name="selected[]"]:checked');
             const count = selectedCheckboxes.length;
-            document.getElementById('select-all-link').textContent = `All (${count})`;
             const selectedIds = Array.from(selectedCheckboxes).map(input => input.value);
             document.getElementById('selectedIds').value = selectedIds.join(',');
-            console.log(selectedIds.join(',')); // Log selected IDs to debug
         }
-
-        // Add functionality for the "All (0)" link click
-        document.getElementById('select-all-link').addEventListener('click', function (e) {
-            e.preventDefault();
-            const isChecked = this.textContent.includes('0') || this.textContent.includes('All (0)');
-            const selectAllCheckbox = document.querySelector('input[type="checkbox"]');
-            selectAllCheckbox.checked = isChecked;
-            toggleSelectAll(selectAllCheckbox);
-        });
 
         // Ensure the form doesn't submit if no instructors are selected
         document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
@@ -287,6 +295,10 @@
                 alert('Please select at least one instructor to restore.');
                 e.preventDefault(); // Prevent form submission
             }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateSelectionCount();
         });
     </script>
 
