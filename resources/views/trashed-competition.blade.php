@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Archived Competitions</title>
+    <title>Archived</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -89,63 +89,30 @@
             z-index: 1055;
         }
 
-        .custom-alert-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 10px 15px;
-            border: 1px solid #c3e6cb;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            position: relative;
-            animation: slideIn 0.3s ease-out;
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
         }
 
-        .custom-alert-message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
+        .empty-state i {
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 20px;
+            display: block;
         }
 
-        .custom-alert-message.fade-out {
-            animation: fadeOut 0.5s ease-out forwards;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            to {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-
-        .badge {
-            background: #e9ecef;
+        .empty-state h5 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
             color: #495057;
-            font-weight: 500;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
         }
 
-        .badge.bg-primary {
-            background: #007bff !important;
-            color: white;
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -157,7 +124,7 @@
     <body>
         <div class="container">
             <div class="header-section">
-                <h1>Archived Competitions</h1>
+                <h1>Archived</h1>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
