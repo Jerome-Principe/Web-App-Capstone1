@@ -15,6 +15,14 @@ class CompetitionController extends Controller
             return Competition::latest()->paginate(10);
         });
 
+        // Check if the request expects JSON (API) or a view (web)
+        if (request()->wantsJson()) {
+            return response()->json([
+                'data' => $competitions,
+            ]);
+        }
+
+        // For web requests, return the view
         return view('competition', compact('competitions'));
     }
 
@@ -29,8 +37,17 @@ class CompetitionController extends Controller
             'type_of_competition' => 'required|string',
         ]);
 
-        Competition::create($validated);
+        $competition = Competition::create($validated);
 
+        // Check if the request expects JSON (API) or a view (web)
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Competition record created successfully!',
+                'data' => $competition,
+            ]);
+        }
+
+        // For web requests, redirect back to the competitions page with success message
         return redirect()->back()->with('success', 'Competition record created successfully!');
     }
 
@@ -47,6 +64,15 @@ class CompetitionController extends Controller
 
         $competition->update($validated);
 
+        // Check if the request expects JSON (API) or a view (web)
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Competition record updated successfully!',
+                'data' => $competition,
+            ]);
+        }
+
+        // For web requests, redirect back to the competitions page with success message
         return redirect()->back()->with('success', 'Competition record updated successfully!');
     }
 
@@ -54,6 +80,14 @@ class CompetitionController extends Controller
     {
         $competition->delete();
 
+        // Check if the request expects JSON (API) or a view (web)
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Competition record deleted successfully!',
+            ]);
+        }
+
+        // For web requests, redirect back to the competitions page with success message
         return redirect()->back()->with('success', 'Competition record deleted successfully!');
     }
 
@@ -95,6 +129,15 @@ class CompetitionController extends Controller
     public function trashed()
     {
         $trashedCompetitions = Competition::onlyTrashed()->orderBy('id', 'desc')->paginate(10);
+
+        // Check if the request expects JSON (API) or a view (web)
+        if (request()->wantsJson()) {
+            return response()->json([
+                'data' => $trashedCompetitions,
+            ]);
+        }
+
+        // For web requests, return the view
         return view('trashed-competition', compact('trashedCompetitions'));
     }
 
@@ -117,6 +160,9 @@ class CompetitionController extends Controller
         $selectedIds = explode(',', $request->selected);
 
         if (empty($selectedIds) || $selectedIds[0] === '') {
+            if (request()->wantsJson()) {
+                return response()->json(['error' => 'No competitions selected for restoration'], 400);
+            }
             return redirect()->route('competitions.trashed')->with('error', 'No competitions selected for restoration.');
         }
 
