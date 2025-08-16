@@ -201,10 +201,6 @@
                     });
                 </script>
 
-                <div class="alert alert-info" role="alert">
-                    <i class="fa fa-info-circle"></i>
-                    <strong>Note:</strong> Stock items with related sales records cannot be deleted. You must delete the related sales records first, or the system will prevent deletion to maintain data integrity.
-                </div>
             </div>
 
             <div class="filter-options">
@@ -230,6 +226,12 @@
                         </form>
                     </div>
                 </div>
+            </div>
+
+            <!-- Information Note about Data Integrity -->
+            <div class="alert alert-info" role="alert" style="margin-bottom: 20px;">
+                <i class="fa fa-info-circle me-2"></i>
+                <strong>Note:</strong> Stock items with related sales records cannot be deleted. You must delete the related sales records first, or the system will prevent deletion to maintain data integrity.
             </div>
 
             <div class="table-container">
@@ -291,8 +293,6 @@
                         @endforeach
                     </tbody>
                 </table>
-
-
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4">
