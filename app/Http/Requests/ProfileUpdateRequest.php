@@ -33,7 +33,7 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique('users')->ignore($userId),
             ],
-            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ];
     }
 
@@ -52,7 +52,7 @@ class ProfileUpdateRequest extends FormRequest
             'email.unique' => 'This email address is already taken.',
             'profile_picture.image' => 'The file must be an image.',
             'profile_picture.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif.',
-            'profile_picture.max' => 'The image may not be greater than 2MB.',
+            'profile_picture.max' => 'The image may not be greater than 10MB.',
         ];
     }
 }
