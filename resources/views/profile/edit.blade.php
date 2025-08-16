@@ -354,7 +354,6 @@
                 <form action="{{ route('profile.delete') }}" method="POST"
                     onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
                     @csrf
-                    @method('DELETE')
 
                     <div class="form-group">
                         <label for="password" class="form-label">
