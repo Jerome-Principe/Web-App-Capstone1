@@ -24,7 +24,7 @@ class CancelledAppointmentController extends Controller
             'selected_date' => 'required|string',
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
-            'proof_of_payment' => 'required|file|mimes:jpg,png,jpeg,pdf|max:2048',
+            'proof_of_payment' => 'nullable|string|max:255',
             'reason' => 'required|string|max:255',
         ]);
 
@@ -33,12 +33,32 @@ class CancelledAppointmentController extends Controller
             $formattedDate = Carbon::parse($request->selected_date)->format('Y-m-d');
 
             // Parse and format the time to H:i:s
-            $formattedTime = Carbon::createFromFormat('g:i A', $request->selected_time)->format('H:i:s');
+            $formattedTime = null;
+            try {
+                // Try different time formats
+                if (preg_match('/^\d{2}:\d{2}:\d{2}$/', $request->selected_time)) {
+                    // Already in H:i:s format
+                    $formattedTime = $request->selected_time;
+                } elseif (preg_match('/^\d{1,2}:\d{2} [AP]M$/', $request->selected_time)) {
+                    // g:i A format (e.g., "6:00 AM")
+                    $formattedTime = Carbon::createFromFormat('g:i A', $request->selected_time)->format('H:i:s');
+                } else {
+                    // Default to original time if parsing fails
+                    $formattedTime = $request->selected_time;
+                }
+            } catch (\Exception $e) {
+                // If parsing fails, use original time
+                $formattedTime = $request->selected_time;
+            }
 
-            // Handle proof of payment upload if exists
+            // Handle proof of payment (can be a string path or file upload)
             $proofOfPaymentPath = null;
             if ($request->hasFile('proof_of_payment')) {
+                // Handle file upload
                 $proofOfPaymentPath = $request->file('proof_of_payment')->store('proofs', 'public');
+            } elseif ($request->filled('proof_of_payment')) {
+                // Handle string value (e.g., from mobile app)
+                $proofOfPaymentPath = $request->proof_of_payment;
             }
 
             // Save the cancellation record
@@ -137,6 +157,163 @@ class CancelledAppointmentController extends Controller
             return redirect()->route('appointments.cancelled.trashed')->with('success', 'Appointment permanently deleted.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to permanently delete the appointment.');
+        }
+    }
+
+    // View proof of payment for cancelled appointment
+    public function viewProof($id)
+    {
+        try {
+            $cancelledAppointment = CancelledAppointment::findOrFail($id);
+
+            if (!$cancelledAppointment->proof_of_payment) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No proof of payment found for this appointment.'
+                ], 404);
+            }
+
+            // Check if file exists in storage
+            if (!Storage::disk('public')->exists($cancelledAppointment->proof_of_payment)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Proof of payment file not found.'
+                ], 404);
+            }
+
+            // Get file path and return file
+            $filePath = storage_path('app/public/' . $cancelledAppointment->proof_of_payment);
+
+            if (file_exists($filePath)) {
+                return response()->file($filePath);
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'File not accessible.'
+            ], 500);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error viewing proof of payment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Show proof of payment (alternative method)
+    public function showProof($id)
+    {
+        try {
+            $cancelledAppointment = CancelledAppointment::findOrFail($id);
+
+            if (!$cancelledAppointment->proof_of_payment) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No proof of payment found for this appointment.'
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'id' => $cancelledAppointment->id,
+                    'proof_of_payment' => $cancelledAppointment->proof_of_payment,
+                    'file_url' => Storage::disk('public')->url($cancelledAppointment->proof_of_payment)
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error showing proof of payment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Get proof URL
+    public function getProofUrl($id)
+    {
+        try {
+            $cancelledAppointment = CancelledAppointment::findOrFail($id);
+
+            if (!$cancelledAppointment->proof_of_payment) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No proof of payment found for this appointment.'
+                ], 404);
+            }
+
+            $url = Storage::disk('public')->url($cancelledAppointment->proof_of_payment);
+
+            return response()->json([
+                'status' => 'success',
+                'url' => $url
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error getting proof URL: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Serve proof file
+    public function serveProof($id)
+    {
+        try {
+            $cancelledAppointment = CancelledAppointment::findOrFail($id);
+
+            if (!$cancelledAppointment->proof_of_payment) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No proof of payment found for this appointment.'
+                ], 404);
+            }
+
+            if (!Storage::disk('public')->exists($cancelledAppointment->proof_of_payment)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Proof of payment file not found.'
+                ], 404);
+            }
+
+            return Storage::disk('public')->response($cancelledAppointment->proof_of_payment);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error serving proof file: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Test storage connection
+    public function testStorage($id)
+    {
+        try {
+            $cancelledAppointment = CancelledAppointment::findOrFail($id);
+
+            $storageInfo = [
+                'disk' => 'public',
+                'file_exists' => $cancelledAppointment->proof_of_payment ? Storage::disk('public')->exists($cancelledAppointment->proof_of_payment) : false,
+                'file_path' => $cancelledAppointment->proof_of_payment,
+                'full_path' => $cancelledAppointment->proof_of_payment ? storage_path('app/public/' . $cancelledAppointment->proof_of_payment) : null,
+                'file_size' => $cancelledAppointment->proof_of_payment ? Storage::disk('public')->size($cancelledAppointment->proof_of_payment) : null,
+                'storage_url' => $cancelledAppointment->proof_of_payment ? Storage::disk('public')->url($cancelledAppointment->proof_of_payment) : null
+            ];
+
+            return response()->json([
+                'status' => 'success',
+                'storage_info' => $storageInfo
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error testing storage: ' . $e->getMessage()
+            ], 500);
         }
     }
 }
