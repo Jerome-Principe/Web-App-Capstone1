@@ -54,6 +54,9 @@ class CancelledAppointmentController extends Controller
                 if (preg_match('/^\d{2}:\d{2}:\d{2}$/', $request->selected_time)) {
                     // Already in H:i:s format
                     $formattedTime = $request->selected_time;
+                } elseif (preg_match('/^\d{1,2}:\d{2}:\d{2} [AP]M$/', $request->selected_time)) {
+                    // g:i:s A format (e.g., "12:00:00 PM")
+                    $formattedTime = Carbon::createFromFormat('g:i:s A', $request->selected_time)->format('H:i:s');
                 } elseif (preg_match('/^\d{1,2}:\d{2} [AP]M$/', $request->selected_time)) {
                     // g:i A format (e.g., "6:00 AM")
                     $formattedTime = Carbon::createFromFormat('g:i A', $request->selected_time)->format('H:i:s');
