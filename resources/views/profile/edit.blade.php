@@ -124,24 +124,7 @@
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 16px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-            font-size: 15px;
-            letter-spacing: 0.025em;
-        }
 
-        .btn-success:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
-        }
 
         .btn-danger {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
@@ -357,60 +340,7 @@
                 </form>
             </div>
 
-            <!-- Password Change Section -->
-            <div class="glass-card rounded-3xl p-10 mb-8">
-                <div class="mb-8">
-                    <h2 class="section-title">
-                        <i class="fas fa-lock mr-3 text-green-500"></i>Change Password
-                    </h2>
-                    <p class="section-subtitle">Update your password to keep your account secure</p>
-                </div>
 
-                <form action="{{ route('profile.updatePassword') }}" method="POST">
-                    @csrf
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div class="form-group">
-                            <label for="current_password" class="form-label">
-                                <i class="fas fa-key mr-2 text-green-500"></i>Current Password
-                            </label>
-                            <input type="password" id="current_password" name="current_password" class="form-input"
-                                placeholder="Enter your current password">
-                            @error('current_password')
-                                <p class="error-message">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="new_password" class="form-label">
-                                <i class="fas fa-shield-alt mr-2 text-green-500"></i>New Password
-                            </label>
-                            <input type="password" id="new_password" name="new_password" class="form-input"
-                                placeholder="Enter your new password">
-                            @error('new_password')
-                                <p class="error-message">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirm_password" class="form-label">
-                            <i class="fas fa-check-circle mr-2 text-green-500"></i>Confirm New Password
-                        </label>
-                        <input type="password" id="confirm_password" name="confirm_password" class="form-input"
-                            placeholder="Confirm your new password">
-                        @error('confirm_password')
-                            <p class="error-message">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="text-center mt-10">
-                        <button type="submit" class="btn-success">
-                            <i class="fas fa-key mr-3"></i>Change Password
-                        </button>
-                    </div>
-                </form>
-            </div>
 
             <!-- Delete Account Section -->
             <div class="glass-card rounded-3xl p-10">
