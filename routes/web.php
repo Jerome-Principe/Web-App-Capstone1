@@ -236,6 +236,11 @@ Route::prefix('appointments')->group(function () {
 Route::prefix('cancelled')->group(function () {
     Route::get('/', [CancelledAppointmentController::class, 'index'])->name('appointments.cancelled');
     Route::post('/store', [CancelledAppointmentController::class, 'store'])->name('appointments.cancelled.store');
+    Route::get('/proof/{id}', [CancelledAppointmentController::class, 'showProof'])->name('appointments.cancelled.proof');
+    Route::get('/proof-url/{id}', [CancelledAppointmentController::class, 'getProofUrl'])->name('appointments.cancelled.proof.url');
+    Route::get('/serve-proof/{id}', [CancelledAppointmentController::class, 'serveProof'])->name('appointments.cancelled.serve.proof');
+    Route::get('/view-proof/{id}', [CancelledAppointmentController::class, 'viewProof'])->name('appointments.cancelled.view.proof');
+    Route::get('/test-storage/{id}', [CancelledAppointmentController::class, 'testStorage'])->name('appointments.cancelled.test.storage');
     Route::post('/move-to-trash', [CancelledAppointmentController::class, 'moveToTrash'])->name('appointments.cancelled.moveToTrash');
     Route::get('/trashed', [CancelledAppointmentController::class, 'trashed'])->name('appointments.cancelled.trashed');
     Route::post('/restore-bulk', [CancelledAppointmentController::class, 'restoreBulk'])->name('appointments.cancelled.restore.bulk');

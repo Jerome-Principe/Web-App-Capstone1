@@ -16,6 +16,136 @@ class CancelledAppointmentController extends Controller
         return view('appointment-cancelled', compact('cancelledAppointments'));
     }
 
+    // Add method to show proof of payment
+    public function showProof($id)
+    {
+        try {
+            $appointment = CancelledAppointment::findOrFail($id);
+
+            if (!$appointment->proof_of_payment) {
+                return response()->json(['error' => 'No proof of payment found'], 404);
+            }
+
+            // Debug: Log the proof_of_payment path
+            \Log::info('Proof of payment path: ' . $appointment->proof_of_payment);
+
+            // Check if file exists in public storage
+            if (!Storage::disk('public')->exists($appointment->proof_of_payment)) {
+                \Log::error('File not found in public storage: ' . $appointment->proof_of_payment);
+                return response()->json(['error' => 'File not found in storage'], 404);
+            }
+
+            // Get the file path and return the file
+            $filePath = Storage::disk('public')->path($appointment->proof_of_payment);
+            $fileName = basename($appointment->proof_of_payment);
+
+            // Debug: Log the actual file path
+            \Log::info('Actual file path: ' . $filePath);
+
+            // Check if file exists on disk
+            if (!file_exists($filePath)) {
+                \Log::error('File does not exist on disk: ' . $filePath);
+                return response()->json(['error' => 'File not found on disk'], 404);
+            }
+
+            return response()->download($filePath, $fileName);
+        } catch (\Exception $e) {
+            \Log::error('Error in showProof: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to retrieve proof of payment: ' . $e->getMessage()], 500);
+        }
+    }
+
+    // Add method to get proof of payment URL
+    public function getProofUrl($id)
+    {
+        try {
+            $appointment = CancelledAppointment::findOrFail($id);
+
+            if (!$appointment->proof_of_payment) {
+                return response()->json(['error' => 'No proof of payment found'], 404);
+            }
+
+            // Generate the proper storage URL
+            $url = Storage::disk('public')->url($appointment->proof_of_payment);
+
+            return response()->json(['url' => $url]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to get proof URL'], 500);
+        }
+    }
+
+    // Alternative method to serve proof of payment (might resolve 403 error)
+    public function serveProof($id)
+    {
+        try {
+            $appointment = CancelledAppointment::findOrFail($id);
+
+            if (!$appointment->proof_of_payment) {
+                abort(404, 'No proof of payment found');
+            }
+
+            // Check if file exists
+            if (!Storage::disk('public')->exists($appointment->proof_of_payment)) {
+                abort(404, 'File not found');
+            }
+
+            // Get file info
+            $filePath = Storage::disk('public')->path($appointment->proof_of_payment);
+            $fileName = basename($appointment->proof_of_payment);
+            $mimeType = Storage::disk('public')->mimeType($appointment->proof_of_payment);
+
+            // Return file response with proper headers
+            return response()->file($filePath, [
+                'Content-Type' => $mimeType,
+                'Content-Disposition' => 'inline; filename="' . $fileName . '"'
+            ]);
+        } catch (\Exception $e) {
+            abort(500, 'Failed to serve proof of payment');
+        }
+    }
+
+    // Test method to debug storage issues
+    public function testStorage($id)
+    {
+        try {
+            $appointment = CancelledAppointment::findOrFail($id);
+
+            $debugInfo = [
+                'appointment_id' => $id,
+                'proof_of_payment' => $appointment->proof_of_payment,
+                'storage_path' => Storage::disk('public')->path($appointment->proof_of_payment ?? ''),
+                'storage_url' => Storage::disk('public')->url($appointment->proof_of_payment ?? ''),
+                'file_exists' => Storage::disk('public')->exists($appointment->proof_of_payment ?? ''),
+                'disk_exists' => file_exists(Storage::disk('public')->path($appointment->proof_of_payment ?? '')),
+                'public_path' => public_path('storage'),
+                'storage_path_full' => storage_path('app/public'),
+            ];
+
+            return response()->json($debugInfo);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // Simple redirect method for viewing proof (might work better)
+    public function viewProof($id)
+    {
+        try {
+            $appointment = CancelledAppointment::findOrFail($id);
+
+            if (!$appointment->proof_of_payment) {
+                abort(404, 'No proof of payment found');
+            }
+
+            // Generate the storage URL and redirect to it
+            $url = Storage::disk('public')->url($appointment->proof_of_payment);
+
+            return redirect($url);
+        } catch (\Exception $e) {
+            abort(500, 'Failed to get proof URL');
+        }
+    }
+
     public function store(Request $request)
     {
         $request->validate([

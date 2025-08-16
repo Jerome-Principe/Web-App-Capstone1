@@ -371,8 +371,9 @@
                                         <td>{{ $appointment->payment_method }}</td>
                                         <td>
                                             @if($appointment->proof_of_payment)
-                                                <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
-                                                    target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <a href="{{ route('appointments.cancelled.view.proof', $appointment->id) }}"
+                                                    target="_blank" class="btn btn-sm btn-outline-primary"
+                                                    onclick="handleProofClick(event, '{{ $appointment->id }}', '{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}')">
                                                     <i class="fa fa-eye"></i> View Proof
                                                 </a>
                                             @else
@@ -425,6 +426,23 @@
         </div>
 
         <script>
+            // Handle proof of payment click with fallback
+            function handleProofClick(event, appointmentId, fallbackUrl) {
+                // Try the route first, if it fails, use the fallback URL
+                const routeUrl = event.target.href;
+
+                // Open in new tab
+                const newTab = window.open(routeUrl, '_blank');
+
+                // If the route fails, try the fallback URL after a short delay
+                setTimeout(() => {
+                    if (newTab && newTab.closed) {
+                        // If the tab was closed (possibly due to error), try fallback
+                        window.open(fallbackUrl, '_blank');
+                    }
+                }, 1000);
+            }
+
             // Toggle select all checkboxes
             function toggleSelectAll(checkbox) {
                 const checkboxes = document.querySelectorAll('input[name="selected[]"]');
