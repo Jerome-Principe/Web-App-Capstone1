@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\DeleteAccountRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -87,21 +88,29 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(DeleteAccountRequest $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
         $user = $request->user();
 
-        Auth::logout();
+        try {
+            // Delete the user's profile picture if it exists
+            if ($user->profile_picture && file_exists(public_path($user->profile_picture))) {
+                unlink(public_path($user->profile_picture));
+            }
 
-        $user->delete();
+            // Logout the user
+            Auth::logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            // Delete the user account
+            $user->delete();
 
-        return Redirect::to('/')->with('success', 'Account deleted successfully.');
+            // Invalidate and regenerate session
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return Redirect::to('/')->with('success', 'Your account has been permanently deleted.');
+        } catch (\Exception $e) {
+            return Redirect::back()->withErrors(['password' => 'An error occurred while deleting your account. Please try again.'], 'userDeletion');
+        }
     }
 }
