@@ -25,6 +25,7 @@ class RecoveryEmailController extends Controller
         $user = PendingMembership::where('email', $email)->first();
 
         return response()->json([
+            'success' => true,
             'exists' => $user ? true : false,
         ]);
     }

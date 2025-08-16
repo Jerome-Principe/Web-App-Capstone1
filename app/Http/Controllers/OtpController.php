@@ -28,11 +28,15 @@ class OtpController extends Controller
             \Log::error('Mail sending failed: ' . $e->getMessage()); // log to storage/logs/laravel.log
 
             return response()->json([
+                'success' => false,
                 'error' => 'Failed to send OTP. Reason: ' . $e->getMessage()
             ], 500);
         }
 
-        return response()->json(['message' => 'OTP sent successfully!']);
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP sent successfully!'
+        ]);
     }
 
     // Method to verify OTP
@@ -48,12 +52,18 @@ class OtpController extends Controller
             ->first();
 
         if (!$otp || $otp->isExpired()) {
-            return response()->json(['error' => 'Invalid or expired OTP'], 422);
+            return response()->json([
+                'success' => false,
+                'error' => 'Invalid or expired OTP'
+            ], 422);
         }
 
         // OTP is valid, optionally delete it after verification
         $otp->delete();
 
-        return response()->json(['message' => 'OTP verified successfully!']);
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP verified successfully!'
+        ]);
     }
 }
