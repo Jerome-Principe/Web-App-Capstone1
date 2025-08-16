@@ -181,6 +181,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
         Route::put('/update', [ProfileController::class, 'update'])->name('update');
+        Route::post('/remove-picture', [ProfileController::class, 'removeProfilePicture'])->name('removePicture');
+        Route::get('/export-data', [ProfileController::class, 'exportData'])->name('exportData');
         Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('updatePassword');
         Route::post('/delete', [ProfileController::class, 'destroy'])->name('delete');
     });
