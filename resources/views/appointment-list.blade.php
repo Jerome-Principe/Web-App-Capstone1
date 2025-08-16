@@ -272,6 +272,34 @@
         .text-success {
             color: #28a745 !important;
         }
+
+        /* Dashboard-style button for View Proof */
+        .btn-view-proof {
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.3);
+        }
+
+        .btn-view-proof:hover {
+            background: linear-gradient(135deg, #c2185b, #ad1457);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4);
+        }
+
+        .btn-view-proof i {
+            font-size: 16px;
+        }
     </style>
 </head>
 
@@ -393,7 +421,10 @@
                                         <td>
                                             @if($appointment->proof_of_payment)
                                                 <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
-                                                    target="_blank" class="btn btn-sm btn-outline-dark">View</a>
+                                                    target="_blank" class="btn-view-proof">
+                                                    <i class="fa fa-eye"></i>
+                                                    View Proof
+                                                </a>
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
