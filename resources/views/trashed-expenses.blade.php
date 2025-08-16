@@ -124,7 +124,7 @@
     <body>
         <div class="container">
             <div class="header-section">
-                <h1>Archived</h1>
+                <h1>Archived Expenses</h1>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
@@ -188,16 +188,10 @@
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">User</th>
-                            <th class="text-center">Instructor</th>
                             <th class="text-center">Date</th>
-                            <th class="text-center">Time</th>
+                            <th class="text-center">Expenses</th>
+                            <th class="text-center">Amount</th>
                             <th class="text-center">Payment Method</th>
-                            <th class="text-center">GCash Account Name</th>
-                            <th class="text-center">GCash Account Number</th>
-                            <th class="text-center">Proof of Payment</th>
-                            <th class="text-center">Status</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -208,27 +202,10 @@
                                     <input type="checkbox" name="selected[]" value="{{ $expense->id }}"
                                         onchange="updateSelectionCount()" />
                                 </td>
-                                <td class="text-center">
-                                    {{ ($trashedExpenses->currentPage() - 1) * $trashedExpenses->perPage() + $loop->index + 1 }}
-                                </td>
-                                <td class="text-center">{{ $expense->user->name ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $expense->instructor->first_name ?? 'N/A' }}
-                                    {{ $expense->instructor->last_name ?? '' }}
-                                </td>
-                                <td class="text-center">{{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}</td>
-                                <td class="text-center">{{ $expense->time ?? 'N/A' }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($expense->date)->format('F d, Y') }}</td>
+                                <td class="text-center">{{ $expense->expense_description }}</td>
+                                <td class="text-center">₱{{ number_format($expense->amount, 2) }}</td>
                                 <td class="text-center">{{ $expense->payment_method }}</td>
-                                <td class="text-center">{{ $expense->gcash_account_name ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $expense->gcash_account_number ?? 'N/A' }}</td>
-                                <td class="text-center">
-                                    @if($expense->proof_of_payment)
-                                        <a href="{{ Storage::url('app/public/' . $expense->proof_of_payment) }}"
-                                            target="_blank">View</a>
-                                    @else
-                                        N/A
-                                    @endif
-                                </td>
-                                <td class="text-center">{{ $expense->status ?? 'Archived' }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
                                         <form action="{{ route('expenses.restore', $expense->id) }}" method="POST"
@@ -250,7 +227,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="12" class="text-center">
+                                <td colspan="6" class="text-center">
                                     <div class="empty-state">
                                         <i class="fa fa-money-bill-wave"></i>
                                         <h5>No archived expenses found</h5>
