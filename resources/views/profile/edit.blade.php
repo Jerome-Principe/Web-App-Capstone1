@@ -365,7 +365,6 @@
 
                 <form action="{{ route('profile.updatePassword') }}" method="POST">
                     @csrf
-                    @method('PUT')
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="form-group">

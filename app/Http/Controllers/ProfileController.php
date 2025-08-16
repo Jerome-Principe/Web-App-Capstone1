@@ -29,12 +29,6 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
-        ]);
-
         $user->fill($request->only('name', 'email'));
 
         if ($request->hasFile('profile_picture')) {
