@@ -370,14 +370,18 @@
                                         <td>{{ $appointment->selected_time }}</td>
                                         <td>{{ $appointment->payment_method }}</td>
                                         <td>
-                                            @if($appointment->proof_of_payment)
+                                            @if(strtolower($appointment->payment_method) === 'cash')
+                                                <span class="text-muted">N/A</span>
+                                            @elseif(strtolower($appointment->payment_method) === 'gcash' && $appointment->proof_of_payment)
                                                 <a href="{{ route('appointments.cancelled.view.proof', $appointment->id) }}"
                                                     target="_blank" class="btn btn-sm btn-outline-primary"
                                                     onclick="handleProofClick(event, '{{ $appointment->id }}', '{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}')">
                                                     <i class="fa fa-eye"></i> View Proof
                                                 </a>
+                                            @elseif(strtolower($appointment->payment_method) === 'gcash' && !$appointment->proof_of_payment)
+                                                <span class="text-muted">No proof uploaded</span>
                                             @else
-                                                <span class="text-muted">-</span>
+                                                <span class="text-muted">N/A</span>
                                             @endif
                                         </td>
                                         <td>{{ $appointment->reason }}</td>
