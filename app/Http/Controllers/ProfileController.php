@@ -32,17 +32,33 @@ class ProfileController extends Controller
         $user->fill($request->only('name', 'email'));
 
         if ($request->hasFile('profile_picture')) {
-            $file = $request->file('profile_picture');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/profile_pictures'), $fileName);
+            try {
+                $file = $request->file('profile_picture');
+                $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-            // Save the file path to the database
-            $user->profile_picture = 'uploads/profile_pictures/' . $fileName;
+                // Ensure the directory exists
+                $uploadPath = public_path('uploads/profile_pictures');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                // Move the file
+                $file->move($uploadPath, $fileName);
+
+                // Save the file path to the database
+                $user->profile_picture = 'uploads/profile_pictures/' . $fileName;
+
+                $message = 'Profile and picture updated successfully.';
+            } catch (\Exception $e) {
+                return Redirect::back()->withErrors(['profile_picture' => 'Failed to upload profile picture: ' . $e->getMessage()]);
+            }
+        } else {
+            $message = 'Profile updated successfully.';
         }
 
         $user->save();
 
-        return Redirect::route('profile.edit')->with('success', 'Profile updated successfully.');
+        return Redirect::route('profile.edit')->with('success', $message);
     }
 
 

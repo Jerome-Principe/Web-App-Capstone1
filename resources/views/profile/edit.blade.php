@@ -318,6 +318,9 @@
                         </label>
                         <input type="file" id="profile_picture" name="profile_picture" class="hidden" accept="image/*"
                             onchange="previewImage(event)">
+                        @error('profile_picture')
+                            <p class="error-message mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Name and Email -->
