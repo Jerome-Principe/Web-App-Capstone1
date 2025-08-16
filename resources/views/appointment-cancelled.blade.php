@@ -371,7 +371,7 @@
                                         <td>{{ $appointment->payment_method }}</td>
                                         <td>
                                             @if($appointment->proof_of_payment)
-                                                <a href="{{ asset('storage/app/public/' . $appointment->proof_of_payment) }}"
+                                                <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
                                                     target="_blank" class="btn btn-sm btn-outline-primary">
                                                     <i class="fa fa-eye"></i> View Proof
                                                 </a>

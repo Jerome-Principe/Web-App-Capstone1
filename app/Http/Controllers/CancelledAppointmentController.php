@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CancelledAppointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class CancelledAppointmentController extends Controller
@@ -23,7 +24,7 @@ class CancelledAppointmentController extends Controller
             'selected_date' => 'required|string', // Accept string to handle single-digit dates
             'selected_time' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
-            'proof_of_payment' => 'required|string',
+            'proof_of_payment' => 'required|file|mimes:jpg,png,jpeg,pdf|max:2048', // Accept image or PDF
             'reason' => 'required|string|max:255',
         ]);
 
@@ -34,6 +35,12 @@ class CancelledAppointmentController extends Controller
             // Parse and format the time to H:i:s
             $formattedTime = Carbon::createFromFormat('g:i A', $request->selected_time)->format('H:i:s');
 
+            // Handle proof of payment upload if exists
+            $proofOfPaymentPath = null;
+            if ($request->hasFile('proof_of_payment')) {
+                $proofOfPaymentPath = $request->file('proof_of_payment')->store('proofs', 'public');
+            }
+
             // Save the cancellation record
             $cancelledAppointment = new CancelledAppointment();
             $cancelledAppointment->user_id = $request->user_id;
@@ -41,7 +48,7 @@ class CancelledAppointmentController extends Controller
             $cancelledAppointment->selected_date = $formattedDate;
             $cancelledAppointment->selected_time = $formattedTime;
             $cancelledAppointment->payment_method = $request->payment_method;
-            $cancelledAppointment->proof_of_payment = $request->proof_of_payment;
+            $cancelledAppointment->proof_of_payment = $proofOfPaymentPath;
             $cancelledAppointment->reason = $request->reason;
             $cancelledAppointment->save();
 
