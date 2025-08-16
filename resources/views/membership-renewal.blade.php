@@ -369,7 +369,7 @@
                                     <td>{{ $renewal->reference_number ?? 'N/A' }}</td>
                                     <td>
                                         @if(isset($renewal->proof_of_payment_url) && $renewal->proof_of_payment_url)
-                                            <a href="{{ url($renewal->proof_of_payment_url) }}" target="_blank"
+                                            <a href="{{ route('membership-renewal.view-proof', $renewal->id) }}" target="_blank"
                                                 class="btn btn-sm btn-outline-primary">
                                                 <i class="fa fa-eye"></i> View Proof
                                             </a>

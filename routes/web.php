@@ -373,6 +373,7 @@ Route::prefix('membership-renewal')->name('membership-renewal.')->group(function
     Route::get('/', [MembershipRenewalController::class, 'index'])->name('index');
     Route::post('/{id}/approve', [MembershipRenewalController::class, 'approve'])->name('approve');
     Route::post('/{id}/decline', [MembershipRenewalController::class, 'decline'])->name('decline');
+    Route::get('/{id}/view-proof', [MembershipRenewalController::class, 'viewProof'])->name('view-proof');
     Route::get('/export-pdf', [MembershipRenewalController::class, 'exportPdf'])->name('export-pdf');
     Route::get('/filter', [MembershipRenewalController::class, 'filterByDate'])->name('filter');
     Route::post('/fix-types', [MembershipRenewalController::class, 'fixMembershipTypes'])->name('fix-types');

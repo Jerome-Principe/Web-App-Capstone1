@@ -194,6 +194,34 @@ class MembershipRenewalController extends Controller
     }
 
     /**
+     * View proof of payment image.
+     */
+    public function viewProof($id)
+    {
+        try {
+            $renewal = MembershipRenewal::findOrFail($id);
+
+            if (!$renewal->proof_of_payment_url) {
+                return response()->json(['error' => 'No proof of payment available'], 404);
+            }
+
+            // Get the file path from storage
+            $filePath = storage_path('app/public/' . $renewal->proof_of_payment_url);
+
+            if (!file_exists($filePath)) {
+                return response()->json(['error' => 'Proof of payment file not found'], 404);
+            }
+
+            // Return the image file
+            return response()->file($filePath);
+
+        } catch (\Exception $e) {
+            \Log::error('View proof failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to view proof of payment'], 500);
+        }
+    }
+
+    /**
      * Transfer payment data to membership_payments table.
      * DEPRECATED: No longer used to avoid duplicate data in payment list
      */
