@@ -366,7 +366,7 @@
                                         <td>
                                             <strong>{{ $appointment->instructor_name }}</strong>
                                         </td>
-                                        <td>{{ $appointment->selected_date }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($appointment->selected_date)->format('n/j/Y') }}</td>
                                         <td>{{ $appointment->selected_time }}</td>
                                         <td>{{ $appointment->payment_method }}</td>
                                         <td>
