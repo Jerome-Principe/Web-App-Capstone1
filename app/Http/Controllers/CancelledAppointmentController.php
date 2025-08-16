@@ -11,7 +11,9 @@ class CancelledAppointmentController extends Controller
 {
     public function index()
     {
-        $cancelledAppointments = CancelledAppointment::with('user')->paginate(10);
+        $cancelledAppointments = CancelledAppointment::with('user')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         return view('appointment-cancelled', compact('cancelledAppointments'));
     }
