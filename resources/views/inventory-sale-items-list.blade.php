@@ -196,13 +196,6 @@
                 </script>
             </div>
 
-            <!-- Information Note about Data Integrity -->
-            <div class="alert alert-info" role="alert" style="margin-bottom: 20px;">
-                <i class="fa fa-info-circle me-2"></i>
-                <strong>Note:</strong> Sale items can be deleted, but please ensure you have proper authorization and that
-                the deletion won't affect any business reports or analytics.
-            </div>
-
             <div class="filter-options">
                 <div class="filter-links">
                     <!-- Link to view all drinks -->
@@ -226,6 +219,13 @@
                         </form>
                     </div>
                 </div>
+            </div>
+
+            <!-- Information Note about Data Integrity -->
+            <div class="alert alert-info" role="alert" style="margin-bottom: 20px;">
+                <i class="fa fa-info-circle me-2"></i>
+                <strong>Note:</strong> Sale items can be deleted, but please ensure you have proper authorization and that
+                the deletion won't affect any business reports or analytics.
             </div>
 
             <div class="table-container">
