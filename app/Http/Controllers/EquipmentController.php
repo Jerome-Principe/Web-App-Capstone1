@@ -65,9 +65,16 @@ class EquipmentController extends Controller
      */
     public function destroy($id)
     {
-        $equipment = Equipment::find($id);
-        $equipment->delete();
-        return redirect()->route('equipmentsAdd.index')->with('success', 'Equipment deleted successfully.');
+        try {
+            $equipment = Equipment::findOrFail($id);
+
+            // The cascading delete will be handled automatically by the model's boot method
+            $equipment->delete();
+
+            return redirect()->route('equipmentsAdd.index')->with('success', 'Equipment and all related defect records deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('equipmentsAdd.index')->with('error', 'Failed to delete equipment. Please try again.');
+        }
     }
 
 

@@ -17,7 +17,6 @@ class EquipmentDefect extends Model
         'quantity',
         'defect',
         'date',
-        'time',
     ];
 
     // Ensure timestamps are enabled
@@ -27,5 +26,27 @@ class EquipmentDefect extends Model
     public function equipment()
     {
         return $this->belongsTo(Equipment::class, 'equipment_id');
+    }
+
+    // Boot method to handle any additional logic
+    protected static function boot()
+    {
+        parent::boot();
+
+        // When deleting a defect record, restore the quantity to the equipment
+        static::deleting(function ($equipmentDefect) {
+            if ($equipmentDefect->equipment) {
+                $equipmentDefect->equipment->quantity += $equipmentDefect->quantity;
+                $equipmentDefect->equipment->save();
+            }
+        });
+
+        // When restoring a defect record, deduct the quantity from the equipment
+        static::restored(function ($equipmentDefect) {
+            if ($equipmentDefect->equipment) {
+                $equipmentDefect->equipment->quantity -= $equipmentDefect->quantity;
+                $equipmentDefect->equipment->save();
+            }
+        });
     }
 }

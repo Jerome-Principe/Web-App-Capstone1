@@ -19,7 +19,6 @@
 
         .container {
             max-width: 1000px;
-            margin: 30px auto;
             background-color: white;
             padding: 40px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -149,6 +148,38 @@
             color: #6c757d;
             font-weight: 400;
         }
+
+        /* Alert styling */
+        .alert {
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert-dismissible .btn-close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 2;
+            padding: 1.25rem 1rem;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
     </style>
 </head>
 
@@ -169,18 +200,26 @@
                 </div>
 
                 @if(session('success'))
-                    <div class="custom-alert-message">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
 
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
+                            const alerts = document.querySelectorAll('.alert');
+                            alerts.forEach(function (alert) {
                                 alert.classList.add('fade-out');
-                            }
+                            });
                         }, 3000);
                     });
                 </script>
@@ -248,6 +287,14 @@
                                         class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o mx-1"
                                             aria-hidden="true"></i>Update
                                     </a>
+                                    <form action="{{ route('equipments-defect.destroy', $equipmentDefect->id) }}" method="POST"
+                                        style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger mx-1"
+                                            onclick="return confirm('Are you sure you want to delete this defect record? This will restore the quantity to the equipment.')"><i
+                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

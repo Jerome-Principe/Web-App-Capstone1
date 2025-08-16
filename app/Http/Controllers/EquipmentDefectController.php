@@ -119,4 +119,21 @@ class EquipmentDefectController extends Controller
 
         return $pdf->download('inventory-equipments-defect-report.pdf');
     }
+
+    /**
+     * Remove the specified equipment defect from the database.
+     */
+    public function destroy($id)
+    {
+        try {
+            $equipmentDefect = EquipmentDefect::findOrFail($id);
+
+            // The quantity restoration will be handled automatically by the model's boot method
+            $equipmentDefect->delete();
+
+            return redirect()->route('equipments-defect.index')->with('success', 'Defect record deleted successfully. Quantity has been restored to the equipment.');
+        } catch (\Exception $e) {
+            return redirect()->route('equipments-defect.index')->with('error', 'Failed to delete defect record. Please try again.');
+        }
+    }
 }
