@@ -15,7 +15,6 @@ class MachineDefect extends Model
         'quantity',
         'defect',
         'date',
-        'time'
     ];
 
     // Ensure timestamps are enabled
@@ -25,5 +24,27 @@ class MachineDefect extends Model
     public function machine()
     {
         return $this->belongsTo(Machine::class, 'machine_id');
+    }
+
+    // Boot method to handle any additional logic
+    protected static function boot()
+    {
+        parent::boot();
+
+        // When deleting a defect record, restore the quantity to the machine
+        static::deleting(function ($machineDefect) {
+            if ($machineDefect->machine) {
+                $machineDefect->machine->quantity += $machineDefect->quantity;
+                $machineDefect->machine->save();
+            }
+        });
+
+        // When restoring a defect record, deduct the quantity from the machine
+        static::restored(function ($machineDefect) {
+            if ($machineDefect->machine) {
+                $machineDefect->machine->quantity -= $machineDefect->quantity;
+                $machineDefect->machine->save();
+            }
+        });
     }
 }

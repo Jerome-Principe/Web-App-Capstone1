@@ -148,6 +148,11 @@
             color: #6c757d;
             font-weight: 400;
         }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
     </style>
 </head>
 
@@ -159,7 +164,6 @@
         <div class="container">
             <div class="header-section">
                 <h1>Machines List</h1>
-
                 <div>
                     <div class="d-flex justify-content-end position-relative">
                         <a href="/machines/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
@@ -171,6 +175,12 @@
                 @if(session('success'))
                     <div class="custom-alert-message">
                         {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="custom-alert-message">
+                        {{ session('error') }}
                     </div>
                 @endif
 
@@ -313,15 +323,6 @@
         // Initialize selection count on page load
         document.addEventListener("DOMContentLoaded", function () {
             updateSelectionCount();
-        });
-
-        // Ensure the form doesn't submit if no appointments are selected
-        document.getElementById('restore-selected-form').addEventListener('submit', function (e) {
-            const selectedIds = document.getElementById('selectedIds').value;
-            if (!selectedIds) {
-                alert('Please select at least one appointments to restore.');
-                e.preventDefault(); // Prevent form submission
-            }
         });
 
         document.getElementById('date').addEventListener('change', function () {

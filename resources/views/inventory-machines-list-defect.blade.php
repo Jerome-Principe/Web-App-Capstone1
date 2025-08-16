@@ -148,6 +148,11 @@
             color: #6c757d;
             font-weight: 400;
         }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
     </style>
 </head>
 
@@ -159,7 +164,6 @@
         <div class="container">
             <div class="header-section">
                 <h1>Defect Machines List</h1>
-
                 <div>
                     <div class="d-flex justify-content-end position-relative">
                         <a href="/machine-defects/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
@@ -171,6 +175,12 @@
                 @if(session('success'))
                     <div class="custom-alert-message">
                         {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="custom-alert-message">
+                        {{ session('error') }}
                     </div>
                 @endif
 
@@ -246,6 +256,14 @@
                                         class="btn btn-sm btn-primary">
                                         <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
                                     </a>
+                                    <form action="{{ route('machine-defects.destroy', $machineDefect->id) }}" method="POST"
+                                        style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger mx-1"
+                                            onclick="return confirm('Are you sure you want to delete this defect record? This will restore the quantity to the machine.')"><i
+                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

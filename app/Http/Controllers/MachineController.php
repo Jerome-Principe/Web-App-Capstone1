@@ -71,10 +71,16 @@ class MachineController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $machine = Machine::findOrFail($id);
-        $machine->delete();
-        return redirect()->route('machines.index')->with('success', 'Machine deleted successfully.');
+        try {
+            $machine = Machine::findOrFail($id);
+
+            // The cascading delete will be handled automatically by the model's boot method
+            $machine->delete();
+
+            return redirect()->route('machines.index')->with('success', 'Machine and all related defect records deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('machines.index')->with('error', 'Failed to delete machine. Please try again.');
+        }
     }
 
 

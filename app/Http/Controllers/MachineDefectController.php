@@ -122,4 +122,20 @@ class MachineDefectController extends Controller
         return $pdf->download('inventory-machines-defect-report.pdf');
     }
 
+    /**
+     * Remove the specified machine defect from the database.
+     */
+    public function destroy($id)
+    {
+        try {
+            $machineDefect = MachineDefect::findOrFail($id);
+
+            // The quantity restoration will be handled automatically by the model's boot method
+            $machineDefect->delete();
+
+            return redirect()->route('machine-defects.index')->with('success', 'Defect record deleted successfully. Quantity has been restored to the machine.');
+        } catch (\Exception $e) {
+            return redirect()->route('machine-defects.index')->with('error', 'Failed to delete defect record. Please try again.');
+        }
+    }
 }

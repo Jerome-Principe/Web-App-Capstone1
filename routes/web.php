@@ -312,10 +312,10 @@ Route::resource('stock-items', StockItemController::class);
 
 // Machines Defect routes
 Route::prefix('machine-defects')->name('machine-defects.')->group(function () {
-    // Main resource routes (excluding 'show' and 'destroy')
+    // Main resource routes (excluding 'show' only)
     Route::resource('/', MachineDefectController::class)
         ->parameters(['' => 'machine-defects'])
-        ->except(['show', 'destroy']);
+        ->except(['show']);
 
     // Filter and Export routes
     Route::get('/filter', [MachineDefectController::class, 'filterByDate'])->name('filterByDate');
