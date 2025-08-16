@@ -2,9 +2,6 @@
 <html lang="en">
 
 <head>
-    @php
-        use Illuminate\Support\Facades\Storage;
-    @endphp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Settings</title>
@@ -232,74 +229,6 @@
             font-size: 14px;
         }
 
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 24px;
-            height: 24px;
-            margin: -12px 0 0 -12px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .password-strength-weak {
-            color: #ef4444;
-        }
-
-        .password-strength-fair {
-            color: #f59e0b;
-        }
-
-        .password-strength-good {
-            color: #3b82f6;
-        }
-
-        .password-strength-strong {
-            color: #10b981;
-        }
-
-        .profile-picture-actions {
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        .remove-picture-btn {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-        }
-
-        .remove-picture-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         .nav-button {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -322,53 +251,11 @@
         }
     </style>
     <script>
-        // Session timeout warning
-        let sessionTimeout;
-        const SESSION_WARNING_TIME = 10 * 60 * 1000; // 10 minutes before session expires
-        const SESSION_TIMEOUT = 120 * 60 * 1000; // 2 hours session timeout
-
-        function initSessionTimeout() {
-            sessionTimeout = setTimeout(() => {
-                if (confirm('Your session will expire soon. Would you like to stay logged in?')) {
-                    // Refresh the page to extend session
-                    window.location.reload();
-                }
-            }, SESSION_WARNING_TIME);
-        }
-
-        function resetSessionTimeout() {
-            clearTimeout(sessionTimeout);
-            initSessionTimeout();
-        }
-
-        // Reset timeout on user activity
-        document.addEventListener('mousemove', resetSessionTimeout);
-        document.addEventListener('keypress', resetSessionTimeout);
-        document.addEventListener('click', resetSessionTimeout);
-
-        // Initialize session timeout
-        initSessionTimeout();
-
         function previewImage(event) {
             const output = document.getElementById('profile_preview');
             const file = event.target.files[0];
 
             if (file) {
-                // Validate file size
-                if (file.size > 2 * 1024 * 1024) { // 2MB limit
-                    alert('File size must be less than 2MB');
-                    event.target.value = '';
-                    return;
-                }
-
-                // Validate file type
-                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-                if (!allowedTypes.includes(file.type)) {
-                    alert('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
-                    event.target.value = '';
-                    return;
-                }
-
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     output.src = e.target.result;
@@ -379,122 +266,6 @@
                 };
                 reader.readAsDataURL(file);
             }
-        }
-
-        function showLoading(form) {
-            const button = form.querySelector('button[type="submit"]');
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-            button.classList.add('loading');
-            button.disabled = true;
-
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.classList.remove('loading');
-                button.disabled = false;
-            }, 2000);
-        }
-
-        function showPasswordLoading(form) {
-            const button = form.querySelector('button[type="submit"]');
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-            button.classList.add('loading');
-            button.disabled = true;
-
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.classList.remove('loading');
-                button.disabled = false;
-            }, 2000);
-        }
-
-        function showDeleteLoading(form) {
-            const button = form.querySelector('button[type="submit"]');
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
-            button.classList.add('loading');
-            button.disabled = true;
-
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.classList.remove('loading');
-                button.disabled = false;
-            }, 2000);
-        }
-
-        function validatePasswordStrength(password) {
-            const minLength = 8;
-            const hasUpperCase = /[A-Z]/.test(password);
-            const hasLowerCase = /[a-z]/.test(password);
-            const hasNumbers = /\d/.test(password);
-            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-            let strength = 0;
-            if (password.length >= minLength) strength++;
-            if (hasUpperCase) strength++;
-            if (hasLowerCase) strength++;
-            if (hasNumbers) strength++;
-            if (hasSpecialChar) strength++;
-
-            return strength;
-        }
-
-        function updatePasswordStrength(password) {
-            const strengthMeter = document.getElementById('password-strength');
-            if (!strengthMeter) return;
-
-            const strength = validatePasswordStrength(password);
-            const strengthText = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
-            const strengthColors = ['text-red-500', 'text-orange-500', 'text-yellow-500', 'text-blue-500', 'text-green-500'];
-
-            strengthMeter.textContent = strengthText[strength - 1] || 'Very Weak';
-            strengthMeter.className = `text-sm font-medium ${strengthColors[strength - 1] || 'text-red-500'}`;
-        }
-
-        // Auto-hide success messages
-        document.addEventListener("DOMContentLoaded", function () {
-            const alert = document.querySelector('.alert-success');
-            if (alert) {
-                setTimeout(function () {
-                    alert.style.transition = "opacity 0.5s ease";
-                    alert.style.opacity = "0";
-                    setTimeout(function () {
-                        alert.remove();
-                    }, 500);
-                }, 5000);
-            }
-
-            // Add form validation
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                form.addEventListener('submit', function (e) {
-                    const submitButton = form.querySelector('button[type="submit"]');
-                    if (submitButton) {
-                        submitButton.disabled = true;
-                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                    }
-                });
-            });
-
-            // Add password confirmation validation
-            const newPasswordInput = document.getElementById('new_password');
-            const confirmPasswordInput = document.getElementById('new_password_confirmation');
-
-            if (newPasswordInput && confirmPasswordInput) {
-                confirmPasswordInput.addEventListener('input', function () {
-                    if (this.value !== newPasswordInput.value) {
-                        this.setCustomValidity('Passwords do not match');
-                    } else {
-                        this.setCustomValidity('');
-                    }
-                });
-            }
-        });
-
-        // Prevent form resubmission
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.history.url);
         }
     </script>
 </head>
@@ -533,34 +304,20 @@
                     <p class="section-subtitle">Update your personal details and profile picture</p>
                 </div>
 
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data"
-                    onsubmit="showLoading(this)">
+                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
                     <!-- Profile Picture -->
                     <div class="profile-picture-container">
                         <img id="profile_preview"
-                            src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : 'https://via.placeholder.com/150/667eea/ffffff?text=' . substr($user->name, 0, 1) }}"
+                            src="{{ asset($user->profile_picture ?? 'https://via.placeholder.com/150/667eea/ffffff?text=' . substr($user->name, 0, 1)) }}"
                             alt="Profile Picture" class="profile-picture">
                         <label for="profile_picture" class="camera-overlay">
                             <i class="fas fa-camera text-lg"></i>
                         </label>
                         <input type="file" id="profile_picture" name="profile_picture" class="hidden" accept="image/*"
                             onchange="previewImage(event)">
-
-                        @if($user->profile_picture)
-                            <div class="text-center mt-4">
-                                <form action="{{ route('profile.removePicture') }}" method="POST" class="inline"
-                                    onsubmit="return confirm('Are you sure you want to remove your profile picture?')">
-                                    @csrf
-                                    <button type="submit"
-                                        class="text-red-500 hover:text-red-700 text-sm font-medium transition-colors duration-200">
-                                        <i class="fas fa-trash mr-2"></i>Remove Picture
-                                    </button>
-                                </form>
-                            </div>
-                        @endif
                     </div>
 
                     <!-- Name and Email -->
@@ -593,13 +350,6 @@
                         <button type="submit" class="btn-primary">
                             <i class="fas fa-save mr-3"></i>Save Profile
                         </button>
-
-                        <div class="mt-4">
-                            <a href="{{ route('profile.exportData') }}"
-                                class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 text-sm font-medium">
-                                <i class="fas fa-download mr-2"></i>Export My Data
-                            </a>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -613,7 +363,7 @@
                     <p class="section-subtitle">Update your password to keep your account secure</p>
                 </div>
 
-                <form action="{{ route('profile.updatePassword') }}" method="POST" onsubmit="showPasswordLoading(this)">
+                <form action="{{ route('profile.updatePassword') }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -634,11 +384,7 @@
                                 <i class="fas fa-shield-alt mr-2 text-green-500"></i>New Password
                             </label>
                             <input type="password" id="new_password" name="new_password" class="form-input"
-                                placeholder="Enter your new password" onkeyup="updatePasswordStrength(this.value)">
-                            <div class="mt-2">
-                                <span class="text-sm text-gray-500">Password strength: </span>
-                                <span id="password-strength" class="text-sm font-medium text-red-500">Very Weak</span>
-                            </div>
+                                placeholder="Enter your new password">
                             @error('new_password')
                                 <p class="error-message">{{ $message }}</p>
                             @enderror
@@ -646,12 +392,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="new_password_confirmation" class="form-label">
+                        <label for="confirm_password" class="form-label">
                             <i class="fas fa-check-circle mr-2 text-green-500"></i>Confirm New Password
                         </label>
-                        <input type="password" id="new_password_confirmation" name="new_password_confirmation"
-                            class="form-input" placeholder="Confirm your new password">
-                        @error('new_password_confirmation')
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-input"
+                            placeholder="Confirm your new password">
+                        @error('confirm_password')
                             <p class="error-message">{{ $message }}</p>
                         @enderror
                     </div>
@@ -674,7 +420,7 @@
                 </div>
 
                 <form action="{{ route('profile.delete') }}" method="POST"
-                    onsubmit="if(confirm('Are you sure you want to delete your account? This action cannot be undone.')) { showDeleteLoading(this); return true; } else { return false; }">
+                    onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
                     @csrf
                     @method('DELETE')
 
@@ -712,38 +458,7 @@
                     }, 500);
                 }, 5000);
             }
-
-            // Add form validation
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                form.addEventListener('submit', function (e) {
-                    const submitButton = form.querySelector('button[type="submit"]');
-                    if (submitButton) {
-                        submitButton.disabled = true;
-                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                    }
-                });
-            });
-
-            // Add password confirmation validation
-            const newPasswordInput = document.getElementById('new_password');
-            const confirmPasswordInput = document.getElementById('new_password_confirmation');
-
-            if (newPasswordInput && confirmPasswordInput) {
-                confirmPasswordInput.addEventListener('input', function () {
-                    if (this.value !== newPasswordInput.value) {
-                        this.setCustomValidity('Passwords do not match');
-                    } else {
-                        this.setCustomValidity('');
-                    }
-                });
-            }
         });
-
-        // Prevent form resubmission
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.history.url);
-        }
     </script>
 </body>
 
