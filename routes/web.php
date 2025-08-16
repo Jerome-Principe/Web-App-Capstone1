@@ -259,10 +259,10 @@ Route::prefix('stock-items')->name('stock-items.')->group(function () {
 
 // SaleItems routes
 Route::prefix('sales')->name('sales.')->group(function () {
-    // Main resource routes (excluding 'show' and 'destroy')
+    // Main resource routes (excluding 'show' only)
     Route::resource('/', SaleItemController::class)
         ->parameters(['' => 'sale'])
-        ->except(['show', 'destroy']);
+        ->except(['show']);
 
     // Additional custom routes using a controller group
     Route::controller(SaleItemController::class)->group(function () {

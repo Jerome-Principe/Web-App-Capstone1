@@ -142,4 +142,15 @@ class SaleItemController extends Controller
         return $pdf->download('Inventory Sales Report.pdf');
     }
 
+    public function destroy($id)
+    {
+        $item = SaleItem::findOrFail($id);
+
+        // Optional: Add business logic validation here
+        // For example, check if this sale can be deleted
+
+        $item->delete();
+        return redirect()->route('sales.index')->with('success', 'Sale item deleted successfully.');
+    }
+
 }

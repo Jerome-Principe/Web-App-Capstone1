@@ -256,8 +256,18 @@
                                     </div>
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="{{ route('sales.edit', $item->id) }}" class="btn btn-sm btn-primary"><i
-                                            class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
+                                    <a href="{{ route('sales.edit', $item->id) }}" class="btn btn-sm btn-primary me-2">
+                                        <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                    </a>
+                                    <form method="POST" action="{{ route('sales.destroy', $item->id) }}"
+                                        style="display: inline;"
+                                        onsubmit="return confirm('Are you sure you want to delete this sale item?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fa fa-trash mx-1" aria-hidden="true"></i>Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
