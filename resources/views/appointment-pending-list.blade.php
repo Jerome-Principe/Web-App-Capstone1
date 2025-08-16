@@ -377,13 +377,15 @@
                                         <td>{{ $appointment->gcash_account_name ?? 'N/A' }}</td>
                                         <td>{{ $appointment->gcash_account_number ?? 'N/A' }}</td>
                                         <td>
-                                            @if($appointment->proof_of_payment)
+                                            @if(strtolower($appointment->payment_method) === 'cash')
+                                                <span class="text-muted">N/A</span>
+                                            @elseif($appointment->proof_of_payment)
                                                 <a href="{{ Storage::url('app/public/' . $appointment->proof_of_payment) }}"
                                                     target="_blank" class="btn btn-sm btn-outline-primary">
                                                     <i class="fa fa-eye"></i> View Proof
                                                 </a>
                                             @else
-                                                <span class="text-muted">-</span>
+                                                <span class="text-muted">No proof uploaded</span>
                                             @endif
                                         </td>
                                         <td>{{ $appointment->status }}</td>
