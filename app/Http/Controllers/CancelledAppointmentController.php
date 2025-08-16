@@ -29,19 +29,37 @@ class CancelledAppointmentController extends Controller
         ]);
 
         try {
-            // Parse and format the date to Y-m-d
-            $formattedDate = Carbon::parse($request->selected_date)->format('Y-m-d');
+            // Handle date parsing more robustly
+            $formattedDate = null;
+            try {
+                // Try different date formats
+                if (preg_match('/^\d{1,2}\/\d{1,2}\/\d{4}$/', $request->selected_date)) {
+                    // Format: M/d/Y (e.g., "8/22/2025")
+                    $formattedDate = Carbon::createFromFormat('n/j/Y', $request->selected_date)->format('Y-m-d');
+                } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $request->selected_date)) {
+                    // Already in Y-m-d format
+                    $formattedDate = $request->selected_date;
+                } else {
+                    // Try Carbon's auto-detection
+                    $formattedDate = Carbon::parse($request->selected_date)->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                // If parsing fails, use original date
+                $formattedDate = $request->selected_date;
+            }
 
-            // Parse and format the time to H:i:s
+            // Handle time parsing more robustly
             $formattedTime = null;
             try {
-                // Try different time formats
                 if (preg_match('/^\d{2}:\d{2}:\d{2}$/', $request->selected_time)) {
                     // Already in H:i:s format
                     $formattedTime = $request->selected_time;
                 } elseif (preg_match('/^\d{1,2}:\d{2} [AP]M$/', $request->selected_time)) {
                     // g:i A format (e.g., "6:00 AM")
                     $formattedTime = Carbon::createFromFormat('g:i A', $request->selected_time)->format('H:i:s');
+                } elseif (preg_match('/^\d{1,2}:\d{2}$/', $request->selected_time)) {
+                    // H:i format (e.g., "14:30")
+                    $formattedTime = $request->selected_time . ':00';
                 } else {
                     // Default to original time if parsing fails
                     $formattedTime = $request->selected_time;
@@ -51,14 +69,20 @@ class CancelledAppointmentController extends Controller
                 $formattedTime = $request->selected_time;
             }
 
-            // Handle proof of payment (can be a string path or file upload)
+            // Handle proof of payment more robustly
             $proofOfPaymentPath = null;
             if ($request->hasFile('proof_of_payment')) {
                 // Handle file upload
                 $proofOfPaymentPath = $request->file('proof_of_payment')->store('proofs', 'public');
-            } elseif ($request->filled('proof_of_payment')) {
-                // Handle string value (e.g., from mobile app)
+            } elseif ($request->filled('proof_of_payment') && $request->proof_of_payment !== 'N/A') {
+                // Handle string value from mobile app
                 $proofOfPaymentPath = $request->proof_of_payment;
+
+                // If it's a relative path, ensure it's properly formatted
+                if (strpos($proofOfPaymentPath, 'proofs/') !== 0) {
+                    // Ensure proper path format
+                    $proofOfPaymentPath = 'proofs/' . basename($proofOfPaymentPath);
+                }
             }
 
             // Save the cancellation record
@@ -72,15 +96,38 @@ class CancelledAppointmentController extends Controller
             $cancelledAppointment->reason = $request->reason;
             $cancelledAppointment->save();
 
+            // Return proper mobile API response
             return response()->json([
                 'status' => 'success',
-                'message' => 'Cancellation submitted successfully.'
+                'message' => 'Cancellation submitted successfully.',
+                'data' => [
+                    'id' => $cancelledAppointment->id,
+                    'user_id' => $cancelledAppointment->user_id,
+                    'instructor_name' => $cancelledAppointment->instructor_name,
+                    'selected_date' => $cancelledAppointment->selected_date,
+                    'selected_time' => $cancelledAppointment->selected_time,
+                    'payment_method' => $cancelledAppointment->payment_method,
+                    'proof_of_payment' => $cancelledAppointment->proof_of_payment,
+                    'reason' => $cancelledAppointment->reason,
+                    'created_at' => $cancelledAppointment->created_at
+                ]
             ], 200);
+
         } catch (\Exception $e) {
+            \Log::error('Cancellation Error: ' . $e->getMessage(), [
+                'request_data' => $request->all(),
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json([
                 'status' => 'error',
-                'message' => 'Error submitting cancellation.',
-                'exception' => $e->getMessage()
+                'message' => 'Error submitting cancellation: ' . $e->getMessage(),
+                'debug_info' => config('app.debug') ? [
+                    'exception' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ] : null
             ], 500);
         }
     }
@@ -219,7 +266,7 @@ class CancelledAppointmentController extends Controller
                 'data' => [
                     'id' => $cancelledAppointment->id,
                     'proof_of_payment' => $cancelledAppointment->proof_of_payment,
-                    'file_url' => Storage::disk('public')->url($cancelledAppointment->proof_of_payment)
+                    'file_url' => asset('storage/' . $cancelledAppointment->proof_of_payment)
                 ]
             ]);
 
@@ -244,7 +291,7 @@ class CancelledAppointmentController extends Controller
                 ], 404);
             }
 
-            $url = Storage::disk('public')->url($cancelledAppointment->proof_of_payment);
+            $url = asset('storage/' . $cancelledAppointment->proof_of_payment);
 
             return response()->json([
                 'status' => 'success',
@@ -279,7 +326,7 @@ class CancelledAppointmentController extends Controller
                 ], 404);
             }
 
-            return Storage::disk('public')->response($cancelledAppointment->proof_of_payment);
+            return response()->file(storage_path('app/public/' . $cancelledAppointment->proof_of_payment));
 
         } catch (\Exception $e) {
             return response()->json([
@@ -301,7 +348,7 @@ class CancelledAppointmentController extends Controller
                 'file_path' => $cancelledAppointment->proof_of_payment,
                 'full_path' => $cancelledAppointment->proof_of_payment ? storage_path('app/public/' . $cancelledAppointment->proof_of_payment) : null,
                 'file_size' => $cancelledAppointment->proof_of_payment ? Storage::disk('public')->size($cancelledAppointment->proof_of_payment) : null,
-                'storage_url' => $cancelledAppointment->proof_of_payment ? Storage::disk('public')->url($cancelledAppointment->proof_of_payment) : null
+                'storage_url' => $cancelledAppointment->proof_of_payment ? asset('storage/' . $cancelledAppointment->proof_of_payment) : null
             ];
 
             return response()->json([
