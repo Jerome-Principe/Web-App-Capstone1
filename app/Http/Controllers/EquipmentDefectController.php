@@ -48,7 +48,7 @@ class EquipmentDefectController extends Controller
             // Create a new equipment defect record
             EquipmentDefect::create($request->all());
 
-            return redirect()->route('equipments-defect.index')->with('success', 'Defect reported successfully.');
+            return redirect()->route('equipments-defect.index')->with('success', 'Defect added and quantity updated successfully.');
         } else {
             return redirect()->back()->withErrors(['error' => 'Not enough equipment in stock to report this defect.']);
         }

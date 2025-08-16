@@ -38,15 +38,20 @@ class MachineDefectController extends Controller
         $machine = Machine::find($request->machine_id);
 
         if ($machine) {
-            // Deduct defect quantity from the machine's available quantity
-            $defectQuantity = $request->quantity;
-            $machine->quantity -= $defectQuantity;
-            $machine->save(); // Update the machine quantity in the database
+            // Check if there's enough quantity before creating the defect
+            if ($machine->quantity >= $request->quantity) {
+                // Deduct defect quantity from the machine's available quantity
+                $defectQuantity = $request->quantity;
+                $machine->quantity -= $defectQuantity;
+                $machine->save(); // Update the machine quantity in the database
 
-            // Store the defect information in the `MachineDefect` model
-            MachineDefect::create($request->all());
+                // Store the defect information in the `MachineDefect` model
+                MachineDefect::create($request->all());
 
-            return redirect()->route('machine-defects.index')->with('success', 'Defect added and quantity updated successfully.');
+                return redirect()->route('machine-defects.index')->with('success', 'Defect added and quantity updated successfully.');
+            } else {
+                return redirect()->back()->withErrors(['error' => 'Not enough machine quantity in stock to report this defect.']);
+            }
         }
 
         return redirect()->back()->with('error', 'Machine not found.');
@@ -77,16 +82,25 @@ class MachineDefectController extends Controller
             // Restore previous defect quantity back to the machine
             $machine->quantity += $previousDefectQuantity;
 
-            // Deduct the new defect quantity from the machine
-            $machine->quantity -= $request->quantity;
+            // Check if there's enough quantity before updating
+            if ($machine->quantity >= $request->quantity) {
+                // Deduct the new defect quantity from the machine
+                $machine->quantity -= $request->quantity;
 
-            // Save the updated machine quantity
-            $machine->save();
+                // Save the updated machine quantity
+                $machine->save();
 
-            // Update defect information with the new quantity
-            $machineDefect->update($request->all());
+                // Update defect information with the new quantity
+                $machineDefect->update($request->all());
 
-            return redirect()->route('machine-defects.index')->with('success', 'Defect updated and machine quantity adjusted.');
+                return redirect()->route('machine-defects.index')->with('success', 'Machine defect updated and quantity adjusted successfully.');
+            } else {
+                // Restore the original quantity since we can't proceed
+                $machine->quantity = $machine->quantity - $previousDefectQuantity;
+                $machine->save();
+
+                return redirect()->back()->withErrors(['error' => 'Not enough machine quantity in stock to update this defect.']);
+            }
         }
 
         return redirect()->back()->with('error', 'Machine not found.');
