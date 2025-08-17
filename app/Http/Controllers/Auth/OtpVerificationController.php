@@ -41,7 +41,7 @@ class OtpVerificationController extends Controller
 
         if (!$cachedOtp || $cachedOtp != $otp) {
             return back()->withInput($request->only('email'))
-                ->withErrors(['otp' => 'Invalid or expired OTP']);
+                ->withErrors(['otp' => 'Invalid or expired OTP. Please check your code and try again.']);
         }
 
         // OTP is valid, remove it from cache and redirect to password reset
@@ -50,6 +50,7 @@ class OtpVerificationController extends Controller
         // Store email in session for password reset
         session(['reset_email' => $email]);
 
-        return redirect()->route('password.reset.form');
+        // Redirect to password reset form with success message
+        return redirect()->route('password.reset.form')->with('success', 'OTP verified successfully! You can now set your new password.');
     }
 }

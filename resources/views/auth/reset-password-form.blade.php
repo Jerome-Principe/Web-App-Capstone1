@@ -175,6 +175,26 @@
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
+            <!-- Error Messages -->
+            @if ($errors->any())
+                <div class="alert alert-danger mb-4"
+                    style="background: rgba(220, 53, 69, 0.9); border: 1px solid #dc3545; color: white; padding: 12px; border-radius: 5px;">
+                    <ul class="mb-0" style="list-style: none; padding: 0;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- Success Messages -->
+            @if (session('success'))
+                <div class="alert alert-success mb-4"
+                    style="background: rgba(40, 167, 69, 0.9); border: 1px solid #28a745; color: white; padding: 12px; border-radius: 5px;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('password.reset.store') }}">
                 @csrf
 
