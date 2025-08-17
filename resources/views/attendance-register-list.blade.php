@@ -155,83 +155,39 @@
             display: block;
         }
 
-        /* Enhanced Button Styles */
-        .btn-update {
-            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        /* Button Group Styling to match admin users page */
+        .btn-group .btn {
+            margin-right: 5px;
+        }
+
+        .btn-group .btn:last-child {
+            margin-right: 0;
+        }
+
+        /* Ensure consistent button sizing and spacing */
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Outline button hover effects */
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            border-color: #007bff;
             color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 18px;
-            font-weight: 600;
-            font-size: 13px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
-            position: relative;
-            overflow: hidden;
         }
 
-        .btn-update:hover {
-            background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
         }
 
-        .btn-update:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
-        }
-
-        .btn-update i {
-            font-size: 14px;
-            transition: transform 0.2s ease;
-        }
-
-        .btn-update:hover i {
-            transform: scale(1.1);
-        }
-
-        .btn-delete {
-            background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            border-color: #6c757d;
             color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 18px;
-            font-weight: 600;
-            font-size: 13px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-delete:hover {
-            background: linear-gradient(135deg, #c82333 0%, #c0392b 100%);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
-        }
-
-        .btn-delete:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
-        }
-
-        .btn-delete i {
-            font-size: 14px;
-            transition: transform 0.2s ease;
-        }
-
-        .btn-delete:hover i {
-            transform: scale(1.1);
         }
 
         tbody tr:hover {
@@ -437,8 +393,8 @@
 
                     <div>
                         <div class="d-flex justify-content-end position-relative mx-2">
-                            <button class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#addNewModal"><i
-                                    class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
+                            <button class="btn btn-outline-primary px-2" data-bs-toggle="modal"
+                                data-bs-target="#addNewModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New
                             </button>
                         </div>
                     </div>
@@ -509,9 +465,9 @@
                                         <input type="email" class="form-control" name="email" id="email" readonly required>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
+                                        <button type="button" class="btn btn-outline-secondary"
                                             data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-outline-primary">Save</button>
                                     </div>
                                 </form>
                             </div>
@@ -554,9 +510,9 @@
                                                 value="{{ $registerRfid->email }}" readonly required>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-outline-secondary"
                                                 data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" class="btn btn-primary">Update</button>
+                                            <button type="submit" class="btn btn-outline-primary">Update</button>
                                         </div>
                                     </form>
                                 </div>
@@ -595,18 +551,18 @@
                                     <td>{{ $registerRfid->email }}</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <a href="#" class="btn-update" data-bs-toggle="modal"
+                                            <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                                                 data-bs-target="#updateModal{{ $registerRfid->id }}">
-                                                <i class="fas fa-pencil" aria-hidden="true"></i>Update
+                                                <i class="fa fa-pencil mr-1"></i>Update
                                             </a>
 
                                             <form action="{{ route('register-rfid.destroy', $registerRfid->id) }}" method="POST"
                                                 style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-delete"
+                                                <button type="submit" class="btn btn-sm btn-outline-danger"
                                                     onclick="return confirm('Are you sure you want to delete this RFID record?')">
-                                                    <i class="fas fa-trash" aria-hidden="true"></i>Delete
+                                                    <i class="fa fa-trash mr-1"></i>Delete
                                                 </button>
                                             </form>
                                         </div>
