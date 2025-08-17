@@ -275,6 +275,41 @@
             gap: 8px;
         }
 
+        /* Button Group Styling to match admin users page */
+        .btn-group .btn {
+            margin-right: 5px;
+        }
+
+        .btn-group .btn:last-child {
+            margin-right: 0;
+        }
+
+        /* Ensure consistent button sizing and spacing */
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Outline button hover effects */
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+
         /* Minimalist Pagination */
         .pagination {
             margin-top: 24px;
@@ -499,10 +534,10 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-3 mt-4">
-                            <button type="button" class="btn btn-outline-dark">
+                            <button type="button" class="btn btn-outline-secondary">
                                 Cancel
                             </button>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-outline-primary">
                                 Save Announcement
                             </button>
                         </div>
@@ -579,20 +614,22 @@
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="#" class="btn btn-sm btn-primary edit-btn"
+                                                <a href="#" class="btn btn-sm btn-outline-primary edit-btn"
                                                     data-id="{{ $announcement->id }}"
                                                     data-notification="{{ $announcement->notification_text }}"
                                                     data-description="{{ $announcement->description }}"
                                                     data-pdf="{{ url('storage/app/public/' . $announcement->pdf_file) }}"
                                                     data-bs-toggle="modal" data-bs-target="#editAnnouncementModal">
-                                                    update
+                                                    <i class="fa fa-pencil mr-1"></i>
+                                                    Update
                                                 </a>
                                                 <form action="{{ route('announcements.destroy', $announcement->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
                                                         onclick="return confirm('Are you sure you want to delete this announcement?')">
+                                                        <i class="fa fa-trash mr-1"></i>
                                                         Delete
                                                     </button>
                                                 </form>
@@ -681,10 +718,10 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                 Cancel
                             </button>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-outline-primary">
                                 Update Announcement
                             </button>
                         </div>
@@ -757,12 +794,12 @@
                 const dropzone = document.getElementById('pdfDropzone');
                 if (file) {
                     dropzone.innerHTML = `
-                                        <div class="dropzone-content">
-                                            <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                            <p class="mb-2"><strong>${file.name}</strong></p>
-                                            <p class="text-muted">File selected</p>
-                                        </div>
-                                    `;
+                                            <div class="dropzone-content">
+                                                <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                                <p class="mb-2"><strong>${file.name}</strong></p>
+                                                <p class="text-muted">File selected</p>
+                                            </div>
+                                        `;
                 }
             }
 
@@ -785,8 +822,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                                    View Current PDF
-                                                </a>`;
+                                                        View Current PDF
+                                                    </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';
