@@ -160,6 +160,32 @@
         transform: scale(1.02);
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
+
+    .btn-resend {
+        background: #6c757d !important;
+        color: #fff !important;
+        text-transform: uppercase;
+        font-size: 0.9em;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .btn-resend:hover {
+        background: #5a6268 !important;
+        transform: scale(1.02);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-resend:disabled {
+        background: #6c757d !important;
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
 </style>
 
 <body>
@@ -214,6 +240,13 @@
                     <a href="{{ route('login') }}" class="back-link">Back to Login?</a>
                 </div>
 
+                <!-- Resend OTP Button -->
+                <div class="control mt-3">
+                    <button type="button" class="btn-resend" onclick="resendOtp()">
+                        RESEND OTP
+                    </button>
+                </div>
+
                 <!-- Verify OTP Button -->
                 <button type="submit" class="btn-reset">
                     VERIFY & CONTINUE
@@ -227,6 +260,94 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6Z5JfMFfQp1m49jWm8yNFf0/3pEj9/h6+6j5LLFujVnY"
         crossorigin="anonymous"></script>
 
+    <script>
+        function resendOtp() {
+            const button = document.querySelector('.btn-resend');
+            const email = '{{ $email }}';
+
+            // Disable button and show loading state
+            button.disabled = true;
+            button.textContent = 'SENDING...';
+
+            // Make AJAX request to resend OTP
+            fetch('{{ route("password.email") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        showMessage('OTP resent successfully!', 'success');
+                        // Start countdown timer
+                        startCountdown();
+                    } else {
+                        // Show error message
+                        showMessage(data.message || 'Failed to resend OTP', 'error');
+                        // Re-enable button
+                        button.disabled = false;
+                        button.textContent = 'RESEND OTP';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showMessage('Failed to resend OTP. Please try again.', 'error');
+                    // Re-enable button
+                    button.disabled = false;
+                    button.textContent = 'RESEND OTP';
+                });
+        }
+
+        function showMessage(message, type) {
+            // Remove existing messages
+            const existingAlert = document.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Create new message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} mb-4`;
+            alertDiv.style.cssText = type === 'success'
+                ? 'background: rgba(40, 167, 69, 0.9); border: 1px solid #28a745; color: white; padding: 12px; border-radius: 5px;'
+                : 'background: rgba(220, 53, 69, 0.9); border: 1px solid #dc3545; color: white; padding: 12px; border-radius: 5px;';
+            alertDiv.textContent = message;
+
+            // Insert message after the title
+            const title = document.querySelector('h1');
+            title.parentNode.insertBefore(alertDiv, title.nextSibling);
+
+            // Auto-remove message after 5 seconds
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function startCountdown() {
+            const button = document.querySelector('.btn-resend');
+            let countdown = 60; // 60 seconds cooldown
+
+            const timer = setInterval(() => {
+                if (countdown > 0) {
+                    button.textContent = `RESEND OTP (${countdown}s)`;
+                    countdown--;
+                } else {
+                    clearInterval(timer);
+                    button.disabled = false;
+                    button.textContent = 'RESEND OTP';
+                }
+            }, 1000);
+        }
+    </script>
 </body>
 
 </html>
