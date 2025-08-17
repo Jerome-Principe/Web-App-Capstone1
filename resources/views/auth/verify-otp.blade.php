@@ -9,7 +9,7 @@
     <!-- Bootstrap Css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <title>Password Reset</title>
+    <title>Verify OTP</title>
 </head>
 
 <style>
@@ -140,43 +140,64 @@
     .back-link:hover {
         opacity: 1;
         color: lightgray;
-        /* Optional: Change color on hover */
+    }
+
+    .btn-reset {
+        background: #d4a574 !important;
+        color: #fff !important;
+        text-transform: uppercase;
+        font-size: 1em;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .btn-reset:hover {
+        background: #c19a6b !important;
+        transform: scale(1.02);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 </style>
 
 <body>
     <section>
         <div class="form-container">
-            <h1>Password Reset</h1>
+            <h1>Verify OTP</h1>
 
-            <div class="mb-4 text-sm" style="color: white;">
-                {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+            <div class="mb-4 text-sm" style="color: white; text-align: center;">
+                <p>Enter the recovery OTP sent to your email.</p>
+                <p>Don't share this code with anyone - it's your key to regaining access.</p>
             </div>
 
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
-            <form method="POST" action="{{ route('password.email') }}">
+            <form method="POST" action="{{ route('password.otp.verify') }}">
                 @csrf
 
-                <!-- Email Address -->
+                <!-- Hidden Email Field -->
+                <input type="hidden" name="email" value="{{ $email }}">
+
+                <!-- OTP Input Field -->
                 <div class="control">
-                    <x-input-label for="email" :value="__('Email')" />
-                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                        required autofocus />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    <label for="otp">Enter OTP Code :</label>
+                    <input id="otp" type="text" name="otp" placeholder="Enter 6 Digit code" required autofocus
+                        maxlength="6" pattern="[0-9]{6}" />
+                    <x-input-error :messages="$errors->get('otp')" class="mt-2" />
                 </div>
 
                 <div class="control d-flex justify-content-between mt-4">
                     <!-- Back to Login Link -->
                     <a href="{{ route('login') }}" class="back-link">Back to Login?</a>
-
-                    <!-- Email Password Reset Button -->
-                    <button type="submit" class="btn btn-danger">
-                        {{ __('Verify Email Account') }}
-                    </button>
                 </div>
 
+                <!-- Reset Password Button -->
+                <button type="submit" class="btn-reset">
+                    RESET PASSWORD
+                </button>
             </form>
         </div>
     </section>

@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\NewPasswordFormController;
+use App\Http\Controllers\Auth\OtpVerificationController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -24,6 +26,21 @@ Route::middleware('guest')->group(function () {
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
         ->name('password.email');
 
+    // OTP Verification Routes
+    Route::get('verify-otp', [OtpVerificationController::class, 'create'])
+        ->name('password.otp');
+
+    Route::post('verify-otp', [OtpVerificationController::class, 'store'])
+        ->name('password.otp.verify');
+
+    // New Password Reset Form Routes
+    Route::get('reset-password-form', [NewPasswordFormController::class, 'create'])
+        ->name('password.reset.form');
+
+    Route::post('reset-password-form', [NewPasswordFormController::class, 'store'])
+        ->name('password.reset.store');
+
+    // Keep the old routes for backward compatibility (if needed)
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
         ->name('password.reset');
 

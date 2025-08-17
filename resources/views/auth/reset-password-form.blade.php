@@ -140,7 +140,25 @@
     .back-link:hover {
         opacity: 1;
         color: lightgray;
-        /* Optional: Change color on hover */
+    }
+
+    .btn-reset {
+        background: #d4a574 !important;
+        color: #fff !important;
+        text-transform: uppercase;
+        font-size: 1em;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .btn-reset:hover {
+        background: #c19a6b !important;
+        transform: scale(1.02);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 </style>
 
@@ -149,34 +167,45 @@
         <div class="form-container">
             <h1>Password Reset</h1>
 
-            <div class="mb-4 text-sm" style="color: white;">
-                {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+            <div class="mb-4 text-sm" style="color: white; text-align: center;">
+                <p>Let's keep your account secure - choose a strong new password with a mix of letters, numbers, and
+                    symbols.</p>
             </div>
 
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
-            <form method="POST" action="{{ route('password.email') }}">
+            <form method="POST" action="{{ route('password.reset.store') }}">
                 @csrf
 
-                <!-- Email Address -->
+                <!-- Hidden Email Field -->
+                <input type="hidden" name="email" value="{{ $email }}">
+
+                <!-- New Password Field -->
                 <div class="control">
-                    <x-input-label for="email" :value="__('Email')" />
-                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                        required autofocus />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    <label for="password">New Password :</label>
+                    <input id="password" type="password" name="password" placeholder="Enter new password" required
+                        autofocus />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="control">
+                    <label for="password_confirmation">Confirm Password :</label>
+                    <input id="password_confirmation" type="password" name="password_confirmation"
+                        placeholder="Re-enter new password" required />
+                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
 
                 <div class="control d-flex justify-content-between mt-4">
                     <!-- Back to Login Link -->
                     <a href="{{ route('login') }}" class="back-link">Back to Login?</a>
-
-                    <!-- Email Password Reset Button -->
-                    <button type="submit" class="btn btn-danger">
-                        {{ __('Verify Email Account') }}
-                    </button>
                 </div>
 
+                <!-- Reset Password Button -->
+                <button type="submit" class="btn-reset">
+                    RESET PASSWORD
+                </button>
             </form>
         </div>
     </section>
