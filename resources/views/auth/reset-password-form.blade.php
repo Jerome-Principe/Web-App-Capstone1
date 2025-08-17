@@ -224,7 +224,7 @@
 
                 <!-- Reset Password Button -->
                 <button type="submit" class="btn-reset">
-                    RESET PASSWORD
+                    CONTINUE
                 </button>
             </form>
         </div>
