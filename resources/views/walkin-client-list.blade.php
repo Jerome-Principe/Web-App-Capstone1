@@ -254,6 +254,12 @@
         .pagination {
             margin-bottom: 4px;
         }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
     </style>
 </head>
 @extends('layouts.master')
@@ -369,7 +375,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="btn-group" role="group">
+                                    <div class="action-buttons">
                                         <a href="{{ route('walkins.edit', $walkin->id) }}"
                                             class="btn btn-sm btn-outline-primary">
                                             <i class="fa fa-pencil mr-1"></i>
