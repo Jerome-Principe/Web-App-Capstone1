@@ -148,64 +148,6 @@
             justify-content: center;
             align-items: center;
         }
-
-        /* Custom Button Styling */
-        .btn-update-custom {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);
-            min-width: 100px;
-            justify-content: center;
-        }
-
-        .btn-update-custom:hover {
-            background-color: #0056b3;
-            color: white;
-            text-decoration: none;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .btn-delete-custom {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 6px rgba(220, 53, 69, 0.3);
-            min-width: 100px;
-            justify-content: center;
-        }
-
-        .btn-delete-custom:hover {
-            background-color: #c82333;
-            color: white;
-            text-decoration: none;
-            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .btn-update-custom i,
-        .btn-delete-custom i {
-            font-size: 14px;
-        }
     </style>
 </head>
 
@@ -307,18 +249,18 @@
                                     <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
                                     <td class="text-center">
                                         <div class="action-buttons">
-                                            <button type="button" class="btn-update-custom" data-bs-toggle="modal"
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                                                 data-bs-target="#editInstructorModal{{ $instructor->id }}">
-                                                <i class="fa fa-pencil"></i>
+                                                <i class="fa fa-pencil mr-1"></i>
                                                 Update
                                             </button>
                                             <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-delete-custom"
+                                                <button type="submit" class="btn btn-sm btn-outline-danger"
                                                     onclick="return confirm('Are you sure you want to delete this instructor?')">
-                                                    <i class="fa fa-trash"></i>
+                                                    <i class="fa fa-trash mr-1"></i>
                                                     Delete
                                                 </button>
                                             </form>
