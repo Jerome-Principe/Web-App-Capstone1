@@ -70,6 +70,42 @@
             border-bottom: 1px solid #e1e5e9;
         }
 
+        /* Table Container - Prevent Horizontal Scroll */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
+            max-width: 100%;
+        }
+
+        /* Table Layout - Optimize Column Widths */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Column Widths */
+        th:first-child, td:first-child { width: 50px; }  /* Checkbox */
+        th:nth-child(2), td:nth-child(2) { width: 60px; }  /* ID */
+        th:nth-child(3), td:nth-child(3) { width: 150px; } /* Name */
+        th:nth-child(4), td:nth-child(4) { width: 60px; }  /* Age */
+        th:nth-child(5), td:nth-child(5) { width: 80px; }  /* Gender */
+        th:nth-child(6), td:nth-child(6) { width: 100px; } /* Height */
+        th:nth-child(7), td:nth-child(7) { width: 100px; } /* Weight */
+        th:nth-child(8), td:nth-child(8) { width: 140px; } /* Competition Type */
+        th:nth-child(9), td:nth-child(9) { width: 200px; } /* Actions */
+
         .filter-options {
             display: flex;
             justify-content: space-between;
@@ -162,6 +198,9 @@
         .action-buttons {
             display: flex;
             gap: 8px;
+            justify-content: center;
+            align-items: center;
+            min-width: 200px;
         }
 
         /* Minimalist Button Styles */
@@ -197,8 +236,9 @@
         }
 
         .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 8px 16px;
+            font-size: 13px;
+            min-width: 80px;
         }
 
         /* Minimalist Pagination */
@@ -303,6 +343,17 @@
         }
 
         /* Responsive */
+        @media (max-width: 1200px) {
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            table {
+                table-layout: auto;
+                min-width: 900px;
+            }
+        }
+
         @media (max-width: 768px) {
             .main-wrapper {
                 padding: 20px 16px;
@@ -324,6 +375,12 @@
 
             .action-buttons {
                 flex-direction: column;
+                gap: 6px;
+                min-width: auto;
+            }
+            
+            .btn-sm {
+                min-width: 100px;
             }
         }
 
