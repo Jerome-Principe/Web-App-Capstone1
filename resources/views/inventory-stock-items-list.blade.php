@@ -274,7 +274,7 @@
                                     </div>
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="{{ route('stock-items.edit', $stockItem->id) }}" class="btn btn-sm btn-outline-primary">
+                                    <a href="{{ route('stock-items.edit', $stockItem->id) }}" class="btn btn-sm btn-outline-primary me-2">
                                         <i class="fa fa-pencil mr-1"></i>
                                         Update
                                     </a>
