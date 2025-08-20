@@ -278,23 +278,25 @@
                                 <td class="text-center">{{ $goal->weekly_goal }}</td>
                                 <td class="text-center">{{ $goal->activity }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editGoalModal"
-                                        data-id="{{ $goal->id }}" data-name="{{ $goal->name }}"
+                                    <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
+                                        data-bs-target="#editGoalModal" data-id="{{ $goal->id }}" data-name="{{ $goal->name }}"
                                         data-starting_weight="{{ $goal->starting_weight }}"
                                         data-starting_date="{{ $goal->starting_date }}"
                                         data-current_weight="{{ $goal->current_weight }}"
                                         data-goal_weight="{{ $goal->goal_weight }}" data-weekly_goal="{{ $goal->weekly_goal }}"
                                         data-activity="{{ $goal->activity }}" data-status="{{ $goal->status }}">
-                                        <i class="fa fa-pencil-square-o mx-1"></i>Update
+                                        <i class="fa fa-pencil mr-1"></i>
+                                        Update
                                     </button>
 
                                     <form action="{{ route('goals.destroy', $goal->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mx-1"
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
                                             onclick="return confirm('Are you sure you want to delete this goal information?')">
-                                            <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                            <i class="fa fa-trash mr-1"></i>
+                                            Delete
                                         </button>
                                     </form>
 
