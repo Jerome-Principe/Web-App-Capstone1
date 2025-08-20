@@ -438,22 +438,24 @@
                                         <td>{{ $competition->type_of_competition }}</td>
                                         <td>
                                             <div class="action-buttons">
-                                                <button class="btn btn-sm btn-primary edit-btn" data-bs-toggle="modal"
+                                                <button class="btn btn-sm btn-outline-primary me-2 edit-btn" data-bs-toggle="modal"
                                                     data-bs-target="#editCompetitionModal" data-id="{{ $competition->id }}"
                                                     data-name="{{ $competition->name }}" data-age="{{ $competition->age }}"
                                                     data-gender="{{ $competition->gender }}"
                                                     data-height="{{ $competition->height }}"
                                                     data-weight="{{ $competition->weight }}"
                                                     data-activity="{{ $competition->type_of_competition }}">
-                                                    <i class="fa fa-pencil-square-o me-1"></i>Update
+                                                    <i class="fa fa-pencil mr-1"></i>
+                                                    Update
                                                 </button>
                                                 <form action="{{ route('competitions.destroy', $competition->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
                                                         onclick="return confirm('Are you sure you want to delete this competition record?')">
-                                                        <i class="fa fa-trash-o me-1"></i>Delete
+                                                        <i class="fa fa-trash mr-1"></i>
+                                                        Delete
                                                     </button>
                                                 </form>
                                             </div>
