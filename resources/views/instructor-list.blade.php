@@ -154,53 +154,57 @@
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 13px;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 14px;
             font-weight: 500;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);
+            min-width: 100px;
+            justify-content: center;
         }
 
         .btn-update-custom:hover {
             background-color: #0056b3;
             color: white;
             text-decoration: none;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
-            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
         }
 
         .btn-delete-custom {
             background-color: #dc3545;
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 13px;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 14px;
             font-weight: 500;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(220, 53, 69, 0.3);
+            min-width: 100px;
+            justify-content: center;
         }
 
         .btn-delete-custom:hover {
             background-color: #c82333;
             color: white;
             text-decoration: none;
-            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
-            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+            transform: translateY(-2px);
         }
 
         .btn-update-custom i,
         .btn-delete-custom i {
-            font-size: 12px;
+            font-size: 14px;
         }
     </style>
 </head>
