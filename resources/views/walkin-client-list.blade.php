@@ -254,6 +254,65 @@
         .pagination {
             margin-bottom: 4px;
         }
+
+        /* Action Buttons Styling */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-update {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+        }
+
+        .btn-update:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s ease;
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-update i,
+        .btn-delete i {
+            font-size: 12px;
+        }
     </style>
 </head>
 @extends('layouts.master')
@@ -368,17 +427,21 @@
                                             class="time-text">{{ \Carbon\Carbon::parse($walkin->time)->format('h:i A') }}</span>
                                     </div>
                                 </td>
-                                <td class="d-flex justify-content-center">
-                                    <a href="{{ route('walkins.edit', $walkin->id) }}" class="btn btn-sm btn-primary"><i
-                                            class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
-                                    <form action="{{ route('walkins.destroy', $walkin->id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                            onclick="return confirm('Are you sure you want to delete this walk-in client?')"><i
-                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
-                                    </form>
+                                <td class="text-center">
+                                    <div class="action-buttons">
+                                        <a href="{{ route('walkins.edit', $walkin->id) }}" class="btn-update">
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>Update
+                                        </a>
+                                        <form action="{{ route('walkins.destroy', $walkin->id) }}" method="POST"
+                                            style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-delete"
+                                                onclick="return confirm('Are you sure you want to delete this walk-in client?')">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
