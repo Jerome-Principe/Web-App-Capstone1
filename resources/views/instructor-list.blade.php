@@ -140,6 +140,68 @@
         .no-data-message p {
             font-size: 14px;
         }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Custom Button Styling */
+        .btn-update-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+        }
+
+        .btn-update-custom:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-delete-custom {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+        }
+
+        .btn-delete-custom:hover {
+            background-color: #c82333;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-update-custom i,
+        .btn-delete-custom i {
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -240,16 +302,23 @@
                                     <td class="text-center">{{ $instructor->session }}</td>
                                     <td class="text-center">₱{{ number_format($instructor->rates, 2) }}</td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editInstructorModal{{ $instructor->id }}">Update
-                                        </button>
-                                        <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
-                                            style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this instructor?')">Delete</button>
-                                        </form>
+                                        <div class="action-buttons">
+                                            <button type="button" class="btn-update-custom" data-bs-toggle="modal"
+                                                data-bs-target="#editInstructorModal{{ $instructor->id }}">
+                                                <i class="fa fa-pencil"></i>
+                                                Update
+                                            </button>
+                                            <form action="{{ route('instructors.destroy', $instructor->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-delete-custom"
+                                                    onclick="return confirm('Are you sure you want to delete this instructor?')">
+                                                    <i class="fa fa-trash"></i>
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
