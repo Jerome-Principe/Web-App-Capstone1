@@ -396,14 +396,18 @@
                                                     class="d-inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                                    <button type="submit" class="btn btn-success btn-sm me-2">
+                                                        <i class="fa fa-check mr-1"></i>Approve
+                                                    </button>
                                                 </form>
                                                 <form method="POST"
                                                     action="{{ route('appointments.decline', $appointment->id) }}"
                                                     class="d-inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-times mr-1"></i>Decline
+                                                    </button>
                                                 </form>
                                             </div>
                                         </td>
