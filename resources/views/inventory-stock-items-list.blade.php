@@ -274,17 +274,20 @@
                                     </div>
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="{{ route('stock-items.edit', $stockItem->id) }}" class="btn btn-sm btn-primary"><i
-                                            class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update</a>
+                                    <a href="{{ route('stock-items.edit', $stockItem->id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-pencil mr-1"></i>
+                                        Update
+                                    </a>
                                     <form action="{{ route('stock-items.destroy', $stockItem->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger mx-1"
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
                                             onclick="return confirm('Are you sure you want to delete this stock item?')"
                                             {{ $stockItem->has_related_sales ? 'disabled' : '' }}
                                             title="{{ $stockItem->has_related_sales ? 'Cannot delete: This item has related sales records' : 'Delete this stock item' }}">
-                                            <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                            <i class="fa fa-trash mr-1"></i>
+                                            Delete
                                         </button>
                                     </form>
                                 </td>

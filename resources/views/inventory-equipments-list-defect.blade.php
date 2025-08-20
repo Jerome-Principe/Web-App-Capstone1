@@ -251,16 +251,19 @@
                                 </td>
                                 <td class="text-center">
                                     <a href="{{ route('equipments-defect.edit', $equipmentDefect->id) }}"
-                                        class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o mx-1"
-                                            aria-hidden="true"></i>Update
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-pencil mr-1"></i>
+                                        Update
                                     </a>
                                     <form action="{{ route('equipments-defect.destroy', $equipmentDefect->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger mx-1"
-                                            onclick="return confirm('Are you sure you want to delete this defect record? This will restore the quantity to the equipment.')"><i
-                                                class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Are you sure you want to delete this defect record? This will restore the quantity to the equipment.')">
+                                            <i class="fa fa-trash mr-1"></i>
+                                            Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
