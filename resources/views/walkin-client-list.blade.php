@@ -259,6 +259,8 @@
         .action-buttons {
             display: flex;
             gap: 8px;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
