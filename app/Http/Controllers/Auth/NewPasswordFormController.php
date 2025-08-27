@@ -38,8 +38,16 @@ class NewPasswordFormController extends Controller
         $email = $request->email;
         $password = $request->request->get('password');
 
-        // Find the user
-        $user = \App\Models\User::where('email', $email)->first();
+        // Find the user with database optimization
+        try {
+            $user = \App\Models\User::where('email', $email)->first();
+
+            // Disconnect to free up database connections
+            \DB::disconnect('mysql');
+        } catch (\PDOException $e) {
+            \Log::error('Database connection error in new password form: ' . $e->getMessage());
+            $user = null;
+        }
 
         if (!$user) {
             return back()->withInput($request->only('email'))
