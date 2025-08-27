@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class ExpenseController extends Controller
 {
@@ -155,7 +156,13 @@ class ExpenseController extends Controller
         if ($date) {
             $expenses = Expense::where('date', $date)->get();
         } else {
-            $expenses = Expense::all(); // Get all records
+            // Use chunking for all expenses to prevent memory issues
+            $expenses = collect();
+            Expense::chunk(100, function ($items) use ($expenses) {
+                foreach ($items as $item) {
+                    $expenses->push($item);
+                }
+            });
         }
 
         // Calculate totals

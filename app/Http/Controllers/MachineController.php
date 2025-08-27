@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Machine;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class MachineController extends Controller
 {
@@ -107,7 +108,13 @@ class MachineController extends Controller
             ]);
             $machines = Machine::whereDate('date', $date)->get();
         } else {
-            $machines = Machine::all();
+            // Use chunking for all machines to prevent memory issues
+            $machines = collect();
+            Machine::chunk(100, function ($items) use ($machines) {
+                foreach ($items as $item) {
+                    $machines->push($item);
+                }
+            });
         }
 
         $pdf = Pdf::loadView('inventory-machines-pdf', compact('machines', 'date'));

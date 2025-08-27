@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StockItem;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StockItemController extends Controller
 {
@@ -126,7 +127,13 @@ class StockItemController extends Controller
         if ($date) {
             $stockItems = StockItem::whereDate('date', $date)->get();
         } else {
-            $stockItems = StockItem::all();
+            // Use chunking for all stock items to prevent memory issues
+            $stockItems = collect();
+            StockItem::chunk(100, function ($items) use ($stockItems) {
+                foreach ($items as $item) {
+                    $stockItems->push($item);
+                }
+            });
         }
 
         $totalAmount = $stockItems->sum('amount');

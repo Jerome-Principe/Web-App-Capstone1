@@ -6,6 +6,7 @@ use App\Models\StockItem;
 use App\Models\SaleItem;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class SaleItemController extends Controller
 {
@@ -28,7 +29,24 @@ class SaleItemController extends Controller
 
     public function create()
     {
-        $stockItems = StockItem::all(); // Fetch all sales items from the database
+        // Use chunking for large stock datasets and disconnect after
+        $stockItems = collect();
+
+        try {
+            StockItem::chunk(100, function ($items) use ($stockItems) {
+                foreach ($items as $item) {
+                    $stockItems->push($item);
+                }
+            });
+
+            // Disconnect to free database connections
+            DB::disconnect('mysql');
+
+        } catch (\Exception $e) {
+            \Log::error('Database error in SaleItemController create: ' . $e->getMessage());
+            $stockItems = collect();
+        }
+
         return view('inventory-sale-items-create', compact('stockItems'));
     }
 
@@ -126,7 +144,13 @@ class SaleItemController extends Controller
         if ($date) {
             $items = SaleItem::whereDate('date', $date)->get();
         } else {
-            $items = SaleItem::all();
+            // Use chunking for all sale items to prevent memory issues
+            $items = collect();
+            SaleItem::chunk(100, function ($saleItems) use ($items) {
+                foreach ($saleItems as $item) {
+                    $items->push($item);
+                }
+            });
         }
 
         $totalAmount = $items->sum('amount');
