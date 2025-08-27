@@ -372,7 +372,7 @@
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
 
-                                        <a href="route('logout')" onclick="event.preventDefault();
+                                        <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                             <i class="lni-lock"></i>
                                             <span>Logout</span>
