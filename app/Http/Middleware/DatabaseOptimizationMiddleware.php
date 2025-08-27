@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Services\DatabaseConnectionManager;
 use Symfony\Component\HttpFoundation\Response;
 
 class DatabaseOptimizationMiddleware
@@ -17,12 +18,25 @@ class DatabaseOptimizationMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        try {
-            // Process the request first, then handle optimization
-            $response = $next($request);
+        // Check if we're in backoff mode
+        if (DatabaseConnectionManager::isInBackoffMode()) {
+            Log::info('Request blocked due to database backoff mode');
 
-            // After processing, optimize connections
-            $this->optimizeConnections();
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'error' => 'Service temporarily overloaded. Please try again in a moment.',
+                    'retry_after' => 30
+                ], 503);
+            }
+
+            return response()->view('errors.503', [], 503);
+        }
+
+        try {
+            // Process the request with connection management
+            $response = DatabaseConnectionManager::executeWithConnectionManagement(function () use ($request, $next) {
+                return $next($request);
+            });
 
             return $response;
 
@@ -30,13 +44,18 @@ class DatabaseOptimizationMiddleware
             // Handle database connection errors gracefully
             Log::error('Database connection error: ' . $e->getMessage(), [
                 'request_url' => $request->fullUrl(),
-                'user_id' => auth()->id() ?? 'guest'
+                'user_id' => auth()->id() ?? 'guest',
+                'connection_stats' => DatabaseConnectionManager::getConnectionStats()
             ]);
 
             return $this->handleConnectionError($e, $request);
 
         } catch (\Exception $e) {
             // Handle any other exceptions
+            if (str_contains($e->getMessage(), 'Service temporarily overloaded')) {
+                return $this->handleConnectionError(new \PDOException($e->getMessage()), $request);
+            }
+
             Log::error('Unexpected error in DatabaseOptimizationMiddleware: ' . $e->getMessage());
 
             // Let the request continue normally for non-database errors

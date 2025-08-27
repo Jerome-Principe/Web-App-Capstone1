@@ -37,7 +37,8 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\DatabaseOptimizationMiddleware::class, // Re-enabled with better error handling
+            \App\Http\Middleware\QueryCacheMiddleware::class, // Cache frequently accessed pages
+            \App\Http\Middleware\DatabaseOptimizationMiddleware::class, // Advanced connection management
         ],
 
         'api' => [
