@@ -18,14 +18,10 @@ class DatabaseOptimizationMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            // Set connection timeout to prevent hanging connections
-            DB::connection()->getPdo()->setAttribute(\PDO::ATTR_TIMEOUT, 10);
-
-            // Process the request
+            // Process the request first, then handle optimization
             $response = $next($request);
 
-            // After processing, disconnect to free up connections
-            // This implements the "Close connections after queues or batch jobs" strategy
+            // After processing, optimize connections
             $this->optimizeConnections();
 
             return $response;
@@ -37,15 +33,14 @@ class DatabaseOptimizationMiddleware
                 'user_id' => auth()->id() ?? 'guest'
             ]);
 
-            // Return a user-friendly error response
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'error' => 'Database temporarily unavailable. Please try again later.',
-                    'retry_after' => 30
-                ], 503);
-            }
+            return $this->handleConnectionError($e, $request);
 
-            return response()->view('errors.503', [], 503);
+        } catch (\Exception $e) {
+            // Handle any other exceptions
+            Log::error('Unexpected error in DatabaseOptimizationMiddleware: ' . $e->getMessage());
+
+            // Let the request continue normally for non-database errors
+            return $next($request);
         }
     }
 
