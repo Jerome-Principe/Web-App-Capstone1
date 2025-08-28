@@ -294,7 +294,7 @@
                     <!-- Profile Picture -->
                     <div class="profile-picture-container">
                         <img id="profile_preview"
-                            src="{{ asset($user->profile_picture ?? 'https://via.placeholder.com/150/667eea/ffffff?text=' . substr($user->name, 0, 1)) }}"
+                            src="{{ asset($user->profile_picture ?? 'https://via.placeholder.com/150/667eea/ffffff') }}"
                             alt="Profile Picture" class="profile-picture">
                         <label for="profile_picture" class="camera-overlay">
                             <i class="fas fa-camera text-lg"></i>
