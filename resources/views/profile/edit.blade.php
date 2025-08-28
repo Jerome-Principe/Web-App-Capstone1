@@ -294,8 +294,8 @@
                     <!-- Profile Picture -->
                     <div class="profile-picture-container">
                         <img id="profile_preview"
-                            src="{{ asset($user->profile_picture ?? 'https://via.placeholder.com/150/667eea/ffffff') }}"
-                            alt="Profile Picture" class="profile-picture">
+                            src="{{ asset($user->profile_picture ?? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiByeD0iNzUiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSI0NSIgeT0iNDAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI3MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjOUI5Q0E0Ij4KPHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPgo8L3N2Zz4KPC9zdmc+') }}"
+                            alt="" class="profile-picture">
                         <label for="profile_picture" class="camera-overlay">
                             <i class="fas fa-camera text-lg"></i>
                         </label>
