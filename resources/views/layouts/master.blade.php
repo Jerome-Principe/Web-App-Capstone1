@@ -150,9 +150,9 @@
 
         /* Header - Same level as dashboard */
         .header-container {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
