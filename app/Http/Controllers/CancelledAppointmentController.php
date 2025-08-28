@@ -21,7 +21,7 @@ class CancelledAppointmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer',
+            'user_id' => 'required|integer|exists:users,id',
             'instructor_name' => 'required|string|max:255',
             'selected_date' => 'required|string',
             'selected_time' => 'required|string|max:255',
@@ -118,6 +118,35 @@ class CancelledAppointmentController extends Controller
                 ]
             ], 200);
 
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle specific database constraint errors
+            if (str_contains($e->getMessage(), 'foreign key constraint')) {
+                \Log::error('Foreign Key Constraint Error: ' . $e->getMessage(), [
+                    'request_data' => $request->all(),
+                    'exception' => $e->getMessage()
+                ]);
+
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid user ID provided. Please ensure you are logged in properly.',
+                    'error_code' => 'INVALID_USER_ID'
+                ], 400);
+            }
+
+            \Log::error('Database Error: ' . $e->getMessage(), [
+                'request_data' => $request->all(),
+                'exception' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Database error occurred while processing cancellation.',
+                'debug_info' => config('app.debug') ? [
+                    'exception' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ] : null
+            ], 500);
         } catch (\Exception $e) {
             \Log::error('Cancellation Error: ' . $e->getMessage(), [
                 'request_data' => $request->all(),
