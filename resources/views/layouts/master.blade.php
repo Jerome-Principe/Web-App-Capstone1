@@ -371,20 +371,20 @@
                                 <li role="separator" class="divider"></li>
                                 <li>
                                     <a href="{{ route('profile.edit') }}">
-                                        <i class="lni-user"></i>
+                                        <i class="fa fa-user"></i>
                                         <span>Profile</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="">
-                                        <i class="lni-envelope"></i>
+                                        <i class="fa fa-envelope"></i>
                                         <span>Inbox</span>
                                         <span class="badge badge-pill badge-primary badge-pro pull-right">2</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="">
-                                        <i class="lni-cog"></i>
+                                        <i class="fa fa-cog"></i>
                                         <span>Setting</span>
                                     </a>
                                 </li>
@@ -394,7 +394,7 @@
 
                                         <a href="route('logout')" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                            <i class="lni-lock"></i>
+                                            <i class="fa fa-sign-out"></i>
                                             <span>Logout</span>
                                         </a>
 
