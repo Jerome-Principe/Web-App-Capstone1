@@ -103,9 +103,9 @@
                                 style="font-size: 30px;"><i>Believe In Yourself I am ∞ Limitless</i></p>
                             <ul>
                                 <li>
-                                    <a href="https://drive.google.com/file/d/1_6SHcZFdJvG8u0vofgZBuaqCRUOE9s4t/view?usp=sharing
-                                        FITDROID(3-18-25).apk" class="main-btn wow fadeInUp" data-wow-duration="1.3s"
-                                        data-wow-delay="0.8s">Get Started
+                                    <a href="https://drive.google.com/drive/folders/1eajSGQKj7wYO9rZBr8ix8xNUgg4Dcxoo"
+                                        class="main-btn wow fadeInUp" data-wow-duration="1.3s" data-wow-delay="0.8s">Get
+                                        Started
                                     </a>
                                 </li>
                                 <li><a href="/learnmorebtn" class="main-btn main-btn-2 wow fadeInUp"
@@ -770,7 +770,8 @@
                                     style="color: #333; font-weight: 500; margin-bottom: 8px; display: block;">Rate your
                                     experience (1-5 stars):</label>
                                 <div class="star-rating" style="display: flex; gap: 8px; margin-bottom: 10px;">
-                                    <div id="rating-display" style="margin-left: 10px; font-weight: bold; color: #333;"></div>
+                                    <div id="rating-display" style="margin-left: 10px; font-weight: bold; color: #333;">
+                                    </div>
                                     <input type="radio" name="rating" value="1" id="star1" style="display: none;">
                                     <label for="star1" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
@@ -826,10 +827,10 @@
 
                                             // Check the corresponding radio input
                                             radioInputs[index].checked = true;
-                                            
+
                                             // Debug: Log the selected rating
                                             console.log('Selected rating:', radioInputs[index].value);
-                                            
+
                                             // Update the rating display
                                             document.getElementById('rating-display').textContent = radioInputs[index].value + '/5';
                                         });

@@ -356,7 +356,8 @@
                             </div>
                             <div class="mb-3">
                                 <label>Current Weight</label>
-                                <input type="number" name="current_weight" id="edit_current_weight" class="form-control">
+                                <input type="number" name="current_weight" id="edit_current_weight" class="form-control"
+                                    step="0.01" min="0">
                             </div>
                             <div class="mb-3">
                                 <label>Goal Weight</label>
