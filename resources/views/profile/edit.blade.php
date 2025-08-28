@@ -44,7 +44,7 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 6px solid #fff;
+            border: 6px solid transparent;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
             transition: all 0.4s ease;
         }
