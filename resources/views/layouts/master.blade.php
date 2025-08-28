@@ -150,14 +150,34 @@
 
         /* Header - Same level as dashboard */
         .header-container {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
             position: sticky;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Header Icons and Elements */
+        .header-container .lni-envelope,
+        .header-container .lni-alarm,
+        .header-container .lni-search {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .header-container a:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .header-container input[type="text"] {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header-container input[type="text"]:focus {
+            background: white;
+            ring-color: rgba(255, 255, 255, 0.5);
         }
 
         /* Content Area */
