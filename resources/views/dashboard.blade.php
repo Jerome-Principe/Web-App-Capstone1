@@ -355,7 +355,7 @@
                             </div>
                             @if($quickActions['expiringMemberships'] > 0)
                                 <div class="col-6 mb-3">
-                                    <a href="#" class="btn btn-outline-danger btn-block">
+                                    <a href="{{ route('membership.list') }}" class="btn btn-outline-danger btn-block">
                                         <i class="fa fa-clock mr-2"></i>
                                         Expiring Memberships
                                         <span class="badge badge-danger ml-2">{{ $quickActions['expiringMemberships'] }}</span>
@@ -719,8 +719,8 @@
                     labels: ['Gold', 'Silver', 'Bronze'],
                     datasets: [{
                         data: [
-                                                {{ $topMetrics['membershipTypes']['gold'] }},
-                                                {{ $topMetrics['membershipTypes']['silver'] }},
+                                                        {{ $topMetrics['membershipTypes']['gold'] }},
+                                                        {{ $topMetrics['membershipTypes']['silver'] }},
                             {{ $topMetrics['membershipTypes']['bronze'] }}
                         ],
                         backgroundColor: ['#f6c23e', '#858796', '#e83e8c'],
@@ -747,8 +747,8 @@
                     labels: ['Memberships', 'Appointments', 'Walk-ins'],
                     datasets: [{
                         data: [
-                                                {{ $monthlyStats['memberships']['current'] }},
-                                                {{ $monthlyStats['appointments']['current'] }},
+                                                        {{ $monthlyStats['memberships']['current'] }},
+                                                        {{ $monthlyStats['appointments']['current'] }},
                             {{ $monthlyStats['walkins']['current'] }}
                         ],
                         backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
