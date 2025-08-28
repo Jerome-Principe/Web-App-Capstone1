@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\MachineDefect;
 use App\Models\Machine;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
@@ -26,24 +25,8 @@ class MachineDefectController extends Controller
      */
     public function create()
     {
-        // Use chunking for large machine datasets and disconnect after
-        $machineDefects = collect();
-
-        try {
-            Machine::chunk(100, function ($machines) use ($machineDefects) {
-                foreach ($machines as $machine) {
-                    $machineDefects->push($machine);
-                }
-            });
-
-            // Disconnect to free database connections
-            DB::disconnect('mysql');
-
-        } catch (\Exception $e) {
-            \Log::error('Database error in MachineDefectController create: ' . $e->getMessage());
-            $machineDefects = collect();
-        }
-
+        //
+        $machineDefects = Machine::get();
         return view('inventory-machines-create-defect', compact('machineDefects'));
     }
 
@@ -145,13 +128,7 @@ class MachineDefectController extends Controller
             ]);
             $machineDefects = MachineDefect::whereDate('date', $date)->get();
         } else {
-            // Use chunking for all machine defects to prevent memory issues
-            $machineDefects = collect();
-            MachineDefect::chunk(100, function ($defects) use ($machineDefects) {
-                foreach ($defects as $defect) {
-                    $machineDefects->push($defect);
-                }
-            });
+            $machineDefects = MachineDefect::all();
         }
 
         $pdf = Pdf::loadView('inventory-machines-defect-pdf', compact('machineDefects', 'date'));

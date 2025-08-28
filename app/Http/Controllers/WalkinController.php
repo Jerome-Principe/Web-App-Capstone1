@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Walkin;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\DB;
 
 class WalkinController extends Controller
 {
@@ -155,13 +154,7 @@ class WalkinController extends Controller
         if ($date) {
             $walkins = Walkin::whereDate('date', $date)->get();
         } else {
-            // Use chunking for all walk-ins to prevent memory issues
-            $walkins = collect();
-            Walkin::chunk(100, function ($items) use ($walkins) {
-                foreach ($items as $item) {
-                    $walkins->push($item);
-                }
-            });
+            $walkins = Walkin::all(); // Get all records
         }
 
         // Calculate totals

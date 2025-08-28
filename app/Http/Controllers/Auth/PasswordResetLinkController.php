@@ -33,16 +33,8 @@ class PasswordResetLinkController extends Controller
 
         $email = $request->email;
 
-        // Check if user exists with database optimization
-        try {
-            $user = \App\Models\User::where('email', $email)->first();
-
-            // Disconnect to free up database connections
-            \DB::disconnect('mysql');
-        } catch (\PDOException $e) {
-            \Log::error('Database connection error in password reset: ' . $e->getMessage());
-            $user = null;
-        }
+        // Check if user exists
+        $user = \App\Models\User::where('email', $email)->first();
 
         if (!$user) {
             if ($request->expectsJson()) {

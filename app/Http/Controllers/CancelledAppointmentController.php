@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\CancelledAppointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class CancelledAppointmentController extends Controller
@@ -141,20 +140,9 @@ class CancelledAppointmentController extends Controller
     public function fetchCancelledAppointments()
     {
         try {
-            // Use chunking for large cancelled appointment datasets
-            $cancelledAppointments = collect();
-            CancelledAppointment::chunk(100, function ($appointments) use ($cancelledAppointments) {
-                foreach ($appointments as $appointment) {
-                    $cancelledAppointments->push($appointment);
-                }
-            });
-
-            // Disconnect to free database connections
-            DB::disconnect('mysql');
-
+            $cancelledAppointments = CancelledAppointment::all();
             return response()->json($cancelledAppointments, 200);
         } catch (\Exception $e) {
-            \Log::error('Database error in fetchCancelledAppointments: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to fetch canceled appointments', 'message' => $e->getMessage()], 500);
         }
     }

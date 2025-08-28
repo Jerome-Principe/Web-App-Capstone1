@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Equipment;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\DB;
 
 class EquipmentController extends Controller
 {
@@ -103,13 +102,7 @@ class EquipmentController extends Controller
 
             $equipments = Equipment::whereDate('date', $date)->get();
         } else {
-            // Use chunking for all equipment to prevent memory issues
-            $equipments = collect();
-            Equipment::chunk(100, function ($items) use ($equipments) {
-                foreach ($items as $item) {
-                    $equipments->push($item);
-                }
-            });
+            $equipments = Equipment::all();
         }
 
         $pdf = Pdf::loadView('inventory-equipments-pdf', compact('equipments', 'date'));

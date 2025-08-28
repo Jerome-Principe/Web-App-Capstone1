@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Equipment;
 use App\Models\EquipmentDefect;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
@@ -26,24 +25,9 @@ class EquipmentDefectController extends Controller
      */
     public function create()
     {
-        // Use chunking for large equipment datasets and disconnect after
-        $equipments = collect();
+        //
 
-        try {
-            Equipment::chunk(100, function ($items) use ($equipments) {
-                foreach ($items as $item) {
-                    $equipments->push($item);
-                }
-            });
-
-            // Disconnect to free database connections
-            DB::disconnect('mysql');
-
-        } catch (\Exception $e) {
-            \Log::error('Database error in EquipmentDefectController create: ' . $e->getMessage());
-            $equipments = collect();
-        }
-
+        $equipments = Equipment::all();
         return view('inventory-equipments-create-defect', compact('equipments'));
     }
 
@@ -128,13 +112,7 @@ class EquipmentDefectController extends Controller
             ]);
             $equipmentDefects = EquipmentDefect::whereDate('date', $date)->get();
         } else {
-            // Use chunking for all equipment defects to prevent memory issues
-            $equipmentDefects = collect();
-            EquipmentDefect::chunk(100, function ($defects) use ($equipmentDefects) {
-                foreach ($defects as $defect) {
-                    $equipmentDefects->push($defect);
-                }
-            });
+            $equipmentDefects = EquipmentDefect::all();
         }
 
         $pdf = Pdf::loadView('inventory-equipments-defect-pdf', compact('equipmentDefects', 'date'));
