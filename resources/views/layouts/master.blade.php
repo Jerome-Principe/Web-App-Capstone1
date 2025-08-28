@@ -379,7 +379,6 @@
                                     <a href="">
                                         <i class="fa fa-envelope"></i>
                                         <span>Inbox</span>
-                                        <span class="badge badge-pill badge-primary badge-pro pull-right">2</span>
                                     </a>
                                 </li>
                                 <li>
