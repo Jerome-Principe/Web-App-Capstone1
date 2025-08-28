@@ -15,6 +15,8 @@ use App\Models\Goal;
 use App\Models\Competition;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use App\Services\CacheService;
 
 class DashboardController extends Controller
 {
@@ -25,23 +27,32 @@ class DashboardController extends Controller
             $currentDate = Carbon::now();
             $currentMonth = $currentDate->format('Y-m');
 
-            // Active Members (Approved memberships)
-            $activeMembers = PendingMembership::where('status', 'Approved')->count();
+            // Cache dashboard stats to reduce database load
+            // Daily changing data - cache for 10 minutes
+            $dailyStats = Cache::remember('dashboard_daily_' . $currentDate->toDateString(), 600, function () use ($currentDate) {
+                return [
+                    'activeMembers' => PendingMembership::where('status', 'Approved')->count(),
+                    'walkinClients' => Walkin::whereDate('date', $currentDate->toDateString())->count(),
+                    'todayAppointments' => PendingAppointment::whereDate('selected_date', $currentDate->toDateString())->count(),
+                    'todayAttendance' => AttendanceRecord::whereDate('date_logged', $currentDate->toDateString())->count(),
+                ];
+            });
 
-            // Walk-in Clients (today)
-            $walkinClients = Walkin::whereDate('date', $currentDate->toDateString())->count();
+            // Static data that changes less frequently - cache for 30 minutes
+            $staticStats = Cache::remember('dashboard_static', 1800, function () {
+                return [
+                    'inventoryItems' => StockItem::count(),
+                    'staffCount' => Instructor::count(),
+                ];
+            });
 
-            // Inventory Items
-            $inventoryItems = StockItem::count();
-
-            // Today's Appointments
-            $todayAppointments = PendingAppointment::whereDate('selected_date', $currentDate->toDateString())->count();
-
-            // Staff/Instructors
-            $staffCount = Instructor::count();
-
-            // Today's Attendance
-            $todayAttendance = AttendanceRecord::whereDate('date_logged', $currentDate->toDateString())->count();
+            // Extract values from cache
+            $activeMembers = $dailyStats['activeMembers'];
+            $walkinClients = $dailyStats['walkinClients'];
+            $inventoryItems = $staticStats['inventoryItems'];
+            $todayAppointments = $dailyStats['todayAppointments'];
+            $staffCount = $staticStats['staffCount'];
+            $todayAttendance = $dailyStats['todayAttendance'];
 
             // Total Revenue (from approved memberships and renewals)
             // Simple approach: sum all membership payments made
@@ -92,23 +103,25 @@ class DashboardController extends Controller
 
             $totalRevenue = $nonRenewedRevenue + $renewedMembershipsRevenue;
 
-            // Monthly Revenue (use same logic as total revenue to avoid double counting)
-            $monthlyRevenue = $this->calculateMonthlyRevenue($currentDate);
+            // Cache complex calculations for 15 minutes
+            $complexStats = Cache::remember('dashboard_complex_' . $currentDate->toDateString(), 900, function () use ($currentDate) {
+                return [
+                    'monthlyRevenue' => $this->calculateMonthlyRevenue($currentDate),
+                    'pendingAppointments' => PendingAppointment::where('status', 'Pending')->count(),
+                    'recentActivities' => $this->getRecentActivities(),
+                    'monthlyStats' => $this->getMonthlyStatistics(),
+                    'topMetrics' => $this->getTopMetrics(),
+                    'quickActions' => $this->getQuickActionsData(),
+                ];
+            });
 
-            // Pending Appointments
-            $pendingAppointments = PendingAppointment::where('status', 'Pending')->count();
-
-            // Recent Activities (last 7 days)
-            $recentActivities = $this->getRecentActivities();
-
-            // Monthly Statistics
-            $monthlyStats = $this->getMonthlyStatistics();
-
-            // Top Performing Metrics
-            $topMetrics = $this->getTopMetrics();
-
-            // Quick Actions Data
-            $quickActions = $this->getQuickActionsData();
+            // Extract complex stats from cache
+            $monthlyRevenue = $complexStats['monthlyRevenue'];
+            $pendingAppointments = $complexStats['pendingAppointments'];
+            $recentActivities = $complexStats['recentActivities'];
+            $monthlyStats = $complexStats['monthlyStats'];
+            $topMetrics = $complexStats['topMetrics'];
+            $quickActions = $complexStats['quickActions'];
 
         } catch (\Exception $e) {
             // If there's an error, provide default values

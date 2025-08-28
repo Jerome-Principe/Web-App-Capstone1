@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Walkin;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\CacheService;
 
 class WalkinController extends Controller
 {
@@ -41,6 +42,9 @@ class WalkinController extends Controller
 
         // Create the walk-in client
         Walkin::create($request->all());
+
+        // Clear dashboard cache since walk-in data affects dashboard stats
+        CacheService::clearSpecificCache('walkin');
 
         // Redirect to the index with success message
         return redirect()->route('walkin.index')->with('success', 'Client information saved successfully.');

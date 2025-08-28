@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
+use App\Services\CacheService;
 
 class NotificationController extends Controller
 {
@@ -43,6 +45,9 @@ class NotificationController extends Controller
             'is_deleted' => false,
             'is_read' => false
         ]);
+
+        // Clear notification cache when new notification is created
+        CacheService::clearSpecificCache('notification');
 
         return response()->json([
             'success' => true,
@@ -136,6 +141,9 @@ class NotificationController extends Controller
     {
         $notification->update(['is_read' => true]);
 
+        // Clear notification cache when status changes
+        CacheService::clearSpecificCache('notification');
+
         return response()->json([
             'success' => true,
             'message' => 'Notification marked as read'
@@ -148,6 +156,9 @@ class NotificationController extends Controller
     public function markAllAsRead(): JsonResponse
     {
         Notification::active()->unread()->update(['is_read' => true]);
+
+        // Clear notification cache when status changes
+        CacheService::clearSpecificCache('notification');
 
         return response()->json([
             'success' => true,

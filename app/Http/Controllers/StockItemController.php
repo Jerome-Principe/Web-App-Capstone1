@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StockItem;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use App\Services\CacheService;
 
 class StockItemController extends Controller
 {
