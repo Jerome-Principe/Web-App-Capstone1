@@ -87,6 +87,7 @@
             overflow-x: auto;
             border: 1px solid #e1e5e9;
             border-radius: 4px;
+            width: 100%;
         }
 
         table {
@@ -114,6 +115,13 @@
             vertical-align: middle;
             text-align: center !important;
             min-width: 100px;
+            overflow: visible;
+        }
+
+        /* Actions column specific styling */
+        td:last-child {
+            min-width: 150px;
+            white-space: nowrap;
         }
 
         tbody tr:hover {
@@ -131,6 +139,18 @@
         .action-buttons {
             display: flex;
             gap: 8px;
+        }
+
+        /* Ensure buttons are visible */
+        .btn-sm {
+            font-size: 12px;
+            padding: 4px 8px;
+            min-width: auto;
+        }
+
+        /* Action column styling */
+        .table td:last-child {
+            min-width: 140px;
         }
 
         /* Minimalist Pagination */
@@ -346,11 +366,12 @@
                                         <td class="text-center">{{ $mealPlan->lunch }}</td>
                                         <td class="text-center">{{ $mealPlan->dinner }}</td>
                                         <td class="text-center">
-                                            <div class="d-flex justify-content-center">
+                                            <div class="d-flex justify-content-center gap-1">
                                                 <!-- Edit Button -->
-                                                <button type="button" class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
-                                                    data-bs-target="#editMealPlanModal{{ $mealPlan->id }}">
-                                                    <i class="fa fa-pencil-square-o mx-1" aria-hidden="true"></i>Update
+                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#editMealPlanModal{{ $mealPlan->id }}"
+                                                    style="white-space: nowrap;">
+                                                    <i class="fa fa-pencil-square-o me-1" aria-hidden="true"></i>Update
                                                 </button>
 
                                                 <!-- Delete Button (Form for DELETE request) -->
@@ -358,9 +379,9 @@
                                                     style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                    <button type="submit" class="btn btn-sm btn-danger" style="white-space: nowrap;"
                                                         onclick="return confirm('Are you sure you want to delete this meal plan?')">
-                                                        <i class="fa fa-trash-o mx-1" aria-hidden="true"></i>Delete
+                                                        <i class="fa fa-trash-o me-1" aria-hidden="true"></i>Delete
                                                     </button>
                                                 </form>
                                             </div>

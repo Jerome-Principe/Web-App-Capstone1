@@ -425,11 +425,13 @@
             loadNotifications();
             loadNotificationCount();
 
-            // Refresh notifications every 30 seconds
+            // TEMPORARILY COMMENTED OUT TO STOP DATABASE POLLING
+            /*
             setInterval(function () {
                 loadNotifications();
                 loadNotificationCount();
-            }, 30000);
+            }, 300000); // 5 minutes = 300,000ms (was 30,000ms = 30 seconds)
+            */
 
             // Mark all as read functionality
             $('#mark-all-read').on('click', function (e) {
@@ -437,58 +439,70 @@
                 markAllAsRead();
             });
 
-            // Load notification count
+            // Load notification count - gets the number of unread notifications
             function loadNotificationCount() {
+                // Make AJAX call to get unread notification count from server
                 $.ajax({
-                    url: '{{ route("notifications.count") }}',
+                    url: '{{ route("notifications.count") }}', // Calls /api/notifications/count endpoint
                     method: 'GET',
                     success: function (response) {
+                        // If server responds successfully
                         if (response.success) {
+                            // Update the notification counter badge with the count number
                             $('#notification-counter').text(response.count);
 
-                            // Hide counter if no unread notifications
+                            // Hide the red counter badge if there are no unread notifications
                             if (response.count === 0) {
                                 $('#notification-counter').hide();
                             } else {
+                                // Show the red counter badge if there are unread notifications
                                 $('#notification-counter').show();
                             }
                         }
                     },
                     error: function (xhr, status, error) {
+                        // Log any errors to browser console for debugging
                         console.error('Error loading notification count:', error);
                     }
                 });
             }
 
-            // Load recent notifications
+            // Load recent notifications - gets the latest 10 notifications to display in dropdown
             function loadNotifications() {
+                // Make AJAX call to get recent notifications from server
                 $.ajax({
-                    url: '{{ route("notifications.recent") }}',
+                    url: '{{ route("notifications.recent") }}', // Calls /api/notifications/recent endpoint
                     method: 'GET',
                     success: function (response) {
+                        // If server responds successfully with notification data
                         if (response.success) {
+                            // Call function to display the notifications in the dropdown menu
                             displayNotifications(response.data);
                         }
                     },
                     error: function (xhr, status, error) {
+                        // Log error and show user-friendly error message in notification dropdown
                         console.error('Error loading notifications:', error);
                         $('#notification-list').html('<li class="list-item text-center"><span class="text-gray">Error loading notifications</span></li>');
                     }
                 });
             }
 
-            // Display notifications in the dropdown
+            // Display notifications in the dropdown - formats and shows notification list
             function displayNotifications(notifications) {
+                // Get the HTML element where notifications will be displayed
                 const notificationList = $('#notification-list');
 
-                // Update total count in header
+                // Update the total count shown in the notification dropdown header
                 $('#notification-total').text(`(${notifications.length})`);
 
+                // If there are no notifications, show "No notifications" message
                 if (notifications.length === 0) {
                     notificationList.html('<li class="list-item text-center"><span class="text-gray">No notifications</span></li>');
-                    return;
+                    return; // Exit function early
                 }
 
+                // Build HTML string to display each notification
                 let html = '';
                 notifications.forEach(function (notification) {
                     const date = new Date(notification.date);
@@ -530,41 +544,51 @@
                 });
             }
 
-            // Mark single notification as read
+            // Mark single notification as read - updates notification status in database
             function markAsRead(notificationId) {
+                // Send POST request to mark specific notification as read
                 $.ajax({
-                    url: `/api/notifications/${notificationId}/mark-read`,
+                    url: `/api/notifications/${notificationId}/mark-read`, // Dynamic URL with notification ID
                     method: 'POST',
                     headers: {
+                        // Include CSRF token for Laravel security
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
+                        // If notification was successfully marked as read
                         if (response.success) {
+                            // Refresh both notification list and counter to reflect changes
                             loadNotifications();
                             loadNotificationCount();
                         }
                     },
                     error: function (xhr, status, error) {
+                        // Log any errors for debugging
                         console.error('Error marking notification as read:', error);
                     }
                 });
             }
 
-            // Mark all notifications as read
+            // Mark all notifications as read - bulk update all unread notifications
             function markAllAsRead() {
+                // Send POST request to mark ALL unread notifications as read at once
                 $.ajax({
-                    url: '{{ route("notifications.markAllAsRead") }}',
+                    url: '{{ route("notifications.markAllAsRead") }}', // Calls /api/notifications/mark-all-read endpoint
                     method: 'POST',
                     headers: {
+                        // Include CSRF token for Laravel security
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
+                        // If all notifications were successfully marked as read
                         if (response.success) {
+                            // Refresh both notification list and counter to show all as read
                             loadNotifications();
                             loadNotificationCount();
                         }
                     },
                     error: function (xhr, status, error) {
+                        // Log any errors for debugging
                         console.error('Error marking all notifications as read:', error);
                     }
                 });
