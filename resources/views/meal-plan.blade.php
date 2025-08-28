@@ -565,14 +565,15 @@
                             <h5 class="modal-title" id="editMealPlanModalLabel">Edit Meal Plan</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <form action="{{ route('meal-plan.update', $mealPlan->id) }}" method="POST">
+                        <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                            <form action="{{ route('meal-plan.update', $mealPlan->id) }}" method="POST"
+                                id="editMealPlanForm{{ $mealPlan->id }}">
                                 @csrf
                                 @method('PUT')
 
                                 <div class="mb-3">
-                                    <label for="category" class="form-label">Category</label>
-                                    <input type="text" class="form-control" id="category" name="category"
+                                    <label for="category{{ $mealPlan->id }}" class="form-label">Category</label>
+                                    <input type="text" class="form-control" id="category{{ $mealPlan->id }}" name="category"
                                         value="Meal Plan Guide" readonly>
                                 </div>
 
@@ -587,87 +588,52 @@
                                     </select>
                                 </div>
 
-                                <!-- Accordion for Details -->
-                                <div class="accordion" id="editMealPlanAccordion{{ $mealPlan->id }}">
-                                    <!-- General Details -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="editHeadingDetails{{ $mealPlan->id }}">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#editCollapseDetails{{ $mealPlan->id }}" aria-expanded="true"
-                                                aria-controls="editCollapseDetails{{ $mealPlan->id }}">
-                                                General Details
-                                            </button>
-                                        </h2>
-                                        <div id="editCollapseDetails{{ $mealPlan->id }}"
-                                            class="accordion-collapse collapse show"
-                                            aria-labelledby="editHeadingDetails{{ $mealPlan->id }}">
-                                            <div class="accordion-body">
-                                                <div class="mb-3">
-                                                    <label for="guideline{{ $mealPlan->id }}"
-                                                        class="form-label">Guideline</label>
-                                                    <textarea class="form-control" id="guideline{{ $mealPlan->id }}"
-                                                        name="guideline"
-                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $mealPlan->guideline }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="day{{ $mealPlan->id }}" class="form-label">Day</label>
-                                                    <select class="form-control" id="day{{ $mealPlan->id }}" name="day">
-                                                        <option value="Monday" {{ $mealPlan->day == 'Monday' ? 'selected' : '' }}>
-                                                            Monday</option>
-                                                        <option value="Tuesday" {{ $mealPlan->day == 'Tuesday' ? 'selected' : '' }}>Tuesday</option>
-                                                        <option value="Wednesday" {{ $mealPlan->day == 'Wednesday' ? 'selected' : '' }}>Wednesday</option>
-                                                        <option value="Thursday" {{ $mealPlan->day == 'Thursday' ? 'selected' : '' }}>Thursday</option>
-                                                        <option value="Friday" {{ $mealPlan->day == 'Friday' ? 'selected' : '' }}>
-                                                            Friday</option>
-                                                        <option value="Saturday" {{ $mealPlan->day == 'Saturday' ? 'selected' : '' }}>Saturday</option>
-                                                        <option value="Sunday" {{ $mealPlan->day == 'Sunday' ? 'selected' : '' }}>
-                                                            Sunday</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Meal Details -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="editHeadingMeals{{ $mealPlan->id }}">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#editCollapseMeals{{ $mealPlan->id }}" aria-expanded="true"
-                                                aria-controls="editCollapseMeals{{ $mealPlan->id }}">
-                                                Meal Details
-                                            </button>
-                                        </h2>
-                                        <div id="editCollapseMeals{{ $mealPlan->id }}" class="accordion-collapse collapse show"
-                                            aria-labelledby="editHeadingMeals{{ $mealPlan->id }}">
-                                            <div class="accordion-body">
-                                                <div class="mb-3">
-                                                    <label for="breakfast{{ $mealPlan->id }}"
-                                                        class="form-label">Breakfast</label>
-                                                    <textarea class="form-control" id="breakfast{{ $mealPlan->id }}"
-                                                        name="breakfast"
-                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $mealPlan->breakfast }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="lunch{{ $mealPlan->id }}" class="form-label">Lunch</label>
-                                                    <textarea class="form-control" id="lunch{{ $mealPlan->id }}" name="lunch"
-                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $mealPlan->lunch }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="dinner{{ $mealPlan->id }}" class="form-label">Dinner</label>
-                                                    <textarea class="form-control" id="dinner{{ $mealPlan->id }}" name="dinner"
-                                                        style="height: 100px; resize: none; white-space: pre-wrap;">{{ $mealPlan->dinner }}</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="guideline{{ $mealPlan->id }}" class="form-label">Guideline</label>
+                                    <textarea class="form-control" id="guideline{{ $mealPlan->id }}" name="guideline" required
+                                        style="height: 80px; resize: none;">{{ $mealPlan->guideline }}</textarea>
                                 </div>
 
-                                <!-- Buttons Section -->
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Update Meal Plan</button>
+                                <div class="mb-3">
+                                    <label for="day{{ $mealPlan->id }}" class="form-label">Day</label>
+                                    <select class="form-control" id="day{{ $mealPlan->id }}" name="day" required>
+                                        <option value="Monday" {{ $mealPlan->day == 'Monday' ? 'selected' : '' }}>Monday</option>
+                                        <option value="Tuesday" {{ $mealPlan->day == 'Tuesday' ? 'selected' : '' }}>Tuesday
+                                        </option>
+                                        <option value="Wednesday" {{ $mealPlan->day == 'Wednesday' ? 'selected' : '' }}>Wednesday
+                                        </option>
+                                        <option value="Thursday" {{ $mealPlan->day == 'Thursday' ? 'selected' : '' }}>Thursday
+                                        </option>
+                                        <option value="Friday" {{ $mealPlan->day == 'Friday' ? 'selected' : '' }}>Friday</option>
+                                        <option value="Saturday" {{ $mealPlan->day == 'Saturday' ? 'selected' : '' }}>Saturday
+                                        </option>
+                                        <option value="Sunday" {{ $mealPlan->day == 'Sunday' ? 'selected' : '' }}>Sunday</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="breakfast{{ $mealPlan->id }}" class="form-label">Breakfast</label>
+                                    <textarea class="form-control" id="breakfast{{ $mealPlan->id }}" name="breakfast" required
+                                        style="height: 80px; resize: none;">{{ $mealPlan->breakfast }}</textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="lunch{{ $mealPlan->id }}" class="form-label">Lunch</label>
+                                    <textarea class="form-control" id="lunch{{ $mealPlan->id }}" name="lunch" required
+                                        style="height: 80px; resize: none;">{{ $mealPlan->lunch }}</textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="dinner{{ $mealPlan->id }}" class="form-label">Dinner</label>
+                                    <textarea class="form-control" id="dinner{{ $mealPlan->id }}" name="dinner" required
+                                        style="height: 80px; resize: none;">{{ $mealPlan->dinner }}</textarea>
                                 </div>
                             </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" form="editMealPlanForm{{ $mealPlan->id }}"
+                                class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 </div>
