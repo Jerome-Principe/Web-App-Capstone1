@@ -131,7 +131,7 @@ class RequestMembershipController extends Controller
         ]);
 
         try {
-            // Update only the allowed fields (excluding gym_source and membership_type)
+            // Update the RequestMembership table
             $membership->update($request->only([
                 'first_name',
                 'last_name',
@@ -147,6 +147,16 @@ class RequestMembershipController extends Controller
                 'work',
                 'mobile'
             ]));
+
+            // Also update the PendingMembership table to keep the membership list in sync
+            $pendingMembership = PendingMembership::where('email', $user->email)->first();
+            if ($pendingMembership) {
+                $pendingMembership->update([
+                    'first_name' => $request->input('first_name'),
+                    'last_name' => $request->input('last_name'),
+                    'email' => $request->input('email'),
+                ]);
+            }
 
             return response()->json([
                 'message' => 'Profile updated successfully!',
