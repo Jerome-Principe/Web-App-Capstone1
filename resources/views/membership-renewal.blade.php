@@ -106,20 +106,7 @@
             background: #0056b3;
         }
 
-        .btn-export {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
 
-        .btn-export:hover {
-            background: #1e7e34;
-        }
 
         /* Minimalist Table Styles */
         .table-section h2 {
@@ -327,11 +314,8 @@
                     </div>
 
                     <div class="export-buttons">
-                        <button type="button" class="btn-export" onclick="exportToPDF()">
-                            <i class="fa fa-file-pdf"></i> Export PDF
-                        </button>
                         <button type="button" class="btn-fix" onclick="fixMembershipTypes()"
-                            style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 14px; cursor: pointer; margin-left: 8px;">
+                            style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 14px; cursor: pointer;">
                             <i class="fa fa-wrench"></i> Fix Types
                         </button>
                     </div>
@@ -436,21 +420,7 @@
             }
         }
 
-        // Function to export to PDF
-        function exportToPDF() {
-            const dateFilter = document.getElementById('date-filter');
-            const selectedDate = dateFilter.value;
 
-            // You can implement the actual PDF export logic here
-            console.log('Exporting to PDF with date:', selectedDate);
-
-            // Example: redirect to PDF export route
-            let exportUrl = '{{ route("membership-renewal.export-pdf") }}';
-            if (selectedDate) {
-                exportUrl += '?date=' + selectedDate;
-            }
-            window.open(exportUrl, '_blank');
-        }
 
         // Function to fix membership types
         function fixMembershipTypes() {

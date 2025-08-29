@@ -10,7 +10,7 @@ use App\Models\PendingMembership;
 use App\Models\RequestMembership;
 use App\Models\MembershipPayment;
 use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class MembershipRenewalController extends Controller
 {
@@ -246,27 +246,7 @@ class MembershipRenewalController extends Controller
         // );
     }
 
-    /**
-     * Export membership renewal data to PDF.
-     */
-    public function exportPdf(Request $request)
-    {
-        try {
-            $renewals = MembershipRenewal::with('pendingMembership')
-                ->when($request->date, function ($query, $date) {
-                    return $query->whereDate('created_at', $date);
-                })
-                ->get();
 
-            // Generate PDF using DomPDF
-            $pdf = Pdf::loadView('pdf.membership-renewal', compact('renewals'));
-            return $pdf->download('membership-renewal-' . now()->format('Y-m-d') . '.pdf');
-
-        } catch (\Exception $e) {
-            \Log::error('PDF export failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to export PDF: ' . $e->getMessage());
-        }
-    }
 
     /**
      * Filter membership renewal applications by date.
