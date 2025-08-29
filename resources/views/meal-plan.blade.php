@@ -474,76 +474,45 @@
                                 </select>
                             </div>
 
-                            <!-- Accordion for Details -->
-                            <div class="accordion" id="addMealPlanAccordion">
-                                <!-- General Details -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="addHeadingDetails">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#addCollapseDetails" aria-expanded="true"
-                                            aria-controls="addCollapseDetails">
-                                            General Details
-                                        </button>
-                                    </h2>
-                                    <div id="addCollapseDetails" class="accordion-collapse collapse show"
-                                        aria-labelledby="addHeadingDetails">
-                                        <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <label for="guideline" class="form-label">Guideline</label>
-                                                <textarea class="form-control" id="guideline" name="guideline"
-                                                    placeholder="Enter guidelines..." required
-                                                    style="height: 100px; resize: none;"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="day" class="form-label">Day</label>
-                                                <select class="form-control" id="day" name="day" required>
-                                                    <option value="">Select Day</option>
-                                                    <option value="Monday">Monday</option>
-                                                    <option value="Tuesday">Tuesday</option>
-                                                    <option value="Wednesday">Wednesday</option>
-                                                    <option value="Thursday">Thursday</option>
-                                                    <option value="Friday">Friday</option>
-                                                    <option value="Saturday">Saturday</option>
-                                                    <option value="Sunday">Sunday</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label for="guideline" class="form-label">Guideline</label>
+                                <textarea class="form-control" id="guideline" name="guideline"
+                                    placeholder="Enter guidelines..." required
+                                    style="height: 80px; resize: none;"></textarea>
+                            </div>
 
-                                <!-- Meal Details -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="addHeadingMeals">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#addCollapseMeals" aria-expanded="true"
-                                            aria-controls="addCollapseMeals">
-                                            Meal Details
-                                        </button>
-                                    </h2>
-                                    <div id="addCollapseMeals" class="accordion-collapse collapse show"
-                                        aria-labelledby="addHeadingMeals">
-                                        <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <label for="breakfast" class="form-label">Breakfast</label>
-                                                <textarea class="form-control" id="breakfast" name="breakfast"
-                                                    placeholder="Enter breakfast details..." required
-                                                    style="height: 100px; resize: none;"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="lunch" class="form-label">Lunch</label>
-                                                <textarea class="form-control" id="lunch" name="lunch"
-                                                    placeholder="Enter lunch details..." required
-                                                    style="height: 100px; resize: none;"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="dinner" class="form-label">Dinner</label>
-                                                <textarea class="form-control" id="dinner" name="dinner"
-                                                    placeholder="Enter dinner details..." required
-                                                    style="height: 100px; resize: none;"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label for="day" class="form-label">Day</label>
+                                <select class="form-control" id="day" name="day" required>
+                                    <option value="">Select Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="breakfast" class="form-label">Breakfast</label>
+                                <textarea class="form-control" id="breakfast" name="breakfast"
+                                    placeholder="Enter breakfast details..." required
+                                    style="height: 80px; resize: none;"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="lunch" class="form-label">Lunch</label>
+                                <textarea class="form-control" id="lunch" name="lunch" placeholder="Enter lunch details..."
+                                    required style="height: 80px; resize: none;"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="dinner" class="form-label">Dinner</label>
+                                <textarea class="form-control" id="dinner" name="dinner"
+                                    placeholder="Enter dinner details..." required
+                                    style="height: 80px; resize: none;"></textarea>
                             </div>
                         </form>
                     </div>
