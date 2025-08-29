@@ -191,7 +191,7 @@
             @endif
 
             <div class="buttons">
-                <a href="{{ url()->previous() }}" class="back-btn">Back</a>
+                <a href="{{ route('equipments-defect.index') }}" class="back-btn">Back</a>
                 <button type="submit" class="submit-btn">Submit</button>
             </div>
         </form>

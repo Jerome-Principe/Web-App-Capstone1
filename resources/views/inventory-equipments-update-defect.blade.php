@@ -192,7 +192,7 @@
             </div>
 
             <div class="buttons">
-                <a href="/equipments" class="back-btn">Back</a>
+                <a href="{{ route('equipments-defect.index') }}" class="back-btn">Back</a>
                 <button type="submit" class="submit-btn">Save</button>
             </div>
         </form>
