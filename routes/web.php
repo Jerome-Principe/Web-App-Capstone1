@@ -173,7 +173,7 @@ Route::prefix('walkins')->group(function () {
 
 Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index']);
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     // Dashboard route is already defined above with DashboardController
 
