@@ -86,10 +86,7 @@
             font-size: 14px;
         }
 
-        .export-buttons {
-            display: flex;
-            gap: 12px;
-        }
+
 
         .btn-filter {
             background: #007bff;
@@ -268,9 +265,15 @@
                 justify-content: center;
             }
 
-            .export-buttons {
-                justify-content: center;
+            .search-section {
+                justify-content: center !important;
             }
+
+            .search-section input {
+                width: 150px !important;
+            }
+
+
 
             .action-buttons {
                 flex-direction: column;
@@ -303,7 +306,7 @@
             <div class="table-section">
                 <h2>Membership Renewal Applications</h2>
 
-                <!-- Filter and Export Section -->
+                <!-- Filter and Search Section -->
                 <div class="filter-export-section">
                     <div class="date-filter">
                         <label for="date-filter">Select Date:</label>
@@ -313,10 +316,12 @@
                         </button>
                     </div>
 
-                    <div class="export-buttons">
-                        <button type="button" class="btn-fix" onclick="fixMembershipTypes()"
-                            style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 14px; cursor: pointer;">
-                            <i class="fa fa-wrench"></i> Fix Types
+                    <div class="search-section" style="display: flex; align-items: center; gap: 12px;">
+                        <input type="text" id="search-input" placeholder="Search members..."
+                            style="padding: 8px 12px; border: 1px solid #e1e5e9; border-radius: 4px; font-size: 14px; width: 200px;">
+                        <button type="button" class="btn-search" onclick="searchMembers()"
+                            style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 14px; cursor: pointer;">
+                            <i class="fa fa-search"></i> Search
                         </button>
                     </div>
                 </div>
@@ -422,25 +427,31 @@
 
 
 
-        // Function to fix membership types
-        function fixMembershipTypes() {
-            if (confirm('This will update membership types for all approved renewals. Are you sure you want to continue?')) {
-                // Create a form and submit it
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '{{ route("membership-renewal.fix-types") }}';
 
-                // Add CSRF token
-                const csrfToken = document.createElement('input');
-                csrfToken.type = 'hidden';
-                csrfToken.name = '_token';
-                csrfToken.value = '{{ csrf_token() }}';
-                form.appendChild(csrfToken);
 
-                document.body.appendChild(form);
-                form.submit();
+        // Function to search members (non-functional for now)
+        function searchMembers() {
+            const searchInput = document.getElementById('search-input');
+            const searchTerm = searchInput.value.trim();
+
+            if (searchTerm) {
+                alert(`Search functionality is temporarily disabled. You searched for: "${searchTerm}". This feature will be available soon.`);
+            } else {
+                alert('Please enter a search term.');
             }
         }
+
+        // Add Enter key support for search input
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function (event) {
+                    if (event.key === 'Enter') {
+                        searchMembers();
+                    }
+                });
+            }
+        });
 
         // Initialize date filter with current date if no date is selected
         document.addEventListener("DOMContentLoaded", function () {
