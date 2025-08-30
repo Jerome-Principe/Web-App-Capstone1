@@ -414,3 +414,12 @@ Route::prefix('expenses')->name('expenses.')->group(function () {
         Route::get('/export-pdf', 'exportPdfByDate')->name('exportPdfByDate');
     });
 });
+
+// Settings routes
+Route::prefix('settings')->name('settings.')->middleware(['auth'])->group(function () {
+    Route::get('/', [SettingsController::class, 'index'])->name('index');
+    Route::get('/terms', [SettingsController::class, 'terms'])->name('terms');
+    Route::get('/guidelines', [SettingsController::class, 'guidelines'])->name('guidelines');
+    Route::get('/privacy', [SettingsController::class, 'privacy'])->name('privacy');
+    Route::get('/community', [SettingsController::class, 'community'])->name('community');
+});
