@@ -184,7 +184,7 @@
         }
 
         .content-area {
-            padding: 40px;
+            padding: 40px 60px 40px 40px;
         }
 
         .page-title {
@@ -200,7 +200,8 @@
             font-size: 16px;
             line-height: 1.6;
             color: #333;
-            max-width: 800px;
+            width: 100%;
+            max-width: none;
         }
 
         .content-body h2 {
@@ -272,6 +273,10 @@
 
             .header-logo h2 {
                 font-size: 24px;
+            }
+
+            .content-body {
+                width: 100%;
             }
         }
     </style>
