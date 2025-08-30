@@ -187,11 +187,37 @@
             background-color: #f9fafb;
         }
 
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Backdrop for mobile sidebar */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Responsive adjustments */
         @media only screen and (max-width: 992px) {
             .side-nav {
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
+                z-index: 1000;
             }
 
             .side-nav.show {
@@ -200,6 +226,23 @@
 
             .main-content-wrapper {
                 margin-left: 0;
+            }
+
+            /* Hide search bar on smaller screens to make room for hamburger */
+            .header-container .relative {
+                display: none;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+
+            /* Show search bar again on very small screens, but smaller */
+            .header-container .relative {
+                display: block;
+            }
+
+            .header-container .relative input {
+                width: 180px;
             }
         }
 
@@ -214,6 +257,9 @@
 
 <body>
     <div class="app">
+        <!-- Sidebar Backdrop -->
+        <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
         <!-- Side Nav START -->
         @include('components.admin-sidebar')
         <!-- Side Nav END -->
@@ -223,6 +269,14 @@
             <!-- Header START -->
             <div class="header-container">
                 <div class="flex items-center justify-between px-6 py-4 h-16">
+                    <!-- Mobile Hamburger Menu Button -->
+                    <div class="flex items-center">
+                        <button id="mobile-menu-toggle"
+                            class="mobile-menu-btn flex items-center justify-center w-10 h-10 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors duration-200 lg:hidden">
+                            <i class="lni-menu text-white text-xl"></i>
+                        </button>
+                    </div>
+
                     <!-- Left spacer -->
                     <div class="flex-1"></div>
 
@@ -631,6 +685,42 @@
                     return `${days} day${days > 1 ? 's' : ''} ago`;
                 }
             }
+        });
+
+        // Mobile Sidebar Toggle Functionality
+        $(document).ready(function () {
+            const mobileMenuToggle = $('#mobile-menu-toggle');
+            const sidebar = $('.side-nav');
+            const backdrop = $('#sidebar-backdrop');
+
+            // Toggle sidebar when hamburger button is clicked
+            mobileMenuToggle.on('click', function () {
+                sidebar.toggleClass('show');
+                backdrop.toggleClass('show');
+            });
+
+            // Close sidebar when backdrop is clicked
+            backdrop.on('click', function () {
+                sidebar.removeClass('show');
+                backdrop.removeClass('show');
+            });
+
+            // Close sidebar when a menu item is clicked (for better mobile UX)
+            $('.side-nav a').on('click', function () {
+                // Only close on mobile screens
+                if ($(window).width() <= 992) {
+                    sidebar.removeClass('show');
+                    backdrop.removeClass('show');
+                }
+            });
+
+            // Handle window resize - hide sidebar if screen becomes larger
+            $(window).on('resize', function () {
+                if ($(window).width() > 992) {
+                    sidebar.removeClass('show');
+                    backdrop.removeClass('show');
+                }
+            });
         });
     </script>
 

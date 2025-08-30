@@ -2,6 +2,9 @@
 
 @section('content')
     <div class="settings-container">
+        <!-- Settings Backdrop -->
+        <div id="settings-backdrop" class="settings-backdrop"></div>
+
         <div class="settings-wrapper">
             <!-- Left Sidebar -->
             <div class="settings-sidebar">
@@ -31,9 +34,16 @@
             <!-- Main Content Area -->
             <div class="settings-content">
                 <div class="settings-header">
-                    <div class="header-logo">
-                        <h2>FITDROID</h2>
-                        <p>Fitness • Gym • Workout</p>
+                    <div class="header-content">
+                        <!-- Mobile Menu Toggle for Settings Sidebar -->
+                        <button id="settings-menu-toggle" class="settings-menu-btn">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <div class="header-logo">
+                            <h2>FITDROID</h2>
+                            <p>Fitness • Gym • Workout</p>
+                        </div>
                     </div>
                 </div>
 
@@ -152,6 +162,28 @@
             border-bottom: 1px solid #e9ecef;
         }
 
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .settings-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .settings-menu-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
         .header-logo {
             display: flex;
             align-items: center;
@@ -233,6 +265,25 @@
             color: #7f8c8d;
         }
 
+        /* Settings Backdrop */
+        .settings-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .settings-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Responsive Design */
         @media (max-width: 1200px) {
             .settings-sidebar {
@@ -240,6 +291,7 @@
                 width: 280px;
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
+                z-index: 101;
             }
 
             .settings-sidebar.show {
@@ -248,8 +300,11 @@
 
             .settings-content {
                 margin-left: 0;
-                width: calc(100vw - 280px);
-                /* Full width minus main sidebar */
+                width: 100vw;
+            }
+
+            .settings-menu-btn {
+                display: block;
             }
         }
 
@@ -275,4 +330,41 @@
             }
         }
     </style>
+
+    <script>
+        $(document).ready(function () {
+            const settingsMenuToggle = $('#settings-menu-toggle');
+            const settingsSidebar = $('.settings-sidebar');
+            const settingsBackdrop = $('#settings-backdrop');
+
+            // Toggle settings sidebar when button is clicked
+            settingsMenuToggle.on('click', function () {
+                settingsSidebar.toggleClass('show');
+                settingsBackdrop.toggleClass('show');
+            });
+
+            // Close sidebar when backdrop is clicked
+            settingsBackdrop.on('click', function () {
+                settingsSidebar.removeClass('show');
+                settingsBackdrop.removeClass('show');
+            });
+
+            // Close sidebar when a menu item is clicked (for better mobile UX)
+            $('.settings-sidebar a').on('click', function () {
+                // Only close on mobile screens
+                if ($(window).width() <= 1200) {
+                    settingsSidebar.removeClass('show');
+                    settingsBackdrop.removeClass('show');
+                }
+            });
+
+            // Handle window resize - hide sidebar if screen becomes larger
+            $(window).on('resize', function () {
+                if ($(window).width() > 1200) {
+                    settingsSidebar.removeClass('show');
+                    settingsBackdrop.removeClass('show');
+                }
+            });
+        });
+    </script>
 @endsection
