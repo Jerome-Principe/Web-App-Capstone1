@@ -141,6 +141,8 @@
             /* Width of sidebar */
             background: white;
             min-height: 100vh;
+            width: calc(100vw - 580px);
+            /* Full viewport width minus main sidebar (280px) and settings sidebar (300px) */
         }
 
         .settings-header {
@@ -172,7 +174,9 @@
         }
 
         .content-area {
-            padding: 40px 60px 40px 40px;
+            padding: 40px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .page-title {
@@ -190,6 +194,7 @@
             color: #333;
             width: 100%;
             max-width: none;
+            box-sizing: border-box;
         }
 
         .content-body h2 {
@@ -243,6 +248,8 @@
 
             .settings-content {
                 margin-left: 0;
+                width: calc(100vw - 280px);
+                /* Full width minus main sidebar */
             }
         }
 
