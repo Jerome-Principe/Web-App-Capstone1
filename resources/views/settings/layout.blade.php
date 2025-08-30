@@ -6,7 +6,6 @@
             <!-- Left Sidebar -->
             <div class="settings-sidebar">
                 <div class="settings-logo">
-                    <img src="{{ asset('assets/admin-dashboard/img/logo.png') }}" alt="FITDROID" class="logo-img">
                     <h3>FITDROID</h3>
                     <p>Fitness • Gym • Workout</p>
                 </div>
@@ -33,8 +32,6 @@
             <div class="settings-content">
                 <div class="settings-header">
                     <div class="header-logo">
-                        <img src="{{ asset('assets/admin-dashboard/img/logo.png') }}" alt="FITDROID"
-                            class="header-logo-img">
                         <h2>FITDROID</h2>
                         <p>Fitness • Gym • Workout</p>
                     </div>
@@ -84,12 +81,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .settings-logo .logo-img {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 15px;
-            border-radius: 50%;
-        }
+
 
         .settings-logo h3 {
             font-size: 24px;
@@ -164,11 +156,7 @@
             gap: 15px;
         }
 
-        .header-logo-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
+
 
         .header-logo h2 {
             font-size: 28px;
