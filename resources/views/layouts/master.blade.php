@@ -382,7 +382,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="">
+                                    <a href="{{ route('settings.index') }}">
                                         <i class="fa fa-cog"></i>
                                         <span>Setting</span>
                                     </a>

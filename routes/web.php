@@ -33,6 +33,7 @@ use App\Http\Controllers\GoalController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MembershipRenewalController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
