@@ -20,6 +20,9 @@ class CancelledAppointmentController extends Controller
 
     public function store(Request $request)
     {
+        // Log incoming request for debugging
+        \Log::info('Cancellation request received:', $request->all());
+
         $request->validate([
             'user_id' => 'required|integer|exists:users,id',
             'instructor_name' => 'required|string|max:255',
