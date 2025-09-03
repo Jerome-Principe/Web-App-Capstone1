@@ -12,6 +12,7 @@ class Instructor extends Model
 
     // Mass-assignable attributes based on your table structure
     protected $fillable = [
+        'profile_image',
         'first_name',
         'last_name',
         'contact_number',

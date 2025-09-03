@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Instructor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InstructorController extends Controller
 {
@@ -25,6 +26,7 @@ class InstructorController extends Controller
     {
         // Validate incoming request
         $request->validate([
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'contact_number' => 'nullable|string|max:15',
@@ -33,8 +35,20 @@ class InstructorController extends Controller
             'rates' => 'nullable|numeric',
         ]);
 
+        $profileImagePath = null;
+
+        // Handle profile image upload
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $imageName = 'instructor_profile_' . time() . '.' . $image->getClientOriginalExtension();
+            $profileImagePath = $image->storeAs('public', $imageName);
+            // Remove 'public/' from the path for database storage
+            $profileImagePath = str_replace('public/', '', $profileImagePath);
+        }
+
         // Create new instructor
         Instructor::create([
+            'profile_image' => $profileImagePath,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'contact_number' => $request->input('contact_number'),
@@ -55,6 +69,7 @@ class InstructorController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'contact_number' => 'nullable|string|max:15',
@@ -64,14 +79,40 @@ class InstructorController extends Controller
         ]);
 
         $instructor = Instructor::findOrFail($id);
-        $instructor->update($request->only([
-            'first_name',
-            'last_name', 
-            'contact_number',
-            'expertise',
-            'session',
-            'rates'
-        ]));
+
+        // Handle profile image upload
+        if ($request->hasFile('profile_image')) {
+            // Delete old image if exists
+            if ($instructor->profile_image) {
+                Storage::delete('public/' . $instructor->profile_image);
+            }
+
+            $image = $request->file('profile_image');
+            $imageName = 'instructor_profile_' . time() . '.' . $image->getClientOriginalExtension();
+            $profileImagePath = $image->storeAs('public', $imageName);
+            // Remove 'public/' from the path for database storage
+            $profileImagePath = str_replace('public/', '', $profileImagePath);
+
+            $instructor->update([
+                'profile_image' => $profileImagePath,
+                'first_name' => $request->input('first_name'),
+                'last_name' => $request->input('last_name'),
+                'contact_number' => $request->input('contact_number'),
+                'expertise' => $request->input('expertise'),
+                'session' => $request->input('session'),
+                'rates' => $request->input('rates'),
+            ]);
+        } else {
+            // Update without changing the image
+            $instructor->update($request->only([
+                'first_name',
+                'last_name',
+                'contact_number',
+                'expertise',
+                'session',
+                'rates'
+            ]));
+        }
 
         return redirect()->route('instructors.index')->with('success', 'Instructor updated successfully!');
     }
@@ -79,6 +120,12 @@ class InstructorController extends Controller
     public function destroy($id)
     {
         $instructor = Instructor::findOrFail($id);
+
+        // Delete associated image file if exists
+        if ($instructor->profile_image) {
+            Storage::delete('public/' . $instructor->profile_image);
+        }
+
         $instructor->delete();
 
         return redirect()->route('instructors.index')->with('success', 'Instructor deleted successfully!');
@@ -122,6 +169,12 @@ class InstructorController extends Controller
     public function forceDelete($id)
     {
         $instructor = Instructor::onlyTrashed()->findOrFail($id);
+
+        // Delete associated image file if exists
+        if ($instructor->profile_image) {
+            Storage::delete('public/' . $instructor->profile_image);
+        }
+
         $instructor->forceDelete();
 
         return redirect()->route('instructors.trashed')->with('success', 'Instructor permanently deleted.');

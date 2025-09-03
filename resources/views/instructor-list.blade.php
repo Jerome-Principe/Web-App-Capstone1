@@ -221,6 +221,7 @@
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                            <th class="text-center">Profile</th>
                             <th class="text-center">ID</th>
                             <th class="text-center">First Name</th>
                             <th class="text-center">Last Name</th>
@@ -237,6 +238,18 @@
                                 <tr>
                                     <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
                                             onchange="updateSelectionCount()" />
+                                    </td>
+                                    <td class="text-center">
+                                        @if($instructor->profile_image)
+                                            <img src="{{ asset('storage/' . $instructor->profile_image) }}" alt="Profile"
+                                                class="img-thumbnail"
+                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                        @else
+                                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
+                                                style="width: 50px; height: 50px; color: white; font-weight: bold;">
+                                                {{ strtoupper(substr($instructor->first_name, 0, 1)) }}{{ strtoupper(substr($instructor->last_name, 0, 1)) }}
+                                            </div>
+                                        @endif
                                     </td>
                                     <td class="text-center">
                                         {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
@@ -314,8 +327,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('instructors.store') }}" method="POST">
+                        <form action="{{ route('instructors.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <div class="mb-3">
+                                <label for="profile_image">Profile Image</label>
+                                <input type="file" name="profile_image" id="profile_image" class="form-control"
+                                    accept="image/*">
+                                <small class="form-text text-muted">Choose an image file (JPG, PNG, GIF)</small>
+                            </div>
                             <div class="mb-3">
                                 <label for="first_name">First Name</label>
                                 <input type="text" name="first_name" id="first_name" class="form-control" required>
@@ -359,12 +378,27 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('instructors.update', $instructor->id) }}" method="POST">
+                            <form action="{{ route('instructors.update', $instructor->id) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <!-- Form fields -->
 
                                 <input type="hidden" name="id" value="{{ $instructor->id }}">
+                                <div class="mb-3">
+                                    <label for="edit_profile_image_{{ $instructor->id }}" class="form-label">Profile
+                                        Image</label>
+                                    <input type="file" name="profile_image" id="edit_profile_image_{{ $instructor->id }}"
+                                        class="form-control" accept="image/*">
+                                    <small class="form-text text-muted">Choose an image file (JPG, PNG, GIF)</small>
+                                    @if($instructor->profile_image)
+                                        <div class="mt-2">
+                                            <img src="{{ asset('storage/' . $instructor->profile_image) }}" alt="Current Profile"
+                                                class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
+                                            <small class="d-block text-muted">Current image</small>
+                                        </div>
+                                    @endif
+                                </div>
                                 <div class="mb-3">
                                     <label for="edit_first_name" class="form-label">First Name</label>
                                     <input type="text" name="first_name" id="edit_first_name" class="form-control"
