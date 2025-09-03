@@ -142,22 +142,25 @@
         .main-content-wrapper {
             flex: 1;
             margin-left: 280px;
-            min-height: 100vh;
+            margin-top: 64px;
+            min-height: calc(100vh - 64px);
             display: flex;
             flex-direction: column;
         }
 
-        /* Header - Same level as dashboard */
+        /* Header - Full width across sidebar and content */
         .header-container {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             background-size: 100% 100%;
             background-repeat: no-repeat;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 999;
-            width: 100%;
+            width: 100vw;
             min-height: 64px;
         }
 
@@ -230,6 +233,12 @@
 
             .main-content-wrapper {
                 margin-left: 0;
+                margin-top: 64px;
+            }
+
+            /* Adjust header padding on mobile */
+            .header-container>div {
+                padding-left: 24px !important;
             }
 
             /* Hide search bar on smaller screens to make room for hamburger */
@@ -272,7 +281,8 @@
         <div class="main-content-wrapper">
             <!-- Header START -->
             <div class="header-container">
-                <div class="flex items-center justify-between px-6 py-4 h-16">
+                <div class="flex items-center justify-between py-4 h-16"
+                    style="padding-left: 296px; padding-right: 24px;">
                     <!-- Mobile Hamburger Menu Button -->
                     <div class="flex items-center">
                         <button id="mobile-menu-toggle"
