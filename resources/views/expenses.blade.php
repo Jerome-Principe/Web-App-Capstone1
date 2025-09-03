@@ -345,7 +345,8 @@
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                             <th class="text-center">Date</th>
-                            <th class="text-center">Expenses</th>
+                            <th class="text-center">Category</th>
+                            <th class="text-center">Description Type</th>
                             <th class="text-center">Amount</th>
                             <th class="text-center">Payment Method</th>
                             <th class="text-center">Actions</th>
@@ -359,6 +360,7 @@
                                         onchange="updateSelectionCount()" />
                                 </td>
                                 <td class="text-center">{{ \Carbon\Carbon::parse($expense->date)->format('F d, Y') }}</td>
+                                <td class="text-center">{{ $expense->category ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $expense->expense_description }}</td>
                                 <td class="text-center">₱{{ number_format($expense->amount, 2) }}</td>
                                 <td class="text-center">{{ $expense->payment_method }}</td>
@@ -382,7 +384,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center">No expenses found.</td>
+                                <td colspan="7" class="text-center">No expenses found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -454,10 +456,25 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="modal_expense_description" class="form-label">Expense Description</label>
-                                <input type="text" class="form-control @error('expense_description') is-invalid @enderror"
-                                    id="modal_expense_description" name="expense_description"
-                                    value="{{ old('expense_description') }}" required>
+                                <label for="modal_category" class="form-label">Category</label>
+                                <select class="form-control @error('category') is-invalid @enderror" id="modal_category"
+                                    name="category" required onchange="updateDescriptionTypes('modal')">
+                                    <option value="">Select Category</option>
+                                    <option value="Monthly expenses" {{ old('category') == 'Monthly expenses' ? 'selected' : '' }}>Monthly expenses</option>
+                                    <option value="Incident expenses" {{ old('category') == 'Incident expenses' ? 'selected' : '' }}>Incident expenses</option>
+                                    <option value="Utility expenses" {{ old('category') == 'Utility expenses' ? 'selected' : '' }}>Utility expenses</option>
+                                </select>
+                                @error('category')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="modal_expense_description" class="form-label">Description Type</label>
+                                <select class="form-control @error('expense_description') is-invalid @enderror"
+                                    id="modal_expense_description" name="expense_description" required>
+                                    <option value="">Select Description Type</option>
+                                </select>
                                 @error('expense_description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -530,11 +547,48 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="edit_modal_expense_description{{ $expense->id }}" class="form-label">Expense
-                                        Description</label>
-                                    <input type="text" class="form-control @error('expense_description') is-invalid @enderror"
+                                    <label for="edit_modal_category{{ $expense->id }}" class="form-label">Category</label>
+                                    <select class="form-control @error('category') is-invalid @enderror"
+                                        id="edit_modal_category{{ $expense->id }}" name="category" required
+                                        onchange="updateDescriptionTypes('edit{{ $expense->id }}')">
+                                        <option value="">Select Category</option>
+                                        <option value="Monthly expenses" {{ ($expense->category ?? '') == 'Monthly expenses' ? 'selected' : '' }}>Monthly expenses</option>
+                                        <option value="Incident expenses" {{ ($expense->category ?? '') == 'Incident expenses' ? 'selected' : '' }}>Incident expenses</option>
+                                        <option value="Utility expenses" {{ ($expense->category ?? '') == 'Utility expenses' ? 'selected' : '' }}>Utility expenses</option>
+                                    </select>
+                                    @error('category')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="edit_modal_expense_description{{ $expense->id }}" class="form-label">Description
+                                        Type</label>
+                                    <select class="form-control @error('expense_description') is-invalid @enderror"
                                         id="edit_modal_expense_description{{ $expense->id }}" name="expense_description"
-                                        value="{{ $expense->expense_description }}" required>
+                                        required>
+                                        <option value="">Select Description Type</option>
+                                        @php
+                                            $currentCategory = $expense->category ?? '';
+                                            $currentDescription = $expense->expense_description;
+                                        @endphp
+                                        @if($currentCategory == 'Monthly expenses')
+                                            <option value="Rent" {{ $currentDescription == 'Rent' ? 'selected' : '' }}>Rent</option>
+                                            <option value="Staff salary" {{ $currentDescription == 'Staff salary' ? 'selected' : '' }}>Staff salary</option>
+                                        @elseif($currentCategory == 'Incident expenses')
+                                            <option value="Equipment repair" {{ $currentDescription == 'Equipment repair' ? 'selected' : '' }}>Equipment repair</option>
+                                            <option value="Machine repair" {{ $currentDescription == 'Machine repair' ? 'selected' : '' }}>Machine repair</option>
+                                            <option value="Facility repair" {{ $currentDescription == 'Facility repair' ? 'selected' : '' }}>Facility repair</option>
+                                            <option value="Staff Replacement" {{ $currentDescription == 'Staff Replacement' ? 'selected' : '' }}>Staff Replacement</option>
+                                            <option value="Software and Technology" {{ $currentDescription == 'Software and Technology' ? 'selected' : '' }}>Software and Technology</option>
+                                        @elseif($currentCategory == 'Utility expenses')
+                                            <option value="Electricity bill" {{ $currentDescription == 'Electricity bill' ? 'selected' : '' }}>Electricity bill</option>
+                                            <option value="Water Bill" {{ $currentDescription == 'Water Bill' ? 'selected' : '' }}>
+                                                Water Bill</option>
+                                            <option value="Gas" {{ $currentDescription == 'Gas' ? 'selected' : '' }}>Gas</option>
+                                            <option value="Internet provider" {{ $currentDescription == 'Internet provider' ? 'selected' : '' }}>Internet provider</option>
+                                        @endif
+                                    </select>
                                     @error('expense_description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -651,7 +705,8 @@
             // When the modal is hidden, clear the form
             modal.addEventListener('hidden.bs.modal', function () {
                 document.getElementById('modal_date').value = '';
-                document.getElementById('modal_expense_description').value = '';
+                document.getElementById('modal_category').value = '';
+                document.getElementById('modal_expense_description').innerHTML = '<option value="">Select Description Type</option>';
                 document.getElementById('modal_amount').value = '';
                 document.getElementById('modal_payment_method').value = '';
 
@@ -689,6 +744,14 @@
                     if (dateInput && !dateInput.value) {
                         dateInput.value = today;
                     }
+
+                    // Initialize description types for edit modals when opened
+                    const modalId = this.id;
+                    const expenseId = modalId.replace('editExpenseModal', '');
+                    const categorySelect = document.getElementById(`edit_modal_category${expenseId}`);
+                    if (categorySelect && categorySelect.value) {
+                        updateDescriptionTypes(`edit${expenseId}`);
+                    }
                 });
             });
         }
@@ -697,6 +760,41 @@
         document.addEventListener('DOMContentLoaded', function () {
             setCurrentDateForEditModals();
         });
+
+        // Function to update description types based on selected category
+        function updateDescriptionTypes(modalType) {
+            let categorySelect, descriptionSelect;
+
+            if (modalType === 'modal') {
+                categorySelect = document.getElementById('modal_category');
+                descriptionSelect = document.getElementById('modal_expense_description');
+            } else {
+                categorySelect = document.getElementById(`edit_modal_category${modalType.replace('edit', '')}`);
+                descriptionSelect = document.getElementById(`edit_modal_expense_description${modalType.replace('edit', '')}`);
+            }
+
+            const selectedCategory = categorySelect.value;
+
+            // Clear existing options
+            descriptionSelect.innerHTML = '<option value="">Select Description Type</option>';
+
+            // Define description types for each category
+            const descriptionTypes = {
+                'Monthly expenses': ['Rent', 'Staff salary'],
+                'Incident expenses': ['Equipment repair', 'Machine repair', 'Facility repair', 'Staff Replacement', 'Software and Technology'],
+                'Utility expenses': ['Electricity bill', 'Water Bill', 'Gas', 'Internet provider']
+            };
+
+            // Add options based on selected category
+            if (selectedCategory && descriptionTypes[selectedCategory]) {
+                descriptionTypes[selectedCategory].forEach(function (type) {
+                    const option = document.createElement('option');
+                    option.value = type;
+                    option.textContent = type;
+                    descriptionSelect.appendChild(option);
+                });
+            }
+        }
 
     </script>
 
