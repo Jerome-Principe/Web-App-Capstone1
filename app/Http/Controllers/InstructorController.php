@@ -42,8 +42,8 @@ class InstructorController extends Controller
             $image = $request->file('profile_image');
             $imageName = 'instructor_profile_' . time() . '.' . $image->getClientOriginalExtension();
 
-            // Store the image in storage/app/public
-            $storedPath = $image->storeAs('public', $imageName);
+            // Store the image in storage/app/public/instructor_profile folder
+            $storedPath = $image->storeAs('public/instructor_profile', $imageName);
 
             if ($storedPath) {
                 // Remove 'public/' from the path for database storage
@@ -101,8 +101,8 @@ class InstructorController extends Controller
             $image = $request->file('profile_image');
             $imageName = 'instructor_profile_' . time() . '.' . $image->getClientOriginalExtension();
 
-            // Store the image in storage/app/public
-            $storedPath = $image->storeAs('public', $imageName);
+            // Store the image in storage/app/public/instructor_profile folder
+            $storedPath = $image->storeAs('public/instructor_profile', $imageName);
 
             if ($storedPath) {
                 // Remove 'public/' from the path for database storage
