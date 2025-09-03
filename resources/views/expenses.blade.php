@@ -440,8 +440,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addExpenseModalLabel">Add New Expense</h5>
-                        <button type="button" class="btn-close" onclick="closeModal('addExpenseModal')"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="POST" action="{{ route('expenses.store') }}">
                         @csrf
@@ -511,8 +510,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                onclick="closeModal('addExpenseModal')">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Add Expense</button>
                         </div>
                     </form>
@@ -725,10 +723,19 @@
             }
         });
 
-        // Close modal function (kept for add expense modal)
+        // Close modal function (improved fallback for programmatic closing)
         function closeModal(modalId) {
-            const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
-            if (modal) {
+            const modalElement = document.getElementById(modalId);
+            if (modalElement) {
+                // Try to get existing instance first
+                let modal = bootstrap.Modal.getInstance(modalElement);
+
+                // If no instance exists, create one
+                if (!modal) {
+                    modal = new bootstrap.Modal(modalElement);
+                }
+
+                // Hide the modal
                 modal.hide();
             }
         }
