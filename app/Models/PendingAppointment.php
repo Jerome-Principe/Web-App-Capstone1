@@ -20,6 +20,9 @@ class PendingAppointment extends Model
         'gcash_account_number',
         'proof_of_payment',
         'status',
+        'instructor_rate',
+        'gym_rate',
+        'total_amount',
     ];
 
     // Relationships (assuming you have Instructor and User models)

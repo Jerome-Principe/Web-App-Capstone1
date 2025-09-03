@@ -18,6 +18,9 @@ class CancelledAppointment extends Model
         'payment_method',
         'proof_of_payment',
         'reason',
+        'instructor_rate',
+        'gym_rate',
+        'total_amount',
     ];
 
     /**

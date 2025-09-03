@@ -28,6 +28,9 @@ class CancelledAppointmentController extends Controller
             'payment_method' => 'required|string|max:255',
             'proof_of_payment' => 'nullable|string|max:255',
             'reason' => 'required|string|max:255',
+            'instructor_rate' => 'nullable|numeric|min:0',
+            'gym_rate' => 'nullable|numeric|min:0',
+            'total_amount' => 'nullable|numeric|min:0',
         ]);
 
         try {
@@ -99,6 +102,9 @@ class CancelledAppointmentController extends Controller
             $cancelledAppointment->payment_method = $request->payment_method;
             $cancelledAppointment->proof_of_payment = $proofOfPaymentPath;
             $cancelledAppointment->reason = $request->reason;
+            $cancelledAppointment->instructor_rate = $request->instructor_rate;
+            $cancelledAppointment->gym_rate = $request->gym_rate;
+            $cancelledAppointment->total_amount = $request->total_amount;
             $cancelledAppointment->save();
 
             // Return proper mobile API response

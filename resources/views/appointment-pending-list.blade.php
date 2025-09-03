@@ -345,6 +345,9 @@
                                     <th>ID</th>
                                     <th>User</th>
                                     <th>Instructor</th>
+                                    <th>Instructor Rate</th>
+                                    <th>Gym Rate</th>
+                                    <th>Total Amount</th>
                                     <th>Date</th>
                                     <th>Time</th>
                                     <th>Payment Method</th>
@@ -371,6 +374,9 @@
                                         <td>
                                             {{ $appointment->instructor->first_name . ' ' . $appointment->instructor->last_name }}
                                         </td>
+                                        <td>₱{{ number_format($appointment->instructor_rate ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($appointment->gym_rate ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($appointment->total_amount ?? 0, 2) }}</td>
                                         <td>{{ $appointment->selected_date }}</td>
                                         <td>{{ $appointment->selected_time }}</td>
                                         <td>{{ $appointment->payment_method }}</td>

@@ -344,6 +344,9 @@
                                     </th>
                                     <th>ID</th>
                                     <th>Instructor Name</th>
+                                    <th>Instructor Rate</th>
+                                    <th>Gym Rate</th>
+                                    <th>Total Amount</th>
                                     <th>Date</th>
                                     <th>Time</th>
                                     <th>Payment Method</th>
@@ -366,6 +369,9 @@
                                         <td>
                                             <strong>{{ $appointment->instructor_name }}</strong>
                                         </td>
+                                        <td>₱{{ number_format($appointment->instructor_rate ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($appointment->gym_rate ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($appointment->total_amount ?? 0, 2) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($appointment->selected_date)->format('n/j/Y') }}</td>
                                         <td>{{ $appointment->selected_time }}</td>
                                         <td>{{ $appointment->payment_method }}</td>

@@ -31,6 +31,9 @@ class PendingAppointmentController extends Controller
             'gcash_account_number' => 'nullable|string|max:20',
             'proof_of_payment' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:2048', // Accept image or PDF
             'status' => 'string|in:Pending,Approved,Declined',
+            'instructor_rate' => 'nullable|numeric|min:0',
+            'gym_rate' => 'nullable|numeric|min:0',
+            'total_amount' => 'nullable|numeric|min:0',
         ]);
 
         try {
@@ -123,6 +126,9 @@ class PendingAppointmentController extends Controller
             'gcash_account_number' => 'nullable|string|max:20',
             'proof_of_payment' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:2048', // Accept image or PDF
             'status' => 'string|in:Pending,Approved,Declined',
+            'instructor_rate' => 'nullable|numeric|min:0',
+            'gym_rate' => 'nullable|numeric|min:0',
+            'total_amount' => 'nullable|numeric|min:0',
         ]);
 
         try {
