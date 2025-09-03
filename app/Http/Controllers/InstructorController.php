@@ -43,6 +43,8 @@ class InstructorController extends Controller
 
         $profileImagePath = null;
 
+
+
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');
@@ -89,6 +91,8 @@ class InstructorController extends Controller
             }
         }
 
+
+
         // Create new instructor
         $instructor = Instructor::create([
             'profile_image' => $profileImagePath,
@@ -100,12 +104,7 @@ class InstructorController extends Controller
             'rates' => $request->input('rates'),
         ]);
 
-        // Debug: Log successful creation
-        \Log::info('Instructor created successfully', [
-            'id' => $instructor->id,
-            'name' => $instructor->first_name . ' ' . $instructor->last_name,
-            'profile_image' => $instructor->profile_image
-        ]);
+
 
         return redirect()->back()->with('success', 'Instructor created successfully!');
     }

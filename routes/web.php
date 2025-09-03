@@ -208,6 +208,8 @@ Route::prefix('trashed-announcement')->name('announcements.')->group(function ()
 //Instructors
 Route::resource('instructors', InstructorController::class);
 
+
+
 // Trashed Instructors Routes
 Route::prefix('trashed-instructors')->name('instructors.')->group(function () {
     Route::post('/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('moveToTrash');
