@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PendingAppointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PendingAppointmentController extends Controller
 {
@@ -97,7 +98,8 @@ class PendingAppointmentController extends Controller
         $totalAmount = $approvedAppointments->sum('total_amount') ?? 0;
         $totalAppointments = $approvedAppointments->count();
 
-        return view('appointment-list', compact('appointments', 'totalInstructorRate', 'totalGymRate', 'totalAmount', 'totalAppointments'));
+        $date = null; // Default date for index view
+        return view('appointment-list', compact('appointments', 'totalInstructorRate', 'totalGymRate', 'totalAmount', 'totalAppointments', 'date'));
     }
 
     // Show a specific appointment by ID
@@ -241,5 +243,67 @@ class PendingAppointmentController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to delete the appointment', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    // Filter appointments by date
+    public function filterByDate(Request $request)
+    {
+        $date = $request->input('date');
+
+        $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
+            ->whereDate('selected_date', $date)
+            ->with(['instructor', 'pendingMembership'])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        // Calculate totals only for approved appointments from the filtered date
+        $approvedAppointments = PendingAppointment::where('status', 'Approved')
+            ->whereDate('selected_date', $date)
+            ->get();
+
+        $totalInstructorRate = $approvedAppointments->sum('instructor_rate') ?? 0;
+        $totalGymRate = $approvedAppointments->sum('gym_rate') ?? 0;
+        $totalAmount = $approvedAppointments->sum('total_amount') ?? 0;
+        $totalAppointments = $approvedAppointments->count();
+
+        return view('appointment-list', compact('appointments', 'totalInstructorRate', 'totalGymRate', 'totalAmount', 'totalAppointments', 'date'));
+    }
+
+    // Export appointments to PDF by date
+    public function exportPdfByDate(Request $request)
+    {
+        $date = $request->input('date');
+
+        // Get appointments for the selected date or all if no date provided
+        if ($date) {
+            $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
+                ->whereDate('selected_date', $date)
+                ->with(['instructor', 'pendingMembership'])
+                ->get();
+        } else {
+            $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
+                ->with(['instructor', 'pendingMembership'])
+                ->get();
+        }
+
+        // Calculate totals only for approved appointments
+        $approvedAppointments = $appointments->where('status', 'Approved');
+        $totalInstructorRate = $approvedAppointments->sum('instructor_rate') ?? 0;
+        $totalGymRate = $approvedAppointments->sum('gym_rate') ?? 0;
+        $totalAmount = $approvedAppointments->sum('total_amount') ?? 0;
+        $totalAppointments = $approvedAppointments->count();
+
+        // Generate the PDF
+        $pdf = Pdf::loadView('appointment-pdf', [
+            'appointments' => $appointments,
+            'date' => $date,
+            'totalInstructorRate' => $totalInstructorRate,
+            'totalGymRate' => $totalGymRate,
+            'totalAmount' => $totalAmount,
+            'totalAppointments' => $totalAppointments,
+        ]);
+
+        // Return the PDF for download
+        return $pdf->download('appointments-report.pdf');
     }
 }

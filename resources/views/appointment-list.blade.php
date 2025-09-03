@@ -391,12 +391,26 @@
                                     </button>
                                 </form>
 
-                                <!-- Search Form -->
-                                <form class="d-flex" role="search" action="#" method="GET">
-                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                        style="height: 35px;">
-                                    <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                                </form>
+                                <!-- Date Filter and Export PDF Forms -->
+                                <div class="d-flex align-items-center gap-3">
+                                    <!-- Date Filter Form -->
+                                    <form id="date-filter-form" method="GET"
+                                        action="{{ route('appointments.filterByDate') }}" class="d-flex align-items-center">
+                                        <label for="date" class="form-label me-2 mb-0" style="white-space: nowrap;">Select
+                                            Date:</label>
+                                        <input type="date" name="date" id="date" class="form-control"
+                                            style="width: 160px; height: 35px;" value="{{ request('date') }}">
+                                        <button type="submit" class="btn btn-primary ms-2"
+                                            style="height: 35px;">Filter</button>
+                                    </form>
+
+                                    <!-- Export PDF Form -->
+                                    <form method="GET" action="{{ route('appointments.exportPdfByDate') }}">
+                                        <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                                        <button type="submit" class="btn btn-success" style="height: 35px;">Export
+                                            PDF</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -512,7 +526,13 @@
                         <div class="walkin-totals-row">
                             <div class="walkin-total-item">
                                 <span class="walkin-total-label">DATE SELECTED</span>
-                                <span class="walkin-total-value">All Dates</span>
+                                <span class="walkin-total-value">
+                                    @if(isset($date) && $date)
+                                        {{ \Carbon\Carbon::parse($date)->format('M d, Y') }}
+                                    @else
+                                        All Dates
+                                    @endif
+                                </span>
                             </div>
                             <div class="walkin-total-item">
                                 <span class="walkin-total-label">TOTAL NAMES</span>
@@ -578,6 +598,21 @@
             // Initialize selection count on page load
             document.addEventListener("DOMContentLoaded", function () {
                 updateSelectionCount(); // Set initial count based on pre-selected checkboxes
+
+                // Sync date values between filter and PDF export forms
+                const dateInput = document.getElementById('date');
+                const pdfDateInput = document.getElementById('pdf-date');
+
+                if (dateInput && pdfDateInput) {
+                    dateInput.addEventListener('change', function () {
+                        pdfDateInput.value = this.value;
+                    });
+
+                    // Set initial value
+                    if (dateInput.value) {
+                        pdfDateInput.value = dateInput.value;
+                    }
+                }
             });
         </script>
 

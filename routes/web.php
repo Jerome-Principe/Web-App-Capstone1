@@ -225,6 +225,10 @@ Route::prefix('appointments')->group(function () {
     Route::patch('/{id}/approve', [PendingAppointmentController::class, 'approve'])->name('appointments.approve');
     Route::patch('/{id}/decline', [PendingAppointmentController::class, 'decline'])->name('appointments.decline');
 
+    // Filter and Export routes
+    Route::get('/filter', [PendingAppointmentController::class, 'filterByDate'])->name('appointments.filterByDate');
+    Route::get('/export-pdf', [PendingAppointmentController::class, 'exportPdfByDate'])->name('appointments.exportPdfByDate');
+
     // Trash and Restore Routes
     Route::post('/move-to-trash', [PendingAppointmentController::class, 'moveToTrash'])->name('appointments.moveToTrash');
     Route::get('/trashed', [PendingAppointmentController::class, 'trashed'])->name('appointments.pending.trashed');
