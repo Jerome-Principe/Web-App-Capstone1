@@ -211,26 +211,30 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 48px 24px;
+            padding: 60px 24px;
             color: #666;
+            width: 100%;
         }
 
         .empty-state i {
-            font-size: 48px;
-            color: #ddd;
-            margin-bottom: 16px;
+            font-size: 64px;
+            color: #e1e5e9;
+            margin-bottom: 20px;
+            display: block;
         }
 
         .empty-state h5 {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
             color: #333;
         }
 
         .empty-state p {
             font-size: 14px;
             margin: 0;
+            color: #666;
+            line-height: 1.5;
         }
 
         /* Responsive */
@@ -351,6 +355,14 @@
                     @if(session('success'))
                         <div class="custom-alert-message">
                             {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <!-- Error message if exists -->
+                    @if(session('error'))
+                        <div class="custom-alert-message"
+                            style="background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
+                            {{ session('error') }}
                         </div>
                     @endif
 
@@ -480,11 +492,18 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="11">
+                                        <td colspan="14" class="text-center">
                                             <div class="empty-state">
                                                 <i class="fa fa-calendar"></i>
                                                 <h5>No appointments found</h5>
-                                                <p>There are no appointments to display</p>
+                                                <p>
+                                                    @if(isset($date) && $date)
+                                                        No appointments found for
+                                                        {{ \Carbon\Carbon::parse($date)->format('M d, Y') }}
+                                                    @else
+                                                        There are no appointments to display
+                                                    @endif
+                                                </p>
                                             </div>
                                         </td>
                                     </tr>

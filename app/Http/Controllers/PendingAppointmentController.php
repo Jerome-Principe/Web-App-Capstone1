@@ -6,6 +6,7 @@ use App\Models\PendingAppointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class PendingAppointmentController extends Controller
 {
@@ -248,10 +249,10 @@ class PendingAppointmentController extends Controller
     // Filter appointments by date
     public function filterByDate(Request $request)
     {
-        $date = $request->input('date');
+        $date = $request->input('date'); // Get the selected date
 
         $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
-            ->whereDate('selected_date', $date)
+            ->whereDate('selected_date', $date) // Filter appointments by date
             ->with(['instructor', 'pendingMembership'])
             ->orderBy('id', 'desc')
             ->paginate(10);
