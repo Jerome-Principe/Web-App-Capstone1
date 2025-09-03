@@ -89,7 +89,15 @@ class PendingAppointmentController extends Controller
             ->orderBy('id', 'desc') // Order by 'id' in descending order
             ->paginate(10);
 
-        return view('appointment-list', compact('appointments'));
+        // Calculate totals only for approved appointments
+        $approvedAppointments = PendingAppointment::where('status', 'Approved')->get();
+
+        $totalInstructorRate = $approvedAppointments->sum('instructor_rate') ?? 0;
+        $totalGymRate = $approvedAppointments->sum('gym_rate') ?? 0;
+        $totalAmount = $approvedAppointments->sum('total_amount') ?? 0;
+        $totalAppointments = $approvedAppointments->count();
+
+        return view('appointment-list', compact('appointments', 'totalInstructorRate', 'totalGymRate', 'totalAmount', 'totalAppointments'));
     }
 
     // Show a specific appointment by ID

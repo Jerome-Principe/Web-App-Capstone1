@@ -272,6 +272,111 @@
         .text-success {
             color: #28a745 !important;
         }
+
+        /* Totals Section Styles */
+        .totals-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            padding: 16px 24px;
+            margin-top: 24px;
+        }
+
+        .totals-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .totals-row {
+            display: flex;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .totals-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        .total-text {
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .total-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Detailed Totals Section */
+        .detailed-totals-section {
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .detailed-totals-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .totals-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .total-item {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .total-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .total-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* Responsive adjustments for totals */
+        @media (max-width: 768px) {
+            .totals-row {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .totals-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .total-value {
+                font-size: 20px;
+            }
+
+            .total-amount {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 
@@ -450,6 +555,38 @@
                                 </ul>
                             </nav>
                         @endif
+                    </div>
+
+                    <!-- Totals Section (Only from Approved Appointments) -->
+                    <div class="totals-section mt-4">
+                        <div class="totals-container">
+                            <div class="totals-row">
+                                <div class="totals-label">
+                                    <span class="total-text">TOTAL NAMES</span>
+                                    <span class="total-value">{{ $totalAppointments ?? 0 }}</span>
+                                </div>
+                                <div class="totals-label">
+                                    <span class="total-text">TOTAL AMOUNT</span>
+                                    <span class="total-value">₱{{ number_format($totalAmount ?? 0, 2) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Totals Section -->
+                    <div class="detailed-totals-section mt-3">
+                        <div class="detailed-totals-container">
+                            <div class="totals-grid">
+                                <div class="total-item">
+                                    <div class="total-label">Instructor Rate Total Amount</div>
+                                    <div class="total-amount">₱{{ number_format($totalInstructorRate ?? 0, 2) }}</div>
+                                </div>
+                                <div class="total-item">
+                                    <div class="total-label">Gym Rate Total Amount</div>
+                                    <div class="total-amount">₱{{ number_format($totalGymRate ?? 0, 2) }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
