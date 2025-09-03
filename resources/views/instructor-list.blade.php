@@ -173,6 +173,31 @@
             color: #155724;
             margin-right: 10px;
         }
+
+        /* Error Alert Message */
+        .custom-error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px 20px;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .custom-error-message.fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .custom-error-message::before {
+            content: "\f06a";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #721c24;
+            margin-right: 10px;
+        }
     </style>
 </head>
 
@@ -200,6 +225,12 @@
                     </div>
                 @endif
 
+                @if(session('error'))
+                    <div class="custom-error-message">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         setTimeout(function () {
@@ -207,7 +238,12 @@
                             if (alert) {
                                 alert.classList.add('fade-out');
                             }
-                        }, 3000);
+
+                            const errorAlert = document.querySelector('.custom-error-message');
+                            if (errorAlert) {
+                                errorAlert.classList.add('fade-out');
+                            }
+                        }, 5000); // Show error messages longer (5 seconds)
                     });
                 </script>
             </div>

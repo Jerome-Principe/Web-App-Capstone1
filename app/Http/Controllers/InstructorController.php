@@ -46,20 +46,46 @@ class InstructorController extends Controller
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');
+
+            // Validate the image
+            if (!$image->isValid()) {
+                \Log::error('Invalid image file uploaded');
+                return redirect()->back()->with('error', 'Invalid image file. Please try again.');
+            }
+
             $imageName = 'instructor_profile_' . time() . '.' . $image->getClientOriginalExtension();
 
-            // Store the image in storage/app/public/instructor_profile folder
-            $storedPath = $image->storeAs('public/instructor_profile', $imageName);
+            // Log upload attempt
+            \Log::info('Attempting to upload image: ' . $imageName);
+            \Log::info('Image size: ' . $image->getSize() . ' bytes');
+            \Log::info('Image mime type: ' . $image->getMimeType());
 
-            if ($storedPath) {
-                // Remove 'public/' from the path for database storage
-                $profileImagePath = str_replace('public/', '', $storedPath);
+            try {
+                // Store the image in storage/app/public/instructor_profile folder
+                $storedPath = $image->storeAs('public/instructor_profile', $imageName);
 
-                // Debug: Log the storage path
-                \Log::info('Image stored at: ' . $storedPath);
-                \Log::info('Database path: ' . $profileImagePath);
-            } else {
-                \Log::error('Failed to store image');
+                if ($storedPath) {
+                    // Remove 'public/' from the path for database storage
+                    $profileImagePath = str_replace('public/', '', $storedPath);
+
+                    // Verify the file was actually created
+                    $fullPath = storage_path('app/public/instructor_profile/' . $imageName);
+                    if (file_exists($fullPath)) {
+                        \Log::info('Image successfully stored at: ' . $storedPath);
+                        \Log::info('Database path: ' . $profileImagePath);
+                        \Log::info('Full file path: ' . $fullPath);
+                        \Log::info('File size on disk: ' . filesize($fullPath) . ' bytes');
+                    } else {
+                        \Log::error('Image was not found on disk after upload: ' . $fullPath);
+                        $profileImagePath = null;
+                    }
+                } else {
+                    \Log::error('Failed to store image - storeAs returned false');
+                    $profileImagePath = null;
+                }
+            } catch (\Exception $e) {
+                \Log::error('Exception during image upload: ' . $e->getMessage());
+                return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
             }
         }
 
