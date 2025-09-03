@@ -11,8 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin-dashboard/css/bootstrap.min.css')}}">
     <!-- Fonts -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin-dashboard/fonts/line-icons.css')}}">
-    <!--Morris Chart CSS -->
-    <link rel="stylesheet" href="{{asset('assets/admin-dashboard/plugins/morris/morris.css')}}">
+
     <!-- Main Style -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin-dashboard/css/main.css')}}">
     <!-- Responsive Style -->
@@ -485,11 +484,6 @@
     <script src="{{asset('assets/admin-dashboard/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/admin-dashboard/js/jquery.app.js')}}"></script>
     <script src="{{asset('assets/admin-dashboard/js/main.js')}}"></script>
-
-    <!--Morris Chart-->
-    <script src="{{asset('assets/admin-dashboard/js/morris.min.js')}}"></script>
-    <script src="{{asset('assets/admin-dashboard/js/raphael-min.js')}}"></script>
-    <script src="{{asset('assets/admin-dashboard/js/dashborad1.js')}}"></script>
 
     <!-- Notification System JavaScript -->
     <script>
