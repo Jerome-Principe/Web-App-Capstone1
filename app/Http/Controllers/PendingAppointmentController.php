@@ -251,15 +251,30 @@ class PendingAppointmentController extends Controller
     {
         $date = $request->input('date'); // Get the selected date
 
+        // Since selected_date is stored as string, we need to handle different date formats
         $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
-            ->whereDate('selected_date', $date) // Filter appointments by date
+            ->where(function ($query) use ($date) {
+                // Try multiple date formats since selected_date is stored as string
+                $query->where('selected_date', $date) // Y-m-d format
+                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
+                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
+                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
+                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
+            })
             ->with(['instructor', 'pendingMembership'])
             ->orderBy('id', 'desc')
             ->paginate(10);
 
         // Calculate totals only for approved appointments from the filtered date
         $approvedAppointments = PendingAppointment::where('status', 'Approved')
-            ->whereDate('selected_date', $date)
+            ->where(function ($query) use ($date) {
+                // Try multiple date formats since selected_date is stored as string
+                $query->where('selected_date', $date) // Y-m-d format
+                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
+                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
+                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
+                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
+            })
             ->get();
 
         $totalInstructorRate = $approvedAppointments->sum('instructor_rate') ?? 0;
@@ -278,7 +293,14 @@ class PendingAppointmentController extends Controller
         // Get appointments for the selected date or all if no date provided
         if ($date) {
             $appointments = PendingAppointment::whereIn('status', ['Approved', 'Declined'])
-                ->whereDate('selected_date', $date)
+                ->where(function ($query) use ($date) {
+                    // Try multiple date formats since selected_date is stored as string
+                    $query->where('selected_date', $date) // Y-m-d format
+                        ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
+                        ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
+                        ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
+                        ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
+                })
                 ->with(['instructor', 'pendingMembership'])
                 ->get();
         } else {

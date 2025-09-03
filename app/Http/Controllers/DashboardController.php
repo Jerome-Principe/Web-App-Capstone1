@@ -33,7 +33,14 @@ class DashboardController extends Controller
                 return [
                     'activeMembers' => PendingMembership::where('status', 'Approved')->count(),
                     'walkinClients' => Walkin::whereDate('date', $currentDate->toDateString())->count(),
-                    'todayAppointments' => PendingAppointment::whereDate('selected_date', $currentDate->toDateString())->count(),
+                    'todayAppointments' => PendingAppointment::where(function ($query) use ($currentDate) {
+                        $date = $currentDate->toDateString();
+                        $query->where('selected_date', $date) // Y-m-d format
+                            ->orWhere('selected_date', $currentDate->format('n/j/Y')) // M/d/Y format
+                            ->orWhere('selected_date', $currentDate->format('m/d/Y')) // MM/dd/Y format
+                            ->orWhere('selected_date', $currentDate->format('j/n/Y')) // d/M/Y format
+                            ->orWhere('selected_date', $currentDate->format('d/m/Y')); // dd/MM/Y format
+                    })->count(),
                     'todayAttendance' => AttendanceRecord::whereDate('date_logged', $currentDate->toDateString())->count(),
                 ];
             });
