@@ -135,7 +135,7 @@
             height: calc(100vh - 64px);
             width: 280px;
             z-index: 1000;
-            overflow-y: auto;
+            overflow: visible;
         }
 
         /* Main Content Area */
