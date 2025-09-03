@@ -1,6 +1,7 @@
 <div class="side-nav expand-lg bg-gradient-to-b from-gray-900 to-gray-800 text-white"
     style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow: hidden; min-width: 280px; width: 280px; border: none; box-shadow: none; border-right: none;">
-    <div class="side-nav-inner p-4 h-full overflow-y-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
+    <div class="side-nav-inner px-4 pb-4 h-full overflow-y-auto"
+        style="scrollbar-width: none; -ms-overflow-style: none; padding-top: 0;">
         <style>
             .side-nav-inner::-webkit-scrollbar {
                 display: none;
@@ -53,7 +54,7 @@
             }
         </style>
         <!-- Enhanced Brand Header -->
-        <div class="side-nav-header mb-4 pb-3 border-b border-gray-700">
+        <div class="side-nav-header mb-4 pb-3 pt-4 border-b border-gray-700">
             <div class="flex items-center space-x-3">
                 <div class="flex items-center space-x-3">
                     <img src="{{ asset('assets/admin-dashboard/img/dumbbell-logo-blue.png') }}" alt="Dumbbell Logo"
