@@ -535,12 +535,12 @@
                                 </span>
                             </div>
                             <div class="walkin-total-item">
-                                <span class="walkin-total-label">TOTAL NAMES</span>
-                                <span class="walkin-total-value">{{ $totalAppointments ?? 0 }}</span>
+                                <span class="walkin-total-label">INSTRUCTOR RATE TOTAL AMOUNT</span>
+                                <span class="walkin-total-value">₱{{ number_format($totalInstructorRate ?? 0, 2) }}</span>
                             </div>
                             <div class="walkin-total-item">
-                                <span class="walkin-total-label">TOTAL AMOUNT</span>
-                                <span class="walkin-total-value">₱{{ number_format($totalAmount ?? 0, 2) }}</span>
+                                <span class="walkin-total-label">GYM RATE TOTAL AMOUNT</span>
+                                <span class="walkin-total-value">₱{{ number_format($totalGymRate ?? 0, 2) }}</span>
                             </div>
                         </div>
                     </div>
