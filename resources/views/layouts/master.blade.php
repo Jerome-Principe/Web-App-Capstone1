@@ -150,12 +150,15 @@
         /* Header - Same level as dashboard */
         .header-container {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
             position: sticky;
             top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            z-index: 999;
+            width: 100%;
+            min-height: 64px;
         }
 
         /* Header Icons and Elements */
