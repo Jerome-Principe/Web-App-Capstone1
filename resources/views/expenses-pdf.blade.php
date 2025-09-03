@@ -139,7 +139,8 @@
             <tr>
                 <th>ID</th>
                 <th>Date</th>
-                <th>Expense Description</th>
+                <th>Category</th>
+                <th>Description Type</th>
                 <th>Amount</th>
                 <th>Payment Method</th>
             </tr>
@@ -149,19 +150,20 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}</td>
+                    <td>{{ $expense->category ?? 'N/A' }}</td>
                     <td>{{ $expense->expense_description }}</td>
                     <td class="amount">{{ number_format($expense->amount, 2) }}</td>
                     <td>{{ $expense->payment_method }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" style="text-align: center;">No expenses found for the selected date range.</td>
+                    <td colspan="6" style="text-align: center;">No expenses found for the selected date range.</td>
                 </tr>
             @endforelse
 
             @if($expenses->count() > 0)
                 <tr class="total-row">
-                    <td colspan="4" class="total-label"><strong>Total Amount</strong></td>
+                    <td colspan="5" class="total-label"><strong>Total Amount</strong></td>
                     <td class="total-amount"><strong>{{ number_format($totalAmount, 2) }}</strong></td>
                 </tr>
             @endif

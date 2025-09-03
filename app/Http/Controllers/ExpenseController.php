@@ -25,6 +25,7 @@ class ExpenseController extends Controller
         // Validate incoming data
         $request->validate([
             'date' => 'required|date',
+            'category' => 'required|string|in:Monthly expenses,Incident expenses,Utility expenses',
             'expense_description' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string|max:255',
@@ -56,6 +57,7 @@ class ExpenseController extends Controller
         // Validate incoming data
         $request->validate([
             'date' => 'required|date',
+            'category' => 'required|string|in:Monthly expenses,Incident expenses,Utility expenses',
             'expense_description' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string|max:255',

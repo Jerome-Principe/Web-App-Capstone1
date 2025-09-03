@@ -189,7 +189,8 @@
                         <tr>
                             <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
                             <th class="text-center">Date</th>
-                            <th class="text-center">Expenses</th>
+                            <th class="text-center">Category</th>
+                            <th class="text-center">Description Type</th>
                             <th class="text-center">Amount</th>
                             <th class="text-center">Payment Method</th>
                             <th class="text-center">Actions</th>
@@ -203,6 +204,7 @@
                                         onchange="updateSelectionCount()" />
                                 </td>
                                 <td class="text-center">{{ \Carbon\Carbon::parse($expense->date)->format('F d, Y') }}</td>
+                                <td class="text-center">{{ $expense->category ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $expense->expense_description }}</td>
                                 <td class="text-center">₱{{ number_format($expense->amount, 2) }}</td>
                                 <td class="text-center">{{ $expense->payment_method }}</td>
@@ -227,7 +229,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center">
+                                <td colspan="7" class="text-center">
                                     <div class="empty-state">
                                         <i class="fa fa-money-bill-wave"></i>
                                         <h5>No archived expenses found</h5>
