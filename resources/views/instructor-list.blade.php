@@ -332,6 +332,15 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <form action="{{ route('instructors.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
@@ -365,7 +374,7 @@
                                 <input type="number" step="0.01" name="rates" id="rates" class="form-control">
                             </div>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add Instructor</button>
+                            <button type="submit" class="btn btn-primary" id="addInstructorBtn">Add Instructor</button>
                         </form>
                     </div>
                 </div>
@@ -501,6 +510,32 @@
             var modalElement = document.getElementById('addInstructorModal');
             if (modalElement) {
                 new bootstrap.Modal(modalElement);
+            }
+
+            // Add form debugging
+            const form = document.querySelector('#addInstructorModal form');
+            const submitBtn = document.getElementById('addInstructorBtn');
+
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    console.log('Form submitted!');
+                    console.log('Form data:', new FormData(form));
+
+                    // Check if all required fields are filled
+                    const firstName = form.querySelector('[name="first_name"]').value;
+                    const lastName = form.querySelector('[name="last_name"]').value;
+
+                    if (!firstName || !lastName) {
+                        console.log('Missing required fields');
+                        alert('Please fill in all required fields (First Name and Last Name)');
+                        e.preventDefault();
+                        return false;
+                    }
+
+                    console.log('Form validation passed, submitting...');
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Adding...';
+                });
             }
         });
     </script>

@@ -24,6 +24,12 @@ class InstructorController extends Controller
 
     public function store(Request $request)
     {
+        // Debug: Log the incoming request
+        \Log::info('Instructor store request received', [
+            'data' => $request->except('profile_image'),
+            'has_file' => $request->hasFile('profile_image')
+        ]);
+
         // Validate incoming request
         $request->validate([
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -58,7 +64,7 @@ class InstructorController extends Controller
         }
 
         // Create new instructor
-        Instructor::create([
+        $instructor = Instructor::create([
             'profile_image' => $profileImagePath,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
@@ -66,6 +72,13 @@ class InstructorController extends Controller
             'expertise' => $request->input('expertise'),
             'session' => $request->input('session'),
             'rates' => $request->input('rates'),
+        ]);
+
+        // Debug: Log successful creation
+        \Log::info('Instructor created successfully', [
+            'id' => $instructor->id,
+            'name' => $instructor->first_name . ' ' . $instructor->last_name,
+            'profile_image' => $instructor->profile_image
         ]);
 
         return redirect()->back()->with('success', 'Instructor created successfully!');
