@@ -363,8 +363,7 @@
                                                 onchange="updateSelectionCount()" />
                                         </td>
                                         <td>
-                                            <span
-                                                class="badge bg-primary">{{ ($cancelledAppointments->currentPage() - 1) * $cancelledAppointments->perPage() + $loop->index + 1 }}</span>
+                                            <span class="badge bg-primary">{{ $appointment->id }}</span>
                                         </td>
                                         <td>
                                             <strong>{{ $appointment->instructor_name }}</strong>
