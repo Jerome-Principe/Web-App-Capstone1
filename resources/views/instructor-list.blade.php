@@ -243,7 +243,12 @@
                                         @if($instructor->profile_image)
                                             <img src="{{ asset('storage/' . $instructor->profile_image) }}" alt="Profile"
                                                 class="img-thumbnail"
-                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"
+                                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            <div class="bg-secondary rounded-circle align-items-center justify-content-center"
+                                                style="width: 50px; height: 50px; color: white; font-weight: bold; display: none;">
+                                                {{ strtoupper(substr($instructor->first_name, 0, 1)) }}{{ strtoupper(substr($instructor->last_name, 0, 1)) }}
+                                            </div>
                                         @else
                                             <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
                                                 style="width: 50px; height: 50px; color: white; font-weight: bold;">

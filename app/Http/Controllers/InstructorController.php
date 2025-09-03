@@ -41,9 +41,20 @@ class InstructorController extends Controller
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');
             $imageName = 'instructor_profile_' . time() . '.' . $image->getClientOriginalExtension();
-            $profileImagePath = $image->storeAs('public', $imageName);
-            // Remove 'public/' from the path for database storage
-            $profileImagePath = str_replace('public/', '', $profileImagePath);
+
+            // Store the image in storage/app/public
+            $storedPath = $image->storeAs('public', $imageName);
+
+            if ($storedPath) {
+                // Remove 'public/' from the path for database storage
+                $profileImagePath = str_replace('public/', '', $storedPath);
+
+                // Debug: Log the storage path
+                \Log::info('Image stored at: ' . $storedPath);
+                \Log::info('Database path: ' . $profileImagePath);
+            } else {
+                \Log::error('Failed to store image');
+            }
         }
 
         // Create new instructor
@@ -89,9 +100,20 @@ class InstructorController extends Controller
 
             $image = $request->file('profile_image');
             $imageName = 'instructor_profile_' . time() . '.' . $image->getClientOriginalExtension();
-            $profileImagePath = $image->storeAs('public', $imageName);
-            // Remove 'public/' from the path for database storage
-            $profileImagePath = str_replace('public/', '', $profileImagePath);
+
+            // Store the image in storage/app/public
+            $storedPath = $image->storeAs('public', $imageName);
+
+            if ($storedPath) {
+                // Remove 'public/' from the path for database storage
+                $profileImagePath = str_replace('public/', '', $storedPath);
+
+                // Debug: Log the storage path
+                \Log::info('Image updated at: ' . $storedPath);
+                \Log::info('Database path: ' . $profileImagePath);
+            } else {
+                \Log::error('Failed to store updated image');
+            }
 
             $instructor->update([
                 'profile_image' => $profileImagePath,

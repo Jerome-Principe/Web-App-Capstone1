@@ -256,10 +256,10 @@ class PendingAppointmentController extends Controller
             ->where(function ($query) use ($date) {
                 // Try multiple date formats since selected_date is stored as string
                 $query->where('selected_date', $date) // Y-m-d format
-                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
-                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
-                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
-                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
+                    ->orWhere('selected_date', Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
+                    ->orWhere('selected_date', Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
+                    ->orWhere('selected_date', Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
+                    ->orWhere('selected_date', Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
             })
             ->with(['instructor', 'pendingMembership'])
             ->orderBy('id', 'desc')
@@ -270,10 +270,10 @@ class PendingAppointmentController extends Controller
             ->where(function ($query) use ($date) {
                 // Try multiple date formats since selected_date is stored as string
                 $query->where('selected_date', $date) // Y-m-d format
-                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
-                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
-                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
-                    ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
+                    ->orWhere('selected_date', Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
+                    ->orWhere('selected_date', Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
+                    ->orWhere('selected_date', Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
+                    ->orWhere('selected_date', Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
             })
             ->get();
 
@@ -296,10 +296,10 @@ class PendingAppointmentController extends Controller
                 ->where(function ($query) use ($date) {
                     // Try multiple date formats since selected_date is stored as string
                     $query->where('selected_date', $date) // Y-m-d format
-                        ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
-                        ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
-                        ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
-                        ->orWhere('selected_date', \Carbon\Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
+                        ->orWhere('selected_date', Carbon::parse($date)->format('n/j/Y')) // M/d/Y format
+                        ->orWhere('selected_date', Carbon::parse($date)->format('m/d/Y')) // MM/dd/Y format
+                        ->orWhere('selected_date', Carbon::parse($date)->format('j/n/Y')) // d/M/Y format
+                        ->orWhere('selected_date', Carbon::parse($date)->format('d/m/Y')); // dd/MM/Y format
                 })
                 ->with(['instructor', 'pendingMembership'])
                 ->get();
