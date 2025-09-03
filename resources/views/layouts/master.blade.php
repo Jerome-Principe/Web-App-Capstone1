@@ -130,9 +130,9 @@
         /* Sidebar - Full Height */
         .side-nav {
             position: fixed;
-            top: 0;
+            top: 64px;
             left: 0;
-            height: 100vh;
+            height: calc(100vh - 64px);
             width: 280px;
             z-index: 1000;
             overflow-y: auto;
@@ -214,6 +214,8 @@
         /* Responsive adjustments */
         @media only screen and (max-width: 992px) {
             .side-nav {
+                top: 64px;
+                height: calc(100vh - 64px);
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
                 z-index: 1000;
