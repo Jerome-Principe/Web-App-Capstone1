@@ -302,8 +302,8 @@
                                     </td>
                                     <td class="text-center">
                                         @if($instructor->profile_image)
-                                            <img src="{{ asset('storage/' . $instructor->profile_image) }}" alt="Profile"
-                                                class="img-thumbnail"
+                                            <img src="{{ asset('https://limitlessfitnesstudio.com/storage/app/public/public/' . $instructor->profile_image) }}"
+                                                alt="Profile" class="img-thumbnail"
                                                 style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                                         @endif
                                     </td>
