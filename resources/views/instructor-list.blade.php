@@ -148,6 +148,31 @@
             justify-content: center;
             align-items: center;
         }
+
+        /* Success Alert Message */
+        .custom-alert-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px 20px;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .custom-alert-message.fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .custom-alert-message::before {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #155724;
+            margin-right: 10px;
+        }
     </style>
 </head>
 
