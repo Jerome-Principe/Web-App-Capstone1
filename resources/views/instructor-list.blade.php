@@ -300,11 +300,15 @@
                                     <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $instructor->id }}"
                                             onchange="updateSelectionCount()" />
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center align-middle">
                                         @if($instructor->profile_image)
                                             <img src="{{ asset('https://limitlessfitnesstudio.com/storage/app/public/public/' . $instructor->profile_image) }}"
                                                 alt="Profile" class="img-thumbnail"
-                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto;">
+                                        @else
+                                            <div style="width: 50px; height: 50px; background-color: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 1px solid #dee2e6;">
+                                                <i class="fa fa-user" style="color: #6c757d; font-size: 20px;"></i>
+                                            </div>
                                         @endif
                                     </td>
                                     <td class="text-center">
