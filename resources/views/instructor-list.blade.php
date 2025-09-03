@@ -301,21 +301,19 @@
                                             onchange="updateSelectionCount()" />
                                     </td>
                                     <td class="text-center">
-                                        @if($instructor->profile_image)
+                                        @if($instructor->profile_image && file_exists(public_path('storage/' . $instructor->profile_image)))
                                             <img src="{{ asset('storage/' . $instructor->profile_image) }}" alt="Profile"
                                                 class="img-thumbnail"
                                                 style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"
-                                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
-                                                style="width: 50px; height: 50px; color: white; font-weight: bold; display: none;">
-                                                {{ strtoupper(substr($instructor->first_name ?? '', 0, 1)) }}{{ strtoupper(substr($instructor->last_name ?? '', 0, 1)) }}
-                                            </div>
+                                                title="Image path: {{ $instructor->profile_image }}">
                                         @else
                                             <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
-                                                style="width: 50px; height: 50px; color: white; font-weight: bold;">
+                                                style="width: 50px; height: 50px; color: white; font-weight: bold;"
+                                                title="No image found. Path: {{ $instructor->profile_image ?? 'null' }}">
                                                 {{ strtoupper(substr($instructor->first_name ?? '', 0, 1)) }}{{ strtoupper(substr($instructor->last_name ?? '', 0, 1)) }}
                                             </div>
                                         @endif
+                                        <!-- Debug info (remove this later): Image path = {{ $instructor->profile_image ?? 'NULL' }} -->
                                     </td>
                                     <td class="text-center">
                                         {{ ($instructors->currentPage() - 1) * $instructors->perPage() + $loop->index + 1 }}
@@ -466,7 +464,7 @@
                                     <input type="file" name="profile_image" id="edit_profile_image_{{ $instructor->id }}"
                                         class="form-control" accept="image/*">
                                     <small class="form-text text-muted">Choose an image file (JPG, PNG, GIF)</small>
-                                    @if($instructor->profile_image)
+                                    @if($instructor->profile_image && file_exists(public_path('storage/' . $instructor->profile_image)))
                                         <div class="mt-2">
                                             <img src="{{ asset('storage/' . $instructor->profile_image) }}" alt="Current Profile"
                                                 class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
