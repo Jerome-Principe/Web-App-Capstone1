@@ -352,8 +352,8 @@
                                     </th>
                                     <th>ID</th>
                                     <th>Instructor Name</th>
-                                    <th>Instructor Rate</th>
-                                    <th>Gym Rate</th>
+                                    <th>Instructor Fees</th>
+                                    <th>Gym Share</th>
                                     <th>Total Amount</th>
                                     <th>Date</th>
                                     <th>Time</th>
