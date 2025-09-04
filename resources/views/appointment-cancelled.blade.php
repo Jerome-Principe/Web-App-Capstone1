@@ -211,26 +211,34 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 48px 24px;
+            padding: 60px 24px;
             color: #666;
+            width: 100%;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .empty-state i {
-            font-size: 48px;
+            font-size: 64px;
             color: #ddd;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
+            display: block;
         }
 
         .empty-state h5 {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: #333;
         }
 
         .empty-state p {
             font-size: 14px;
             margin: 0;
+            color: #888;
         }
 
         /* Responsive */
@@ -394,7 +402,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="9">
+                                        <td colspan="12">
                                             <div class="empty-state">
                                                 <i class="fa fa-calendar-times"></i>
                                                 <h5>No cancelled appointments found</h5>
