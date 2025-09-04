@@ -184,7 +184,7 @@
                 <th>Instructor</th>
                 <th>Date</th>
                 <th>Time</th>
-                <th>Instructor Fees/th>
+                <th>Instructor Fees</th>
                 <th>Gym Share</th>
                 <th>Total Amount</th>
                 <th>Status</th>

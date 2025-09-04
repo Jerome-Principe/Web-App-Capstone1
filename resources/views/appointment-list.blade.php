@@ -439,8 +439,8 @@
                                     <th>ID</th>
                                     <th>User</th>
                                     <th>Instructor</th>
-                                    <th>Instructor Rate</th>
-                                    <th>Gym Rate</th>
+                                    <th>Instructor Fees</th>
+                                    <th>Gym Share</th>
                                     <th>Total Amount</th>
                                     <th>Date</th>
                                     <th>Time</th>
@@ -554,11 +554,11 @@
                                 </span>
                             </div>
                             <div class="walkin-total-item">
-                                <span class="walkin-total-label">INSTRUCTOR RATE TOTAL AMOUNT</span>
+                                <span class="walkin-total-label">INSTRUCTOR FEES TOTAL AMOUNT</span>
                                 <span class="walkin-total-value">₱{{ number_format($totalInstructorRate ?? 0, 2) }}</span>
                             </div>
                             <div class="walkin-total-item">
-                                <span class="walkin-total-label">GYM RATE TOTAL AMOUNT</span>
+                                <span class="walkin-total-label">GYM SHARE TOTAL AMOUNT</span>
                                 <span class="walkin-total-value">₱{{ number_format($totalGymRate ?? 0, 2) }}</span>
                             </div>
                         </div>
