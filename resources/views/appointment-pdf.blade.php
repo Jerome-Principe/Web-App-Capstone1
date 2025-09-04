@@ -184,8 +184,8 @@
                 <th>Instructor</th>
                 <th>Date</th>
                 <th>Time</th>
-                <th>Instructor Rate</th>
-                <th>Gym Rate</th>
+                <th>Instructor Fees/th>
+                <th>Gym Share</th>
                 <th>Total Amount</th>
                 <th>Status</th>
             </tr>
@@ -218,11 +218,11 @@
         <div class="totals-breakdown">
             <h4>Totals Breakdown (Approved Appointments Only)</h4>
             <div class="breakdown-item">
-                <span>Total Instructor Rate:</span>
+                <span>Total Instructor Fees:</span>
                 <span>{{ number_format($totalInstructorRate, 2) }}</span>
             </div>
             <div class="breakdown-item">
-                <span>Total Gym Rate:</span>
+                <span>Total Gym Share:</span>
                 <span>{{ number_format($totalGymRate, 2) }}</span>
             </div>
             <div class="breakdown-item">

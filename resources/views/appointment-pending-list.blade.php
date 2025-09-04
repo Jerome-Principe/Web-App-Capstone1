@@ -345,8 +345,8 @@
                                     <th>ID</th>
                                     <th>User</th>
                                     <th>Instructor</th>
-                                    <th>Instructor Rate</th>
-                                    <th>Gym Rate</th>
+                                    <th>Instructor Fees</th>
+                                    <th>Gym Share</th>
                                     <th>Total Amount</th>
                                     <th>Date</th>
                                     <th>Time</th>
