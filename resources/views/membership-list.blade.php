@@ -329,7 +329,10 @@
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e1e5e9;">
                         <h2 style="margin: 0; font-size: 20px; font-weight: 500; color: #333;">Membership List</h2>
                         <button type="button" class="btn btn-success"
-                            style="background-color: #28a745; border-color: #28a745; padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                            style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none; padding: 10px 20px; font-size: 14px; font-weight: 500; border-radius: 8px; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3); transition: all 0.3s ease; display: flex; align-items: center; gap: 8px;"
+                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(40, 167, 69, 0.4)'"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(40, 167, 69, 0.3)'">
+                            <i class="fas fa-bell" style="font-size: 13px;"></i>
                             Notify All
                         </button>
                     </div>
