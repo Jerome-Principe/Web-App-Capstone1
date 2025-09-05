@@ -642,13 +642,16 @@
                 // Collect expiring memberships data
                 const expiringMemberships = [];
                 const rows = document.querySelectorAll('tbody tr');
+                console.log('🔍 Found rows:', rows.length);
 
                 rows.forEach(row => {
                     const expiringBadge = row.querySelector('span[data-expiring="true"]');
+                    console.log('🔍 Row check - expiringBadge:', expiringBadge);
                     if (expiringBadge) {
                         const cells = row.querySelectorAll('td');
+                        console.log('🔍 Found cells:', cells.length);
                         if (cells.length >= 5) {
-                            expiringMemberships.push({
+                            const membershipData = {
                                 id: cells[1].textContent.trim(),
                                 firstName: cells[2].textContent.trim(),
                                 lastName: cells[3].textContent.trim(),
@@ -656,12 +659,20 @@
                                 expiryDate: expiringBadge.textContent.split('\n')[0].trim(),
                                 daysLeft: expiringBadge.textContent.includes('days left') ?
                                     expiringBadge.textContent.match(/(\d+) days left/)?.[1] : null
-                            });
+                            };
+                            console.log('📋 Adding membership:', membershipData);
+                            expiringMemberships.push(membershipData);
                         }
                     }
                 });
 
+                console.log('📊 Total expiring memberships found:', expiringMemberships.length);
+                console.log('📊 Memberships data:', expiringMemberships);
+
                 // Send AJAX request to backend
+                console.log('🚀 Sending request to backend...');
+                console.log('🚀 Request body:', JSON.stringify({ memberships: expiringMemberships }));
+
                 fetch('/api/send-expiry-notifications', {
                     method: 'POST',
                     headers: {
@@ -673,8 +684,13 @@
                         memberships: expiringMemberships
                     })
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        console.log('📡 Response status:', response.status);
+                        console.log('📡 Response headers:', response.headers);
+                        return response.json();
+                    })
                     .then(data => {
+                        console.log('📡 Response data:', data);
                         if (data.success) {
                             // Store timestamp for cooldown
                             localStorage.setItem('lastNotificationSent', new Date().getTime().toString());
@@ -689,7 +705,9 @@
                         }
                     })
                     .catch(error => {
-                        console.error('Error:', error);
+                        console.error('❌ Detailed Error:', error);
+                        console.error('❌ Error message:', error.message);
+                        console.error('❌ Error stack:', error.stack);
                         showNotificationAlert('❌ Failed to send notifications. Please try again.', 'error');
 
                         // Reset button state
