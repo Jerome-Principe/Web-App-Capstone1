@@ -451,7 +451,7 @@
                                                 @php
                                                     $expiryDate = \Carbon\Carbon::parse($membership->expiry_date);
                                                     $daysRemaining = $expiryDate->diffInDays(\Carbon\Carbon::now());
-                                                    $isExpiringSoon = $daysRemaining <= 20;
+                                                    $isExpiringSoon = $daysRemaining <= 30;
                                                 @endphp
                                                 <span class="badge {{ $isExpiringSoon ? 'bg-danger' : 'bg-warning' }}"
                                                     data-expiring="{{ $isExpiringSoon ? 'true' : 'false' }}">

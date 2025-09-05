@@ -198,8 +198,8 @@ class NotificationController extends Controller
                 $expiryDate = Carbon::parse($membership->expiry_date);
                 $daysRemaining = $expiryDate->diffInDays(Carbon::now());
 
-                // Only send notification if membership is expiring in 20 days or less
-                if ($daysRemaining <= 20) {
+                // Only send notification if membership is expiring in 30 days or less
+                if ($daysRemaining <= 30) {
                     // Create notification record for mobile app
                     $notification = Notification::create([
                         'feature' => 'Membership Expiry Reminder',
