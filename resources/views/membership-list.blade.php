@@ -651,14 +651,23 @@
                         const cells = row.querySelectorAll('td');
                         console.log('🔍 Found cells:', cells.length);
                         if (cells.length >= 5) {
+                            // Extract expiry date more reliably
+                            const badgeText = expiringBadge.textContent.trim();
+                            console.log('🔍 Badge text:', badgeText);
+
+                            // Split by newline and get the first part (the date)
+                            const lines = badgeText.split('\n');
+                            const expiryDateText = lines[0].trim();
+                            console.log('🔍 Extracted date:', expiryDateText);
+
                             const membershipData = {
                                 id: cells[1].textContent.trim(),
                                 firstName: cells[2].textContent.trim(),
                                 lastName: cells[3].textContent.trim(),
                                 email: cells[4].textContent.trim(),
-                                expiryDate: expiringBadge.textContent.split('\n')[0].trim(),
-                                daysLeft: expiringBadge.textContent.includes('days left') ?
-                                    expiringBadge.textContent.match(/(\d+) days left/)?.[1] : null
+                                expiryDate: expiryDateText,
+                                daysLeft: badgeText.includes('days left') ?
+                                    badgeText.match(/(\d+) days left/)?.[1] : null
                             };
                             console.log('📋 Adding membership:', membershipData);
                             expiringMemberships.push(membershipData);
