@@ -181,7 +181,7 @@ class NotificationController extends Controller
                 'memberships.*.lastName' => 'required|string',
                 'memberships.*.email' => 'required|email',
                 'memberships.*.expiryDate' => 'required|string',
-                'memberships.*.daysLeft' => 'nullable|string'
+                'memberships.*.daysLeft' => 'nullable'
             ]);
 
             $memberships = $request->input('memberships');
