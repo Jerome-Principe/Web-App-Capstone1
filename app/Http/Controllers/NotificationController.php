@@ -139,8 +139,17 @@ class NotificationController extends Controller
     /**
      * Mark notification as read
      */
-    public function markAsRead(Notification $notification): JsonResponse
+    public function markAsRead($id): JsonResponse
     {
+        $notification = Notification::find($id);
+
+        if (!$notification) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Notification not found'
+            ], 404);
+        }
+
         $notification->update(['is_read' => true]);
 
         // Clear notification cache when status changes
@@ -148,7 +157,8 @@ class NotificationController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Notification marked as read'
+            'message' => 'Notification marked as read',
+            'notification' => $notification
         ]);
     }
 
