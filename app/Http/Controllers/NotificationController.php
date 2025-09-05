@@ -174,6 +174,9 @@ class NotificationController extends Controller
     public function sendExpiryNotifications(Request $request): JsonResponse
     {
         try {
+            \Log::info('🔔 Starting sendExpiryNotifications process');
+            \Log::info('📝 Request data: ' . json_encode($request->all()));
+
             $request->validate([
                 'memberships' => 'required|array',
                 'memberships.*.id' => 'required',
@@ -187,19 +190,38 @@ class NotificationController extends Controller
             $memberships = $request->input('memberships');
             $notificationsSent = 0;
 
+            \Log::info('👥 Processing ' . count($memberships) . ' memberships');
+
             foreach ($memberships as $membershipData) {
+                \Log::info("🔍 Processing membership ID: " . $membershipData['id']);
+                
                 // Find the membership record
                 $membership = PendingMembership::find($membershipData['id']);
 
                 if (!$membership) {
+                    \Log::warning("❌ Membership not found for ID: " . $membershipData['id']);
                     continue; // Skip if membership not found
                 }
 
                 $expiryDate = Carbon::parse($membership->expiry_date);
                 $daysRemaining = $expiryDate->diffInDays(Carbon::now());
 
+                \Log::info("📅 Membership for {$membership->email} expires in {$daysRemaining} days");
+
                 // Only send notification if membership is expiring in 30 days or less
                 if ($daysRemaining <= 30) {
+                    // Check if notification already exists to prevent duplicates
+                    $existingNotification = Notification::where('user_email', $membership->email)
+                        ->where('membership_id', $membership->id)
+                        ->where('notification_type', 'expiry_reminder')
+                        ->where('date', Carbon::now()->format('Y-m-d'))
+                        ->first();
+
+                    if ($existingNotification) {
+                        \Log::info("⏭️ Notification already exists for {$membership->email} today");
+                        continue;
+                    }
+
                     // Create notification record for mobile app
                     $notification = Notification::create([
                         'feature' => 'Membership Expiry Reminder',
@@ -212,12 +234,18 @@ class NotificationController extends Controller
                         'notification_type' => 'expiry_reminder'
                     ]);
 
+                    \Log::info("✅ Created notification for {$membership->email} (ID: {$notification->id})");
                     $notificationsSent++;
+                } else {
+                    \Log::info("⏭️ Skipping {$membership->email} - expires in {$daysRemaining} days (> 30)");
                 }
             }
 
             // Clear notification cache
             CacheService::clearSpecificCache('notification');
+            \Log::info("🧹 Cleared notification cache");
+
+            \Log::info("🎉 Successfully sent {$notificationsSent} notifications");
 
             return response()->json([
                 'success' => true,
@@ -225,7 +253,15 @@ class NotificationController extends Controller
                 'count' => $notificationsSent
             ]);
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('❌ Validation error in sendExpiryNotifications: ' . json_encode($e->errors()));
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed: ' . implode(', ', array_flatten($e->errors()))
+            ], 422);
         } catch (\Exception $e) {
+            \Log::error('❌ Exception in sendExpiryNotifications: ' . $e->getMessage());
+            \Log::error('📍 Stack trace: ' . $e->getTraceAsString());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to send notifications: ' . $e->getMessage()
