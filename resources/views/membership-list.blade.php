@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -328,12 +329,15 @@
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e1e5e9;">
                         <h2 style="margin: 0; font-size: 20px; font-weight: 500; color: #333;">Membership List</h2>
-                        <button type="button" class="btn btn-success"
-                            style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none; padding: 10px 20px; font-size: 14px; font-weight: 500; border-radius: 8px; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3); transition: all 0.3s ease; display: flex; align-items: center; gap: 8px;"
-                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(40, 167, 69, 0.4)'"
-                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(40, 167, 69, 0.3)'">
+                        <button type="button" id="notifyAllBtn" class="btn btn-success" disabled
+                            style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none; padding: 10px 20px; font-size: 14px; font-weight: 500; border-radius: 8px; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3); transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; opacity: 0.6;"
+                            onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(40, 167, 69, 0.4)'; }"
+                            onmouseout="if(!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(40, 167, 69, 0.3)'; }"
+                            onclick="sendNotifications()">
                             <i class="fas fa-bell" style="font-size: 13px;"></i>
-                            Notify All
+                            <span id="notifyBtnText">Notify All</span>
+                            <span id="notifyBtnCount"
+                                style="display: none; background: rgba(255,255,255,0.3); padding: 2px 6px; border-radius: 10px; font-size: 12px; margin-left: 4px;"></span>
                         </button>
                     </div>
 
@@ -444,8 +448,19 @@
                                         </td>
                                         <td>
                                             @if($membership->expiry_date)
-                                                <span class="badge bg-warning">
-                                                    {{ \Carbon\Carbon::parse($membership->expiry_date)->format('M d, Y') }}
+                                                @php
+                                                    $expiryDate = \Carbon\Carbon::parse($membership->expiry_date);
+                                                    $daysRemaining = $expiryDate->diffInDays(\Carbon\Carbon::now());
+                                                    $isExpiringSoon = $daysRemaining <= 20;
+                                                @endphp
+                                                <span class="badge {{ $isExpiringSoon ? 'bg-danger' : 'bg-warning' }}"
+                                                    data-expiring="{{ $isExpiringSoon ? 'true' : 'false' }}">
+                                                    {{ $expiryDate->format('M d, Y') }}
+                                                    @if($isExpiringSoon)
+                                                        <small style="display: block; font-size: 10px; margin-top: 2px;">
+                                                            {{ $daysRemaining }} days left
+                                                        </small>
+                                                    @endif
                                                 </span>
                                             @else
                                                 <span class="text-muted">N/A</span>
@@ -577,9 +592,142 @@
                 pdfDateField.value = this.value;
             });
 
+            // Notify All Button Functionality
+            function checkExpiringMemberships() {
+                const expiringBadges = document.querySelectorAll('span[data-expiring="true"]');
+                const notifyBtn = document.getElementById('notifyAllBtn');
+                const notifyBtnText = document.getElementById('notifyBtnText');
+                const notifyBtnCount = document.getElementById('notifyBtnCount');
+
+                const expiringCount = expiringBadges.length;
+                const lastNotified = localStorage.getItem('lastNotificationSent');
+                const now = new Date().getTime();
+                const cooldownPeriod = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+                // Check if cooldown period has passed
+                const canSendNotification = !lastNotified || (now - parseInt(lastNotified)) > cooldownPeriod;
+
+                if (expiringCount > 0 && canSendNotification) {
+                    notifyBtn.disabled = false;
+                    notifyBtn.style.opacity = '1';
+                    notifyBtn.style.cursor = 'pointer';
+                    notifyBtnCount.style.display = 'inline';
+                    notifyBtnCount.textContent = expiringCount;
+                    notifyBtnText.textContent = expiringCount === 1 ? 'Notify User' : 'Notify All';
+                } else {
+                    notifyBtn.disabled = true;
+                    notifyBtn.style.opacity = '0.6';
+                    notifyBtn.style.cursor = 'not-allowed';
+                    notifyBtnCount.style.display = 'none';
+
+                    if (expiringCount === 0) {
+                        notifyBtnText.textContent = 'No Expiring Memberships';
+                    } else if (!canSendNotification) {
+                        const timeLeft = cooldownPeriod - (now - parseInt(lastNotified));
+                        const hoursLeft = Math.ceil(timeLeft / (60 * 60 * 1000));
+                        notifyBtnText.textContent = `Wait ${hoursLeft}h to notify again`;
+                    }
+                }
+            }
+
+            function sendNotifications() {
+                const notifyBtn = document.getElementById('notifyAllBtn');
+                if (notifyBtn.disabled) return;
+
+                // Show loading state
+                const originalText = document.getElementById('notifyBtnText').textContent;
+                document.getElementById('notifyBtnText').textContent = 'Sending...';
+                notifyBtn.disabled = true;
+                notifyBtn.style.opacity = '0.6';
+
+                // Collect expiring memberships data
+                const expiringMemberships = [];
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    const expiringBadge = row.querySelector('span[data-expiring="true"]');
+                    if (expiringBadge) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 5) {
+                            expiringMemberships.push({
+                                id: cells[1].textContent.trim(),
+                                firstName: cells[2].textContent.trim(),
+                                lastName: cells[3].textContent.trim(),
+                                email: cells[4].textContent.trim(),
+                                expiryDate: expiringBadge.textContent.split('\n')[0].trim(),
+                                daysLeft: expiringBadge.textContent.includes('days left') ?
+                                    expiringBadge.textContent.match(/(\d+) days left/)?.[1] : null
+                            });
+                        }
+                    }
+                });
+
+                // Send AJAX request to backend
+                fetch('/api/send-expiry-notifications', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ||
+                            document.querySelector('input[name="_token"]')?.value
+                    },
+                    body: JSON.stringify({
+                        memberships: expiringMemberships
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Store timestamp for cooldown
+                            localStorage.setItem('lastNotificationSent', new Date().getTime().toString());
+
+                            // Show success message
+                            showNotificationAlert(`✅ Successfully sent notifications to ${data.count} member(s)`, 'success');
+
+                            // Update button state
+                            checkExpiringMemberships();
+                        } else {
+                            throw new Error(data.message || 'Failed to send notifications');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotificationAlert('❌ Failed to send notifications. Please try again.', 'error');
+
+                        // Reset button state
+                        document.getElementById('notifyBtnText').textContent = originalText;
+                        notifyBtn.disabled = false;
+                        notifyBtn.style.opacity = '1';
+                    });
+            }
+
+            function showNotificationAlert(message, type) {
+                // Create alert element
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'custom-alert-message';
+                alertDiv.style.backgroundColor = type === 'success' ? '#d4edda' : '#f8d7da';
+                alertDiv.style.color = type === 'success' ? '#155724' : '#721c24';
+                alertDiv.style.borderColor = type === 'success' ? '#c3e6cb' : '#f5c6cb';
+                alertDiv.style.marginTop = '16px';
+                alertDiv.textContent = message;
+
+                // Insert after the header
+                const headerDiv = document.querySelector('.table-section > div');
+                headerDiv.insertAdjacentElement('afterend', alertDiv);
+
+                // Remove after 5 seconds
+                setTimeout(() => {
+                    alertDiv.classList.add('fade-out');
+                    setTimeout(() => alertDiv.remove(), 300);
+                }, 5000);
+            }
+
             // Initialize selection count on page load
             document.addEventListener("DOMContentLoaded", function () {
                 updateSelectionCount();
+                checkExpiringMemberships();
+
+                // Check expiring memberships every 5 minutes
+                setInterval(checkExpiringMemberships, 5 * 60 * 1000);
             });
         </script>
 

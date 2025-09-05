@@ -26,6 +26,7 @@ use App\Http\Controllers\MobilePasswordController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\MobileProfileController;
 use App\Http\Controllers\MembershipRenewalController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -153,3 +154,9 @@ Route::get('/mobile/announcements/{id}', [AnnouncementController::class, 'apiSho
 Route::middleware('auth:api')->post('/mobile/announcements', [AnnouncementController::class, 'apiStore']);
 Route::middleware('auth:api')->put('/mobile/announcements/{id}', [AnnouncementController::class, 'apiUpdate']);
 Route::middleware('auth:api')->delete('/mobile/announcements/{id}', [AnnouncementController::class, 'apiDestroy']);
+
+// Notification API Routes
+Route::post('/send-expiry-notifications', [NotificationController::class, 'sendExpiryNotifications']);
+Route::get('/mobile/notifications', [NotificationController::class, 'getUserNotifications']);
+Route::get('/mobile/notifications/count', [NotificationController::class, 'getCount']);
+Route::middleware('auth:api')->post('/mobile/notifications/{id}/read', [NotificationController::class, 'markAsRead']);

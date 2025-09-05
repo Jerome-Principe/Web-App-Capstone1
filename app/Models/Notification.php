@@ -14,7 +14,10 @@ class Notification extends Model
         'description',
         'date',
         'is_deleted',
-        'is_read'
+        'is_read',
+        'user_email',
+        'membership_id',
+        'notification_type'
     ];
 
     protected $casts = [
