@@ -305,111 +305,6 @@
                             </div>
                         </div>
 
-                        <!-- Messages -->
-                        <div class="relative">
-                            <span
-                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">3</span>
-                            <a href="#"
-                                class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-                                data-toggle="dropdown">
-                                <i class="lni-envelope text-gray-600 text-lg"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-lg">
-                                <li>
-                                    <div class="dropdown-item align-self-center">
-                                        <h5><span class="badge badge-primary badge-pro float-right">745</span>Messages
-                                        </h5>
-                                    </div>
-                                </li>
-                                <li>
-                                    <ul class="list-media">
-                                        <li class="list-item">
-                                            <a href="#" class="media-hover">
-                                                <div class="media-img">
-                                                    <img src={{asset('assets/admin-dashboard/img/users/avatar-1.jpg')}}
-                                                        alt="">
-                                                </div>
-                                                <div class="info">
-                                                    <span class="title">
-                                                        Amanda Robertson
-                                                    </span>
-                                                    <span class="sub-title">Dummy text of the printing and typesetting
-                                                        industry.</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="list-item">
-                                            <a href="#" class="media-hover">
-                                                <div class="media-img">
-                                                    <img src={{asset('assets/admin-dashboard/img/users/avatar-2.jpg')}}
-                                                        alt="">
-                                                </div>
-                                                <div class="info">
-                                                    <span class="title">
-                                                        Danny Donovan
-                                                    </span>
-                                                    <span class="sub-title">It is a long established fact that a reader
-                                                        will</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="list-item">
-                                            <a href="#" class="media-hover">
-                                                <div class="media-img">
-                                                    <img src={{asset('assets/admin-dashboard/img/users/avatar-3.jpg')}}
-                                                        alt="">
-                                                </div>
-                                                <div class="info">
-                                                    <span class="title">
-                                                        Frank Handrics
-                                                    </span>
-                                                    <span class="sub-title">You have 87 unread messages</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="check-all text-center">
-                                    <span>
-                                        <a href="#" class="text-gray">View All</a>
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Notifications -->
-                        <div class="relative">
-                            <span
-                                class="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
-                                id="notification-counter">0</span>
-                            <a href="#"
-                                class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-                                data-toggle="dropdown">
-                                <i class="lni-alarm text-gray-600 text-lg"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-lg">
-                                <li>
-                                    <h5 class="n-title text-center">
-                                        <i class="lni-alarm"></i>
-                                        <span>Notifications</span>
-                                        <small class="text-muted" id="notification-total">(0)</small>
-                                    </h5>
-                                </li>
-                                <li>
-                                    <ul class="list-media" id="notification-list">
-                                        <li class="list-item text-center">
-                                            <span class="text-gray">Loading notifications...</span>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="check-all text-center">
-                                    <span>
-                                        <a href="#" class="text-gray" id="mark-all-read">Mark all as read</a>
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-
                         <!-- User Profile -->
                         <div class="relative">
                             <a href="#"
@@ -441,12 +336,6 @@
                                     <a href="{{ route('profile.edit') }}">
                                         <i class="fa fa-user"></i>
                                         <span>Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <i class="fa fa-envelope"></i>
-                                        <span>Inbox</span>
                                     </a>
                                 </li>
                                 <li>
