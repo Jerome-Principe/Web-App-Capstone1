@@ -325,7 +325,14 @@
             <!-- Memberships Section -->
             <div class="content-card">
                 <div class="table-section">
-                    <h2>Membership List</h2>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e1e5e9;">
+                        <h2 style="margin: 0; font-size: 20px; font-weight: 500; color: #333;">Membership List</h2>
+                        <button type="button" class="btn btn-success"
+                            style="background-color: #28a745; border-color: #28a745; padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                            Notify All
+                        </button>
+                    </div>
 
                     <!-- Success message if exists -->
                     @if(session('success'))
