@@ -277,6 +277,82 @@
             .action-buttons {
                 flex-direction: column;
             }
+
+            /* Mobile table responsive design */
+            .table-container {
+                border: none;
+                overflow-x: visible;
+                max-height: none;
+            }
+
+            table {
+                border: none;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tbody tr {
+                border: 1px solid #e1e5e9;
+                border-radius: 8px;
+                margin-bottom: 16px;
+                padding: 16px;
+                background: white;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                position: relative;
+            }
+
+            tbody tr:hover {
+                background: #f8f9fa;
+            }
+
+            tbody td {
+                border: none;
+                padding: 8px 0;
+                text-align: left !important;
+                position: relative;
+                padding-left: 50% !important;
+                word-wrap: break-word;
+                min-width: auto;
+            }
+
+            tbody td:before {
+                content: attr(data-label) ": ";
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                text-align: left;
+                font-weight: 600;
+                color: #333;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            /* Hide checkbox column on mobile */
+            tbody td:first-child {
+                display: none;
+            }
+
+            /* Medical form specific mobile styles */
+            .badge {
+                font-size: 11px;
+                padding: 3px 6px;
+            }
         }
 
         /* Fade animations */
@@ -372,125 +448,125 @@
                             <tbody>
                                 @forelse($medicalForms as $form)
                                     <tr>
-                                        <td>
+                                        <td data-label="Select">
                                             <input type="checkbox" name="selected[]" value="{{ $form->id }}"
                                                 onchange="updateSelectionCount()" />
                                         </td>
-                                        <td>
+                                        <td data-label="ID">
                                             <span class="badge bg-primary">{{ $form->id }}</span>
                                         </td>
-                                        <td>
+                                        <td data-label="Emergency Contact">
                                             <strong>{{ $form->emergency_contact ?? 'N/A' }}</strong>
                                         </td>
-                                        <td>{{ $form->relationship ?? 'N/A' }}</td>
-                                        <td>{{ $form->emergency_number ?? 'N/A' }}</td>
-                                        <td>
+                                        <td data-label="Relationship">{{ $form->relationship ?? 'N/A' }}</td>
+                                        <td data-label="Contact Number">{{ $form->emergency_number ?? 'N/A' }}</td>
+                                        <td data-label="Heart Disease">
                                             <span class="badge {{ $form->heart_disease ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->heart_disease ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Asthma">
                                             <span class="badge {{ $form->asthma ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->asthma ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Gout">
                                             <span class="badge {{ $form->gout ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->gout ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Cardiovascular">
                                             <span
                                                 class="badge {{ $form->cardiovascular_condition ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->cardiovascular_condition ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="High Blood Pressure">
                                             <span class="badge {{ $form->high_blood_pressure ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->high_blood_pressure ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Dizziness">
                                             <span class="badge {{ $form->dizziness ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->dizziness ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Arthritis">
                                             <span class="badge {{ $form->arthritis ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->arthritis ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Infectious Disease">
                                             <span class="badge {{ $form->infectious_disease ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->infectious_disease ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Black Outs">
                                             <span class="badge {{ $form->black_outs ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->black_outs ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Diabetes">
                                             <span class="badge {{ $form->diabetes ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->diabetes ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Fainting">
                                             <span class="badge {{ $form->fainting ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->fainting ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Epilepsy">
                                             <span class="badge {{ $form->epilepsy ? 'bg-danger' : 'bg-success' }}">
                                                 {{ $form->epilepsy ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>{{ $form->other_condition1 ?? 'N/A' }}</td>
-                                        <td>
+                                        <td data-label="Other Conditions">{{ $form->other_condition1 ?? 'N/A' }}</td>
+                                        <td data-label="Knees">
                                             <span class="badge {{ $form->knees ? 'bg-warning' : 'bg-success' }}">
                                                 {{ $form->knees ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Lower Back">
                                             <span class="badge {{ $form->lower_back ? 'bg-warning' : 'bg-success' }}">
                                                 {{ $form->lower_back ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Neck">
                                             <span class="badge {{ $form->neck ? 'bg-warning' : 'bg-success' }}">
                                                 {{ $form->neck ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Shoulders">
                                             <span class="badge {{ $form->shoulders ? 'bg-warning' : 'bg-success' }}">
                                                 {{ $form->shoulders ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Hips">
                                             <span class="badge {{ $form->hips ? 'bg-warning' : 'bg-success' }}">
                                                 {{ $form->hips ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Pelvis">
                                             <span class="badge {{ $form->pelvis ? 'bg-warning' : 'bg-success' }}">
                                                 {{ $form->pelvis ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Flexibility">
                                             <span class="badge {{ $form->flexibility ? 'bg-warning' : 'bg-success' }}">
                                                 {{ $form->flexibility ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
-                                        <td>{{ $form->other_condition2 ?? 'N/A' }}</td>
-                                        <td>
+                                        <td data-label="Other Injuries">{{ $form->other_condition2 ?? 'N/A' }}</td>
+                                        <td data-label="Pregnant">
                                             <span class="badge {{ $form->pregnant ? 'bg-warning' : 'bg-success' }}">
                                                 {{ $form->pregnant ?? 'No' }}
                                             </span>
                                         </td>
-                                        <td>{{ $form->weeks_pregnant ?? 'N/A' }}</td>
-                                        <td>{{ $form->physical_activities ?? 'N/A' }}</td>
-                                        <td>{{ $form->smoke_details ?? 'N/A' }}</td>
-                                        <td>{{ $form->medication_details ?? 'N/A' }}</td>
+                                        <td data-label="Weeks Pregnant">{{ $form->weeks_pregnant ?? 'N/A' }}</td>
+                                        <td data-label="Physical Activities">{{ $form->physical_activities ?? 'N/A' }}</td>
+                                        <td data-label="Smoking Details">{{ $form->smoke_details ?? 'N/A' }}</td>
+                                        <td data-label="Medication Details">{{ $form->medication_details ?? 'N/A' }}</td>
                                     </tr>
                                 @empty
                                     <tr>

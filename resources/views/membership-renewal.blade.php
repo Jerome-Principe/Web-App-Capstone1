@@ -274,10 +274,85 @@
                 width: 150px !important;
             }
 
-
-
             .action-buttons {
                 flex-direction: column;
+            }
+
+            /* Mobile table responsive design */
+            .table-container {
+                border: none;
+                overflow-x: visible;
+            }
+
+            table {
+                border: none;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tbody tr {
+                border: 1px solid #e1e5e9;
+                border-radius: 8px;
+                margin-bottom: 16px;
+                padding: 16px;
+                background: white;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                position: relative;
+            }
+
+            tbody tr:hover {
+                background: #f8f9fa;
+            }
+
+            tbody td {
+                border: none;
+                padding: 8px 0;
+                text-align: left !important;
+                position: relative;
+                padding-left: 50% !important;
+                word-wrap: break-word;
+                min-width: auto;
+            }
+
+            tbody td:before {
+                content: attr(data-label) ": ";
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                text-align: left;
+                font-weight: 600;
+                color: #333;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            /* Action buttons on mobile */
+            .action-buttons {
+                flex-direction: row;
+                gap: 8px;
+                justify-content: flex-start;
+            }
+
+            .btn-approve,
+            .btn-decline {
+                font-size: 11px;
+                padding: 4px 8px;
             }
         }
 
@@ -346,18 +421,18 @@
                         <tbody>
                             @forelse($renewals ?? collect([]) as $renewal)
                                 <tr>
-                                    <td>
+                                    <td data-label="ID">
                                         <span class="badge bg-primary">{{ $renewal->id ?? 'N/A' }}</span>
                                     </td>
-                                    <td>
+                                    <td data-label="Name">
                                         <strong>{{ $renewal->name ?? 'N/A' }}</strong>
                                     </td>
-                                    <td>{{ $renewal->membership_type ?? 'N/A' }}</td>
-                                    <td>{{ $renewal->payment_method ?? 'N/A' }}</td>
-                                    <td>{{ $renewal->gcash_number ?? 'N/A' }}</td>
-                                    <td>{{ $renewal->account_name ?? 'N/A' }}</td>
-                                    <td>{{ $renewal->reference_number ?? 'N/A' }}</td>
-                                    <td>
+                                    <td data-label="Membership Type">{{ $renewal->membership_type ?? 'N/A' }}</td>
+                                    <td data-label="Payment Method">{{ $renewal->payment_method ?? 'N/A' }}</td>
+                                    <td data-label="GCash #">{{ $renewal->gcash_number ?? 'N/A' }}</td>
+                                    <td data-label="Account Name">{{ $renewal->account_name ?? 'N/A' }}</td>
+                                    <td data-label="Reference #">{{ $renewal->reference_number ?? 'N/A' }}</td>
+                                    <td data-label="Proof of Payment">
                                         @if(isset($renewal->proof_of_payment_url) && $renewal->proof_of_payment_url)
                                             <a href="{{ route('membership-renewal.view-proof', $renewal->id) }}" target="_blank"
                                                 class="btn btn-sm btn-outline-primary">
@@ -367,7 +442,7 @@
                                             <span class="text-muted">No proof uploaded</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td data-label="Action">
                                         @if($renewal->status === 'Pending')
                                             <div class="action-buttons">
                                                 <form action="{{ route('membership-renewal.approve', $renewal->id) }}" method="POST"

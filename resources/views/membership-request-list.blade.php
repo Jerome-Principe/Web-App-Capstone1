@@ -277,6 +277,71 @@
             .action-buttons {
                 flex-direction: column;
             }
+
+            /* Mobile table responsive design */
+            .table-container {
+                border: none;
+                overflow-x: visible;
+                max-height: none;
+            }
+
+            table {
+                border: none;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tbody tr {
+                border: 1px solid #e1e5e9;
+                border-radius: 8px;
+                margin-bottom: 16px;
+                padding: 16px;
+                background: white;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                position: relative;
+            }
+
+            tbody tr:hover {
+                background: #f8f9fa;
+            }
+
+            tbody td {
+                border: none;
+                padding: 8px 0;
+                text-align: left !important;
+                position: relative;
+                padding-left: 50% !important;
+                word-wrap: break-word;
+                min-width: auto;
+            }
+
+            tbody td:before {
+                content: attr(data-label) ": ";
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                text-align: left;
+                font-weight: 600;
+                color: #333;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            /* Hide checkbox column on mobile */
+            tbody td:first-child {
+                display: none;
+            }
         }
 
         /* Fade animations */
@@ -358,34 +423,34 @@
                             <tbody>
                                 @forelse($memberships as $membership)
                                     <tr>
-                                        <td>
+                                        <td data-label="Select">
                                             <input type="checkbox" name="selected[]" value="{{ $membership->id }}"
                                                 onchange="updateSelectionCount()" />
                                         </td>
-                                        <td>
+                                        <td data-label="ID">
                                             <span class="badge bg-primary">{{ $membership->id }}</span>
                                         </td>
-                                        <td>
+                                        <td data-label="Last Name">
                                             <strong>{{ $membership->last_name }}</strong>
                                         </td>
-                                        <td>
+                                        <td data-label="First Name">
                                             <strong>{{ $membership->first_name }}</strong>
                                         </td>
-                                        <td>{{ $membership->middle_name ?? 'N/A' }}</td>
-                                        <td>{{ $membership->date ? \Carbon\Carbon::parse($membership->date)->format('M d, Y') : 'N/A' }}</td>
-                                        <td>
+                                        <td data-label="Middle Name">{{ $membership->middle_name ?? 'N/A' }}</td>
+                                        <td data-label="Date of Birth">{{ $membership->date ? \Carbon\Carbon::parse($membership->date)->format('M d, Y') : 'N/A' }}</td>
+                                        <td data-label="Gender">
                                             <span class="badge">{{ $membership->gender ?? 'N/A' }}</span>
                                         </td>
-                                        <td>{{ $membership->age ?? 'N/A' }}</td>
-                                        <td>{{ $membership->weight ?? 'N/A' }}</td>
-                                        <td>{{ $membership->height ?? 'N/A' }}</td>
-                                        <td>{{ $membership->address ?? 'N/A' }}</td>
-                                        <td>{{ $membership->postal_code ?? 'N/A' }}</td>
-                                        <td>{{ $membership->email }}</td>
-                                        <td>{{ $membership->work ?? 'N/A' }}</td>
-                                        <td>{{ $membership->mobile ?? 'N/A' }}</td>
-                                        <td>{{ $membership->gym_source ?? 'N/A' }}</td>
-                                        <td>
+                                        <td data-label="Age">{{ $membership->age ?? 'N/A' }}</td>
+                                        <td data-label="Weight">{{ $membership->weight ?? 'N/A' }}</td>
+                                        <td data-label="Height">{{ $membership->height ?? 'N/A' }}</td>
+                                        <td data-label="Address">{{ $membership->address ?? 'N/A' }}</td>
+                                        <td data-label="Postal Code">{{ $membership->postal_code ?? 'N/A' }}</td>
+                                        <td data-label="Email">{{ $membership->email }}</td>
+                                        <td data-label="Work">{{ $membership->work ?? 'N/A' }}</td>
+                                        <td data-label="Mobile Number">{{ $membership->mobile ?? 'N/A' }}</td>
+                                        <td data-label="Gym Source">{{ $membership->gym_source ?? 'N/A' }}</td>
+                                        <td data-label="Membership Type">
                                             <span class="badge bg-success">{{ $membership->membership_type ?? 'N/A' }}</span>
                                         </td>
                                     </tr>

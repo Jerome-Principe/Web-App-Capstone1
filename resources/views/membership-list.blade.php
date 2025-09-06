@@ -292,6 +292,81 @@
             .action-buttons {
                 flex-direction: column;
             }
+
+            /* Mobile table responsive design */
+            .table-container {
+                border: none;
+                overflow-x: visible;
+            }
+
+            table {
+                border: none;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tbody tr {
+                border: 1px solid #e1e5e9;
+                border-radius: 8px;
+                margin-bottom: 16px;
+                padding: 16px;
+                background: white;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                position: relative;
+            }
+
+            tbody tr:hover {
+                background: #f8f9fa;
+            }
+
+            tbody td {
+                border: none;
+                padding: 8px 0;
+                text-align: left !important;
+                position: relative;
+                padding-left: 50% !important;
+                word-wrap: break-word;
+                min-width: auto;
+            }
+
+            tbody td:before {
+                content: attr(data-label) ": ";
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                text-align: left;
+                font-weight: 600;
+                color: #333;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            /* Hide checkbox column on mobile */
+            tbody td:first-child {
+                display: none;
+            }
+
+            /* Badge styling for mobile */
+            .badge {
+                font-size: 11px;
+                padding: 3px 6px;
+            }
         }
 
         /* Fade animations */
@@ -423,21 +498,21 @@
                             <tbody>
                                 @forelse($memberships as $membership)
                                     <tr>
-                                        <td>
+                                        <td data-label="Select">
                                             <input type="checkbox" name="selected[]" value="{{ $membership->id }}"
                                                 onchange="updateSelectionCount()" />
                                         </td>
-                                        <td>
+                                        <td data-label="ID">
                                             <span class="badge bg-primary">{{ $membership->id }}</span>
                                         </td>
-                                        <td>
+                                        <td data-label="First Name">
                                             <strong>{{ $membership->first_name }}</strong>
                                         </td>
-                                        <td>
+                                        <td data-label="Last Name">
                                             <strong>{{ $membership->last_name }}</strong>
                                         </td>
-                                        <td>{{ $membership->email }}</td>
-                                        <td>
+                                        <td data-label="Email">{{ $membership->email }}</td>
+                                        <td data-label="Start Date">
                                             @if($membership->start_date)
                                                 <span class="badge bg-info">
                                                     {{ \Carbon\Carbon::parse($membership->start_date)->format('M d, Y') }}
@@ -446,7 +521,7 @@
                                                 <span class="text-muted">N/A</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td data-label="Expiry Date">
                                             @if($membership->expiry_date)
                                                 @php
                                                     $expiryDate = \Carbon\Carbon::parse($membership->expiry_date);
@@ -466,12 +541,12 @@
                                                 <span class="text-muted">N/A</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td data-label="Membership Type">
                                             <span class="badge bg-success">
                                                 {{ ucfirst(optional($membership->requestMembership)->membership_type ?? 'N/A') }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Status">
                                             @if($membership->status === 'Active')
                                                 <span class="badge bg-success">{{ $membership->status }}</span>
                                             @elseif($membership->status === 'Expired')
