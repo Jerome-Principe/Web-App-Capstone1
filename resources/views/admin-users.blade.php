@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', 'Admin User List')
+
 @section('content')
     <div class="container-fluid">
         <div class="row">
