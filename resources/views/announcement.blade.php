@@ -10,6 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
+    <link rel="icon" href="{{asset('assets/images/muscle.png')}}" type="image/png">
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -794,12 +796,12 @@
                 const dropzone = document.getElementById('pdfDropzone');
                 if (file) {
                     dropzone.innerHTML = `
-                                                            <div class="dropzone-content">
-                                                                <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                                                <p class="mb-2"><strong>${file.name}</strong></p>
-                                                                <p class="text-muted">File selected</p>
-                                                            </div>
-                                                        `;
+                                                                <div class="dropzone-content">
+                                                                    <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                                                    <p class="mb-2"><strong>${file.name}</strong></p>
+                                                                    <p class="text-muted">File selected</p>
+                                                                </div>
+                                                            `;
                 }
             }
 
@@ -822,8 +824,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                        View Current PDF
-                                    </a>`;
+                                            View Current PDF
+                                        </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';

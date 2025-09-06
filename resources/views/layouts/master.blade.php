@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{asset('assets/images/muscle.png')}}" type="image/png">
     <title> Fitdroid - Admin and Dashboard Template</title>
 
     <!-- Bootstrap CSS -->
