@@ -27,6 +27,25 @@
             border: 1px solid #e1e5e9;
         }
 
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+
         .header-section {
             display: flex;
             justify-content: flex-start;
@@ -271,6 +290,12 @@
 
     <body>
         <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Walk-in Clients</h1>
+                <p>Manage walk-in client sessions and daily visits</p>
+            </div>
+
             <div class="header-section">
                 <h1>Walkin Clients</h1>
                 <div>

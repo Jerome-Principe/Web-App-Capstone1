@@ -35,6 +35,25 @@
             border: 1px solid #e1e5e9;
         }
 
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+
         .header-section {
             display: flex;
             justify-content: flex-start;
@@ -197,6 +216,12 @@
 
     <body>
         <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Goal Records</h1>
+                <p>Track member fitness goals and progress monitoring</p>
+            </div>
+
             <div class="header-section">
                 <h1>Goal For Mobile Information</h1>
             </div>
