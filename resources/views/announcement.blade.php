@@ -261,6 +261,44 @@
             vertical-align: middle;
         }
 
+        /* Column widths for announcements table */
+        th:first-child,
+        td:first-child {
+            width: 40px;
+        }
+
+        /* Checkbox */
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 60px;
+        }
+
+        /* ID */
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: auto;
+        }
+
+        /* Title */
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: auto;
+        }
+
+        /* Description */
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 100px;
+        }
+
+        /* File */
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 120px;
+        }
+
+        /* Actions */
+
         tbody tr:hover {
             background: #f8f9fa;
         }
@@ -579,14 +617,14 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 40px;">
+                                    <th>
                                         <input type="checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
-                                    <th style="width: 60px;">ID</th>
+                                    <th>ID</th>
                                     <th>Title</th>
                                     <th>Description</th>
-                                    <th style="width: 100px;">File</th>
-                                    <th style="width: 120px;">Actions</th>
+                                    <th>File</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -792,12 +830,12 @@
                 const dropzone = document.getElementById('pdfDropzone');
                 if (file) {
                     dropzone.innerHTML = `
-                                                                                <div class="dropzone-content">
-                                                                                    <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                                                                    <p class="mb-2"><strong>${file.name}</strong></p>
-                                                                                    <p class="text-muted">File selected</p>
-                                                                                </div>
-                                                                            `;
+                                                                                        <div class="dropzone-content">
+                                                                                            <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                                                                            <p class="mb-2"><strong>${file.name}</strong></p>
+                                                                                            <p class="text-muted">File selected</p>
+                                                                                        </div>
+                                                                                    `;
                 }
             }
 
@@ -820,8 +858,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                                            View Current PDF
-                                                        </a>`;
+                                                                    View Current PDF
+                                                                </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';
