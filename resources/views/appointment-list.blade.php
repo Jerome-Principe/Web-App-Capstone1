@@ -512,33 +512,24 @@
                             </tbody>
                         </table>
 
-                        @if($appointments->hasPages())
-                            <!-- Pagination Section -->
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <!-- Previous Page Link -->
-                                    <li class="page-item {{ $appointments->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $appointments->previousPageUrl() }}">
-                                            Previous
-                                        </a>
-                                    </li>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $appointments->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $appointments->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
+                                </li>
 
-                                    <!-- Pagination Numbers -->
-                                    @foreach(range(1, $appointments->lastPage()) as $page)
-                                        <li class="page-item {{ $page == $appointments->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $appointments->url($page) }}">{{ $page }}</a>
-                                        </li>
-                                    @endforeach
-
-                                    <!-- Next Page Link -->
-                                    <li class="page-item {{ !$appointments->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $appointments->nextPageUrl() }}">
-                                            Next
-                                        </a>
+                                @foreach(range(1, $appointments->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $appointments->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $appointments->url($page) }}">{{ $page }}</a>
                                     </li>
-                                </ul>
-                            </nav>
-                        @endif
+                                @endforeach
+
+                                <li class="page-item {{ !$appointments->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $appointments->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
 
                     <!-- Totals Section (Only from Approved Appointments) - Walk-in Style -->

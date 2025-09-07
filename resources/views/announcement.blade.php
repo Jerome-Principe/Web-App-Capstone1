@@ -652,29 +652,24 @@
                             </tbody>
                         </table>
 
-                        @if($announcements->hasPages())
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <li class="page-item {{ $announcements->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $announcements->previousPageUrl() }}">
-                                            Previous
-                                        </a>
-                                    </li>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $announcements->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $announcements->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
+                                </li>
 
-                                    @foreach(range(1, $announcements->lastPage()) as $page)
-                                        <li class="page-item {{ $page == $announcements->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $announcements->url($page) }}">{{ $page }}</a>
-                                        </li>
-                                    @endforeach
-
-                                    <li class="page-item {{ !$announcements->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $announcements->nextPageUrl() }}">
-                                            Next
-                                        </a>
+                                @foreach(range(1, $announcements->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $announcements->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $announcements->url($page) }}">{{ $page }}</a>
                                     </li>
-                                </ul>
-                            </nav>
-                        @endif
+                                @endforeach
+
+                                <li class="page-item {{ !$announcements->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $announcements->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -796,12 +791,12 @@
                 const dropzone = document.getElementById('pdfDropzone');
                 if (file) {
                     dropzone.innerHTML = `
-                                                                <div class="dropzone-content">
-                                                                    <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                                                    <p class="mb-2"><strong>${file.name}</strong></p>
-                                                                    <p class="text-muted">File selected</p>
-                                                                </div>
-                                                            `;
+                                                                        <div class="dropzone-content">
+                                                                            <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                                                            <p class="mb-2"><strong>${file.name}</strong></p>
+                                                                            <p class="text-muted">File selected</p>
+                                                                        </div>
+                                                                    `;
                 }
             }
 
@@ -824,8 +819,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                            View Current PDF
-                                        </a>`;
+                                                    View Current PDF
+                                                </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';

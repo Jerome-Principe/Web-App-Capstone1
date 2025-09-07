@@ -446,25 +446,23 @@
                     </div>
                 </div>
 
-                @if($expenses->hasPages())
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center mt-4">
-                            <li class="page-item {{ $expenses->onFirstPage() ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $expenses->previousPageUrl() }}" tabindex="-1">Previous</a>
-                            </li>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mt-4 mb-4">
+                        <li class="page-item {{ $expenses->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $expenses->previousPageUrl() }}" tabindex="-1">Previous</a>
+                        </li>
 
-                            @foreach(range(1, $expenses->lastPage()) as $page)
-                                <li class="page-item {{ $page == $expenses->currentPage() ? 'active' : '' }}">
-                                    <a class="page-link" href="{{ $expenses->url($page) }}">{{ $page }}</a>
-                                </li>
-                            @endforeach
-
-                            <li class="page-item {{ !$expenses->hasMorePages() ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $expenses->nextPageUrl() }}">Next</a>
+                        @foreach(range(1, $expenses->lastPage()) as $page)
+                            <li class="page-item {{ $page == $expenses->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $expenses->url($page) }}">{{ $page }}</a>
                             </li>
-                        </ul>
-                    </nav>
-                @endif
+                        @endforeach
+
+                        <li class="page-item {{ !$expenses->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $expenses->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
 
