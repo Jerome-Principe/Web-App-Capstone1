@@ -309,7 +309,7 @@
                     </table>
 
                     <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center mt-4">
+                        <ul class="pagination justify-content-center mt-4 mb-4">
                             <li class="page-item {{ $machines->onFirstPage() ? 'disabled' : '' }}">
                                 <a class="page-link" href="{{ $machines->previousPageUrl() }}" tabindex="-1">Previous</a>
                             </li>
