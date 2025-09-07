@@ -13,6 +13,7 @@
     <link rel="stylesheet">
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="{{asset('assets/images/muscle.png')}}" type="image/png">
 
     <title>Loginform</title>
 </head>
@@ -164,6 +165,32 @@
     .alert-dark-danger i.fa {
         margin-right: 8px;
     }
+
+    .password-input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-input-container input {
+        padding-right: 40px;
+    }
+
+    .password-toggle-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #666;
+        font-size: 16px;
+        z-index: 1;
+        transition: color 0.3s ease;
+    }
+
+    .password-toggle-icon:hover {
+        color: #333;
+    }
 </style>
 
 <body>
@@ -190,7 +217,11 @@
                 <!-- Password Field -->
                 <div class="control">
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required>
+                    <div class="password-input-container">
+                        <input type="password" name="password" id="password" required>
+                        <i class="fa fa-eye password-toggle-icon" id="togglePassword"
+                            onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
+                    </div>
                     @if ($errors->has('password'))
                         <div class="text-danger d-flex align-items-center mt-1">
                             <i class="fa fa-exclamation-circle me-2"></i>
@@ -235,6 +266,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6Z5JfMFfQp1m49jWm8yNFf0/3pEj9/h6+6j5LLFujVnY" crossorigin="anonymous">
         </script>
+
+    <!-- Password Toggle Script -->
+    <script>
+        function togglePasswordVisibility(passwordFieldId, toggleIconId) {
+            const passwordField = document.getElementById(passwordFieldId);
+            const toggleIcon = document.getElementById(toggleIconId);
+
+            if (passwordField?.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon?.classList.remove('fa-eye');
+                toggleIcon?.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon?.classList.remove('fa-eye-slash');
+                toggleIcon?.classList.add('fa-eye');
+            }
+        }
+    </script>
 
 </body>
 
