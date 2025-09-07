@@ -12,19 +12,46 @@
     <title>Sale Items List</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1000px;
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .content-card {
+            background: white;
             border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
             border: 1px solid #e1e5e9;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
         }
 
         .header-section {
@@ -168,149 +195,160 @@
 @section('content')
 
     <body>
-        <div class="container">
-            <div class="header-section">
+        <div class="main-wrapper">
+            <!-- Page Header -->
+            <div class="page-header">
                 <h1>Sale Items List</h1>
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
-                        <a href="/sales/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                                aria-hidden="true"></i>Add New
-                        </a>
+                <p>Manage retail items and sales inventory</p>
+            </div>
+
+            <!-- Sale Items Section -->
+            <div class="content-card">
+                <div class="header-section">
+                    <h1>Sale Items List</h1>
+                    <div>
+                        <div class="d-flex justify-content-end position-relative">
+                            <a href="/sales/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                                    aria-hidden="true"></i>Add New
+                            </a>
+                        </div>
+                    </div>
+
+                    @if(session('success'))
+                        <div class="custom-alert-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            setTimeout(function () {
+                                const alert = document.querySelector('.custom-alert-message');
+                                if (alert) {
+                                    alert.classList.add('fade-out');
+                                }
+                            }, 3000);
+                        });
+                    </script>
+                </div>
+
+                <div class="filter-options">
+                    <div class="filter-links">
+                        <!-- Link to view all drinks -->
+                        <a href="#" id="select-all-link" class="btn-style">All (0)</a>
+                    </div>
+
+                    <div>
+                        <!-- Date Filter Form -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <form id="date-filter-form" method="GET" action="{{ route('sales.filterByDate') }}">
+                                <label for="date" class="form-label">Select Date:</label>
+                                <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                    style="width: 200px;" required>
+                                <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                            </form>
+
+                            <!-- Export PDF by Date -->
+                            <form method="GET" action="{{ route('sales.exportPdfByDate') }}">
+                                <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                                <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
-                @if(session('success'))
-                    <div class="custom-alert-message">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                alert.classList.add('fade-out');
-                            }
-                        }, 3000);
-                    });
-                </script>
-            </div>
-
-            <div class="filter-options">
-                <div class="filter-links">
-                    <!-- Link to view all drinks -->
-                    <a href="#" id="select-all-link" class="btn-style">All (0)</a>
+                <!-- Information Note about Data Integrity -->
+                <div class="alert alert-info" role="alert" style="margin-bottom: 20px;">
+                    <i class="fa fa-info-circle me-2"></i>
+                    <strong>Note:</strong> Sale items can be deleted, but please ensure you have proper authorization and
+                    that
+                    the deletion won't affect any business reports or analytics.
                 </div>
 
-                <div>
-                    <!-- Date Filter Form -->
-                    <div class="d-flex justify-content-between align-items-center">
-                        <form id="date-filter-form" method="GET" action="{{ route('sales.filterByDate') }}">
-                            <label for="date" class="form-label">Select Date:</label>
-                            <input type="date" name="date" id="date" class="form-control d-inline-block"
-                                style="width: 200px;" required>
-                            <button type="submit" class="btn btn-primary ms-2">Filter</button>
-                        </form>
-
-                        <!-- Export PDF by Date -->
-                        <form method="GET" action="{{ route('sales.exportPdfByDate') }}">
-                            <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
-                            <button type="submit" class="btn btn-success ms-2">Export PDF</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Information Note about Data Integrity -->
-            <div class="alert alert-info" role="alert" style="margin-bottom: 20px;">
-                <i class="fa fa-info-circle me-2"></i>
-                <strong>Note:</strong> Sale items can be deleted, but please ensure you have proper authorization and that
-                the deletion won't affect any business reports or analytics.
-            </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Item Name</th>
-                            <th class="text-center">Quantity</th>
-                            <th class="text-center">Price</th>
-                            <th class="text-center">Total</th>
-                            <th class="text-center">Date</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach($items as $index => $item)
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $item->id }}"
-                                        onchange="updateSelectionCount()" />
-                                </td>
-                                <td class="text-center">
-                                    {{ ($items->currentPage() - 1) * $items->perPage() + $loop->index + 1  }}
-                                </td>
-                                <td class="text-center">{{ $item->item_name }}</td>
-                                <td class="text-center">{{ $item->quantity }}</td>
-                                <td class="text-center">{{ $item->price }}</td>
-                                <td class="text-center">{{ $item->total }}</td>
-                                <td class="text-center">
-                                    <div class="date-display">
-                                        <i class="fa fa-calendar"></i>
-                                        <span>{{ \Carbon\Carbon::parse($item->date)->format('M d, Y') }}</span>
-                                    </div>
-                                </td>
-                                <td class="d-flex justify-content-center">
-                                    <a href="{{ route('sales.edit', $item->id) }}" class="btn btn-sm btn-outline-primary me-2">
-                                        <i class="fa fa-pencil mr-1"></i>
-                                        Update
-                                    </a>
-                                    <form method="POST" action="{{ route('sales.destroy', $item->id) }}"
-                                        style="display: inline;"
-                                        onsubmit="return confirm('Are you sure you want to delete this sale item?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="fa fa-trash mr-1"></i>
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Item Name</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Total</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
 
-                <!-- Total Price Display -->
-                @if(isset($totalPrice))
-                    <div class="total-income">
-                        <h5><i class="fa fa-money-bill-wave"></i> Total Price: ₱{{ number_format($totalPrice, 2) }}</h5>
-                    </div>
-                @endif
+                        <tbody>
+                            @foreach($items as $index => $item)
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $item->id }}"
+                                            onchange="updateSelectionCount()" />
+                                    </td>
+                                    <td class="text-center">
+                                        {{ ($items->currentPage() - 1) * $items->perPage() + $loop->index + 1  }}
+                                    </td>
+                                    <td class="text-center">{{ $item->item_name }}</td>
+                                    <td class="text-center">{{ $item->quantity }}</td>
+                                    <td class="text-center">{{ $item->price }}</td>
+                                    <td class="text-center">{{ $item->total }}</td>
+                                    <td class="text-center">
+                                        <div class="date-display">
+                                            <i class="fa fa-calendar"></i>
+                                            <span>{{ \Carbon\Carbon::parse($item->date)->format('M d, Y') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="d-flex justify-content-center">
+                                        <a href="{{ route('sales.edit', $item->id) }}"
+                                            class="btn btn-sm btn-outline-primary me-2">
+                                            <i class="fa fa-pencil mr-1"></i>
+                                            Update
+                                        </a>
+                                        <form method="POST" action="{{ route('sales.destroy', $item->id) }}"
+                                            style="display: inline;"
+                                            onsubmit="return confirm('Are you sure you want to delete this sale item?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fa fa-trash mr-1"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    <!-- Total Price Display -->
+                    @if(isset($totalPrice))
+                        <div class="total-income">
+                            <h5><i class="fa fa-money-bill-wave"></i> Total Price: ₱{{ number_format($totalPrice, 2) }}</h5>
+                        </div>
+                    @endif
+
+                </div>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item {{ $items->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $items->previousPageUrl() }}" tabindex="-1">Previous</a>
+                        </li>
+
+                        @foreach(range(1, $items->lastPage()) as $page)
+                            <li class="page-item {{ $page == $items->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $items->url($page) }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
+
+                        <li class="page-item {{ !$items->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $items->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
 
             </div>
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item {{ $items->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $items->previousPageUrl() }}" tabindex="-1">Previous</a>
-                    </li>
-
-                    @foreach(range(1, $items->lastPage()) as $page)
-                        <li class="page-item {{ $page == $items->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $items->url($page) }}">{{ $page }}</a>
-                        </li>
-                    @endforeach
-
-                    <li class="page-item {{ !$items->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $items->nextPageUrl() }}">Next</a>
-                    </li>
-                </ul>
-            </nav>
-
         </div>
     </body>
 

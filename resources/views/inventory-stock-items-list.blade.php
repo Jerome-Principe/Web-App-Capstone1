@@ -12,19 +12,46 @@
     <title>Stock Item List</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1000px;
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .content-card {
+            background: white;
             border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
             border: 1px solid #e1e5e9;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
         }
 
         .header-section {
@@ -168,9 +195,17 @@
 @section('content')
 
     <body>
-        <div class="container">
-            <div class="header-section">
+        <div class="main-wrapper">
+            <!-- Page Header -->
+            <div class="page-header">
                 <h1>Stock Items List</h1>
+                <p>Track stock inventory and quantities</p>
+            </div>
+
+            <!-- Stock Items Section -->
+            <div class="content-card">
+                <div class="header-section">
+                    <h1>Stock Items List</h1>
                 <div>
                     <div class="d-flex justify-content-end position-relative">
                         <a href="{{ route('stock-items.create') }}" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
@@ -314,6 +349,7 @@
                         </li>
                     </ul>
                 </nav>
+            </div>
             </div>
         </div>
     </body>

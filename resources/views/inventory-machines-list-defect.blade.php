@@ -12,19 +12,46 @@
     <title>Defect Machines List</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1000px;
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .content-card {
+            background: white;
             border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
             border: 1px solid #e1e5e9;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
         }
 
         .header-section {
@@ -162,135 +189,145 @@
 @section('content')
 
     <body>
-        <div class="container">
-            <div class="header-section">
+        <div class="main-wrapper">
+            <!-- Page Header -->
+            <div class="page-header">
                 <h1>Defect Machines List</h1>
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
-                        <a href="/machine-defects/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                                aria-hidden="true"></i>Add New
-                        </a>
-                    </div>
-                </div>
-
-                @if(session('success'))
-                    <div class="custom-alert-message">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="custom-alert-message">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                alert.classList.add('fade-out');
-                            }
-                        }, 3000);
-                    });
-                </script>
+                <p>Monitor machine defects and issues</p>
             </div>
 
-            <div class="filter-options">
-                <div class="filter-links">
-                    <!-- Link to view all machines defect -->
-                    <a href="#" id="select-all-link" class="btn-style">All (0)</a>
-                </div>
-
-                <div>
-                    <!-- Date Filter Form -->
-                    <div class="d-flex justify-content-between align-items-center">
-                        <form id="date-filter-form" method="GET" action="{{ route('machine-defects.filterByDate') }}">
-                            <label for="date" class="form-label">Select Date:</label>
-                            <input type="date" name="date" id="date" class="form-control d-inline-block"
-                                style="width: 200px;" required>
-                            <button type="submit" class="btn btn-primary ms-2">Filter</button>
-                        </form>
-
-                        <!-- Export PDF by Date -->
-                        <form method="GET" action="{{ route('machine-defects.exportPdfByDate') }}">
-                            <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
-                            <button type="submit" class="btn btn-success ms-2">Export PDF</button>
-                        </form>
+            <!-- Defect Machines Section -->
+            <div class="content-card">
+                <div class="header-section">
+                    <h1>Defect Machines List</h1>
+                    <div>
+                        <div class="d-flex justify-content-end position-relative">
+                            <a href="/machine-defects/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                                    aria-hidden="true"></i>Add New
+                            </a>
+                        </div>
                     </div>
+
+                    @if(session('success'))
+                        <div class="custom-alert-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="custom-alert-message">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            setTimeout(function () {
+                                const alert = document.querySelector('.custom-alert-message');
+                                if (alert) {
+                                    alert.classList.add('fade-out');
+                                }
+                            }, 3000);
+                        });
+                    </script>
                 </div>
 
-            </div>
+                <div class="filter-options">
+                    <div class="filter-links">
+                        <!-- Link to view all machines defect -->
+                        <a href="#" id="select-all-link" class="btn-style">All (0)</a>
+                    </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Item Name</th>
-                            <th class="text-center">Quantity</th>
-                            <th class="text-center">Defect</th>
-                            <th class="text-center">Date</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
+                    <div>
+                        <!-- Date Filter Form -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <form id="date-filter-form" method="GET" action="{{ route('machine-defects.filterByDate') }}">
+                                <label for="date" class="form-label">Select Date:</label>
+                                <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                    style="width: 200px;" required>
+                                <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                            </form>
 
-                    <tbody>
-                        @foreach ($machineDefects as $index => $machineDefect)
+                            <!-- Export PDF by Date -->
+                            <form method="GET" action="{{ route('machine-defects.exportPdfByDate') }}">
+                                <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                                <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]"
-                                        value="{{ $machineDefect->id }}" onchange="updateSelectionCount()" /></td>
-                                <td class="text-center">{{ $machineDefect->machine->id }}</td>
-                                <td class="text-center">{{ $machineDefect->machine->item_name }}</td>
-                                <td class="text-center">{{ $machineDefect->quantity }}</td>
-                                <td class="text-center">{{ $machineDefect->defect }}</td>
-                                <td class="text-center">
-                                    <div class="date-display">
-                                        <i class="fa fa-calendar"></i>
-                                        <span>{{ \Carbon\Carbon::parse($machineDefect->date)->format('M d, Y') }}</span>
-                                    </div>
-                                </td>
-                                <td class="d-flex justify-content-center">
-                                    <a href="{{ route('machine-defects.edit', $machineDefect->id) }}"
-                                        class="btn btn-sm btn-outline-primary me-2">
-                                        <i class="fa fa-pencil mr-1"></i>
-                                        Update
-                                    </a>
-                                    <form action="{{ route('machine-defects.destroy', $machineDefect->id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger"
-                                            onclick="return confirm('Are you sure you want to delete this defect record? This will restore the quantity to the machine.')">
-                                            <i class="fa fa-trash mr-1"></i>
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Item Name</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Defect</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Action</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
 
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-4">
-                        <li class="page-item {{ $machineDefects->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $machineDefects->previousPageUrl() }}" tabindex="-1">Previous</a>
-                        </li>
+                        <tbody>
+                            @foreach ($machineDefects as $index => $machineDefect)
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="selected[]"
+                                            value="{{ $machineDefect->id }}" onchange="updateSelectionCount()" /></td>
+                                    <td class="text-center">{{ $machineDefect->machine->id }}</td>
+                                    <td class="text-center">{{ $machineDefect->machine->item_name }}</td>
+                                    <td class="text-center">{{ $machineDefect->quantity }}</td>
+                                    <td class="text-center">{{ $machineDefect->defect }}</td>
+                                    <td class="text-center">
+                                        <div class="date-display">
+                                            <i class="fa fa-calendar"></i>
+                                            <span>{{ \Carbon\Carbon::parse($machineDefect->date)->format('M d, Y') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="d-flex justify-content-center">
+                                        <a href="{{ route('machine-defects.edit', $machineDefect->id) }}"
+                                            class="btn btn-sm btn-outline-primary me-2">
+                                            <i class="fa fa-pencil mr-1"></i>
+                                            Update
+                                        </a>
+                                        <form action="{{ route('machine-defects.destroy', $machineDefect->id) }}" method="POST"
+                                            style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Are you sure you want to delete this defect record? This will restore the quantity to the machine.')">
+                                                <i class="fa fa-trash mr-1"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
-                        @foreach(range(1, $machineDefects->lastPage()) as $page)
-                            <li class="page-item {{ $page == $machineDefects->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $machineDefects->url($page) }}">{{ $page }}</a>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4">
+                            <li class="page-item {{ $machineDefects->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $machineDefects->previousPageUrl() }}"
+                                    tabindex="-1">Previous</a>
                             </li>
-                        @endforeach
 
-                        <li class="page-item {{ !$machineDefects->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $machineDefects->nextPageUrl() }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                            @foreach(range(1, $machineDefects->lastPage()) as $page)
+                                <li class="page-item {{ $page == $machineDefects->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $machineDefects->url($page) }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            <li class="page-item {{ !$machineDefects->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $machineDefects->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </body>
