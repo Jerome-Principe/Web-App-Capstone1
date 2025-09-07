@@ -297,6 +297,12 @@
             width: 120px;
         }
 
+        /* Force center alignment for all table headers and cells - Override any other styles */
+        .table-container table th,
+        .table-container table td {
+            text-align: center !important;
+        }
+
         /* Actions */
 
         tbody tr:hover {
@@ -505,6 +511,15 @@
 
         .text-success {
             color: #28a745 !important;
+        }
+
+        /* Final override to ensure table centering works */
+        table thead th {
+            text-align: center !important;
+        }
+
+        table tbody td {
+            text-align: center !important;
         }
     </style>
 </head>
@@ -830,12 +845,12 @@
                 const dropzone = document.getElementById('pdfDropzone');
                 if (file) {
                     dropzone.innerHTML = `
-                                                                                        <div class="dropzone-content">
-                                                                                            <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                                                                            <p class="mb-2"><strong>${file.name}</strong></p>
-                                                                                            <p class="text-muted">File selected</p>
-                                                                                        </div>
-                                                                                    `;
+                                                                                                <div class="dropzone-content">
+                                                                                                    <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                                                                                    <p class="mb-2"><strong>${file.name}</strong></p>
+                                                                                                    <p class="text-muted">File selected</p>
+                                                                                                </div>
+                                                                                            `;
                 }
             }
 
@@ -858,8 +873,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                                                    View Current PDF
-                                                                </a>`;
+                                                                            View Current PDF
+                                                                        </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';
