@@ -508,13 +508,11 @@
                         </table>
 
                         @if($medicalForms->hasPages())
-                            <!-- Pagination Section -->
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center mt-4 mb-4">
                                     <li class="page-item {{ $medicalForms->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $medicalForms->previousPageUrl() }}">
-                                            Previous
-                                        </a>
+                                        <a class="page-link" href="{{ $medicalForms->previousPageUrl() }}"
+                                            tabindex="-1">Previous</a>
                                     </li>
 
                                     @foreach(range(1, $medicalForms->lastPage()) as $page)
@@ -524,9 +522,7 @@
                                     @endforeach
 
                                     <li class="page-item {{ !$medicalForms->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $medicalForms->nextPageUrl() }}">
-                                            Next
-                                        </a>
+                                        <a class="page-link" href="{{ $medicalForms->nextPageUrl() }}">Next</a>
                                     </li>
                                 </ul>
                             </nav>

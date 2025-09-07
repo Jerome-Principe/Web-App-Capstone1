@@ -12,8 +12,8 @@ class RequestMembershipController extends Controller
     {
         //
         $memberships = RequestMembership::with('pendingMembership')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // Adjust the number per page as needed
         return view('membership-request-list', compact('memberships'));
     }
     public function store(Request $request)

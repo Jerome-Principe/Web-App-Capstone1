@@ -8,7 +8,7 @@ class MedicalFormController extends Controller
 {
     public function index()
     {
-        $medicalForms = MedicalForm::orderBy('id', 'desc')->paginate(10);
+        $medicalForms = MedicalForm::orderBy('created_at', 'desc')->paginate(10); // Adjust the number per page as needed
         return view('membership-emergency-medical', ['medicalForms' => $medicalForms]);
     }
 

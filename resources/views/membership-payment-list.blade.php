@@ -380,13 +380,11 @@
                         </table>
 
                         @if($payments->hasPages())
-                            <!-- Pagination Section -->
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center mt-4 mb-4">
                                     <li class="page-item {{ $payments->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $payments->previousPageUrl() }}">
-                                            Previous
-                                        </a>
+                                        <a class="page-link" href="{{ $payments->previousPageUrl() }}"
+                                            tabindex="-1">Previous</a>
                                     </li>
 
                                     @foreach(range(1, $payments->lastPage()) as $page)
@@ -396,9 +394,7 @@
                                     @endforeach
 
                                     <li class="page-item {{ !$payments->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $payments->nextPageUrl() }}">
-                                            Next
-                                        </a>
+                                        <a class="page-link" href="{{ $payments->nextPageUrl() }}">Next</a>
                                     </li>
                                 </ul>
                             </nav>

@@ -426,13 +426,11 @@
                         </table>
 
                         @if($pendingMemberships->hasPages())
-                            <!-- Pagination Section -->
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center mt-4 mb-4">
                                     <li class="page-item {{ $pendingMemberships->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $pendingMemberships->previousPageUrl() }}">
-                                            Previous
-                                        </a>
+                                        <a class="page-link" href="{{ $pendingMemberships->previousPageUrl() }}"
+                                            tabindex="-1">Previous</a>
                                     </li>
 
                                     @foreach(range(1, $pendingMemberships->lastPage()) as $page)
@@ -442,9 +440,7 @@
                                     @endforeach
 
                                     <li class="page-item {{ !$pendingMemberships->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $pendingMemberships->nextPageUrl() }}">
-                                            Next
-                                        </a>
+                                        <a class="page-link" href="{{ $pendingMemberships->nextPageUrl() }}">Next</a>
                                     </li>
                                 </ul>
                             </nav>
