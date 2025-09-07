@@ -25,13 +25,18 @@
             padding: 0;
         }
 
-        .container {
+        .main-wrapper {
             max-width: 1600px;
-            margin: 40px auto;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .content-card {
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             padding: 40px;
+            margin-bottom: 32px;
             border: 1px solid #e1e5e9;
         }
 
@@ -215,14 +220,16 @@
 @section('content')
 
     <body>
-        <div class="container">
+        <div class="main-wrapper">
             <!-- Page Header -->
             <div class="page-header">
                 <h1>Goal Records</h1>
                 <p>Track member fitness goals and progress monitoring</p>
             </div>
 
-            <div class="header-section">
+            <!-- Goal Records Section -->
+            <div class="content-card">
+                <div class="header-section">
                 <h1>Goal For Mobile Information</h1>
             </div>
 
@@ -508,6 +515,8 @@
                 }
             });
         </script>
+            </div>
+        </div>
 
     </body>
 

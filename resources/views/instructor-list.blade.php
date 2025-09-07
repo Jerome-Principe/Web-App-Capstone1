@@ -11,19 +11,26 @@
     <title>Instructor List</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .content-card {
+            background: white;
             border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
             border: 1px solid #e1e5e9;
         }
 
@@ -226,14 +233,16 @@
 @section('content')
 
     <body>
-        <div class="container">
+        <div class="main-wrapper">
             <!-- Page Header -->
             <div class="page-header">
                 <h1>Instructor List</h1>
                 <p>Manage fitness trainers and their session schedules</p>
             </div>
 
-            <div class="header-section">
+            <!-- Instructor List Section -->
+            <div class="content-card">
+                <div class="header-section">
                 <h1>Instructor List</h1>
                 <!-- Button to trigger modal -->
                 <div>
@@ -535,6 +544,8 @@
                 </div>
             </div>
         @endforeach
+            </div>
+        </div>
 
     </body>
 

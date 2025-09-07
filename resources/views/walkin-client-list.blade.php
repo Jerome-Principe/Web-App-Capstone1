@@ -11,19 +11,26 @@
     <title>Add Walk-in Clients</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .content-card {
+            background: white;
             border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
             border: 1px solid #e1e5e9;
         }
 
@@ -289,183 +296,187 @@
 @section('content')
 
     <body>
-        <div class="container">
+        <div class="main-wrapper">
             <!-- Page Header -->
             <div class="page-header">
                 <h1>Walk-in Clients</h1>
                 <p>Manage walk-in client sessions and daily visits</p>
             </div>
 
-            <div class="header-section">
-                <h1>Walkin Clients</h1>
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
-                        <a href="/walkin" class="btn btn-primary px-2"><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add
-                            New
+            <!-- Walk-in Clients Section -->
+            <div class="content-card">
+                <div class="header-section">
+                    <h1>Walkin Clients</h1>
+                    <div>
+                        <div class="d-flex justify-content-end position-relative">
+                            <a href="/walkin" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                                    aria-hidden="true"></i>Add
+                                New
+                            </a>
+                        </div>
+                    </div>
+
+                    @if(session('success'))
+                        <div class="custom-alert-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            setTimeout(function () {
+                                const alert = document.querySelector('.custom-alert-message');
+                                if (alert) {
+                                    alert.classList.add('fade-out');
+                                }
+                            }, 3000);
+                        });
+                    </script>
+                </div>
+
+                <div class="filter-options">
+                    <div class="filter-links">
+                        <a href="#" id="select-all-link" class="active-filter">All (0)</a>
+                        <a href="{{ route('walkins.trashed') }}">Archived
+                            ({{App\Models\Walkin::onlyTrashed()->count()}})
                         </a>
                     </div>
-                </div>
 
-                @if(session('success'))
-                    <div class="custom-alert-message">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        setTimeout(function () {
-                            const alert = document.querySelector('.custom-alert-message');
-                            if (alert) {
-                                alert.classList.add('fade-out');
-                            }
-                        }, 3000);
-                    });
-                </script>
-            </div>
-
-            <div class="filter-options">
-                <div class="filter-links">
-                    <a href="#" id="select-all-link" class="active-filter">All (0)</a>
-                    <a href="{{ route('walkins.trashed') }}">Archived
-                        ({{App\Models\Walkin::onlyTrashed()->count()}})
-                    </a>
-                </div>
-
-                <div>
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex align-items-center">
-                        <!-- Form to move selected walkins to trash -->
-                        <form action="{{ route('walkins.moveToTrash') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="selected" id="selectedIds">
-                            <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
-                                <i class="fa fa-trash"></i> Move to Archive
-                            </button>
-                        </form>
-
-                        <!-- Date Filter Form -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <form id="date-filter-form" method="GET" action="{{ route('walkin.filterByDate') }}">
-                                <label for="date" class="form-label">Select Date:</label>
-                                <input type="date" name="date" id="date" class="form-control d-inline-block"
-                                    style="width: 200px;" required>
-                                <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                    <div>
+                        @csrf
+                        @method('DELETE')
+                        <div class="d-flex align-items-center">
+                            <!-- Form to move selected walkins to trash -->
+                            <form action="{{ route('walkins.moveToTrash') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="selected" id="selectedIds">
+                                <button type="submit" class="btn btn-light border mx-2" id="moveToArchiveBtn" disabled>
+                                    <i class="fa fa-trash"></i> Move to Archive
+                                </button>
                             </form>
 
-                            <!-- Export PDF by Date -->
-                            <form method="GET" action="{{ route('walkin.exportPdfByDate') }}">
-                                <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
-                                <button type="submit" class="btn btn-success ms-2">Export PDF</button>
-                            </form>
+                            <!-- Date Filter Form -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <form id="date-filter-form" method="GET" action="{{ route('walkin.filterByDate') }}">
+                                    <label for="date" class="form-label">Select Date:</label>
+                                    <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                        style="width: 200px;" required>
+                                    <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                                </form>
+
+                                <!-- Export PDF by Date -->
+                                <form method="GET" action="{{ route('walkin.exportPdfByDate') }}">
+                                    <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
+                                    <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                                </form>
+                            </div>
+
                         </div>
-
                     </div>
                 </div>
-            </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Full Name</th>
-                            <th class="text-center">Age</th>
-                            <th class="text-center">Amount</th>
-                            <th class="text-center">Payment</th>
-                            <th class="text-center">Date & Time</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($walkins as $index => $walkin)
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $walkin->id }}"
-                                        onchange="updateSelectionCount()" />
-                                </td>
-                                <td class="text-center">{{ $walkin->id }}</td>
-                                <td class="text-center">
-                                    {{ $walkin->lastname . ', ' . $walkin->firstname . ' ' . $walkin->middlename }}
-                                </td>
-                                <td class="text-center">{{ $walkin->age }}</td>
-                                <td class="text-center">{{ $walkin->amount }}</td>
-                                <td class="text-center">{{ $walkin->payment }}</td>
-                                <td class="text-center">
-                                    <div class="date-time-display">
-                                        <i class="fas fa-calendar-alt me-1"></i>
-                                        <span
-                                            class="date-text">{{ \Carbon\Carbon::parse($walkin->date)->format('M d, Y') }}</span>
-                                        <span class="separator">|</span>
-                                        <span
-                                            class="time-text">{{ \Carbon\Carbon::parse($walkin->time)->format('h:i A') }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <a href="{{ route('walkins.edit', $walkin->id) }}"
-                                            class="btn btn-sm btn-outline-primary">
-                                            <i class="fa fa-pencil mr-1"></i>
-                                            Update
-                                        </a>
-                                        <form action="{{ route('walkins.destroy', $walkin->id) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure you want to delete this walk-in client?')"
-                                                class="btn btn-sm btn-outline-danger">
-                                                <i class="fa fa-trash mr-1"></i>
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <th class="text-center"><input type="checkbox" onclick="toggleSelectAll(this)" /></th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Full Name</th>
+                                <th class="text-center">Age</th>
+                                <th class="text-center">Amount</th>
+                                <th class="text-center">Payment</th>
+                                <th class="text-center">Date & Time</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach($walkins as $index => $walkin)
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" name="selected[]" value="{{ $walkin->id }}"
+                                            onchange="updateSelectionCount()" />
+                                    </td>
+                                    <td class="text-center">{{ $walkin->id }}</td>
+                                    <td class="text-center">
+                                        {{ $walkin->lastname . ', ' . $walkin->firstname . ' ' . $walkin->middlename }}
+                                    </td>
+                                    <td class="text-center">{{ $walkin->age }}</td>
+                                    <td class="text-center">{{ $walkin->amount }}</td>
+                                    <td class="text-center">{{ $walkin->payment }}</td>
+                                    <td class="text-center">
+                                        <div class="date-time-display">
+                                            <i class="fas fa-calendar-alt me-1"></i>
+                                            <span
+                                                class="date-text">{{ \Carbon\Carbon::parse($walkin->date)->format('M d, Y') }}</span>
+                                            <span class="separator">|</span>
+                                            <span
+                                                class="time-text">{{ \Carbon\Carbon::parse($walkin->time)->format('h:i A') }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="{{ route('walkins.edit', $walkin->id) }}"
+                                                class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-pencil mr-1"></i>
+                                                Update
+                                            </a>
+                                            <form action="{{ route('walkins.destroy', $walkin->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    onclick="return confirm('Are you sure you want to delete this walk-in client?')"
+                                                    class="btn btn-sm btn-outline-danger">
+                                                    <i class="fa fa-trash mr-1"></i>
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
-                <div class="summary-section">
-                    <div class="summary-content">
-                        <div class="summary-item">
-                            <div class="summary-label">Date Selected</div>
-                            <div class="summary-value">
-                                {{ $date ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}
+                    <div class="summary-section">
+                        <div class="summary-content">
+                            <div class="summary-item">
+                                <div class="summary-label">Date Selected</div>
+                                <div class="summary-value">
+                                    {{ $date ? \Carbon\Carbon::parse($date)->format('F d, Y') : 'All Dates' }}
+                                </div>
+                            </div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-item">
+                                <div class="summary-label">Total Names</div>
+                                <div class="summary-value">{{ $totalNames ?? $walkins->total() }}</div>
+                            </div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-item">
+                                <div class="summary-label">Total Amount</div>
+                                <div class="summary-value">₱{{ number_format($totalAmount ?? 0, 2) }}</div>
                             </div>
                         </div>
-                        <div class="summary-divider"></div>
-                        <div class="summary-item">
-                            <div class="summary-label">Total Names</div>
-                            <div class="summary-value">{{ $totalNames ?? $walkins->total() }}</div>
-                        </div>
-                        <div class="summary-divider"></div>
-                        <div class="summary-item">
-                            <div class="summary-label">Total Amount</div>
-                            <div class="summary-value">₱{{ number_format($totalAmount ?? 0, 2) }}</div>
-                        </div>
                     </div>
-                </div>
 
-                <div class="pagination-container">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center mt-4">
-                            <li class="page-item {{ $walkins->onFirstPage() ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $walkins->previousPageUrl() }}" tabindex="-1">Previous</a>
-                            </li>
-
-                            @foreach(range(1, $walkins->lastPage()) as $page)
-                                <li class="page-item {{ $page == $walkins->currentPage() ? 'active' : '' }}">
-                                    <a class="page-link" href="{{ $walkins->url($page) }}">{{ $page }}</a>
+                    <div class="pagination-container">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4">
+                                <li class="page-item {{ $walkins->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $walkins->previousPageUrl() }}" tabindex="-1">Previous</a>
                                 </li>
-                            @endforeach
 
-                            <li class="page-item {{ !$walkins->hasMorePages() ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $walkins->nextPageUrl() }}">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
+                                @foreach(range(1, $walkins->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $walkins->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $walkins->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                <li class="page-item {{ !$walkins->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $walkins->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
