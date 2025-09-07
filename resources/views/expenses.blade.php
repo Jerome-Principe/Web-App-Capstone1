@@ -12,20 +12,46 @@
     <title>Expenses Management</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .content-card {
+            background: white;
             border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
             border: 1px solid #e1e5e9;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
         }
 
         .header-section {
@@ -273,8 +299,16 @@
 @section('content')
 
     <body>
-        <div class="container">
-            <div class="header-section">
+        <div class="main-wrapper">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Expenses Management</h1>
+                <p>Track business expenses and financial records</p>
+            </div>
+
+            <!-- Expenses Section -->
+            <div class="content-card">
+                <div class="header-section">
                 <div class="d-flex align-items-center gap-3">
                     <h1 class="mb-0">Expenses Management</h1>
                     <button type="button" class="btn btn-primary px-3" data-bs-toggle="modal"
@@ -633,6 +667,8 @@
                 </div>
             </div>
         @endforeach
+            </div>
+        </div>
     </body>
 
     <!-- Bootstrap JavaScript -->

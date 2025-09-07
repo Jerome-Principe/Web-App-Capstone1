@@ -3,7 +3,34 @@
 @section('title', 'Admin User List')
 
 @section('content')
+    <style>
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+    </style>
+
     <div class="container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Admin User Information</h1>
+            <p>Manage and monitor all user accounts in the system</p>
+        </div>
+
         <div class="row">
             <div class="col-12">
                 <!-- Header Section -->
