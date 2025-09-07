@@ -373,7 +373,8 @@
                                             <strong>{{ $membership->first_name }}</strong>
                                         </td>
                                         <td>{{ $membership->middle_name ?? 'N/A' }}</td>
-                                        <td>{{ $membership->date ? \Carbon\Carbon::parse($membership->date)->format('M d, Y') : 'N/A' }}</td>
+                                        <td>{{ $membership->date ? \Carbon\Carbon::parse($membership->date)->format('M d, Y') : 'N/A' }}
+                                        </td>
                                         <td>
                                             <span class="badge">{{ $membership->gender ?? 'N/A' }}</span>
                                         </td>
@@ -404,25 +405,24 @@
                             </tbody>
                         </table>
 
-                        @if($memberships->hasPages())
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center mt-4 mb-4">
-                                    <li class="page-item {{ $memberships->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $memberships->previousPageUrl() }}" tabindex="-1">Previous</a>
-                                    </li>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $memberships->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $memberships->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
+                                </li>
 
-                                    @foreach(range(1, $memberships->lastPage()) as $page)
-                                        <li class="page-item {{ $page == $memberships->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $memberships->url($page) }}">{{ $page }}</a>
-                                        </li>
-                                    @endforeach
-
-                                    <li class="page-item {{ !$memberships->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $memberships->nextPageUrl() }}">Next</a>
+                                @foreach(range(1, $memberships->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $memberships->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $memberships->url($page) }}">{{ $page }}</a>
                                     </li>
-                                </ul>
-                            </nav>
-                        @endif
+                                @endforeach
+
+                                <li class="page-item {{ !$memberships->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $memberships->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

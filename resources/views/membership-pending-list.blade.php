@@ -425,26 +425,24 @@
                             </tbody>
                         </table>
 
-                        @if($pendingMemberships->hasPages())
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center mt-4 mb-4">
-                                    <li class="page-item {{ $pendingMemberships->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $pendingMemberships->previousPageUrl() }}"
-                                            tabindex="-1">Previous</a>
-                                    </li>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $pendingMemberships->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $pendingMemberships->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
+                                </li>
 
-                                    @foreach(range(1, $pendingMemberships->lastPage()) as $page)
-                                        <li class="page-item {{ $page == $pendingMemberships->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $pendingMemberships->url($page) }}">{{ $page }}</a>
-                                        </li>
-                                    @endforeach
-
-                                    <li class="page-item {{ !$pendingMemberships->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $pendingMemberships->nextPageUrl() }}">Next</a>
+                                @foreach(range(1, $pendingMemberships->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $pendingMemberships->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $pendingMemberships->url($page) }}">{{ $page }}</a>
                                     </li>
-                                </ul>
-                            </nav>
-                        @endif
+                                @endforeach
+
+                                <li class="page-item {{ !$pendingMemberships->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $pendingMemberships->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

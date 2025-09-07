@@ -507,26 +507,24 @@
                             </tbody>
                         </table>
 
-                        @if($medicalForms->hasPages())
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center mt-4 mb-4">
-                                    <li class="page-item {{ $medicalForms->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $medicalForms->previousPageUrl() }}"
-                                            tabindex="-1">Previous</a>
-                                    </li>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $medicalForms->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $medicalForms->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
+                                </li>
 
-                                    @foreach(range(1, $medicalForms->lastPage()) as $page)
-                                        <li class="page-item {{ $page == $medicalForms->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $medicalForms->url($page) }}">{{ $page }}</a>
-                                        </li>
-                                    @endforeach
-
-                                    <li class="page-item {{ !$medicalForms->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $medicalForms->nextPageUrl() }}">Next</a>
+                                @foreach(range(1, $medicalForms->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $medicalForms->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $medicalForms->url($page) }}">{{ $page }}</a>
                                     </li>
-                                </ul>
-                            </nav>
-                        @endif
+                                @endforeach
+
+                                <li class="page-item {{ !$medicalForms->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $medicalForms->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

@@ -379,26 +379,24 @@
                             </tbody>
                         </table>
 
-                        @if($payments->hasPages())
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center mt-4 mb-4">
-                                    <li class="page-item {{ $payments->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $payments->previousPageUrl() }}"
-                                            tabindex="-1">Previous</a>
-                                    </li>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $payments->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $payments->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
+                                </li>
 
-                                    @foreach(range(1, $payments->lastPage()) as $page)
-                                        <li class="page-item {{ $page == $payments->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $payments->url($page) }}">{{ $page }}</a>
-                                        </li>
-                                    @endforeach
-
-                                    <li class="page-item {{ !$payments->hasMorePages() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $payments->nextPageUrl() }}">Next</a>
+                                @foreach(range(1, $payments->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $payments->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $payments->url($page) }}">{{ $page }}</a>
                                     </li>
-                                </ul>
-                            </nav>
-                        @endif
+                                @endforeach
+
+                                <li class="page-item {{ !$payments->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $payments->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
