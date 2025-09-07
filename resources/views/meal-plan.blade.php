@@ -36,6 +36,26 @@
             border: 1px solid #e1e5e9;
         }
 
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+
         /* Minimalist Header */
         .header-section {
             text-align: center;
@@ -291,6 +311,12 @@
 
     <body>
         <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Meal Plan Default List</h1>
+                <p>Manage default meal plan templates and nutrition guides</p>
+            </div>
+
             <div class="content-card">
                 <div class="header-section">
                     <div class="d-flex align-items-center">
