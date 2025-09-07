@@ -639,29 +639,24 @@
                         </div>
                     @endif
 
-                    @if($mobileFeedbacks->count() > 0)
-                        <nav aria-label="Page navigation" class="pagination-clean">
-                            <ul class="pagination" style="margin: 0; list-style: none; display: flex; gap: 0.25rem;">
-                                <li class="page-item {{ $mobileFeedbacks->onFirstPage() ? 'disabled' : '' }}">
-                                    <a class="page-link-clean" href="{{ $mobileFeedbacks->previousPageUrl() }}" tabindex="-1">
-                                        Previous
-                                    </a>
-                                </li>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4 mb-4">
+                            <li class="page-item {{ $mobileFeedbacks->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $mobileFeedbacks->previousPageUrl() }}"
+                                    tabindex="-1">Previous</a>
+                            </li>
 
-                                @foreach ($mobileFeedbacks->getUrlRange(1, $mobileFeedbacks->lastPage()) as $page => $url)
-                                    <li class="page-item {{ $page == $mobileFeedbacks->currentPage() ? 'active' : '' }}">
-                                        <a class="page-link-clean" href="{{ $url }}">{{ $page }}</a>
-                                    </li>
-                                @endforeach
-
-                                <li class="page-item {{ !$mobileFeedbacks->hasMorePages() ? 'disabled' : '' }}">
-                                    <a class="page-link-clean" href="{{ $mobileFeedbacks->nextPageUrl() }}">
-                                        Next
-                                    </a>
+                            @foreach(range(1, $mobileFeedbacks->lastPage()) as $page)
+                                <li class="page-item {{ $page == $mobileFeedbacks->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $mobileFeedbacks->url($page) }}">{{ $page }}</a>
                                 </li>
-                            </ul>
-                        </nav>
-                    @endif
+                            @endforeach
+
+                            <li class="page-item {{ !$mobileFeedbacks->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $mobileFeedbacks->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

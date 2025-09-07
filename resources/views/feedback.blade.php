@@ -689,29 +689,23 @@
                         </div>
                     @endif
 
-                    @if($feedback->count() > 0)
-                        <nav aria-label="Page navigation" class="pagination-clean">
-                            <ul class="pagination" style="margin: 0; list-style: none; display: flex; gap: 0.25rem;">
-                                <li class="page-item {{ $feedback->onFirstPage() ? 'disabled' : '' }}">
-                                    <a class="page-link-clean" href="{{ $feedback->previousPageUrl() }}" tabindex="-1">
-                                        Previous
-                                    </a>
-                                </li>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center mt-4 mb-4">
+                            <li class="page-item {{ $feedback->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $feedback->previousPageUrl() }}" tabindex="-1">Previous</a>
+                            </li>
 
-                                @foreach ($feedback->getUrlRange(1, $feedback->lastPage()) as $page => $url)
-                                    <li class="page-item {{ $page == $feedback->currentPage() ? 'active' : '' }}">
-                                        <a class="page-link-clean" href="{{ $url }}">{{ $page }}</a>
-                                    </li>
-                                @endforeach
-
-                                <li class="page-item {{ !$feedback->hasMorePages() ? 'disabled' : '' }}">
-                                    <a class="page-link-clean" href="{{ $feedback->nextPageUrl() }}">
-                                        Next
-                                    </a>
+                            @foreach(range(1, $feedback->lastPage()) as $page)
+                                <li class="page-item {{ $page == $feedback->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $feedback->url($page) }}">{{ $page }}</a>
                                 </li>
-                            </ul>
-                        </nav>
-                    @endif
+                            @endforeach
+
+                            <li class="page-item {{ !$feedback->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $feedback->nextPageUrl() }}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
