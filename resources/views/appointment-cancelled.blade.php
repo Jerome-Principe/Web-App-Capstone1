@@ -336,11 +336,6 @@
                                 </button>
                             </form>
 
-                            <form class="d-flex" role="search">
-                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                    style="height: 35px;">
-                                <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
-                            </form>
                         </div>
                     </div>
 
@@ -418,7 +413,8 @@
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-center mt-4 mb-4">
                                 <li class="page-item {{ $cancelledAppointments->onFirstPage() ? 'disabled' : '' }}">
-                                    <a class="page-link" href="{{ $cancelledAppointments->previousPageUrl() }}" tabindex="-1">Previous</a>
+                                    <a class="page-link" href="{{ $cancelledAppointments->previousPageUrl() }}"
+                                        tabindex="-1">Previous</a>
                                 </li>
 
                                 @foreach(range(1, $cancelledAppointments->lastPage()) as $page)

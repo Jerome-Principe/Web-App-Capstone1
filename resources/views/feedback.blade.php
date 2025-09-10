@@ -592,12 +592,6 @@
                                 </button>
                             </form>
 
-                            <div class="search-container">
-                                <input type="search" class="search-input" placeholder="Search" aria-label="Search">
-                                <button class="btn-clean btn-primary-clean" type="submit">
-                                    Search
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
