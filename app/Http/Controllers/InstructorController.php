@@ -10,8 +10,28 @@ class InstructorController extends Controller
 {
     public function index(Request $request)
     {
+        $query = Instructor::query();
+
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('first_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('last_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('contact_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('expertise', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('session', 'LIKE', "%{$searchTerm}%")
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$searchTerm}%"]);
+            });
+        }
+
         // Order instructors by creation date, showing newest first
-        $instructors = Instructor::orderBy('created_at', 'desc')->paginate(10); // Adjust the number per page as needed
+        $instructors = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $instructors->appends(['search' => $request->search]);
+        }
 
         // Check if the request expects JSON
         if ($request->wantsJson()) {
