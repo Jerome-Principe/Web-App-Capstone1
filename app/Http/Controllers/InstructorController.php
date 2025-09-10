@@ -221,11 +221,31 @@ class InstructorController extends Controller
         return redirect()->route('instructors.index')->with('success', 'Selected instructors moved to trash.');
     }
 
-    public function trashed()
+    public function trashed(Request $request)
     {
-        $trashedInstructors = Instructor::onlyTrashed()->paginate(10); // Use pagination
-        return view('trashed-instructors', compact('trashedInstructors'));
+        $query = Instructor::onlyTrashed();
 
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('first_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('last_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('contact_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('expertise', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('session', 'LIKE', "%{$searchTerm}%")
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$searchTerm}%"]);
+            });
+        }
+
+        $trashedInstructors = $query->paginate(10); // Use pagination
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $trashedInstructors->appends(['search' => $request->search]);
+        }
+
+        return view('trashed-instructors', compact('trashedInstructors'));
     }
     public function restoreBulk(Request $request)
     {
