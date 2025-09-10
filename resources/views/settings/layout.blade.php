@@ -77,10 +77,10 @@
             color: white;
             padding: 0;
             position: fixed;
-            height: 100vh;
+            height: calc(100vh - 64px);
             left: 280px;
             /* Account for the main sidebar */
-            top: 0;
+            top: 64px;
             z-index: 100;
             overflow-y: auto;
         }
