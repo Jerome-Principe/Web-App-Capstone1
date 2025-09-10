@@ -336,9 +336,11 @@
 
                         <div>
                             <!-- Search Form -->
-                            <form class="d-flex" role="search" action="#" method="GET">
-                                <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                                    style="height: 35px;">
+                            <form class="d-flex" role="search" method="GET"
+                                action="{{ route('membership-pendings.index') }}">
+                                <input class="form-control" type="search" name="search"
+                                    placeholder="Search pending memberships..." aria-label="Search"
+                                    value="{{ request('search') }}" style="height: 35px;" id="searchInput">
                                 <button class="btn btn-primary ms-2" type="submit" style="height: 35px;">Search</button>
                             </form>
                         </div>
@@ -489,6 +491,117 @@
             // Initialize selection count on page load
             document.addEventListener("DOMContentLoaded", function () {
                 updateSelectionCount();
+            });
+        </script>
+
+        <script>
+            // Live search functionality for pending memberships
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('searchInput');
+                const tableContainer = document.querySelector('.table-container');
+                const paginationContainer = document.querySelector('.pagination');
+                let searchTimeout;
+
+                if (searchInput) {
+                    searchInput.addEventListener('input', function () {
+                        clearTimeout(searchTimeout);
+
+                        // Debounce search to avoid too many requests
+                        searchTimeout = setTimeout(() => {
+                            performLiveSearch(this.value);
+                        }, 300);
+                    });
+                }
+
+                function performLiveSearch(searchTerm) {
+                    // Show loading state
+                    if (tableContainer) {
+                        tableContainer.style.opacity = '0.6';
+                    }
+
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('search', searchTerm);
+
+                    fetch(url.toString(), {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html, application/xhtml+xml'
+                        }
+                    })
+                        .then(response => response.text())
+                        .then(html => {
+                            // Create a temporary div to parse the HTML
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = html;
+
+                            // Extract and update the table content
+                            const newTableContainer = tempDiv.querySelector('.table-container');
+                            if (newTableContainer && tableContainer) {
+                                tableContainer.innerHTML = newTableContainer.innerHTML;
+                            }
+
+                            // Extract and update pagination
+                            const newPagination = tempDiv.querySelector('.pagination');
+                            if (newPagination && paginationContainer) {
+                                paginationContainer.innerHTML = newPagination.innerHTML;
+                            }
+
+                            // Reset opacity
+                            if (tableContainer) {
+                                tableContainer.style.opacity = '1';
+                            }
+
+                            // Update URL without page reload
+                            history.pushState(null, '', url.toString());
+                        })
+                        .catch(error => {
+                            console.error('Search error:', error);
+                            if (tableContainer) {
+                                tableContainer.style.opacity = '1';
+                            }
+                        });
+                }
+
+                // Handle pagination clicks for search results
+                document.addEventListener('click', function (e) {
+                    if (e.target.closest('.pagination a')) {
+                        e.preventDefault();
+                        const link = e.target.closest('.pagination a');
+                        const href = link.getAttribute('href');
+
+                        if (href) {
+                            fetch(href, {
+                                method: 'GET',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'text/html, application/xhtml+xml'
+                                }
+                            })
+                                .then(response => response.text())
+                                .then(html => {
+                                    const tempDiv = document.createElement('div');
+                                    tempDiv.innerHTML = html;
+
+                                    const newTableContainer = tempDiv.querySelector('.table-container');
+                                    if (newTableContainer && tableContainer) {
+                                        tableContainer.innerHTML = newTableContainer.innerHTML;
+                                    }
+
+                                    const newPagination = tempDiv.querySelector('.pagination');
+                                    if (newPagination && paginationContainer) {
+                                        paginationContainer.innerHTML = newPagination.innerHTML;
+                                    }
+
+                                    // Update URL
+                                    history.pushState(null, '', href);
+                                })
+                                .catch(error => {
+                                    console.error('Pagination error:', error);
+                                });
+                        }
+                    }
+                });
             });
         </script>
 

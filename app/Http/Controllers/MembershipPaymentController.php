@@ -11,10 +11,26 @@ class MembershipPaymentController extends Controller
     /**
      * Display the list of payments.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Get paginated list of payments
-        $payments = MembershipPayment::orderBy('created_at', 'desc')->paginate(10); // Adjust the number per page as needed
+        $query = MembershipPayment::query();
+
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('gcash_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('account_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('reference_number', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        $payments = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $payments->appends(['search' => $request->search]);
+        }
 
         // Return the view with the payments data
         return view('membership-payment-list', compact('payments'));

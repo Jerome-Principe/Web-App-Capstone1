@@ -6,9 +6,29 @@ use Illuminate\Http\Request;
 
 class MedicalFormController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $medicalForms = MedicalForm::orderBy('created_at', 'desc')->paginate(10); // Adjust the number per page as needed
+        $query = MedicalForm::query();
+
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('emergency_contact', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('relationship', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('emergency_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('smoking_details', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('medication_details', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        $medicalForms = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $medicalForms->appends(['search' => $request->search]);
+        }
+
         return view('membership-emergency-medical', ['medicalForms' => $medicalForms]);
     }
 

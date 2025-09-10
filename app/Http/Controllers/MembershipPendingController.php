@@ -12,9 +12,29 @@ class MembershipPendingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pendingMemberships = PendingMembership::where('status', 'Pending')->paginate(10);
+        $query = PendingMembership::where('status', 'Pending');
+
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('first_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('last_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('membership_type', 'LIKE', "%{$searchTerm}%")
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$searchTerm}%"]);
+            });
+        }
+
+        $pendingMemberships = $query->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $pendingMemberships->appends(['search' => $request->search]);
+        }
+
         return view('membership-pending-list', compact('pendingMemberships'));
     }
 

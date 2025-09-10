@@ -101,12 +101,30 @@ class MembershipRenewalController extends Controller
     /**
      * Display a listing of membership renewal applications.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Get paginated list of renewals
-        $renewals = MembershipRenewal::with('pendingMembership')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = MembershipRenewal::with('pendingMembership');
+
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('membership_type', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('payment_method', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('gcash_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('account_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('reference_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('status', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        $renewals = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $renewals->appends(['search' => $request->search]);
+        }
 
         // Return the view with the renewals data
         return view('membership-renewal', compact('renewals'));

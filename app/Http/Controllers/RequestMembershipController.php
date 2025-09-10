@@ -8,12 +8,34 @@ use App\Models\PendingMembership; // Added this import
 class RequestMembershipController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $memberships = RequestMembership::with('pendingMembership')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10); // Adjust the number per page as needed
+        $query = RequestMembership::with('pendingMembership');
+
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('first_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('last_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('middle_name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('address', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('postal_code', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('mobile', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('work', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('membership_type', 'LIKE', "%{$searchTerm}%")
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$searchTerm}%"]);
+            });
+        }
+
+        $memberships = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $memberships->appends(['search' => $request->search]);
+        }
+
         return view('membership-request-list', compact('memberships'));
     }
     public function store(Request $request)

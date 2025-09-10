@@ -317,12 +317,16 @@
                     </div>
 
                     <div class="search-section" style="display: flex; align-items: center; gap: 12px;">
-                        <input type="text" id="search-input" placeholder="Search members..."
-                            style="padding: 8px 12px; border: 1px solid #e1e5e9; border-radius: 4px; font-size: 14px; width: 200px;">
-                        <button type="button" class="btn-search" onclick="searchMembers()"
-                            style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 14px; cursor: pointer;">
-                            <i class="fa fa-search"></i> Search
-                        </button>
+                        <form method="GET" action="{{ route('membership-renewal.index') }}"
+                            style="display: flex; align-items: center; gap: 12px;">
+                            <input type="text" name="search" id="search-input" placeholder="Search members..."
+                                value="{{ request('search') }}"
+                                style="padding: 8px 12px; border: 1px solid #e1e5e9; border-radius: 4px; font-size: 14px; width: 200px;">
+                            <button type="submit" class="btn-search"
+                                style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 14px; cursor: pointer;">
+                                <i class="fa fa-search"></i> Search
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -480,6 +484,115 @@
                 const today = new Date().toISOString().split('T')[0];
                 dateFilter.value = today;
             }
+        });
+
+        // Live search functionality for membership renewals
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('search-input');
+            const tableContainer = document.querySelector('.table-container');
+            const paginationContainer = document.querySelector('.pagination');
+            let searchTimeout;
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    clearTimeout(searchTimeout);
+
+                    // Debounce search to avoid too many requests
+                    searchTimeout = setTimeout(() => {
+                        performLiveSearch(this.value);
+                    }, 300);
+                });
+            }
+
+            function performLiveSearch(searchTerm) {
+                // Show loading state
+                if (tableContainer) {
+                    tableContainer.style.opacity = '0.6';
+                }
+
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', searchTerm);
+
+                fetch(url.toString(), {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'text/html, application/xhtml+xml'
+                    }
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        // Create a temporary div to parse the HTML
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = html;
+
+                        // Extract and update the table content
+                        const newTableContainer = tempDiv.querySelector('.table-container');
+                        if (newTableContainer && tableContainer) {
+                            tableContainer.innerHTML = newTableContainer.innerHTML;
+                        }
+
+                        // Extract and update pagination
+                        const newPagination = tempDiv.querySelector('.pagination');
+                        if (newPagination && paginationContainer) {
+                            paginationContainer.innerHTML = newPagination.innerHTML;
+                        }
+
+                        // Reset opacity
+                        if (tableContainer) {
+                            tableContainer.style.opacity = '1';
+                        }
+
+                        // Update URL without page reload
+                        history.pushState(null, '', url.toString());
+                    })
+                    .catch(error => {
+                        console.error('Search error:', error);
+                        if (tableContainer) {
+                            tableContainer.style.opacity = '1';
+                        }
+                    });
+            }
+
+            // Handle pagination clicks for search results
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('.pagination a')) {
+                    e.preventDefault();
+                    const link = e.target.closest('.pagination a');
+                    const href = link.getAttribute('href');
+
+                    if (href) {
+                        fetch(href, {
+                            method: 'GET',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'text/html, application/xhtml+xml'
+                            }
+                        })
+                            .then(response => response.text())
+                            .then(html => {
+                                const tempDiv = document.createElement('div');
+                                tempDiv.innerHTML = html;
+
+                                const newTableContainer = tempDiv.querySelector('.table-container');
+                                if (newTableContainer && tableContainer) {
+                                    tableContainer.innerHTML = newTableContainer.innerHTML;
+                                }
+
+                                const newPagination = tempDiv.querySelector('.pagination');
+                                if (newPagination && paginationContainer) {
+                                    paginationContainer.innerHTML = newPagination.innerHTML;
+                                }
+
+                                // Update URL
+                                history.pushState(null, '', href);
+                            })
+                            .catch(error => {
+                                console.error('Pagination error:', error);
+                            });
+                    }
+                }
+            });
         });
     </script>
 @endsection
