@@ -12,6 +12,24 @@ class MealPlanCustomController extends Controller
     {
         $query = MealPlanCustom::with('user'); // Eager-load user relationship
 
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('category', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('type', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('guideline', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('day', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('breakfast', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('lunch', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('dinner', 'LIKE', "%{$searchTerm}%")
+                    ->orWhereHas('user', function ($userQuery) use ($searchTerm) {
+                        $userQuery->where('first_name', 'LIKE', "%{$searchTerm}%")
+                            ->orWhere('last_name', 'LIKE', "%{$searchTerm}%");
+                    });
+            });
+        }
+
         // Apply filters if user_id, category, or type are provided
         if ($request->has('user_id') && $request->input('user_id') !== '') {
             $query->where('user_id', $request->input('user_id'));
@@ -26,6 +44,11 @@ class MealPlanCustomController extends Controller
         }
 
         $mealPlansCustom = $query->orderBy('id', 'desc')->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $mealPlansCustom->appends(['search' => $request->search]);
+        }
 
         // Fetch approved users
         $approvedUsers = PendingAppointment::where('pending_appointments.status', 'Approved')

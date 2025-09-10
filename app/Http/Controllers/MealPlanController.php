@@ -11,6 +11,20 @@ class MealPlanController extends Controller
     {
         $query = MealPlan::query();
 
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('category', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('type', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('guideline', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('day', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('breakfast', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('lunch', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('dinner', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
         // Apply filters if category and type are provided
         if ($request->has('category')) {
             $query->where('category', $request->input('category'));
@@ -21,6 +35,11 @@ class MealPlanController extends Controller
         }
 
         $mealPlans = $query->orderBy('id', 'desc')->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $mealPlans->appends(['search' => $request->search]);
+        }
 
         // Check if the request expects a view (web) or JSON (API)
         if ($request->wantsJson()) {

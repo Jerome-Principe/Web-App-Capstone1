@@ -11,6 +11,19 @@ class ExerciseController extends Controller
     {
         $query = Exercise::query();
 
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('category', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('type', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('guideline', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('exercise', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('duration', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
         // Apply filters if category and type are provided
         if ($request->has('category')) {
             $query->where('category', $request->input('category'));
@@ -21,6 +34,11 @@ class ExerciseController extends Controller
         }
 
         $exercises = $query->orderBy('id', 'desc')->paginate(10);
+
+        // Append search parameter to pagination links
+        if ($request->has('search')) {
+            $exercises->appends(['search' => $request->search]);
+        }
 
         // Check if the request expects a view (web) or JSON (API)
         if ($request->wantsJson()) {
