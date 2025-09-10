@@ -1,4 +1,4 @@
-<div class="side-nav expand-lg bg-gradient-to-b from-purple-900 to-purple-800 text-white"
+<div class="side-nav expand-lg bg-gradient-to-b from-purple-800 to-purple-700 text-white"
     style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow: visible; min-width: 280px; width: 280px; border: none; box-shadow: none; border-right: none;">
     <div class="side-nav-inner px-4 pb-4 h-full overflow-visible" style="padding-top: 0;">
         <style>
