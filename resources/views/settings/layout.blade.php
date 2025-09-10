@@ -63,8 +63,6 @@
             min-height: 100vh;
             background-color: #f8f9fa;
             margin: -20px;
-            margin-top: 44px;
-            /* Account for main header height */
         }
 
         .settings-wrapper {
@@ -155,8 +153,6 @@
             min-height: 100vh;
             width: calc(100vw - 580px);
             /* Full viewport width minus main sidebar (280px) and settings sidebar (300px) */
-            position: relative;
-            z-index: 10;
         }
 
         .settings-header {
@@ -164,9 +160,6 @@
             padding: 30px 40px;
             color: white;
             border-bottom: 1px solid #e9ecef;
-            position: relative;
-            z-index: 1000;
-            margin-top: 0;
         }
 
         .header-content {
@@ -195,8 +188,6 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            position: relative;
-            z-index: 2;
         }
 
 
@@ -206,9 +197,6 @@
             font-weight: 600;
             margin: 0;
             color: white;
-            display: block;
-            visibility: visible;
-            opacity: 1;
         }
 
         .header-logo p {
