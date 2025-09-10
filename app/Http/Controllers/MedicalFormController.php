@@ -17,7 +17,7 @@ class MedicalFormController extends Controller
                 $q->where('emergency_contact', 'LIKE', "%{$searchTerm}%")
                     ->orWhere('relationship', 'LIKE', "%{$searchTerm}%")
                     ->orWhere('emergency_number', 'LIKE', "%{$searchTerm}%")
-                    ->orWhere('smoking_details', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('smoke_details', 'LIKE', "%{$searchTerm}%")
                     ->orWhere('medication_details', 'LIKE', "%{$searchTerm}%");
             });
         }
