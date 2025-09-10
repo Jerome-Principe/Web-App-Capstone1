@@ -151,11 +151,11 @@
 
         /* Header - Full width across sidebar and content */
         .header-container {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(to bottom, #111827 0%, #1f2937 100%);
             background-size: 100% 100%;
             background-repeat: no-repeat;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+            box-shadow: 0 4px 15px rgba(17, 24, 39, 0.15);
             position: fixed;
             top: 0;
             left: 0;
