@@ -10,6 +10,9 @@ class FeedbackController extends Controller
     // Display a paginated list of feedback
     public function index()
     {
+        // Mark all feedback as read when accessing the feedback page
+        Feedback::where('is_read', false)->update(['is_read' => true]);
+
         // Order feedback by creation date, showing newest first
         $feedback = Feedback::orderBy('created_at', 'desc')->paginate(10); // Retrieve 10 feedback entries per page
         return view('feedback', compact('feedback')); // Return view with feedback data
@@ -48,6 +51,9 @@ class FeedbackController extends Controller
     // Display feedback list (same as index function, could be merged)
     function feedback()
     {
+        // Mark all feedback as read when accessing the feedback page
+        Feedback::where('is_read', false)->update(['is_read' => true]);
+
         $feedback = Feedback::orderBy('created_at', 'desc')->paginate(10); // Paginate feedback entries, sorted by most recent first
         return view('feedback', compact('feedback')); // Return view with feedback data
     }
@@ -150,5 +156,14 @@ class FeedbackController extends Controller
 
         // Redirect with success message
         return redirect()->route('feedback.trashed')->with('success', 'Feedback permanently deleted!');
+    }
+
+    // Mark a specific feedback as read
+    public function markAsRead($id)
+    {
+        $feedback = Feedback::findOrFail($id);
+        $feedback->update(['is_read' => true]);
+
+        return response()->json(['success' => true, 'message' => 'Feedback marked as read']);
     }
 }

@@ -146,6 +146,7 @@ Route::prefix('feedback')->name('feedback.')->group(function () {
     Route::post('/restore-bulk', [FeedbackController::class, 'restoreBulk'])->name('restoreBulk');
     Route::post('/restore/{id}', [FeedbackController::class, 'restore'])->name('restore');
     Route::delete('/force-delete/{id}', [FeedbackController::class, 'forceDelete'])->name('forceDelete');
+    Route::post('/mark-as-read/{id}', [FeedbackController::class, 'markAsRead'])->name('markAsRead');
 });
 
 // Walk-in client routes
