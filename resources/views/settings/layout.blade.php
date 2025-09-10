@@ -160,6 +160,8 @@
             padding: 30px 40px;
             color: white;
             border-bottom: 1px solid #e9ecef;
+            position: relative;
+            z-index: 1;
         }
 
         .header-content {
@@ -188,6 +190,8 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            position: relative;
+            z-index: 2;
         }
 
 
@@ -197,6 +201,9 @@
             font-weight: 600;
             margin: 0;
             color: white;
+            display: block;
+            visibility: visible;
+            opacity: 1;
         }
 
         .header-logo p {
