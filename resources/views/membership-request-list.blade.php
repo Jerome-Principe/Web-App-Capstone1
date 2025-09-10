@@ -322,8 +322,7 @@
 
                         <div>
                             <!-- Search Form -->
-                            <form class="d-flex" role="search" method="GET"
-                                action="{{ route('request-memberships.index') }}">
+                            <form class="d-flex" role="search" method="GET" action="{{ url('/membership-request-list') }}">
                                 <input class="form-control" type="search" name="search"
                                     placeholder="Search membership requests..." aria-label="Search"
                                     value="{{ request('search') }}" style="height: 35px;" id="searchInput">

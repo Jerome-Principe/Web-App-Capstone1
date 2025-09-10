@@ -322,7 +322,8 @@
 
                         <div>
                             <!-- Search Form -->
-                            <form class="d-flex" role="search" method="GET" action="{{ route('medical-forms.index') }}">
+                            <form class="d-flex" role="search" method="GET"
+                                action="{{ url('/membership-emergency-medical') }}">
                                 <input class="form-control" type="search" name="search"
                                     placeholder="Search medical forms..." aria-label="Search"
                                     value="{{ request('search') }}" style="height: 35px;" id="searchInput">

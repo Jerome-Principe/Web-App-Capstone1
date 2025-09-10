@@ -315,8 +315,7 @@
 
                         <div>
                             <!-- Search Form -->
-                            <form class="d-flex" role="search" method="GET"
-                                action="{{ route('membership-payments.index') }}">
+                            <form class="d-flex" role="search" method="GET" action="{{ url('/membership-payment-list') }}">
                                 <input class="form-control" type="search" name="search"
                                     placeholder="Search payment records..." aria-label="Search"
                                     value="{{ request('search') }}" style="height: 35px;" id="searchInput">
