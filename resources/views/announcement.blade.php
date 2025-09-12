@@ -861,7 +861,7 @@
                         <h5 class="modal-title" id="fileValidationAlertModalLabel">
                             <i class="fa fa-exclamation-triangle me-2"></i>File Upload Error
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        <button type="button" class="btn-close btn-close-white" id="closeModalAndClear"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -876,11 +876,18 @@
                                 <strong>Please select a smaller PDF file or compress your current file before
                                     uploading.</strong>
                             </div>
+                            <div class="mt-3">
+                                <small class="text-muted">
+                                    <i class="fa fa-file-o me-1"></i><strong>Repick PDF File:</strong> Choose a different
+                                    file<br>
+                                    <i class="fa fa-times me-1"></i><strong>Close (X):</strong> Remove PDF attachment
+                                </small>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                            <i class="fa fa-check me-1"></i>I Understand
+                        <button type="button" class="btn btn-danger" id="understandAndRepick">
+                            <i class="fa fa-file-o me-1"></i>Repick PDF File
                         </button>
                     </div>
                 </div>
@@ -984,8 +991,8 @@
                 dropzone.classList.remove('file-success');
 
                 feedback.innerHTML = `<div class="file-validation-error">
-                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
-                        </div>`;
+                                    <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                                </div>`;
                 feedback.style.display = 'block';
 
                 // Clear the file input
@@ -993,7 +1000,7 @@
 
                 // Show alert modal for file size errors
                 if (message.includes('exceeds the maximum limit')) {
-                    showFileSizeAlertModal(message);
+                    showFileSizeAlertModal(message + ' (main form)');
                 }
             }
 
@@ -1005,16 +1012,16 @@
                 dropzone.classList.remove('file-error');
 
                 dropzone.innerHTML = `
-                                    <div class="dropzone-content">
-                                        <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                        <p class="mb-2"><strong>${file.name}</strong></p>
-                                        <p class="text-muted">File selected successfully</p>
-                                        <div class="file-size-info">Size: ${formatFileSize(file.size)}</div>
-                                    </div>`;
+                                            <div class="dropzone-content">
+                                                <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                                <p class="mb-2"><strong>${file.name}</strong></p>
+                                                <p class="text-muted">File selected successfully</p>
+                                                <div class="file-size-info">Size: ${formatFileSize(file.size)}</div>
+                                            </div>`;
 
                 feedback.innerHTML = `<div class="file-validation-success">
-                                    <i class="fa fa-check-circle me-1"></i>File is ready for upload!
-                                </div>`;
+                                            <i class="fa fa-check-circle me-1"></i>File is ready for upload!
+                                        </div>`;
                 feedback.style.display = 'block';
             }
 
@@ -1024,12 +1031,12 @@
 
                 dropzone.classList.remove('file-error', 'file-success');
                 dropzone.innerHTML = `
-                                    <div class="dropzone-content">
-                                        <i class="fa fa-cloud-upload fa-2x mb-3"></i>
-                                        <p class="mb-2">Drag and drop PDF here</p>
-                                        <p class="text-muted">or click to select files</p>
-                                        <small class="text-muted">Maximum file size: 2MB</small>
-                                    </div>`;
+                                            <div class="dropzone-content">
+                                                <i class="fa fa-cloud-upload fa-2x mb-3"></i>
+                                                <p class="mb-2">Drag and drop PDF here</p>
+                                                <p class="text-muted">or click to select files</p>
+                                                <small class="text-muted">Maximum file size: 2MB</small>
+                                            </div>`;
 
                 feedback.style.display = 'none';
             }
@@ -1072,8 +1079,8 @@
                 const feedback = document.getElementById('editFileValidationFeedback');
 
                 feedback.innerHTML = `<div class="file-validation-error">
-                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
-                        </div>`;
+                                    <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                                </div>`;
                 feedback.style.display = 'block';
 
                 // Clear the file input
@@ -1081,7 +1088,7 @@
 
                 // Show alert modal for file size errors
                 if (message.includes('exceeds the maximum limit')) {
-                    showFileSizeAlertModal(message);
+                    showFileSizeAlertModal(message + ' (edit modal)');
                 }
             }
 
@@ -1089,8 +1096,8 @@
                 const feedback = document.getElementById('editFileValidationFeedback');
 
                 feedback.innerHTML = `<div class="file-validation-success">
-                            <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
-                        </div>`;
+                                    <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
+                                </div>`;
                 feedback.style.display = 'block';
             }
 
@@ -1105,11 +1112,82 @@
                     messageElement.textContent = 'The PDF file you selected exceeds the maximum allowed size of 2MB.';
                 }
 
+                // Store the current context for button actions
+                const isEditModal = message.includes('(edit modal)');
+
+                window.currentFileValidationContext = {
+                    isEditModal: isEditModal,
+                    message: message
+                };
+
                 modal.show();
+            }
+
+            function clearMainFileAttachment() {
+                // Clear the file input
+                document.getElementById('pdfFile').value = '';
+
+                // Reset the dropzone UI
+                const dropzone = document.getElementById('pdfDropzone');
+                const feedback = document.getElementById('fileValidationFeedback');
+
+                dropzone.classList.remove('file-error', 'file-success');
+                dropzone.innerHTML = `
+                            <div class="dropzone-content">
+                                <i class="fa fa-cloud-upload fa-2x mb-3"></i>
+                                <p class="mb-2">Drag and drop PDF here</p>
+                                <p class="text-muted">or click to select files</p>
+                                <small class="text-muted">Maximum file size: 2MB</small>
+                            </div>`;
+
+                feedback.style.display = 'none';
+            }
+
+            function clearEditFileAttachment() {
+                // Clear the file input
+                document.getElementById('editPdfFile').value = '';
+
+                // Reset the feedback UI
+                const feedback = document.getElementById('editFileValidationFeedback');
+                feedback.style.display = 'none';
             }
 
             // Edit modal functionality
             document.addEventListener("DOMContentLoaded", function () {
+                // File validation alert modal button handlers
+                const understandBtn = document.getElementById('understandAndRepick');
+                const closeBtn = document.getElementById('closeModalAndClear');
+
+                if (understandBtn) {
+                    understandBtn.addEventListener('click', function () {
+                        // Close the modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('fileValidationAlertModal'));
+                        modal.hide();
+
+                        // Allow user to repick file by triggering file input
+                        if (window.currentFileValidationContext && window.currentFileValidationContext.isEditModal) {
+                            document.getElementById('editPdfFile').click();
+                        } else {
+                            document.getElementById('pdfFile').click();
+                        }
+                    });
+                }
+
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function () {
+                        // Close the modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('fileValidationAlertModal'));
+                        modal.hide();
+
+                        // Clear the PDF attachment and reset UI
+                        if (window.currentFileValidationContext && window.currentFileValidationContext.isEditModal) {
+                            clearEditFileAttachment();
+                        } else {
+                            clearMainFileAttachment();
+                        }
+                    });
+                }
+
                 const editButtons = document.querySelectorAll(".edit-btn");
 
                 editButtons.forEach(button => {
@@ -1127,8 +1205,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                                            View Current PDF
-                                                        </a>`;
+                                                                    View Current PDF
+                                                                </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';
