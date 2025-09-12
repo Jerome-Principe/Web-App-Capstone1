@@ -617,6 +617,13 @@
                         Files exceeding this limit will not be saved and an error alert will be displayed.
                     </div>
 
+                    <!-- Temporary test button for debugging -->
+                    <div class="alert alert-info" role="alert">
+                        <button type="button" class="btn btn-sm btn-info" onclick="testModal()">
+                            Test Modal (Debug)
+                        </button>
+                    </div>
+
                     <form action="{{ route('announcements.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
@@ -991,8 +998,8 @@
                 dropzone.classList.remove('file-success');
 
                 feedback.innerHTML = `<div class="file-validation-error">
-                                    <i class="fa fa-exclamation-triangle me-1"></i>${message}
-                                </div>`;
+                                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                                        </div>`;
                 feedback.style.display = 'block';
 
                 // Clear the file input
@@ -1012,16 +1019,16 @@
                 dropzone.classList.remove('file-error');
 
                 dropzone.innerHTML = `
-                                            <div class="dropzone-content">
-                                                <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                                <p class="mb-2"><strong>${file.name}</strong></p>
-                                                <p class="text-muted">File selected successfully</p>
-                                                <div class="file-size-info">Size: ${formatFileSize(file.size)}</div>
-                                            </div>`;
+                                                    <div class="dropzone-content">
+                                                        <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                                        <p class="mb-2"><strong>${file.name}</strong></p>
+                                                        <p class="text-muted">File selected successfully</p>
+                                                        <div class="file-size-info">Size: ${formatFileSize(file.size)}</div>
+                                                    </div>`;
 
                 feedback.innerHTML = `<div class="file-validation-success">
-                                            <i class="fa fa-check-circle me-1"></i>File is ready for upload!
-                                        </div>`;
+                                                    <i class="fa fa-check-circle me-1"></i>File is ready for upload!
+                                                </div>`;
                 feedback.style.display = 'block';
             }
 
@@ -1031,12 +1038,12 @@
 
                 dropzone.classList.remove('file-error', 'file-success');
                 dropzone.innerHTML = `
-                                            <div class="dropzone-content">
-                                                <i class="fa fa-cloud-upload fa-2x mb-3"></i>
-                                                <p class="mb-2">Drag and drop PDF here</p>
-                                                <p class="text-muted">or click to select files</p>
-                                                <small class="text-muted">Maximum file size: 2MB</small>
-                                            </div>`;
+                                                    <div class="dropzone-content">
+                                                        <i class="fa fa-cloud-upload fa-2x mb-3"></i>
+                                                        <p class="mb-2">Drag and drop PDF here</p>
+                                                        <p class="text-muted">or click to select files</p>
+                                                        <small class="text-muted">Maximum file size: 2MB</small>
+                                                    </div>`;
 
                 feedback.style.display = 'none';
             }
@@ -1079,8 +1086,8 @@
                 const feedback = document.getElementById('editFileValidationFeedback');
 
                 feedback.innerHTML = `<div class="file-validation-error">
-                                    <i class="fa fa-exclamation-triangle me-1"></i>${message}
-                                </div>`;
+                                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                                        </div>`;
                 feedback.style.display = 'block';
 
                 // Clear the file input
@@ -1096,14 +1103,26 @@
                 const feedback = document.getElementById('editFileValidationFeedback');
 
                 feedback.innerHTML = `<div class="file-validation-success">
-                                    <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
-                                </div>`;
+                                            <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
+                                        </div>`;
                 feedback.style.display = 'block';
             }
 
             function showFileSizeAlertModal(message) {
-                const modal = new bootstrap.Modal(document.getElementById('fileValidationAlertModal'));
+                console.log('Showing file size alert modal with message:', message);
+
+                const modalElement = document.getElementById('fileValidationAlertModal');
                 const messageElement = document.getElementById('fileValidationAlertMessage');
+
+                if (!modalElement) {
+                    console.error('Modal element not found!');
+                    return;
+                }
+
+                if (!messageElement) {
+                    console.error('Message element not found!');
+                    return;
+                }
 
                 // Update the message with specific file size information
                 if (message.includes('File size')) {
@@ -1120,73 +1139,138 @@
                     message: message
                 };
 
+                console.log('File validation context:', window.currentFileValidationContext);
+
+                // Show the modal
+                const modal = new bootstrap.Modal(modalElement);
                 modal.show();
+
+                console.log('Modal should be visible now');
             }
 
             function clearMainFileAttachment() {
+                console.log('Clearing main file attachment');
+
                 // Clear the file input
-                document.getElementById('pdfFile').value = '';
+                const fileInput = document.getElementById('pdfFile');
+                if (fileInput) {
+                    fileInput.value = '';
+                    console.log('File input cleared');
+                }
 
                 // Reset the dropzone UI
                 const dropzone = document.getElementById('pdfDropzone');
                 const feedback = document.getElementById('fileValidationFeedback');
 
-                dropzone.classList.remove('file-error', 'file-success');
-                dropzone.innerHTML = `
-                            <div class="dropzone-content">
-                                <i class="fa fa-cloud-upload fa-2x mb-3"></i>
-                                <p class="mb-2">Drag and drop PDF here</p>
-                                <p class="text-muted">or click to select files</p>
-                                <small class="text-muted">Maximum file size: 2MB</small>
-                            </div>`;
+                if (dropzone) {
+                    dropzone.classList.remove('file-error', 'file-success');
+                    dropzone.innerHTML = `
+                                <div class="dropzone-content">
+                                    <i class="fa fa-cloud-upload fa-2x mb-3"></i>
+                                    <p class="mb-2">Drag and drop PDF here</p>
+                                    <p class="text-muted">or click to select files</p>
+                                    <small class="text-muted">Maximum file size: 2MB</small>
+                                </div>`;
+                    console.log('Dropzone reset');
+                }
 
-                feedback.style.display = 'none';
+                if (feedback) {
+                    feedback.style.display = 'none';
+                    console.log('Feedback hidden');
+                }
             }
 
             function clearEditFileAttachment() {
+                console.log('Clearing edit file attachment');
+
                 // Clear the file input
-                document.getElementById('editPdfFile').value = '';
+                const fileInput = document.getElementById('editPdfFile');
+                if (fileInput) {
+                    fileInput.value = '';
+                    console.log('Edit file input cleared');
+                }
 
                 // Reset the feedback UI
                 const feedback = document.getElementById('editFileValidationFeedback');
-                feedback.style.display = 'none';
+                if (feedback) {
+                    feedback.style.display = 'none';
+                    console.log('Edit feedback hidden');
+                }
             }
 
-            // Edit modal functionality
-            document.addEventListener("DOMContentLoaded", function () {
-                // File validation alert modal button handlers
-                const understandBtn = document.getElementById('understandAndRepick');
-                const closeBtn = document.getElementById('closeModalAndClear');
+            // Test function for debugging
+            function testModal() {
+                console.log('Testing modal...');
+                showFileSizeAlertModal('Test file size (5.5 MB) exceeds the maximum limit of 2MB. (main form)');
+            }
 
-                if (understandBtn) {
-                    understandBtn.addEventListener('click', function () {
-                        // Close the modal
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('fileValidationAlertModal'));
+            // File validation alert modal button handlers - Global event delegation
+            document.addEventListener('click', function (e) {
+                // Handle Repick PDF File button
+                if (e.target && e.target.id === 'understandAndRepick') {
+                    e.preventDefault();
+                    console.log('Repick button clicked');
+
+                    // Close the modal
+                    const modalElement = document.getElementById('fileValidationAlertModal');
+                    const modal = bootstrap.Modal.getInstance(modalElement);
+                    if (modal) {
                         modal.hide();
+                    } else {
+                        // Fallback: hide modal manually
+                        modalElement.classList.remove('show');
+                        modalElement.style.display = 'none';
+                        document.body.classList.remove('modal-open');
+                        const backdrop = document.querySelector('.modal-backdrop');
+                        if (backdrop) {
+                            backdrop.remove();
+                        }
+                    }
 
-                        // Allow user to repick file by triggering file input
+                    // Allow user to repick file by triggering file input
+                    setTimeout(() => {
                         if (window.currentFileValidationContext && window.currentFileValidationContext.isEditModal) {
                             document.getElementById('editPdfFile').click();
                         } else {
                             document.getElementById('pdfFile').click();
                         }
-                    });
+                    }, 300); // Small delay to ensure modal is closed
                 }
 
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', function () {
-                        // Close the modal
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('fileValidationAlertModal'));
-                        modal.hide();
+                // Handle Close (X) button
+                if (e.target && e.target.id === 'closeModalAndClear') {
+                    e.preventDefault();
+                    console.log('Close button clicked');
 
-                        // Clear the PDF attachment and reset UI
+                    // Close the modal
+                    const modalElement = document.getElementById('fileValidationAlertModal');
+                    const modal = bootstrap.Modal.getInstance(modalElement);
+                    if (modal) {
+                        modal.hide();
+                    } else {
+                        // Fallback: hide modal manually
+                        modalElement.classList.remove('show');
+                        modalElement.style.display = 'none';
+                        document.body.classList.remove('modal-open');
+                        const backdrop = document.querySelector('.modal-backdrop');
+                        if (backdrop) {
+                            backdrop.remove();
+                        }
+                    }
+
+                    // Clear the PDF attachment and reset UI
+                    setTimeout(() => {
                         if (window.currentFileValidationContext && window.currentFileValidationContext.isEditModal) {
                             clearEditFileAttachment();
                         } else {
                             clearMainFileAttachment();
                         }
-                    });
+                    }, 300); // Small delay to ensure modal is closed
                 }
+            });
+
+            // Edit modal functionality
+            document.addEventListener("DOMContentLoaded", function () {
 
                 const editButtons = document.querySelectorAll(".edit-btn");
 
@@ -1205,8 +1289,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                                                    View Current PDF
-                                                                </a>`;
+                                                                            View Current PDF
+                                                                        </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';
