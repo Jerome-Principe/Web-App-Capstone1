@@ -529,6 +529,36 @@
         .table-container td {
             text-align: center !important;
         }
+
+        /* File validation styles */
+        .file-validation-error {
+            color: #dc3545;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        .file-validation-success {
+            color: #28a745;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        .pdf-dropzone.file-error {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+
+        .pdf-dropzone.file-success {
+            border-color: #28a745;
+            background-color: #d4edda;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -590,15 +620,17 @@
                                     </div>
                                 </div>
                                 <input type="file" id="pdfFile" name="pdf_file" accept="application/pdf"
-                                    class="form-control d-none" onchange="displayFileName(event)">
+                                    class="form-control d-none" onchange="validateAndDisplayFile(event)">
                                 <button type="button" class="btn btn-secondary mt-3 w-100" onclick="selectPDFFile()">
                                     Select PDF File
                                 </button>
+                                <!-- File validation feedback -->
+                                <div id="fileValidationFeedback" class="mt-2" style="display: none;"></div>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-end gap-3 mt-4">
-                            <button type="submit" class="btn btn-outline-primary">
+                            <button type="submit" id="saveAnnouncementBtn" class="btn btn-outline-primary">
                                 Save Announcement
                             </button>
                         </div>
@@ -768,8 +800,9 @@
                             <div class="mb-3">
                                 <label class="form-label">Attach New PDF File</label>
                                 <input type="file" id="editPdfFile" name="pdf_file" accept="application/pdf"
-                                    class="form-control">
+                                    class="form-control" onchange="validateEditFile(event)">
                                 <div id="currentPdfFile" class="mt-2"></div>
+                                <div id="editFileValidationFeedback" class="mt-2" style="display: none;"></div>
                             </div>
                         </div>
 
@@ -777,7 +810,7 @@
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                 Cancel
                             </button>
-                            <button type="submit" class="btn btn-outline-primary">
+                            <button type="submit" id="updateAnnouncementBtn" class="btn btn-outline-primary">
                                 Update Announcement
                             </button>
                         </div>
@@ -836,7 +869,7 @@
                 const file = event.dataTransfer.files[0];
                 if (file && file.type === 'application/pdf') {
                     document.getElementById('pdfFile').files = event.dataTransfer.files;
-                    displayFileName();
+                    validateAndDisplayFile();
                 } else {
                     alert('Please select a PDF file.');
                 }
@@ -846,16 +879,188 @@
                 document.getElementById('pdfFile').click();
             }
 
-            function displayFileName(event) {
+            function validateAndDisplayFile(event) {
                 const file = document.getElementById('pdfFile').files[0];
                 const dropzone = document.getElementById('pdfDropzone');
+                const feedback = document.getElementById('fileValidationFeedback');
+                const saveBtn = document.getElementById('saveAnnouncementBtn');
+
                 if (file) {
-                    dropzone.innerHTML = `
-                                    <div class="dropzone-content">
-                                        <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                        <p class="mb-2"><strong>${file.name}</strong></p>
-                                        <p class="text-muted">File selected</p>
-                                    </div>`;
+                    // Reset dropzone classes
+                    dropzone.classList.remove('file-error', 'file-success');
+
+                    // Validate file type
+                    if (file.type !== 'application/pdf') {
+                        showFileError('Please select a PDF file only.');
+                        disableSaveButton();
+                        return;
+                    }
+
+                    // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+                    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+                    if (file.size > maxSize) {
+                        showFileError(`File size (${formatFileSize(file.size)}) exceeds the maximum limit of 2MB.`);
+                        disableSaveButton();
+                        return;
+                    }
+
+                    // File is valid
+                    showFileSuccess(file);
+                    enableSaveButton();
+                } else {
+                    // No file selected
+                    resetFileDisplay();
+                    enableSaveButton();
+                }
+            }
+
+            function showFileError(message) {
+                const dropzone = document.getElementById('pdfDropzone');
+                const feedback = document.getElementById('fileValidationFeedback');
+
+                dropzone.classList.add('file-error');
+                dropzone.classList.remove('file-success');
+
+                dropzone.innerHTML = `
+                            <div class="dropzone-content">
+                                <i class="fa fa-exclamation-triangle fa-2x mb-3 text-danger"></i>
+                                <p class="mb-2 text-danger"><strong>Invalid File</strong></p>
+                                <p class="text-muted">Please select a valid PDF file</p>
+                            </div>`;
+
+                feedback.innerHTML = `<div class="file-validation-error">
+                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                        </div>`;
+                feedback.style.display = 'block';
+            }
+
+            function showFileSuccess(file) {
+                const dropzone = document.getElementById('pdfDropzone');
+                const feedback = document.getElementById('fileValidationFeedback');
+
+                dropzone.classList.add('file-success');
+                dropzone.classList.remove('file-error');
+
+                dropzone.innerHTML = `
+                            <div class="dropzone-content">
+                                <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                <p class="mb-2"><strong>${file.name}</strong></p>
+                                <p class="text-muted">File selected successfully</p>
+                                <small class="text-muted">Size: ${formatFileSize(file.size)}</small>
+                            </div>`;
+
+                feedback.innerHTML = `<div class="file-validation-success">
+                            <i class="fa fa-check-circle me-1"></i>File is ready for upload!
+                        </div>`;
+                feedback.style.display = 'block';
+            }
+
+            function resetFileDisplay() {
+                const dropzone = document.getElementById('pdfDropzone');
+                const feedback = document.getElementById('fileValidationFeedback');
+
+                dropzone.classList.remove('file-error', 'file-success');
+                dropzone.innerHTML = `
+                            <div class="dropzone-content">
+                                <i class="fa fa-cloud-upload fa-2x mb-3"></i>
+                                <p class="mb-2">Drag and drop PDF here</p>
+                                <p class="text-muted">or click to select files</p>
+                            </div>`;
+
+                feedback.style.display = 'none';
+            }
+
+            function disableSaveButton() {
+                const saveBtn = document.getElementById('saveAnnouncementBtn');
+                if (saveBtn) {
+                    saveBtn.disabled = true;
+                    saveBtn.title = 'Please select a valid PDF file to enable saving';
+                }
+            }
+
+            function enableSaveButton() {
+                const saveBtn = document.getElementById('saveAnnouncementBtn');
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.title = '';
+                }
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            function validateEditFile(event) {
+                const file = event.target.files[0];
+                const feedback = document.getElementById('editFileValidationFeedback');
+                const updateBtn = document.getElementById('updateAnnouncementBtn');
+
+                if (file) {
+                    // Validate file type
+                    if (file.type !== 'application/pdf') {
+                        showEditFileError('Please select a PDF file only.');
+                        disableUpdateButton();
+                        return;
+                    }
+
+                    // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+                    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+                    if (file.size > maxSize) {
+                        showEditFileError(`File size (${formatFileSize(file.size)}) exceeds the maximum limit of 2MB.`);
+                        disableUpdateButton();
+                        return;
+                    }
+
+                    // File is valid
+                    showEditFileSuccess(file);
+                    enableUpdateButton();
+                } else {
+                    // No file selected
+                    resetEditFileDisplay();
+                    enableUpdateButton();
+                }
+            }
+
+            function showEditFileError(message) {
+                const feedback = document.getElementById('editFileValidationFeedback');
+
+                feedback.innerHTML = `<div class="file-validation-error">
+                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                        </div>`;
+                feedback.style.display = 'block';
+            }
+
+            function showEditFileSuccess(file) {
+                const feedback = document.getElementById('editFileValidationFeedback');
+
+                feedback.innerHTML = `<div class="file-validation-success">
+                            <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
+                        </div>`;
+                feedback.style.display = 'block';
+            }
+
+            function resetEditFileDisplay() {
+                const feedback = document.getElementById('editFileValidationFeedback');
+                feedback.style.display = 'none';
+            }
+
+            function disableUpdateButton() {
+                const updateBtn = document.getElementById('updateAnnouncementBtn');
+                if (updateBtn) {
+                    updateBtn.disabled = true;
+                    updateBtn.title = 'Please select a valid PDF file to enable updating';
+                }
+            }
+
+            function enableUpdateButton() {
+                const updateBtn = document.getElementById('updateAnnouncementBtn');
+                if (updateBtn) {
+                    updateBtn.disabled = false;
+                    updateBtn.title = '';
                 }
             }
 
@@ -881,8 +1086,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                                                                    View Current PDF
-                                                                                </a>`;
+                                                                                            View Current PDF
+                                                                                        </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';
