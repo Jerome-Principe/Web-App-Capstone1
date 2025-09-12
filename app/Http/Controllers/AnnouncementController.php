@@ -23,6 +23,20 @@ class AnnouncementController extends Controller
     // Store new announcement
     public function store(Request $request)
     {
+        // Additional file size validation before Laravel validation
+        if ($request->hasFile('pdf_file')) {
+            $file = $request->file('pdf_file');
+            $fileSize = $file->getSize();
+            $maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+            if ($fileSize > $maxSize) {
+                $fileSizeMB = round($fileSize / (1024 * 1024), 2);
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['pdf_file' => "The PDF file size ({$fileSizeMB}MB) exceeds the maximum allowed size of 2MB. Please select a smaller file or compress your PDF."]);
+            }
+        }
+
         $request->validate([
             'notification_text' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -66,6 +80,20 @@ class AnnouncementController extends Controller
     // Update announcement
     public function update(Request $request, Announcement $announcement)
     {
+        // Additional file size validation before Laravel validation
+        if ($request->hasFile('pdf_file')) {
+            $file = $request->file('pdf_file');
+            $fileSize = $file->getSize();
+            $maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+            if ($fileSize > $maxSize) {
+                $fileSizeMB = round($fileSize / (1024 * 1024), 2);
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['pdf_file' => "The PDF file size ({$fileSizeMB}MB) exceeds the maximum allowed size of 2MB. Please select a smaller file or compress your PDF."]);
+            }
+        }
+
         $request->validate([
             'notification_text' => 'required|string|max:255',
             'description' => 'nullable|string',

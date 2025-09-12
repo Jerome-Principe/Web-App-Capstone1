@@ -564,6 +564,12 @@
             color: #6c757d;
             margin-top: 4px;
         }
+
+        .alert-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -603,6 +609,12 @@
 
                     <div class="alert alert-info" role="alert">
                         Fields marked with an asterisk <span class="text-danger">(*)</span> are required.
+                    </div>
+
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fa fa-exclamation-triangle me-2"></i>
+                        <strong>PDF File Upload Notice:</strong> Maximum file size allowed is <strong>2MB</strong>.
+                        Files exceeding this limit will not be saved and an error alert will be displayed.
                     </div>
 
                     <form action="{{ route('announcements.store') }}" method="POST" enctype="multipart/form-data">
@@ -817,6 +829,11 @@
                                 <input type="file" id="editPdfFile" name="pdf_file" accept="application/pdf"
                                     class="form-control" onchange="validateEditFile(event)">
                                 <small class="text-muted">Maximum file size: 2MB</small>
+                                <div class="alert alert-warning alert-sm mt-2 mb-2" role="alert">
+                                    <i class="fa fa-info-circle me-1"></i>
+                                    <small>Files exceeding 2MB will not be saved and an error alert will be
+                                        displayed.</small>
+                                </div>
                                 <div id="currentPdfFile" class="mt-2"></div>
                                 <div id="editFileValidationFeedback" class="mt-2" style="display: none;"></div>
                             </div>
@@ -831,6 +848,41 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Validation Alert Modal -->
+        <div class="modal fade" id="fileValidationAlertModal" tabindex="-1" aria-labelledby="fileValidationAlertModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="fileValidationAlertModalLabel">
+                            <i class="fa fa-exclamation-triangle me-2"></i>File Upload Error
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <i class="fa fa-file-pdf-o fa-3x text-danger mb-3"></i>
+                            <h6 class="mb-3">PDF Upload Exceeded Maximum Size</h6>
+                            <p class="text-muted mb-3" id="fileValidationAlertMessage">
+                                The PDF file you selected exceeds the maximum allowed size of 2MB.
+                            </p>
+                            <div class="alert alert-warning" role="alert">
+                                <i class="fa fa-info-circle me-2"></i>
+                                <strong>Please select a smaller PDF file or compress your current file before
+                                    uploading.</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                            <i class="fa fa-check me-1"></i>I Understand
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -932,12 +984,17 @@
                 dropzone.classList.remove('file-success');
 
                 feedback.innerHTML = `<div class="file-validation-error">
-                        <i class="fa fa-exclamation-triangle me-1"></i>${message}
-                    </div>`;
+                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                        </div>`;
                 feedback.style.display = 'block';
 
                 // Clear the file input
                 document.getElementById('pdfFile').value = '';
+
+                // Show alert modal for file size errors
+                if (message.includes('exceeds the maximum limit')) {
+                    showFileSizeAlertModal(message);
+                }
             }
 
             function showFileValidationSuccess(file) {
@@ -948,16 +1005,16 @@
                 dropzone.classList.remove('file-error');
 
                 dropzone.innerHTML = `
-                        <div class="dropzone-content">
-                            <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                            <p class="mb-2"><strong>${file.name}</strong></p>
-                            <p class="text-muted">File selected successfully</p>
-                            <div class="file-size-info">Size: ${formatFileSize(file.size)}</div>
-                        </div>`;
+                                    <div class="dropzone-content">
+                                        <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                                        <p class="mb-2"><strong>${file.name}</strong></p>
+                                        <p class="text-muted">File selected successfully</p>
+                                        <div class="file-size-info">Size: ${formatFileSize(file.size)}</div>
+                                    </div>`;
 
                 feedback.innerHTML = `<div class="file-validation-success">
-                        <i class="fa fa-check-circle me-1"></i>File is ready for upload!
-                    </div>`;
+                                    <i class="fa fa-check-circle me-1"></i>File is ready for upload!
+                                </div>`;
                 feedback.style.display = 'block';
             }
 
@@ -967,12 +1024,12 @@
 
                 dropzone.classList.remove('file-error', 'file-success');
                 dropzone.innerHTML = `
-                        <div class="dropzone-content">
-                            <i class="fa fa-cloud-upload fa-2x mb-3"></i>
-                            <p class="mb-2">Drag and drop PDF here</p>
-                            <p class="text-muted">or click to select files</p>
-                            <small class="text-muted">Maximum file size: 2MB</small>
-                        </div>`;
+                                    <div class="dropzone-content">
+                                        <i class="fa fa-cloud-upload fa-2x mb-3"></i>
+                                        <p class="mb-2">Drag and drop PDF here</p>
+                                        <p class="text-muted">or click to select files</p>
+                                        <small class="text-muted">Maximum file size: 2MB</small>
+                                    </div>`;
 
                 feedback.style.display = 'none';
             }
@@ -1015,21 +1072,40 @@
                 const feedback = document.getElementById('editFileValidationFeedback');
 
                 feedback.innerHTML = `<div class="file-validation-error">
-                        <i class="fa fa-exclamation-triangle me-1"></i>${message}
-                    </div>`;
+                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                        </div>`;
                 feedback.style.display = 'block';
 
                 // Clear the file input
                 document.getElementById('editPdfFile').value = '';
+
+                // Show alert modal for file size errors
+                if (message.includes('exceeds the maximum limit')) {
+                    showFileSizeAlertModal(message);
+                }
             }
 
             function showEditFileValidationSuccess(file) {
                 const feedback = document.getElementById('editFileValidationFeedback');
 
                 feedback.innerHTML = `<div class="file-validation-success">
-                        <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
-                    </div>`;
+                            <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
+                        </div>`;
                 feedback.style.display = 'block';
+            }
+
+            function showFileSizeAlertModal(message) {
+                const modal = new bootstrap.Modal(document.getElementById('fileValidationAlertModal'));
+                const messageElement = document.getElementById('fileValidationAlertMessage');
+
+                // Update the message with specific file size information
+                if (message.includes('File size')) {
+                    messageElement.textContent = message;
+                } else {
+                    messageElement.textContent = 'The PDF file you selected exceeds the maximum allowed size of 2MB.';
+                }
+
+                modal.show();
             }
 
             // Edit modal functionality
@@ -1051,8 +1127,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                                View Current PDF
-                                            </a>`;
+                                                            View Current PDF
+                                                        </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';
@@ -1078,6 +1154,7 @@
                     // Check file validation before submission
                     const fileInput = this.querySelector('#pdfFile');
                     const editFileInput = this.querySelector('#editPdfFile');
+                    let hasValidationError = false;
 
                     // Check main form file input
                     if (fileInput && fileInput.files.length > 0) {
@@ -1086,12 +1163,15 @@
 
                         if (file.size > maxSize) {
                             e.preventDefault();
+                            hasValidationError = true;
                             showFileValidationError(`File size (${formatFileSize(file.size)}) exceeds the maximum limit of 2MB.`);
+                            showFileSizeAlertModal(`File size (${formatFileSize(file.size)}) exceeds the maximum limit of 2MB.`);
                             return false;
                         }
 
                         if (file.type !== 'application/pdf') {
                             e.preventDefault();
+                            hasValidationError = true;
                             showFileValidationError('Please select a PDF file only.');
                             return false;
                         }
@@ -1104,21 +1184,27 @@
 
                         if (file.size > maxSize) {
                             e.preventDefault();
+                            hasValidationError = true;
                             showEditFileValidationError(`File size (${formatFileSize(file.size)}) exceeds the maximum limit of 2MB.`);
+                            showFileSizeAlertModal(`File size (${formatFileSize(file.size)}) exceeds the maximum limit of 2MB.`);
                             return false;
                         }
 
                         if (file.type !== 'application/pdf') {
                             e.preventDefault();
+                            hasValidationError = true;
                             showEditFileValidationError('Please select a PDF file only.');
                             return false;
                         }
                     }
 
-                    const submitBtn = this.querySelector('button[type="submit"]');
-                    if (submitBtn) {
-                        submitBtn.classList.add('loading');
-                        submitBtn.disabled = true;
+                    // Only proceed with submission if no validation errors
+                    if (!hasValidationError) {
+                        const submitBtn = this.querySelector('button[type="submit"]');
+                        if (submitBtn) {
+                            submitBtn.classList.add('loading');
+                            submitBtn.disabled = true;
+                        }
                     }
                 });
             });
