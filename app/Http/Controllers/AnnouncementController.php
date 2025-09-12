@@ -27,6 +27,12 @@ class AnnouncementController extends Controller
             'notification_text' => 'required|string|max:255',
             'description' => 'nullable|string',
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+        ], [
+            'notification_text.required' => 'The announcement text is required.',
+            'notification_text.max' => 'The announcement text may not be greater than 255 characters.',
+            'pdf_file.file' => 'The uploaded file must be a valid file.',
+            'pdf_file.mimes' => 'The file must be a PDF document.',
+            'pdf_file.max' => 'The PDF file size must not exceed 2MB.',
         ]);
 
         $data = $request->only(['notification_text', 'description']);
@@ -61,9 +67,15 @@ class AnnouncementController extends Controller
     public function update(Request $request, Announcement $announcement)
     {
         $request->validate([
-            'notification_text' => 'required|string',
+            'notification_text' => 'required|string|max:255',
             'description' => 'nullable|string',
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+        ], [
+            'notification_text.required' => 'The announcement text is required.',
+            'notification_text.max' => 'The announcement text may not be greater than 255 characters.',
+            'pdf_file.file' => 'The uploaded file must be a valid file.',
+            'pdf_file.mimes' => 'The file must be a PDF document.',
+            'pdf_file.max' => 'The PDF file size must not exceed 2MB.',
         ]);
 
         if ($request->hasFile('pdf_file')) {
@@ -207,6 +219,12 @@ class AnnouncementController extends Controller
                 'notification_text' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+            ], [
+                'notification_text.required' => 'The announcement text is required.',
+                'notification_text.max' => 'The announcement text may not be greater than 255 characters.',
+                'pdf_file.file' => 'The uploaded file must be a valid file.',
+                'pdf_file.mimes' => 'The file must be a PDF document.',
+                'pdf_file.max' => 'The PDF file size must not exceed 2MB.',
             ]);
 
             $data = $request->only(['notification_text', 'description']);
@@ -247,6 +265,12 @@ class AnnouncementController extends Controller
                 'notification_text' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+            ], [
+                'notification_text.required' => 'The announcement text is required.',
+                'notification_text.max' => 'The announcement text may not be greater than 255 characters.',
+                'pdf_file.file' => 'The uploaded file must be a valid file.',
+                'pdf_file.mimes' => 'The file must be a PDF document.',
+                'pdf_file.max' => 'The PDF file size must not exceed 2MB.',
             ]);
 
             $data = $request->only(['notification_text', 'description']);
