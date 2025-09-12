@@ -757,7 +757,9 @@
                         <form action="{{route('feedback.submit')}}" method="POST">
                             @csrf
                             <div class="single_form">
-                                <input type="text" name="name" placeholder="Name" required>
+                                <input type="text" name="name" id="name" placeholder="Name" required>
+                                <div id="name-error"
+                                    style="color: #dc3545; font-size: 12px; margin-top: 5px; display: none;"></div>
                             </div>
                             <div class="single_form">
                                 <input type="text" name="email" placeholder="example@email.com" required>
@@ -866,13 +868,52 @@
                                     }, 3000); // 3000ms = 3 seconds
                                 });
 
+                                // Name validation function
+                                function validateName(name) {
+                                    // Allow only letters, spaces, and dots
+                                    const nameRegex = /^[a-zA-Z\s.]+$/;
+                                    return nameRegex.test(name);
+                                }
+
+                                // Add real-time validation for name field
+                                document.getElementById('name').addEventListener('input', function () {
+                                    const nameValue = this.value;
+                                    const errorDiv = document.getElementById('name-error');
+
+                                    if (nameValue && !validateName(nameValue)) {
+                                        errorDiv.textContent = 'Name can only contain letters, spaces, and dots.';
+                                        errorDiv.style.display = 'block';
+                                        this.style.borderColor = '#dc3545';
+                                    } else {
+                                        errorDiv.style.display = 'none';
+                                        this.style.borderColor = '';
+                                    }
+                                });
+
                                 // Form validation function
                                 function validateForm() {
+                                    const nameField = document.getElementById('name');
+                                    const nameValue = nameField.value;
                                     const selectedRating = document.querySelector('input[name="rating"]:checked');
+
+                                    // Validate name field
+                                    if (!nameValue) {
+                                        alert('Please enter your name.');
+                                        nameField.focus();
+                                        return false;
+                                    }
+
+                                    if (!validateName(nameValue)) {
+                                        alert('Name can only contain letters, spaces, and dots.');
+                                        nameField.focus();
+                                        return false;
+                                    }
+
                                     if (!selectedRating) {
                                         alert('Please select a rating before submitting.');
                                         return false;
                                     }
+
                                     console.log('Submitting form with rating:', selectedRating.value);
                                     return true;
                                 }

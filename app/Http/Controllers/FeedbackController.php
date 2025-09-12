@@ -23,11 +23,13 @@ class FeedbackController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|regex:/^[a-zA-Z\s.]+$/',
             'email' => 'required|string|email|max:255',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
+        ], [
+            'name.regex' => 'Name can only contain letters, spaces, and dots.',
         ]);
 
         // Create a new feedback entry in the database
