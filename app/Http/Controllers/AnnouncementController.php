@@ -23,30 +23,10 @@ class AnnouncementController extends Controller
     // Store new announcement
     public function store(Request $request)
     {
-        // Additional file size validation before Laravel validation
-        if ($request->hasFile('pdf_file')) {
-            $file = $request->file('pdf_file');
-            $fileSize = $file->getSize();
-            $maxSize = 2 * 1024 * 1024; // 2MB in bytes
-
-            if ($fileSize > $maxSize) {
-                $fileSizeMB = round($fileSize / (1024 * 1024), 2);
-                return redirect()->back()
-                    ->withInput()
-                    ->withErrors(['pdf_file' => "The PDF file size ({$fileSizeMB}MB) exceeds the maximum allowed size of 2MB. Please select a smaller file or compress your PDF."]);
-            }
-        }
-
         $request->validate([
             'notification_text' => 'required|string|max:255',
             'description' => 'nullable|string',
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
-        ], [
-            'notification_text.required' => 'The announcement text is required.',
-            'notification_text.max' => 'The announcement text may not be greater than 255 characters.',
-            'pdf_file.file' => 'The uploaded file must be a valid file.',
-            'pdf_file.mimes' => 'The file must be a PDF document.',
-            'pdf_file.max' => 'The PDF file size must not exceed 2MB.',
         ]);
 
         $data = $request->only(['notification_text', 'description']);
@@ -80,30 +60,10 @@ class AnnouncementController extends Controller
     // Update announcement
     public function update(Request $request, Announcement $announcement)
     {
-        // Additional file size validation before Laravel validation
-        if ($request->hasFile('pdf_file')) {
-            $file = $request->file('pdf_file');
-            $fileSize = $file->getSize();
-            $maxSize = 2 * 1024 * 1024; // 2MB in bytes
-
-            if ($fileSize > $maxSize) {
-                $fileSizeMB = round($fileSize / (1024 * 1024), 2);
-                return redirect()->back()
-                    ->withInput()
-                    ->withErrors(['pdf_file' => "The PDF file size ({$fileSizeMB}MB) exceeds the maximum allowed size of 2MB. Please select a smaller file or compress your PDF."]);
-            }
-        }
-
         $request->validate([
-            'notification_text' => 'required|string|max:255',
+            'notification_text' => 'required|string',
             'description' => 'nullable|string',
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
-        ], [
-            'notification_text.required' => 'The announcement text is required.',
-            'notification_text.max' => 'The announcement text may not be greater than 255 characters.',
-            'pdf_file.file' => 'The uploaded file must be a valid file.',
-            'pdf_file.mimes' => 'The file must be a PDF document.',
-            'pdf_file.max' => 'The PDF file size must not exceed 2MB.',
         ]);
 
         if ($request->hasFile('pdf_file')) {
@@ -247,12 +207,6 @@ class AnnouncementController extends Controller
                 'notification_text' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
-            ], [
-                'notification_text.required' => 'The announcement text is required.',
-                'notification_text.max' => 'The announcement text may not be greater than 255 characters.',
-                'pdf_file.file' => 'The uploaded file must be a valid file.',
-                'pdf_file.mimes' => 'The file must be a PDF document.',
-                'pdf_file.max' => 'The PDF file size must not exceed 2MB.',
             ]);
 
             $data = $request->only(['notification_text', 'description']);
@@ -293,12 +247,6 @@ class AnnouncementController extends Controller
                 'notification_text' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
-            ], [
-                'notification_text.required' => 'The announcement text is required.',
-                'notification_text.max' => 'The announcement text may not be greater than 255 characters.',
-                'pdf_file.file' => 'The uploaded file must be a valid file.',
-                'pdf_file.mimes' => 'The file must be a PDF document.',
-                'pdf_file.max' => 'The PDF file size must not exceed 2MB.',
             ]);
 
             $data = $request->only(['notification_text', 'description']);
