@@ -1,50 +1,50 @@
 <div class="side-nav expand-lg bg-gradient-to-b from-gray-900 to-gray-800 text-white"
-    style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow: visible; min-width: 280px; width: 280px; border: none; box-shadow: none; border-right: none;">
-    <div class="side-nav-inner px-4 pb-4 h-full overflow-visible" style="padding-top: 0;">
+    style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-y: auto; overflow-x: hidden; min-width: 280px; width: 280px; height: 100vh; border: none; box-shadow: none; border-right: none;">
+    <div class="side-nav-inner px-4 pb-4" style="padding-top: 0; min-height: 100%;">
         <style>
-            .side-nav-inner::-webkit-scrollbar {
-                display: none;
-            }
-
-            .side-nav-inner::-webkit-scrollbar-track {
-                display: none;
-            }
-
-            .side-nav-inner::-webkit-scrollbar-thumb {
-                display: none;
-            }
-
-            .side-nav-inner::-webkit-scrollbar-corner {
-                display: none;
-            }
-
+            /* Enable scrolling for the sidebar */
             .side-nav {
-                scrollbar-width: none !important;
-                -ms-overflow-style: none !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                scroll-behavior: smooth !important;
             }
 
-            .side-nav::-webkit-scrollbar {
-                display: none !important;
+            .side-nav-inner {
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                max-height: 100vh !important;
+                scroll-behavior: smooth !important;
             }
 
-            /* Hide scrollbar for the entire sidebar */
+            /* Custom scrollbar styling */
             .side-nav::-webkit-scrollbar,
             .side-nav-inner::-webkit-scrollbar {
-                width: 0 !important;
-                display: none !important;
+                width: 6px !important;
             }
 
-            /* Hide scrollbar for Firefox */
+            .side-nav::-webkit-scrollbar-track,
+            .side-nav-inner::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.1) !important;
+                border-radius: 3px !important;
+            }
+
+            .side-nav::-webkit-scrollbar-thumb,
+            .side-nav-inner::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.3) !important;
+                border-radius: 3px !important;
+                transition: background 0.3s ease !important;
+            }
+
+            .side-nav::-webkit-scrollbar-thumb:hover,
+            .side-nav-inner::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.5) !important;
+            }
+
+            /* Firefox scrollbar styling */
             .side-nav,
             .side-nav-inner {
-                scrollbar-width: none !important;
-                -ms-overflow-style: none !important;
-            }
-
-            /* Additional scrollbar hiding for all browsers */
-            .side-nav *::-webkit-scrollbar {
-                width: 0 !important;
-                display: none !important;
+                scrollbar-width: thin !important;
+                scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1) !important;
             }
 
             /* Remove the white border line from sidebar */
