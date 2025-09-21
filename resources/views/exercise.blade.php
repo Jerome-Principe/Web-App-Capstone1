@@ -304,7 +304,10 @@
                             <div>
                                 <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Exercise
                                     Default List</h1>
-                                <p class="text-muted mb-0">Manage default exercise templates and routines</p>
+                                <p class="text-muted mb-0">Create and customize comprehensive exercise programs with
+                                    detailed guidelines, duration tracking, and multiple exercise categories to help members
+                                    achieve their fitness goals
+                                </p>
                             </div>
                             <button type="button" class="btn btn-primary d-inline-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#addExerciseModal">
@@ -627,7 +630,7 @@
                 @foreach($exercises as $exercise)
                     updateExercises('{{ $exercise->id }}', '{{ $exercise->exercise }}');
                 @endforeach 
-                    });
+                });
 
             function updateExercises(exerciseId = '', selectedExercise = '') {
                 const type = document.getElementById('type' + exerciseId).value;
