@@ -216,11 +216,6 @@
                         </div>
                     @endif
 
-                    <div class="alert alert-info d-flex align-items-center" role="alert">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <div>Monitor equipment defects and maintenance issues</div>
-                    </div>
-
                     <script>
                         document.addEventListener("DOMContentLoaded", function () {
                             setTimeout(function () {
