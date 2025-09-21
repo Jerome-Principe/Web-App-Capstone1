@@ -11,6 +11,7 @@ class MembershipPayment extends Model
 
     protected $fillable = [
         'membership_id',
+        'payment_method',
         'gcash_number',
         'account_name',
         'reference_number',

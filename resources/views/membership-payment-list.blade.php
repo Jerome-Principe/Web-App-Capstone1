@@ -333,6 +333,7 @@
                                         <input type="checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
                                     <th>ID</th>
+                                    <th>Payment Type</th>
                                     <th>Last Name</th>
                                     <th>First Name</th>
                                     <th>Gcash Number</th>
@@ -349,6 +350,13 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-primary">{{ $payment->id }}</span>
+                                        </td>
+                                        <td>
+                                            @if($payment->payment_method === 'Cash')
+                                                <span class="badge bg-success">Cash</span>
+                                            @else
+                                                <span class="badge bg-info">GCash</span>
+                                            @endif
                                         </td>
                                         <td>
                                             <strong>{{ $payment->pendingMembership?->last_name ?? 'N/A' }}</strong>
@@ -376,7 +384,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8">
+                                        <td colspan="9">
                                             <div class="empty-state">
                                                 <i class="fa fa-credit-card"></i>
                                                 <h5>No payment records found</h5>
