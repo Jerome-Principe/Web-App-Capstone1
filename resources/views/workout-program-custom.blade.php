@@ -38,6 +38,7 @@
 
         /* Page Header */
         .page-header {
+            text-align: center;
             margin-bottom: 48px;
             padding: 0;
         }
