@@ -59,7 +59,7 @@
         /* Filter and Export Section */
         .filter-export-section {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             margin-bottom: 24px;
             padding: 16px;
@@ -268,6 +268,7 @@
 
             .search-section {
                 justify-content: center !important;
+                width: 100%;
             }
 
             .search-section input {
