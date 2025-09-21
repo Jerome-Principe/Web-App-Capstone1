@@ -306,14 +306,15 @@
             <!-- Walk-in Clients Section -->
             <div class="content-card">
                 <div class="header-section">
-                    <h1>Walkin Clients</h1>
-                    <div>
-                        <div class="d-flex justify-content-end position-relative">
-                            <a href="/walkin" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                                    aria-hidden="true"></i>Add
-                                New
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <h1 class="card-title mb-0">Walkin Clients</h1>
+                            <a href="/walkin" class="btn btn-primary d-inline-flex align-items-center">
+                                <i class="fa fa-plus mr-2"></i>
+                                Add New
                             </a>
                         </div>
+                        <p class="text-muted mb-0">Manage walk-in client sessions and daily visits</p>
                     </div>
 
                     @if(session('success'))
