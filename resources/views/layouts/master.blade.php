@@ -298,11 +298,25 @@
                     <!-- Navigation Icons with Search -->
                     <div class="flex items-center space-x-4">
                         <!-- Search Bar -->
-                        <div class="relative">
-                            <input type="text" placeholder="Type to search..."
+                        <div class="relative" id="search-container">
+                            <input type="text" id="header-search" placeholder="Type to search..."
                                 class="w-64 pl-4 pr-10 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                                 <i class="lni-search text-gray-400 text-sm"></i>
+                            </div>
+
+                            <!-- Search Results Dropdown -->
+                            <div id="search-results"
+                                class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden max-h-96 overflow-y-auto">
+                                <div id="search-loading" class="p-4 text-center text-gray-500 hidden">
+                                    <i class="fa fa-spinner fa-spin mr-2"></i>Searching...
+                                </div>
+                                <div id="search-suggestions" class="py-2">
+                                    <!-- Search suggestions will be populated here -->
+                                </div>
+                                <div id="search-no-results" class="p-4 text-center text-gray-500 hidden">
+                                    <i class="fa fa-search mr-2"></i>No results found
+                                </div>
                             </div>
                         </div>
 
@@ -618,6 +632,207 @@
                 if ($(window).width() > 992) {
                     sidebar.removeClass('show');
                     backdrop.removeClass('show');
+                }
+            });
+        });
+
+        // Header Search Functionality
+        $(document).ready(function () {
+            const searchInput = $('#header-search');
+            const searchResults = $('#search-results');
+            const searchSuggestions = $('#search-suggestions');
+            const searchLoading = $('#search-loading');
+            const searchNoResults = $('#search-no-results');
+            const searchContainer = $('#search-container');
+
+            let searchTimeout;
+            let currentSearchIndex = -1;
+            let searchItems = [];
+
+            // Define searchable menu items
+            const menuItems = [
+                { title: 'Dashboard', url: '/dashboard', icon: 'fa-tachometer', category: 'Main' },
+                { title: 'View Admin', url: '/admin-users', icon: 'fa-user', category: 'Admin' },
+                { title: 'Create Announcement', url: '/announcements', icon: 'fa-bullhorn', category: 'Announcement' },
+                { title: 'View Appointment List', url: '/appointments', icon: 'fa-calendar', category: 'Appointment' },
+                { title: 'Pending Appointment', url: '/appointments/appointment-pending-list', icon: 'fa-calendar', category: 'Appointment' },
+                { title: 'Cancelled Appointment', url: '/cancelled', icon: 'fa-calendar', category: 'Appointment' },
+                { title: 'View Attendance', url: '/rfid', icon: 'fa-clock-o', category: 'Attendance' },
+                { title: 'Attendance Record List', url: '/attendance-records', icon: 'fa-clock-o', category: 'Attendance' },
+                { title: 'Attendance Register List', url: '/register-rfid', icon: 'fa-clock-o', category: 'Attendance' },
+                { title: 'View Competition', url: '/competitions', icon: 'fa-trophy', category: 'Competition' },
+                { title: 'View Expenses', url: '/expenses', icon: 'fa-money', category: 'Expenses' },
+                { title: 'View Feedback', url: '/feedback', icon: 'fa-comments-o', category: 'Feedback' },
+                { title: 'View Mobile Feedback', url: '/mobile-feedback', icon: 'fa-comments-o', category: 'Feedback' },
+                { title: 'View Goal', url: '/goals', icon: 'fa-balance-scale', category: 'Goal' },
+                { title: 'Sale Items', url: '/sales', icon: 'fa-folder-open', category: 'Inventory' },
+                { title: 'Stock Items', url: '/stock-items', icon: 'fa-folder-open', category: 'Inventory' },
+                { title: 'Add Equipment', url: '/equipmentsAdd', icon: 'fa-folder-open', category: 'Inventory' },
+                { title: 'Add Machine', url: '/machines', icon: 'fa-folder-open', category: 'Inventory' },
+                { title: 'Defect Equipment', url: '/equipments-defect', icon: 'fa-folder-open', category: 'Inventory' },
+                { title: 'Defect Machine', url: '/machine-defects', icon: 'fa-folder-open', category: 'Inventory' },
+                { title: 'Exercise Default', url: '/exercise', icon: 'fa-list', category: 'Resources' },
+                { title: 'Exercise Custom', url: '/exercise-custom', icon: 'fa-list', category: 'Resources' },
+                { title: 'Meal Plan Default', url: '/meal-plan', icon: 'fa-list', category: 'Resources' },
+                { title: 'Meal Plan Custom', url: '/meal-plan-custom', icon: 'fa-list', category: 'Resources' },
+                { title: 'Workout Default', url: '/workout-programs', icon: 'fa-list', category: 'Resources' },
+                { title: 'Workout Custom', url: '/workout-program-custom', icon: 'fa-list', category: 'Resources' },
+                { title: 'View Membership', url: '/membership-pendings/list', icon: 'fa-user-plus', category: 'Membership' },
+                { title: 'Pending Membership', url: '/membership-pendings', icon: 'fa-user-plus', category: 'Membership' },
+                { title: 'Membership Request', url: '/membership-request-list', icon: 'fa-user-plus', category: 'Membership' },
+                { title: 'Emergency / Medical', url: '/membership-emergency-medical', icon: 'fa-user-plus', category: 'Membership' },
+                { title: 'Payment', url: '/membership-payment-list', icon: 'fa-user-plus', category: 'Membership' },
+                { title: 'Renewal Membership', url: '/membership-renewal', icon: 'fa-user-plus', category: 'Membership' },
+                { title: 'View Instructor', url: '/instructors', icon: 'fa-users', category: 'Our Team' },
+                { title: 'View Walkin Client', url: '/walkin/clients', icon: 'fa-user', category: 'Walkin Client' }
+            ];
+
+            // Search function
+            function performSearch(query) {
+                if (query.length < 2) {
+                    hideSearchResults();
+                    return;
+                }
+
+                showSearchLoading();
+
+                // Simulate search delay for better UX
+                setTimeout(() => {
+                    const results = menuItems.filter(item =>
+                        item.title.toLowerCase().includes(query.toLowerCase()) ||
+                        item.category.toLowerCase().includes(query.toLowerCase())
+                    );
+
+                    displaySearchResults(results);
+                }, 200);
+            }
+
+            // Display search results
+            function displaySearchResults(results) {
+                hideSearchLoading();
+                searchItems = results;
+                currentSearchIndex = -1;
+
+                if (results.length === 0) {
+                    showNoResults();
+                    return;
+                }
+
+                let html = '';
+                results.forEach((item, index) => {
+                    html += `
+                        <div class="search-item px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" 
+                             data-index="${index}" data-url="${item.url}">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+                                    <i class="fa ${item.icon} text-gray-400 text-sm"></i>
+                                </div>
+                                <div class="ml-3 flex-1">
+                                    <div class="text-sm font-medium text-gray-900">${item.title}</div>
+                                    <div class="text-xs text-gray-500">${item.category}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                searchSuggestions.html(html);
+                showSearchResults();
+            }
+
+            // Show/hide search results
+            function showSearchResults() {
+                searchResults.removeClass('hidden');
+                searchNoResults.addClass('hidden');
+            }
+
+            function hideSearchResults() {
+                searchResults.addClass('hidden');
+            }
+
+            function showSearchLoading() {
+                searchLoading.removeClass('hidden');
+                searchSuggestions.addClass('hidden');
+                searchNoResults.addClass('hidden');
+            }
+
+            function hideSearchLoading() {
+                searchLoading.addClass('hidden');
+                searchSuggestions.removeClass('hidden');
+            }
+
+            function showNoResults() {
+                searchNoResults.removeClass('hidden');
+                searchSuggestions.addClass('hidden');
+                showSearchResults();
+            }
+
+            // Highlight search item
+            function highlightSearchItem(index) {
+                $('.search-item').removeClass('bg-blue-50 border-l-4 border-blue-500');
+                if (index >= 0 && index < searchItems.length) {
+                    $(`.search-item[data-index="${index}"]`).addClass('bg-blue-50 border-l-4 border-blue-500');
+                }
+            }
+
+            // Navigate to selected item
+            function navigateToItem(index) {
+                if (index >= 0 && index < searchItems.length) {
+                    const item = searchItems[index];
+                    window.location.href = item.url;
+                }
+            }
+
+            // Event handlers
+            searchInput.on('input', function () {
+                const query = $(this).val();
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => performSearch(query), 300);
+            });
+
+            searchInput.on('focus', function () {
+                if ($(this).val().length >= 2) {
+                    showSearchResults();
+                }
+            });
+
+            searchInput.on('keydown', function (e) {
+                if (!searchResults.hasClass('hidden')) {
+                    switch (e.key) {
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            currentSearchIndex = Math.min(currentSearchIndex + 1, searchItems.length - 1);
+                            highlightSearchItem(currentSearchIndex);
+                            break;
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            currentSearchIndex = Math.max(currentSearchIndex - 1, -1);
+                            highlightSearchItem(currentSearchIndex);
+                            break;
+                        case 'Enter':
+                            e.preventDefault();
+                            if (currentSearchIndex >= 0) {
+                                navigateToItem(currentSearchIndex);
+                            }
+                            break;
+                        case 'Escape':
+                            hideSearchResults();
+                            searchInput.blur();
+                            break;
+                    }
+                }
+            });
+
+            // Click on search item
+            $(document).on('click', '.search-item', function () {
+                const url = $(this).data('url');
+                window.location.href = url;
+            });
+
+            // Click outside to close search results
+            $(document).on('click', function (e) {
+                if (!searchContainer.is(e.target) && searchContainer.has(e.target).length === 0) {
+                    hideSearchResults();
                 }
             });
         });
