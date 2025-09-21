@@ -300,6 +300,7 @@
             <div class="content-card">
                 <div class="table-section">
                     <h2>Cancelled Appointment List</h2>
+                    <p>Track cancelled appointment records</p>
 
                     @if(session('success'))
                         <div class="custom-alert-message">

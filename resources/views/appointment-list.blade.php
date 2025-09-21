@@ -351,6 +351,7 @@
             <div class="content-card">
                 <div class="table-section">
                     <h2>Appointment List</h2>
+                    <p>Manage appointment schedules and records</p>
 
                     <!-- Success message if exists -->
                     @if(session('success'))
