@@ -194,16 +194,13 @@
             <!-- Equipments Section -->
             <div class="content-card">
                 <div class="header-section">
-                    <div class="d-flex align-items-center gap-3 mb-2" style="justify-content: space-between;">
-                        <div>
-                            <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Equipments List</h1>
-                        </div>
-                        <div>
-                            <a href="/equipmentsAdd/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
-                                    aria-hidden="true"></i>Add New
-                            </a>
-                        </div>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Equipments List</h1>
+                        <a href="/equipmentsAdd/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
+                                aria-hidden="true"></i>Add New
+                        </a>
                     </div>
+                    <p class="text-muted mb-0">Manage gym equipment and assets</p>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
