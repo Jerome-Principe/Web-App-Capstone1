@@ -435,9 +435,9 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('exercise') ? 'active' : '' }}">
+                    <li class="{{ request()->routeIs('exercise.index') ? 'active' : '' }}">
                         <a href="/exercise"
-                            class="block px-3 py-2 {{ request()->routeIs('exercise') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Exercise
+                            class="block px-3 py-2 {{ request()->routeIs('exercise.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Exercise
                             Default</a>
                     </li>
                     <li class="{{ request()->routeIs('exercise-custom*') ? 'active' : '' }}">
@@ -445,9 +445,9 @@
                             class="block px-3 py-2 {{ request()->routeIs('exercise-custom*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Exercise
                             Custom</a>
                     </li>
-                    <li class="{{ request()->routeIs('meal-plan') ? 'active' : '' }}">
+                    <li class="{{ request()->routeIs('meal-plan.index') ? 'active' : '' }}">
                         <a href="/meal-plan"
-                            class="block px-3 py-2 {{ request()->routeIs('meal-plan') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Meal
+                            class="block px-3 py-2 {{ request()->routeIs('meal-plan.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Meal
                             Plan Default</a>
                     </li>
                     <li class="{{ request()->routeIs('meal-plan-custom*') ? 'active' : '' }}">
@@ -455,9 +455,9 @@
                             class="block px-3 py-2 {{ request()->routeIs('meal-plan-custom*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Meal
                             Plan Custom</a>
                     </li>
-                    <li class="{{ request()->routeIs('workout-programs') ? 'active' : '' }}">
+                    <li class="{{ request()->routeIs('workout-programs.index') ? 'active' : '' }}">
                         <a href="/workout-programs"
-                            class="block px-3 py-2 {{ request()->routeIs('workout-programs') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Workout
+                            class="block px-3 py-2 {{ request()->routeIs('workout-programs.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Workout
                             Default</a>
                     </li>
                     <li class="{{ request()->routeIs('workout-program-custom*') ? 'active' : '' }}">
@@ -469,29 +469,29 @@
             </li>
 
             <li
-                class="nav-item dropdown {{ request()->routeIs('membership-pendings*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('membership-pendings*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-rose-600 hover:to-rose-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                class="nav-item dropdown {{ request()->routeIs('membership-pendings*') || request()->routeIs('membership.list*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'open' : '' }}">
+                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('membership-pendings*') || request()->routeIs('membership.list*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-rose-600 hover:to-rose-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
                     href="#">
                     <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
                         <i
-                            class="fa fa-user-plus {{ request()->routeIs('membership-pendings*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'text-white' : 'text-rose-400 group-hover:text-white' }} transition-colors"></i>
+                            class="fa fa-user-plus {{ request()->routeIs('membership-pendings*') || request()->routeIs('membership.list*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'text-white' : 'text-rose-400 group-hover:text-white' }} transition-colors"></i>
                     </span>
                     <span class="title font-semibold text-sm"
                         style="font-family: inherit; text-rendering: optimizeLegibility;">Membership</span>
                     <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
                         <i
-                            class="lni-chevron-right {{ request()->routeIs('membership-pendings*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                            class="lni-chevron-right {{ request()->routeIs('membership-pendings*') || request()->routeIs('membership.list*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
                     </span>
                 </a>
                 <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('membership-pendings.index') ? 'active' : '' }}">
-                        <a href="/membership-pendings"
-                            class="block px-3 py-2 {{ request()->routeIs('membership-pendings.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                    <li class="{{ request()->routeIs('membership.list') ? 'active' : '' }}">
+                        <a href="/membership-pendings/list"
+                            class="block px-3 py-2 {{ request()->routeIs('membership.list') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
                             Membership</a>
                     </li>
-                    <li class="{{ request()->routeIs('membership-pendings') ? 'active' : '' }}">
+                    <li class="{{ request()->routeIs('membership-pendings.index') ? 'active' : '' }}">
                         <a href="/membership-pendings"
-                            class="block px-3 py-2 {{ request()->routeIs('membership-pendings') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Pending
+                            class="block px-3 py-2 {{ request()->routeIs('membership-pendings.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Pending
                             Membership</a>
                     </li>
                     <li class="{{ request()->is('membership-request-list*') ? 'active' : '' }}">
