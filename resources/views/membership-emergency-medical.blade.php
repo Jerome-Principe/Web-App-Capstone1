@@ -341,6 +341,8 @@
                                         <input type="checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
                                     <th>ID</th>
+                                    <th>Last Name</th>
+                                    <th>First Name</th>
                                     <th>Emergency Contact Name</th>
                                     <th>Relationship</th>
                                     <th>Contact Number</th>
@@ -381,6 +383,12 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-primary">{{ $form->id }}</span>
+                                        </td>
+                                        <td>
+                                            <strong>{{ $form->pendingMembership?->last_name ?? 'N/A' }}</strong>
+                                        </td>
+                                        <td>
+                                            <strong>{{ $form->pendingMembership?->first_name ?? 'N/A' }}</strong>
                                         </td>
                                         <td>
                                             <strong>{{ $form->emergency_contact ?? 'N/A' }}</strong>
@@ -497,7 +505,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="33">
+                                        <td colspan="35">
                                             <div class="empty-state">
                                                 <i class="fa fa-heartbeat"></i>
                                                 <h5>No medical forms found</h5>

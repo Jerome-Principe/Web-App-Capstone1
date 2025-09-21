@@ -333,6 +333,8 @@
                                         <input type="checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
                                     <th>ID</th>
+                                    <th>Last Name</th>
+                                    <th>First Name</th>
                                     <th>Gcash Number</th>
                                     <th>Account Name</th>
                                     <th>Reference Number</th>
@@ -347,6 +349,12 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-primary">{{ $payment->id }}</span>
+                                        </td>
+                                        <td>
+                                            <strong>{{ $payment->pendingMembership?->last_name ?? 'N/A' }}</strong>
+                                        </td>
+                                        <td>
+                                            <strong>{{ $payment->pendingMembership?->first_name ?? 'N/A' }}</strong>
                                         </td>
                                         <td>
                                             <strong>{{ $payment->gcash_number ?? 'N/A' }}</strong>
@@ -368,7 +376,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6">
+                                        <td colspan="8">
                                             <div class="empty-state">
                                                 <i class="fa fa-credit-card"></i>
                                                 <h5>No payment records found</h5>
