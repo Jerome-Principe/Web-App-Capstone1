@@ -58,7 +58,7 @@
 
         /* Minimalist Header */
         .header-section {
-            text-align: center;
+            text-align: left;
             margin-bottom: 48px;
             padding: 0;
         }
