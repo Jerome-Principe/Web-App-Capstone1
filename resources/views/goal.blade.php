@@ -62,7 +62,7 @@
         .header-section {
             display: flex;
             justify-content: flex-start;
-            align-items: center;
+            text-align: left;
             margin-bottom: 32px;
         }
 
@@ -230,8 +230,9 @@
             <!-- Goal Records Section -->
             <div class="content-card">
                 <div class="header-section">
-                <h1>Goal For Mobile Information</h1>
-            </div>
+                    <h1>Goal For Mobile Information</h1>
+                    <p>Monitor member fitness goals and progress tracking</p>
+                </div>
 
             @if(session('success'))
                 <div class="custom-alert-message">
