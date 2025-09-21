@@ -300,15 +300,18 @@
             <div class="content-card">
                 <div class="header-section">
                     <div class="mb-4">
-                        <div class="d-flex align-items-center gap-3 mb-2">
-                            <h1 class="card-title mb-0">Exercise Default List</h1>
+                        <div class="d-flex align-items-center gap-3 mb-2" style="justify-content: space-between;">
+                            <div>
+                                <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Exercise
+                                    Default List</h1>
+                                <p class="text-muted mb-0">Manage default exercise templates and routines</p>
+                            </div>
                             <button type="button" class="btn btn-primary d-inline-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#addExerciseModal">
                                 <i class="fa fa-plus mr-2"></i>
                                 Add New Exercise
                             </button>
                         </div>
-                        <p class="text-muted mb-0">Manage default exercise templates and routines</p>
                     </div>
 
                     @if(session('success'))
@@ -624,7 +627,7 @@
                 @foreach($exercises as $exercise)
                     updateExercises('{{ $exercise->id }}', '{{ $exercise->exercise }}');
                 @endforeach 
-                                                                        });
+                                                                                });
 
             function updateExercises(exerciseId = '', selectedExercise = '') {
                 const type = document.getElementById('type' + exerciseId).value;
