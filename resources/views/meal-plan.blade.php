@@ -58,7 +58,7 @@
 
         /* Minimalist Header */
         .header-section {
-            text-align: center;
+            text-align: left;
             margin-bottom: 48px;
             padding: 0;
         }
@@ -324,7 +324,8 @@
                             <div>
                                 <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Meal
                                     Plan Default List</h1>
-                                <p class="text-muted mb-0">Manage default meal plan templates and nutrition guides</p>
+                                <p class="text-muted mb-0">Create and manage meal plan templates with nutrition guidelines
+                                </p>
                             </div>
                             <button type="button" class="btn btn-primary d-inline-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#addMealPlanModal">

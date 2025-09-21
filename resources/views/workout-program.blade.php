@@ -58,7 +58,7 @@
 
         /* Minimalist Header */
         .header-section {
-            text-align: center;
+            text-align: left;
             margin-bottom: 48px;
             padding: 0;
         }
@@ -304,7 +304,7 @@
                             <div>
                                 <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Workout
                                     Program Default List</h1>
-                                <p class="text-muted mb-0">Manage default workout programs and training templates</p>
+                                <p class="text-muted mb-0">Create and manage workout programs with training templates</p>
                             </div>
                             <button type="button" class="btn btn-primary d-inline-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#addWorkoutProgramModal">

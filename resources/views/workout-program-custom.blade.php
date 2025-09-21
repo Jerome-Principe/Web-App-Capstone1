@@ -58,7 +58,7 @@
 
         /* Minimalist Header */
         .header-section {
-            text-align: center;
+            text-align: left;
             margin-bottom: 48px;
             padding: 0;
         }
@@ -303,7 +303,7 @@
                         <div class="d-flex align-items-center gap-3 mb-2" style="justify-content: space-between;">
                             <div>
                                 <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Workout Program Custom List</h1>
-                                <p class="text-muted mb-0">Track custom member workout programs and training progress</p>
+                                <p class="text-muted mb-0">Monitor personalized member workout programs and progress</p>
                             </div>
                             <button type="button" class="btn btn-primary d-inline-flex align-items-center" data-bs-toggle="modal"
                                 data-bs-target="#addWorkoutProgramModal">

@@ -304,10 +304,8 @@
                             <div>
                                 <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Exercise
                                     Default List</h1>
-                                <p class="text-muted mb-0">Create and customize comprehensive exercise programs with
-                                    detailed guidelines, duration tracking, and multiple exercise categories to help members
-                                    achieve their fitness goals
-                                </p>
+                                <p class="text-muted mb-0">Create and manage exercise templates with detailed guidelines and
+                                    tracking</p>
                             </div>
                             <button type="button" class="btn btn-primary d-inline-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#addExerciseModal">
