@@ -38,7 +38,7 @@
 
         /* Page Header */
         .page-header {
-            text-align: center;
+            text-align: left;
             margin-bottom: 48px;
             padding: 0;
         }
@@ -676,7 +676,7 @@
                 @foreach($exercisesCustom as $exerciseCustom)
                     updateExercises('{{ $exerciseCustom->id }}', '{{ $exerciseCustom->exercise }}');
                 @endforeach
-                                                                });
+                            });
         </script>
 
 
