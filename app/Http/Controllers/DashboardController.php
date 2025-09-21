@@ -13,6 +13,7 @@ use App\Models\Feedback;
 use App\Models\Announcement;
 use App\Models\Goal;
 use App\Models\Competition;
+use App\Models\Expense;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -151,7 +152,7 @@ class DashboardController extends Controller
             $topMetrics = [
                 'membershipTypes' => ['gold' => 0, 'silver' => 0, 'bronze' => 0],
                 'attendanceRate' => 0,
-                'satisfactionScore' => 0,
+                'monthlyExpenses' => 0,
                 'equipmentUtilization' => 0
             ];
             $quickActions = [
@@ -398,7 +399,7 @@ class DashboardController extends Controller
                         })->count()
                 ],
                 'attendanceRate' => $this->calculateAttendanceRate(),
-                'satisfactionScore' => $this->calculateSatisfactionScore(),
+                'monthlyExpenses' => $this->calculateMonthlyExpenses(),
                 'equipmentUtilization' => $this->calculateEquipmentUtilization()
             ];
         } catch (\Exception $e) {
@@ -409,7 +410,7 @@ class DashboardController extends Controller
                     'bronze' => 0
                 ],
                 'attendanceRate' => 0,
-                'satisfactionScore' => 0,
+                'monthlyExpenses' => 0,
                 'equipmentUtilization' => 0
             ];
         }
@@ -454,17 +455,14 @@ class DashboardController extends Controller
         }
     }
 
-    private function calculateSatisfactionScore()
+    private function calculateMonthlyExpenses()
     {
         try {
-            $feedbacks = Feedback::whereNotNull('rating')->get();
+            $currentMonth = Carbon::now();
 
-            if ($feedbacks->count() > 0) {
-                $averageRating = $feedbacks->avg('rating');
-                return round($averageRating, 1);
-            }
-
-            return 0;
+            return Expense::whereYear('date', $currentMonth->year)
+                ->whereMonth('date', $currentMonth->month)
+                ->sum('amount');
         } catch (\Exception $e) {
             return 0;
         }
