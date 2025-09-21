@@ -203,7 +203,10 @@
                         <div>
                             <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Machines
                                 List</h1>
-                            <p class="text-muted mb-0">Track and manage fitness machine inventory</p>
+                            <div class="alert alert-info d-flex align-items-center" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <div>Track and manage fitness machine inventory</div>
+                            </div>
                         </div>
                         <div>
                             <a href="/machines/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"

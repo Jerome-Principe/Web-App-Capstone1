@@ -198,7 +198,10 @@
                         <div>
                             <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Defect
                                 Equipments List</h1>
-                            <p class="text-muted mb-0">Monitor equipment defects and maintenance issues</p>
+                            <div class="alert alert-info d-flex align-items-center" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <div>Monitor equipment defects and maintenance issues</div>
+                            </div>
                         </div>
                         <div>
                             <a href="/equipments-defect/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"

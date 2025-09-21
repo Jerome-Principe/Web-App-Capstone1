@@ -203,7 +203,10 @@
                         <div>
                             <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Defect
                                 Machines List</h1>
-                            <p class="text-muted mb-0">Track machine defects and maintenance needs</p>
+                            <div class="alert alert-info d-flex align-items-center" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <div>Track machine defects and maintenance needs</div>
+                            </div>
                         </div>
                         <div>
                             <a href="/machine-defects/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
