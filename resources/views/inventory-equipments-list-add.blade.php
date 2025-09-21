@@ -197,10 +197,6 @@
                     <div class="d-flex align-items-center gap-3 mb-2" style="justify-content: space-between;">
                         <div>
                             <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Equipments List</h1>
-                            <div class="alert alert-info d-flex align-items-center" role="alert">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <div>Track and manage gym equipment inventory</div>
-                            </div>
                         </div>
                         <div>
                             <a href="/equipmentsAdd/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
@@ -221,6 +217,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
+
+                <div class="alert alert-info d-flex align-items-center" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <div>Track and manage gym equipment inventory</div>
+                </div>
 
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
