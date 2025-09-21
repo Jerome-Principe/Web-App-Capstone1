@@ -418,7 +418,7 @@
             <div class="content-card">
                 <div class="table-section">
                     <h2>All Competition Records</h2>
-                    <p>Track competition participants and manage records</p>
+                    <p class="text-muted mb-0">Track competition participants and manage records</p>
 
                     @if(session('success'))
                         <div class="custom-alert-message">

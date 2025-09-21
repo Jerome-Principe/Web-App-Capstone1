@@ -300,7 +300,7 @@
             <div class="content-card">
                 <div class="table-section">
                     <h2>Pending Appointment List</h2>
-                    <p>Review pending appointment requests</p>
+                    <p class="text-muted mb-0">Review pending appointment requests</p>
 
                     @if(session('success'))
                         <div class="custom-alert-message">
