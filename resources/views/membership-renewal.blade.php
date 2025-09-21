@@ -305,7 +305,11 @@
         <!-- Membership Renewal Section -->
         <div class="content-card">
             <div class="table-section">
-                <h2>Membership Renewal Applications</h2>
+                <div class="mb-4">
+                    <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Membership Renewal
+                        Applications</h1>
+                    <p class="text-muted mb-0">Review and manage membership renewal applications</p>
+                </div>
 
                 <!-- Filter and Search Section -->
                 <div class="filter-export-section">

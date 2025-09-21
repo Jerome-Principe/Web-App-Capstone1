@@ -307,7 +307,11 @@
             <!-- Pending Memberships Section -->
             <div class="content-card">
                 <div class="table-section">
-                    <h2>Pending Membership Approvals</h2>
+                    <div class="mb-4">
+                        <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Pending
+                            Membership Approvals</h1>
+                        <p class="text-muted mb-0">Review and manage pending membership applications</p>
+                    </div>
 
                     <!-- Success message if exists -->
                     @if(session('success'))

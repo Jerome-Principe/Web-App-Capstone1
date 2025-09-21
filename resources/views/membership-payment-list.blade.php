@@ -305,7 +305,11 @@
             <!-- Payment List Section -->
             <div class="content-card">
                 <div class="table-section">
-                    <h2>Payment List</h2>
+                    <div class="mb-4">
+                        <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Payment List
+                        </h1>
+                        <p class="text-muted mb-0">View and manage all payment transactions</p>
+                    </div>
 
                     <!-- Filter Options Section -->
                     <div class="filter-options">

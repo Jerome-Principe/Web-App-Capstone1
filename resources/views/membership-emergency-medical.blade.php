@@ -312,7 +312,11 @@
             <!-- Medical Forms Section -->
             <div class="content-card">
                 <div class="table-section">
-                    <h2>Emergency Contact / Medical Questionnaire</h2>
+                    <div class="mb-4">
+                        <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Emergency
+                            Contact / Medical Questionnaire</h1>
+                        <p class="text-muted mb-0">Emergency contact and medical questionnaire records</p>
+                    </div>
 
                     <!-- Filter Options Section -->
                     <div class="filter-options">

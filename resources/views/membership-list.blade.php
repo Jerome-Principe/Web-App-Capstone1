@@ -327,19 +327,24 @@
             <!-- Memberships Section -->
             <div class="content-card">
                 <div class="table-section">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e1e5e9;">
-                        <h2 style="margin: 0; font-size: 20px; font-weight: 500; color: #333;">Membership List</h2>
-                        <button type="button" id="notifyAllBtn" class="btn btn-success" disabled
-                            style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none; padding: 10px 20px; font-size: 14px; font-weight: 500; border-radius: 8px; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3); transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; opacity: 0.6;"
-                            onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(40, 167, 69, 0.4)'; }"
-                            onmouseout="if(!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(40, 167, 69, 0.3)'; }"
-                            onclick="sendNotifications()">
-                            <i class="fas fa-bell" style="font-size: 13px;"></i>
-                            <span id="notifyBtnText">Notify All</span>
-                            <span id="notifyBtnCount"
-                                style="display: none; background: rgba(255,255,255,0.3); padding: 2px 6px; border-radius: 10px; font-size: 12px; margin-left: 4px;"></span>
-                        </button>
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-3 mb-2" style="justify-content: space-between;">
+                            <div>
+                                <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">
+                                    Membership List</h1>
+                                <p class="text-muted mb-0">Manage all active membership records and transactions</p>
+                            </div>
+                            <button type="button" id="notifyAllBtn" class="btn btn-success" disabled
+                                style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none; padding: 10px 20px; font-size: 14px; font-weight: 500; border-radius: 8px; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3); transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; opacity: 0.6;"
+                                onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(40, 167, 69, 0.4)'; }"
+                                onmouseout="if(!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(40, 167, 69, 0.3)'; }"
+                                onclick="sendNotifications()">
+                                <i class="fas fa-bell" style="font-size: 13px;"></i>
+                                <span id="notifyBtnText">Notify All</span>
+                                <span id="notifyBtnCount"
+                                    style="display: none; background: rgba(255,255,255,0.3); padding: 2px 6px; border-radius: 10px; font-size: 12px; margin-left: 4px;"></span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Success message if exists -->

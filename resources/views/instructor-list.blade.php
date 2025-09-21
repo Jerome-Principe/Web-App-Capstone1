@@ -243,16 +243,17 @@
             <!-- Instructor List Section -->
             <div class="content-card">
                 <div class="header-section">
-                <h1>Instructor List</h1>
-                <!-- Button to trigger modal -->
-                <div>
-                    <div class="d-flex justify-content-end position-relative">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#addInstructorModal"><i class="fa fa-plus mx-1" aria-hidden="true"></i>
-                            Add New Instructor
-                        </button>
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <h1 class="card-title mb-0">Instructor List</h1>
+                            <button type="button" class="btn btn-primary d-inline-flex align-items-center" data-bs-toggle="modal"
+                                data-bs-target="#addInstructorModal">
+                                <i class="fa fa-plus mr-2"></i>
+                                Add New Instructor
+                            </button>
+                        </div>
+                        <p class="text-muted mb-0">Manage fitness trainers and their session schedules</p>
                     </div>
-                </div>
 
                 @if(session('success'))
                     <div class="custom-alert-message">
