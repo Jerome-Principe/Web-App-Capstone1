@@ -206,7 +206,6 @@
                                 aria-hidden="true"></i>Add New
                         </a>
                     </div>
-                    <p class="text-muted mb-0">Monitor fitness machines and maintenance</p>
 
                     @if(session('success'))
                         <div class="custom-alert-message">
