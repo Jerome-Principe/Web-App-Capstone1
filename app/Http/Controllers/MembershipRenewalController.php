@@ -83,7 +83,7 @@ class MembershipRenewalController extends Controller
             $renewal = MembershipRenewal::create($paymentData);
 
             // Also create a record in membership_payments table for payment tracking
-            \App\Models\MembershipPayment::create([
+            MembershipPayment::create([
                 'membership_id' => $request->membership_id,
                 'payment_method' => $request->payment_method,
                 'gcash_number' => $paymentData['gcash_number'] ?? null,
