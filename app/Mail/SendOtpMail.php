@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -29,6 +30,7 @@ class SendOtpMail extends Mailable
     {
         return new Envelope(
             subject: 'Your OTP Code',
+            from: new Address('legit@limitlessfitnesstudio.com', 'Limitless Fitness Studio'),
         );
     }
 
