@@ -57,7 +57,7 @@
         .header-section {
             display: flex;
             justify-content: flex-start;
-            align-items: center;
+            text-align: left;
             margin-bottom: 20px;
         }
 
@@ -200,6 +200,7 @@
             <div class="content-card">
                 <div class="header-section">
                     <h1>Defect Machines List</h1>
+                    <p>Track machine defects and maintenance needs</p>
                     <div>
                         <div class="d-flex justify-content-end position-relative">
                             <a href="/machine-defects/create" class="btn btn-primary px-2"><i class="fa fa-plus mx-1"
