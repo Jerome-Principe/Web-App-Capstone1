@@ -308,14 +308,6 @@
 
                 <!-- Filter and Search Section -->
                 <div class="filter-export-section">
-                    <div class="date-filter">
-                        <label for="date-filter">Select Date:</label>
-                        <input type="date" id="date-filter" name="date-filter" placeholder="MM/DD/YYYY">
-                        <button type="button" class="btn-filter" onclick="filterByDate()">
-                            <i class="fa fa-filter"></i> Filter
-                        </button>
-                    </div>
-
                     <div class="search-section" style="display: flex; align-items: center; gap: 12px;">
                         <form method="GET" action="{{ route('membership-renewal.index') }}"
                             style="display: flex; align-items: center; gap: 12px;">
