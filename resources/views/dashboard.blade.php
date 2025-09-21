@@ -216,7 +216,7 @@
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Monthly Expenses</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    ₱{{ number_format($topMetrics['monthlyExpenses']) }}
+                                    ₱{{ number_format($topMetrics['monthlyExpenses'] ?? 0) }}
                                 </div>
                                 <div class="text-xs text-muted mt-1">
                                     <i class="fa fa-calendar text-info"></i> This month
@@ -427,7 +427,7 @@
                             <div class="col-md-3 text-center mb-3">
                                 <div class="metric-card">
                                     <div class="metric-value text-warning">
-                                        ₱{{ number_format($topMetrics['monthlyExpenses']) }}</div>
+                                        ₱{{ number_format($topMetrics['monthlyExpenses'] ?? 0) }}</div>
                                     <div class="metric-label">Monthly Expenses</div>
                                     <div class="metric-progress mt-2">
                                         <div class="progress" style="height: 6px;">
@@ -720,8 +720,8 @@
                     labels: ['Gold', 'Silver', 'Bronze'],
                     datasets: [{
                         data: [
-                                                            {{ $topMetrics['membershipTypes']['gold'] }},
-                                                            {{ $topMetrics['membershipTypes']['silver'] }},
+                                                                    {{ $topMetrics['membershipTypes']['gold'] }},
+                                                                    {{ $topMetrics['membershipTypes']['silver'] }},
                             {{ $topMetrics['membershipTypes']['bronze'] }}
                         ],
                         backgroundColor: ['#f6c23e', '#858796', '#e83e8c'],
@@ -748,8 +748,8 @@
                     labels: ['Memberships', 'Appointments', 'Walk-ins'],
                     datasets: [{
                         data: [
-                                                            {{ $monthlyStats['memberships']['current'] }},
-                                                            {{ $monthlyStats['appointments']['current'] }},
+                                                                    {{ $monthlyStats['memberships']['current'] }},
+                                                                    {{ $monthlyStats['appointments']['current'] }},
                             {{ $monthlyStats['walkins']['current'] }}
                         ],
                         backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
