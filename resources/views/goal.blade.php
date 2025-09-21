@@ -230,8 +230,12 @@
             <!-- Goal Records Section -->
             <div class="content-card">
                 <div class="header-section">
-                    <h1>Goal For Mobile Information</h1>
-                    <p>Monitor member fitness goals and progress tracking</p>
+                    <div class="d-flex align-items-center gap-3 mb-2" style="justify-content: space-between;">
+                        <div>
+                            <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Goal For Mobile Information</h1>
+                            <p class="text-muted mb-0">Monitor member fitness goals and progress tracking</p>
+                        </div>
+                    </div>
                 </div>
 
             @if(session('success'))
