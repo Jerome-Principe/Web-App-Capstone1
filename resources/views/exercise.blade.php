@@ -38,7 +38,7 @@
 
         /* Page Header */
         .page-header {
-            text-align: left;
+            text-align: center;
             margin-bottom: 48px;
             padding: 0;
         }
@@ -627,7 +627,7 @@
                 @foreach($exercises as $exercise)
                     updateExercises('{{ $exercise->id }}', '{{ $exercise->exercise }}');
                 @endforeach 
-                        });
+                            });
 
             function updateExercises(exerciseId = '', selectedExercise = '') {
                 const type = document.getElementById('type' + exerciseId).value;
