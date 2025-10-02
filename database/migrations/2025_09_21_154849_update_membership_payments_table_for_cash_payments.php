@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
     /**
@@ -27,6 +28,20 @@ return new class extends Migration {
      */
     public function down(): void
     {
+        // Ensure no NULL values remain before making columns NOT NULL to avoid MySQL 1265 warnings
+        DB::table('membership_payments')
+            ->whereNull('gcash_number')
+            ->update(['gcash_number' => '']);
+        DB::table('membership_payments')
+            ->whereNull('account_name')
+            ->update(['account_name' => '']);
+        DB::table('membership_payments')
+            ->whereNull('reference_number')
+            ->update(['reference_number' => '']);
+        DB::table('membership_payments')
+            ->whereNull('proof_of_payment_url')
+            ->update(['proof_of_payment_url' => '']);
+
         Schema::table('membership_payments', function (Blueprint $table) {
             // Remove payment_method column
             $table->dropColumn('payment_method');
