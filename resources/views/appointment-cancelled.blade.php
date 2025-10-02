@@ -348,6 +348,7 @@
                                         <input type="checkbox" onclick="toggleSelectAll(this)" />
                                     </th>
                                     <th>ID</th>
+                                    <th>User</th>
                                     <th>Instructor Name</th>
                                     <th>Instructor Fees</th>
                                     <th>Gym Share</th>
@@ -369,6 +370,9 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-primary">{{ $appointment->id }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $appointment->user?->name ?? 'N/A' }}
                                         </td>
                                         <td>
                                             <strong>{{ $appointment->instructor_name }}</strong>
@@ -399,7 +403,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="12">
+                                        <td colspan="13">
                                             <div class="empty-state">
                                                 <i class="fa fa-calendar-times"></i>
                                                 <h5>No cancelled appointments found</h5>
