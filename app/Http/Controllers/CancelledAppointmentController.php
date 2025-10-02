@@ -203,7 +203,23 @@ class CancelledAppointmentController extends Controller
     public function fetchCancelledAppointments()
     {
         try {
-            $cancelledAppointments = CancelledAppointment::all();
+            // Ensure the request is authenticated via API guard
+            $authenticatedUser = auth('api')->user();
+
+            if (!$authenticatedUser || !$authenticatedUser->id) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unauthenticated. Please log in again.'
+                ], 401);
+            }
+
+            // Return only the cancelled appointments that belong to the
+            // currently authenticated user, latest first
+            $cancelledAppointments = CancelledAppointment::query()
+                ->where('user_id', (int) $authenticatedUser->id)
+                ->orderBy('id', 'desc')
+                ->get();
+
             return response()->json($cancelledAppointments, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch canceled appointments', 'message' => $e->getMessage()], 500);
