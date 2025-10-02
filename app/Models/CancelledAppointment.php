@@ -24,11 +24,11 @@ class CancelledAppointment extends Model
     ];
 
     /**
-     * Relationship with User model.
+     * Relationship with PendingMembership (mobile users).
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(PendingMembership::class, 'user_id');
     }
 
     /**

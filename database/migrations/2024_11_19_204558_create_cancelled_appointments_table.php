@@ -21,8 +21,8 @@ return new class extends Migration {
             $table->string('reason');
             $table->timestamps();
 
-            // Add foreign key constraint
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // Add foreign key constraint targeting pending_memberships (mobile auth provider)
+            $table->foreign('user_id')->references('id')->on('pending_memberships')->onDelete('cascade');
         });
     }
 

@@ -45,9 +45,9 @@ class CancelledAppointmentController extends Controller
             ], 401);
         }
 
-        // Double-check that the user id exists in users table (avoid FK exception later)
-        if (!\DB::table('users')->where('id', $authenticatedUser->id)->exists()) {
-            \Log::warning('Cancellation attempt with non-existing user id', ['user_id' => $authenticatedUser->id]);
+        // Double-check that the user id exists in pending_memberships table (mobile guard provider)
+        if (!\DB::table('pending_memberships')->where('id', $authenticatedUser->id)->exists()) {
+            \Log::warning('Cancellation attempt with non-existing mobile user id', ['user_id' => $authenticatedUser->id]);
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid user ID provided. Please ensure you are logged in properly.',
@@ -116,7 +116,7 @@ class CancelledAppointmentController extends Controller
 
             // Save the cancellation record
             $cancelledAppointment = new CancelledAppointment();
-            // Use the authenticated user's id to avoid invalid/forged ids
+            // Use the authenticated mobile user's id (pending_memberships provider)
             $cancelledAppointment->user_id = (int) $authenticatedUser->id;
             \Log::info('Saving cancelled appointment', [
                 'user_id' => $cancelledAppointment->user_id,
