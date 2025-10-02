@@ -112,7 +112,8 @@ Route::patch('/appointments/{id}/approve', [PendingAppointmentController::class,
 Route::patch('/appointments/{id}/decline', [PendingAppointmentController::class, 'decline']);
 
 Route::get('mobile/appointments/list', [PendingAppointmentController::class, 'list']);
-Route::post('mobile/cancelled', [CancelledAppointmentController::class, 'store']);
+// Protect cancellation endpoint to ensure we use the authenticated user id
+Route::middleware('auth:api')->post('mobile/cancelled', [CancelledAppointmentController::class, 'store']);
 Route::get('mobile/cancelled', [CancelledAppointmentController::class, 'fetchCancelledAppointments']);
 
 Route::get('/mobile/meal-plan-custom', [MealPlanCustomMobileController::class, 'index']);
