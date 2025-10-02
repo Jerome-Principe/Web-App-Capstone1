@@ -36,13 +36,22 @@ class CancelledAppointmentController extends Controller
             'total_amount' => 'nullable|numeric|min:0',
         ]);
 
-        // Ensure request is authenticated and we have a valid user id
-        $authenticatedUser = $request->user();
+        // Ensure request is authenticated and we have a valid user id (use api guard explicitly)
+        $authenticatedUser = auth('api')->user();
         if (!$authenticatedUser || !$authenticatedUser->id) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Unauthenticated. Please log in again.',
             ], 401);
+        }
+
+        // Double-check that the user id exists in users table (avoid FK exception later)
+        if (!\DB::table('users')->where('id', $authenticatedUser->id)->exists()) {
+            \Log::warning('Cancellation attempt with non-existing user id', ['user_id' => $authenticatedUser->id]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid user ID provided. Please ensure you are logged in properly.',
+            ], 400);
         }
 
         try {
@@ -109,6 +118,12 @@ class CancelledAppointmentController extends Controller
             $cancelledAppointment = new CancelledAppointment();
             // Use the authenticated user's id to avoid invalid/forged ids
             $cancelledAppointment->user_id = (int) $authenticatedUser->id;
+            \Log::info('Saving cancelled appointment', [
+                'user_id' => $cancelledAppointment->user_id,
+                'instructor_name' => $request->instructor_name,
+                'selected_date' => $formattedDate,
+                'selected_time' => $formattedTime,
+            ]);
             $cancelledAppointment->instructor_name = $request->instructor_name;
             $cancelledAppointment->selected_date = $formattedDate;
             $cancelledAppointment->selected_time = $formattedTime;
