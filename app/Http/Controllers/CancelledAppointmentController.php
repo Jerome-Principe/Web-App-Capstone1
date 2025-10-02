@@ -36,6 +36,15 @@ class CancelledAppointmentController extends Controller
             'total_amount' => 'nullable|numeric|min:0',
         ]);
 
+        // Ensure request is authenticated and we have a valid user id
+        $authenticatedUser = $request->user();
+        if (!$authenticatedUser || !$authenticatedUser->id) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthenticated. Please log in again.',
+            ], 401);
+        }
+
         try {
             // Handle date parsing more robustly
             $formattedDate = null;
@@ -99,7 +108,7 @@ class CancelledAppointmentController extends Controller
             // Save the cancellation record
             $cancelledAppointment = new CancelledAppointment();
             // Use the authenticated user's id to avoid invalid/forged ids
-            $cancelledAppointment->user_id = $request->user() ? $request->user()->id : null;
+            $cancelledAppointment->user_id = (int) $authenticatedUser->id;
             $cancelledAppointment->instructor_name = $request->instructor_name;
             $cancelledAppointment->selected_date = $formattedDate;
             $cancelledAppointment->selected_time = $formattedTime;
