@@ -28,16 +28,15 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        // Ensure no NULL values remain before making columns NOT NULL to avoid MySQL 1265 warnings
+        // Ensure no NULL values remain before making columns NOT NULL to avoid MySQL warnings
         DB::table('membership_payments')
             ->whereNull('gcash_number')
             ->update(['gcash_number' => '']);
         DB::table('membership_payments')
             ->whereNull('account_name')
             ->update(['account_name' => '']);
-        DB::table('membership_payments')
-            ->whereNull('reference_number')
-            ->update(['reference_number' => '']);
+        // For reference_number, preserve unique constraint by assigning a unique placeholder per row
+        DB::statement("UPDATE `membership_payments` SET `reference_number` = CONCAT('LEGACY-', `id`) WHERE `reference_number` IS NULL OR `reference_number` = ''");
         DB::table('membership_payments')
             ->whereNull('proof_of_payment_url')
             ->update(['proof_of_payment_url' => '']);
