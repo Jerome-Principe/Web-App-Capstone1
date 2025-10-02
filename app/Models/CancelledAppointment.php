@@ -30,4 +30,12 @@ class CancelledAppointment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relationship to PendingMembership using user_id.
+     */
+    public function pendingMembership()
+    {
+        return $this->belongsTo(PendingMembership::class, 'user_id');
+    }
 }

@@ -372,7 +372,7 @@
                                             <span class="badge bg-primary">{{ $appointment->id }}</span>
                                         </td>
                                         <td>
-                                            {{ $appointment->user?->name ?? 'N/A' }}
+                                            {{ $appointment->pendingMembership?->name ?? $appointment->user?->name ?? 'N/A' }}
                                         </td>
                                         <td>
                                             <strong>{{ $appointment->instructor_name }}</strong>

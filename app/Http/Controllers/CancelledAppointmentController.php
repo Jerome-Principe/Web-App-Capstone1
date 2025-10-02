@@ -11,7 +11,7 @@ class CancelledAppointmentController extends Controller
 {
     public function index()
     {
-        $cancelledAppointments = CancelledAppointment::with('user')
+        $cancelledAppointments = CancelledAppointment::with(['user', 'pendingMembership'])
             ->orderBy('id', 'desc')
             ->paginate(10);
 
