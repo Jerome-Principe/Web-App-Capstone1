@@ -596,7 +596,8 @@
                         <div class="row">
                             <div class="col-md-12 mb-4">
                                 <label for="notificationText" class="form-label">
-                                    Text in Push Notification <span class="text-danger">*</span>
+                                    Text in App Notification
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control" id="notificationText" name="notification_text"
                                     placeholder="Enter your announcement text..." required>
@@ -922,15 +923,15 @@
                 dropzone.classList.remove('file-success');
 
                 dropzone.innerHTML = `
-                            <div class="dropzone-content">
-                                <i class="fa fa-exclamation-triangle fa-2x mb-3 text-danger"></i>
-                                <p class="mb-2 text-danger"><strong>Invalid File</strong></p>
-                                <p class="text-muted">Please select a valid PDF file</p>
-                            </div>`;
+                                    <div class="dropzone-content">
+                                        <i class="fa fa-exclamation-triangle fa-2x mb-3 text-danger"></i>
+                                        <p class="mb-2 text-danger"><strong>Invalid File</strong></p>
+                                        <p class="text-muted">Please select a valid PDF file</p>
+                                    </div>`;
 
                 feedback.innerHTML = `<div class="file-validation-error">
-                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
-                        </div>`;
+                                    <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                                </div>`;
                 feedback.style.display = 'block';
             }
 
@@ -942,16 +943,16 @@
                 dropzone.classList.remove('file-error');
 
                 dropzone.innerHTML = `
-                            <div class="dropzone-content">
-                                <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
-                                <p class="mb-2"><strong>${file.name}</strong></p>
-                                <p class="text-muted">File selected successfully</p>
-                                <small class="text-muted">Size: ${formatFileSize(file.size)}</small>
-                            </div>`;
+                <div class="dropzone-content">
+                    <i class="fa fa-file-pdf-o fa-2x mb-3 text-success"></i>
+                    <p class="mb-2"><strong>${file.name}</strong></p>
+                    <p class="text-muted">File selected successfully</p>
+                    <small class="text-muted">Size: ${formatFileSize(file.size)}</small>
+                </div>`;
 
                 feedback.innerHTML = `<div class="file-validation-success">
-                            <i class="fa fa-check-circle me-1"></i>File is ready for upload!
-                        </div>`;
+                                    <i class="fa fa-check-circle me-1"></i>File is ready for upload!
+                                </div>`;
                 feedback.style.display = 'block';
             }
 
@@ -961,11 +962,11 @@
 
                 dropzone.classList.remove('file-error', 'file-success');
                 dropzone.innerHTML = `
-                            <div class="dropzone-content">
-                                <i class="fa fa-cloud-upload fa-2x mb-3"></i>
-                                <p class="mb-2">Drag and drop PDF here</p>
-                                <p class="text-muted">or click to select files</p>
-                            </div>`;
+                <div class="dropzone-content">
+                    <i class="fa fa-cloud-upload fa-2x mb-3"></i>
+                    <p class="mb-2">Drag and drop PDF here</p>
+                    <p class="text-muted">or click to select files</p>
+                </div>`;
 
                 feedback.style.display = 'none';
             }
@@ -1029,8 +1030,8 @@
                 const feedback = document.getElementById('editFileValidationFeedback');
 
                 feedback.innerHTML = `<div class="file-validation-error">
-                            <i class="fa fa-exclamation-triangle me-1"></i>${message}
-                        </div>`;
+                        <i class="fa fa-exclamation-triangle me-1"></i>${message}
+                    </div>`;
                 feedback.style.display = 'block';
             }
 
@@ -1038,8 +1039,8 @@
                 const feedback = document.getElementById('editFileValidationFeedback');
 
                 feedback.innerHTML = `<div class="file-validation-success">
-                            <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
-                        </div>`;
+                        <i class="fa fa-check-circle me-1"></i>File is ready for upload! (${formatFileSize(file.size)})
+                    </div>`;
                 feedback.style.display = 'block';
             }
 
@@ -1086,8 +1087,8 @@
                         if (pdfFile && pdfFile !== 'http://127.0.0.1:8000/storage/app/public/') {
                             document.getElementById("currentPdfFile").innerHTML =
                                 `<a href="${pdfFile}" target="_blank" class="btn btn-sm btn-outline-dark">
-                                                                                            View Current PDF
-                                                                                        </a>`;
+                                View Current PDF
+                            </a>`;
                         } else {
                             document.getElementById("currentPdfFile").innerHTML =
                                 '<span class="text-muted">No PDF file attached</span>';
