@@ -62,13 +62,13 @@ Route::get('/status', function () {
 // dashboard - Accessible to all authenticated users (Admin, Cashier, Instructor)
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
-//Attendance - Restricted: Only Admin and Cashier
+//Attendance - Accessible to Admin and Cashier
 Route::resource('/rfid', RFIDController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
-//Attendance Rercord List - Restricted: Only Admin and Cashier
+//Attendance Rercord List - Accessible to Admin and Cashier
 Route::resource('/attendance-records', AttendanceRecordController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
-//Attendance Rercord List - Restricted: Only Admin and Cashier
+//Attendance Rercord List - Accessible to Admin and Cashier
 Route::resource('/register-rfid', RegisterRFIDController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
 // Mobile Feedback routes
@@ -149,7 +149,7 @@ Route::prefix('feedback')->name('feedback.')->group(function () {
     Route::post('/mark-as-read/{id}', [FeedbackController::class, 'markAsRead'])->name('markAsRead');
 });
 
-// Walk-in client routes - Restricted: Only Admin and Cashier
+// Walk-in client routes - Accessible to Admin and Cashier
 Route::prefix('walkin')->middleware(['auth', 'role:Admin,Cashier'])->group(function () {
     Route::get('/', [WalkinController::class, 'create']);
     Route::get('/clients', [WalkinController::class, 'index'])->name('walkin.index');
@@ -163,7 +163,7 @@ Route::prefix('walkin')->middleware(['auth', 'role:Admin,Cashier'])->group(funct
     Route::get('/export-pdf', [WalkinController::class, 'exportPdfByDate'])->name('walkin.exportPdfByDate');
 });
 
-// Walk-in client trash-related routes - Restricted: Only Admin and Cashier
+// Walk-in client trash-related routes - Accessible to Admin and Cashier
 Route::prefix('walkins')->middleware(['auth', 'role:Admin,Cashier'])->group(function () {
     Route::post('/move-to-trash', [WalkinController::class, 'moveToTrash'])->name('walkins.moveToTrash');
     Route::get('/trashed', [WalkinController::class, 'trashed'])->name('walkins.trashed');
@@ -173,7 +173,7 @@ Route::prefix('walkins')->middleware(['auth', 'role:Admin,Cashier'])->group(func
 });
 
 
-Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index'])->middleware(['auth', 'role:Admin,Cashier']);
+Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index'])->middleware(['auth', 'role:Admin']);
 
 Route::middleware(['auth'])->group(function () {
 
@@ -196,7 +196,7 @@ Route::middleware(['auth'])->group(function () {
 require __DIR__ . '/auth.php';
 
 
-// Announcements - Restricted: Only Admin and Cashier
+// Announcements - Accessible to Admin and Cashier
 Route::resource('announcements', AnnouncementController::class)->middleware(['auth', 'role:Admin,Cashier']);
 Route::prefix('trashed-announcement')->middleware(['auth', 'role:Admin,Cashier'])->name('announcements.')->group(function () {
     Route::post('/move-to-trash', [AnnouncementController::class, 'moveToTrash'])->name('moveToTrash');
@@ -256,7 +256,7 @@ Route::prefix('cancelled')->group(function () {
     Route::delete('/force-delete/{id}', [CancelledAppointmentController::class, 'forceDelete'])->name('appointments.cancelled.forceDelete');
 });
 
-// StockItems routes - Restricted: Only Admin and Cashier
+// StockItems routes - Accessible to Admin and Cashier
 Route::prefix('stock-items')->middleware(['auth', 'role:Admin,Cashier'])->name('stock-items.')->group(function () {
     // Main resource routes (excluding 'show')
     Route::resource('/', StockItemController::class)
@@ -270,7 +270,7 @@ Route::prefix('stock-items')->middleware(['auth', 'role:Admin,Cashier'])->name('
     });
 });
 
-// SaleItems routes - Restricted: Only Admin and Cashier
+// SaleItems routes - Accessible to Admin and Cashier
 Route::prefix('sales')->middleware(['auth', 'role:Admin,Cashier'])->name('sales.')->group(function () {
     // Main resource routes (excluding 'show' only)
     Route::resource('/', SaleItemController::class)
@@ -284,7 +284,7 @@ Route::prefix('sales')->middleware(['auth', 'role:Admin,Cashier'])->name('sales.
     });
 });
 
-// EquipmentsAdd routes - Restricted: Only Admin and Cashier
+// EquipmentsAdd routes - Accessible to Admin and Cashier
 Route::prefix('equipmentsAdd')->middleware(['auth', 'role:Admin,Cashier'])->name('equipmentsAdd.')->group(function () {
     // Main resource routes
     Route::resource('/', EquipmentController::class)
@@ -296,7 +296,7 @@ Route::prefix('equipmentsAdd')->middleware(['auth', 'role:Admin,Cashier'])->name
     Route::get('/export-pdf', [EquipmentController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
-// Machines routes - Restricted: Only Admin and Cashier
+// Machines routes - Accessible to Admin and Cashier
 Route::prefix('machines')->middleware(['auth', 'role:Admin,Cashier'])->name('machines.')->group(function () {
     // Main resource routes
     Route::resource('/', MachineController::class)
@@ -308,7 +308,7 @@ Route::prefix('machines')->middleware(['auth', 'role:Admin,Cashier'])->name('mac
     Route::get('/export-pdf', [MachineController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
-// Equipments Defect routes - Restricted: Only Admin and Cashier
+// Equipments Defect routes - Accessible to Admin and Cashier
 Route::prefix('equipments-defect')->middleware(['auth', 'role:Admin,Cashier'])->name('equipments-defect.')->group(function () {
     // Main resource routes (excluding 'show' only)
     Route::resource('/', EquipmentDefectController::class)
@@ -320,10 +320,10 @@ Route::prefix('equipments-defect')->middleware(['auth', 'role:Admin,Cashier'])->
     Route::get('/export-pdf', [EquipmentDefectController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
-// Stock Items routes - Restricted: Only Admin and Cashier
+// Stock Items routes - Accessible to Admin and Cashier
 Route::resource('stock-items', StockItemController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
-// Machines Defect routes - Restricted: Only Admin and Cashier
+// Machines Defect routes - Accessible to Admin and Cashier
 Route::prefix('machine-defects')->middleware(['auth', 'role:Admin,Cashier'])->name('machine-defects.')->group(function () {
     // Main resource routes (excluding 'show' only)
     Route::resource('/', MachineDefectController::class)
@@ -387,8 +387,8 @@ Route::prefix('membership-renewal')->name('membership-renewal.')->group(function
     Route::post('/fix-types', [MembershipRenewalController::class, 'fixMembershipTypes'])->name('fix-types');
 });
 
-// Admin Users - Restricted: Only Admin and Cashier
-Route::resource('admin-users', AdminUserController::class)->middleware(['auth', 'role:Admin,Cashier']);
+// Admin Users - Restricted: Only Admin
+Route::resource('admin-users', AdminUserController::class)->middleware(['auth', 'role:Admin']);
 
 // Notifications API routes
 Route::prefix('api/notifications')->name('notifications.')->group(function () {
@@ -403,7 +403,7 @@ Route::prefix('api/notifications')->name('notifications.')->group(function () {
     Route::post('/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
 });
 
-// Expenses routes - Restricted: Only Admin and Cashier
+// Expenses routes - Accessible to Admin and Cashier
 Route::prefix('expenses')->middleware(['auth', 'role:Admin,Cashier'])->name('expenses.')->group(function () {
     // Main resource routes (excluding 'show')
     Route::resource('/', ExpenseController::class)

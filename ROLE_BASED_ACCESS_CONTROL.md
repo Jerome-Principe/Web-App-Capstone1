@@ -9,8 +9,8 @@ This document outlines the role-based access control system implemented in the F
 The system supports three user roles:
 
 1. **Admin** - Full access to all features
-2. **Cashier** - Access to most features except some restricted areas
-3. **Instructor** - Limited access to specific fitness-related features
+2. **Cashier** - Access to operational features (dashboard, walkin, attendance, feedback, inventory, expenses, announcements, membership)
+3. **Instructor** - Limited access to fitness-related features (dashboard, resources, appointments, goals, competitions, team, feedback, membership)
 
 ## Instructor Access Permissions
 
@@ -61,6 +61,55 @@ Instructors have access to the following sections only:
 -   Payment
 -   Renewal
 
+## Cashier Access Permissions
+
+Cashiers have access to the following sections only:
+
+### Dashboard
+
+-   View Dashboard
+
+### Walkin Client
+
+-   View Walkin Client
+
+### Attendance
+
+-   View Attendance
+-   Attendance Record List
+-   Attendance Register List
+
+### Feedback
+
+-   View Feedback
+-   View Mobile Feedback
+
+### Inventory
+
+-   Sale Items
+-   Stock Items
+-   Add Equipment
+-   Add Machine
+-   Defect Equipment
+-   Defect Machine
+
+### Expenses
+
+-   View Expenses
+
+### Announcement
+
+-   Create Announcement
+
+### Membership
+
+-   View Membership
+-   Pending Membership
+-   Membership Request
+-   Emergency / Medical
+-   Payment
+-   Renewal
+
 ## Restricted Sections for Instructors
 
 Instructors **CANNOT** access the following sections:
@@ -71,6 +120,17 @@ Instructors **CANNOT** access the following sections:
 -   **Expenses** - Financial expense tracking
 -   **Inventory** - Sales, stock items, equipment, and machines
 -   **Walkin Client** - Walk-in client management
+
+## Restricted Sections for Cashiers
+
+Cashiers **CANNOT** access the following sections:
+
+-   **Admin** - User management
+-   **Resources** - Exercise, Meal Plan, and Workout management
+-   **Appointments** - Appointment management
+-   **Goals** - Goal tracking
+-   **Competitions** - Competition management
+-   **Our Team** - Instructor management
 
 ## Implementation Details
 

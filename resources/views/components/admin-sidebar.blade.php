@@ -154,8 +154,7 @@
                 </ul>
             </li>
 
-            @if(auth()->user()?->role !== 'Instructor')
-
+            @if(auth()->user()?->role === 'Admin')
                 <li class="nav-item dropdown {{ request()->routeIs('admin-users*') ? 'open' : '' }}">
                     <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('admin-users*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
                         href="#">
@@ -178,7 +177,9 @@
                         </li>
                     </ul>
                 </li>
+            @endif
 
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li class="nav-item dropdown {{ request()->routeIs('announcements*') ? 'open' : '' }}">
                     <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('announcements*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
                         href="#">
@@ -241,7 +242,7 @@
                 </ul>
             </li>
 
-            @if(auth()->user()?->role !== 'Instructor')
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li
                     class="nav-item dropdown {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'open' : '' }}">
                     <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-teal-600 hover:to-teal-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
@@ -300,7 +301,7 @@
                 </ul>
             </li>
 
-            @if(auth()->user()?->role !== 'Instructor')
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li class="nav-item dropdown {{ request()->routeIs('expenses*') ? 'open' : '' }}">
                     <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('expenses*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-pink-600 hover:to-pink-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
                         href="#">
@@ -377,7 +378,7 @@
                 </ul>
             </li>
 
-            @if(auth()->user()?->role !== 'Instructor')
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li
                     class="nav-item dropdown {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'open' : '' }}">
                     <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-cyan-600 hover:to-cyan-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
@@ -548,7 +549,7 @@
                 </ul>
             </li>
 
-            @if(auth()->user()?->role !== 'Instructor')
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li class="nav-item dropdown {{ request()->routeIs('walkin*') ? 'open' : '' }}">
                     <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('walkin*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-lime-600 hover:to-lime-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
                         href="#">
