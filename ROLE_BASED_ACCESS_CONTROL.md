@@ -20,6 +20,10 @@ Instructors have access to the following sections only:
 
 -   View Dashboard
 
+### Admin
+
+-   View Admin
+
 ### Resources
 
 -   Exercise Default
@@ -69,6 +73,10 @@ Cashiers have access to the following sections only:
 
 -   View Dashboard
 
+### Admin
+
+-   View Admin
+
 ### Walkin Client
 
 -   View Walkin Client
@@ -114,7 +122,6 @@ Cashiers have access to the following sections only:
 
 Instructors **CANNOT** access the following sections:
 
--   **Admin** - User management
 -   **Announcement** - Create and manage announcements
 -   **Attendance** - RFID and attendance tracking
 -   **Expenses** - Financial expense tracking
@@ -125,7 +132,6 @@ Instructors **CANNOT** access the following sections:
 
 Cashiers **CANNOT** access the following sections:
 
--   **Admin** - User management
 -   **Resources** - Exercise, Meal Plan, and Workout management
 -   **Appointments** - Appointment management
 -   **Goals** - Goal tracking

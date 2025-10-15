@@ -173,7 +173,7 @@ Route::prefix('walkins')->middleware(['auth', 'role:Admin,Cashier'])->group(func
 });
 
 
-Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index'])->middleware(['auth', 'role:Admin']);
+Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index'])->middleware(['auth']);
 
 Route::middleware(['auth'])->group(function () {
 
@@ -387,8 +387,8 @@ Route::prefix('membership-renewal')->name('membership-renewal.')->group(function
     Route::post('/fix-types', [MembershipRenewalController::class, 'fixMembershipTypes'])->name('fix-types');
 });
 
-// Admin Users - Restricted: Only Admin
-Route::resource('admin-users', AdminUserController::class)->middleware(['auth', 'role:Admin']);
+// Admin Users - Accessible to all authenticated users
+Route::resource('admin-users', AdminUserController::class)->middleware(['auth']);
 
 // Notifications API routes
 Route::prefix('api/notifications')->name('notifications.')->group(function () {
