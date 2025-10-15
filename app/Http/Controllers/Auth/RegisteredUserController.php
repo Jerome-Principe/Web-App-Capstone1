@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -44,10 +45,20 @@ class RegisteredUserController extends Controller
             'role' => $request->role,
         ]);
 
-        event(new Registered($user));
+        // Try to send registration email, but don't fail if email is disabled
+        try {
+            event(new Registered($user));
+        } catch (\Exception $e) {
+            // Log the email error but don't stop the registration process
+            Log::warning('Registration email could not be sent', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $e->getMessage()
+            ]);
+        }
 
         // Auth::login($user); remove auto login
         // return redirect(RouteServiceProvider::HOME);
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Registration successful! You can now log in.');
     }
 }

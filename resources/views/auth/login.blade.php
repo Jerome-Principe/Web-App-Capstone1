@@ -166,6 +166,20 @@
         margin-right: 8px;
     }
 
+    .alert-dark-success {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #4caf50;
+        border: 1px solid #4caf50;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .alert-dark-success i.fa {
+        margin-right: 8px;
+    }
+
     .password-input-container {
         position: relative;
         display: flex;
@@ -197,6 +211,14 @@
     <section>
         <div class="form-container">
             <h1>Login</h1>
+
+            <!-- Success Message -->
+            @if(session('success'))
+                <div class="alert-dark-success mb-3">
+                    <i class="fa fa-check-circle"></i>
+                    {{ session('success') }}
+                </div>
+            @endif
 
             <!-- Laravel Login Form -->
             <form method="POST" action="{{ route('login') }}">

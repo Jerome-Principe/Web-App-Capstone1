@@ -24,7 +24,7 @@ class RecoveryOtpMail extends Mailable
     {
         return new Envelope(
             subject: 'Account Recovery OTP',
-            from: new Address('gym@limitlessfitnesstudio.com', 'Limitless Fitness Studio'),
+            from: new Address('build@limitlessfitnesstudio.com', 'Limitless Fitness Studio'),
         );
     }
 
