@@ -39,12 +39,27 @@
                         <div class="mb-4">
                             <div class="d-flex align-items-center gap-3 mb-2">
                                 <h1 class="card-title mb-0">Admin User Information</h1>
-                                <a href="/register" class="btn btn-primary d-inline-flex align-items-center">
-                                    <i class="fa fa-plus mr-2"></i>
-                                    Add New User
-                                </a>
+                                @if($currentUserRole === 'Admin')
+                                    <!-- Admin users - show active Add New User button -->
+                                    <a href="/register" class="btn btn-primary d-inline-flex align-items-center">
+                                        <i class="fa fa-plus mr-2"></i>
+                                        Add New User
+                                    </a>
+                                @else
+                                    <!-- Non-admin users - show disabled Add New User button -->
+                                    <button class="btn btn-secondary d-inline-flex align-items-center disabled" disabled>
+                                        <i class="fa fa-plus mr-2"></i>
+                                        Add New User
+                                    </button>
+                                @endif
                             </div>
                             <p class="text-muted mb-0">Manage and monitor all user accounts in the system</p>
+                            @if($currentUserRole !== 'Admin')
+                                <p class="role-access-info mb-0">
+                                    <i class="fa fa-info-circle mr-1"></i>
+                                    Only Admin users can add new user accounts.
+                                </p>
+                            @endif
                         </div>
 
                         <!-- Success Message -->
@@ -575,6 +590,29 @@
 
         .current-user-row:hover {
             background-color: #e6f3ff !important;
+        }
+
+        /* Disabled Add New User button styling */
+        .btn-secondary.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-secondary.disabled:hover {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #fff;
+        }
+
+        /* Role-based access indicator */
+        .role-access-info {
+            font-size: 0.875rem;
+            color: #6c757d;
+            font-style: italic;
         }
     </style>
 

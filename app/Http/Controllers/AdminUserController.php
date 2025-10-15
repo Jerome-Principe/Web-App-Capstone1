@@ -31,15 +31,16 @@ class AdminUserController extends Controller
             $users->appends(['search' => $request->search]);
         }
 
-        // Get the current authenticated user ID
+        // Get the current authenticated user ID and role
         $currentUserId = auth()->id();
+        $currentUserRole = auth()->user()->role;
 
         // If it's an AJAX request, return only the table content
         if ($request->ajax()) {
-            return view('admin-users', compact('users', 'currentUserId'))->render();
+            return view('admin-users', compact('users', 'currentUserId', 'currentUserRole'))->render();
         }
 
-        return view('admin-users', compact('users', 'currentUserId'));
+        return view('admin-users', compact('users', 'currentUserId', 'currentUserRole'));
     }
 
     // Show the form for editing a specific user

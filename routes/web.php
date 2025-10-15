@@ -187,8 +187,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/delete', [ProfileController::class, 'destroy'])->name('delete');
     });
 
-    // Registration
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    // Registration - Only Admin users can access
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('register')->middleware('role:Admin');
+    Route::post('register', [RegisteredUserController::class, 'store'])->middleware('role:Admin');
 });
 
 
