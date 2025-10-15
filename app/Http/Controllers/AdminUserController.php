@@ -18,6 +18,7 @@ class AdminUserController extends Controller
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'LIKE', "%{$searchTerm}%")
                     ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('role', 'LIKE', "%{$searchTerm}%")
                     ->orWhere('id', 'LIKE', "%{$searchTerm}%");
             });
         }
@@ -51,12 +52,14 @@ class AdminUserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
+            'role' => 'required|in:Admin,Cashier,Instructor',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role = $request->role;
 
         if ($request->password) {
             $user->password = Hash::make($request->password);

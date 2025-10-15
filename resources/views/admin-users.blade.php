@@ -68,7 +68,7 @@
                                         </span>
                                     </div>
                                     <input type="search" id="liveSearch" name="search" class="form-control"
-                                        placeholder="Type to search users by name, email, or ID... (min 2 characters)"
+                                        placeholder="Type to search users by name, email, role, or ID... (min 2 characters)"
                                         aria-label="Search" value="{{ request('search') }}" autocomplete="off">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="searchStatus" style="display: none;">
@@ -123,6 +123,7 @@
                                         <th scope="col" style="text-align: center;">ID</th>
                                         <th scope="col" style="text-align: center;">Username</th>
                                         <th scope="col" style="text-align: center;">Email</th>
+                                        <th scope="col" style="text-align: center;">Role</th>
                                         <th scope="col" style="text-align: center;">Created At</th>
                                         <th scope="col" style="text-align: center;">Updated At</th>
                                         <th scope="col" style="text-align: center;">Actions</th>
@@ -157,6 +158,17 @@
                                                 </td>
                                                 <td>
                                                     <span class="text-muted">{{ $user->email }}</span>
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        $roleColors = [
+                                                            'Admin' => 'badge-danger',
+                                                            'Cashier' => 'badge-success',
+                                                            'Instructor' => 'badge-primary'
+                                                        ];
+                                                        $roleColor = $roleColors[$user->role] ?? 'badge-secondary';
+                                                    @endphp
+                                                    <span class="badge {{ $roleColor }}">{{ $user->role }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
@@ -196,7 +208,7 @@
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan="7" class="text-center py-4">
+                                            <td colspan="8" class="text-center py-4">
                                                 @if(request('search'))
                                                     <div class="text-muted">
                                                         <i class="fa fa-search fa-2x mb-3"></i>

@@ -174,6 +174,21 @@
                     @enderror
                 </div>
 
+                <!-- Role Field -->
+                <div class="control">
+                    <label for="role">Role</label>
+                    <select name="role" id="role" required
+                        style="width: 100%; display: block; padding: 10px; color: #222; border: none; outline: none; margin: 1em 0;">
+                        <option value="">Select Role</option>
+                        <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="Cashier" {{ old('role') == 'Cashier' ? 'selected' : '' }}>Cashier</option>
+                        <option value="Instructor" {{ old('role') == 'Instructor' ? 'selected' : '' }}>Instructor</option>
+                    </select>
+                    @error('role')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <!-- Password Field -->
                 <div class="control">
                     <label for="password">Password</label>
