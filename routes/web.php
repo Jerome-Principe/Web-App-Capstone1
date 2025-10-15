@@ -59,17 +59,17 @@ Route::get('/status', function () {
     return view('status');
 });
 
-// dashboard
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+// dashboard - Restricted: Only Admin and Cashier
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'role:Admin,Cashier'])->name('dashboard');
 
-//Attendance
-Route::resource('/rfid', RFIDController::class);
+//Attendance - Restricted: Only Admin and Cashier
+Route::resource('/rfid', RFIDController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
-//Attendance Rercord List
-Route::resource('/attendance-records', AttendanceRecordController::class);
+//Attendance Rercord List - Restricted: Only Admin and Cashier
+Route::resource('/attendance-records', AttendanceRecordController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
-//Attendance Rercord List
-Route::resource('/register-rfid', RegisterRFIDController::class);
+//Attendance Rercord List - Restricted: Only Admin and Cashier
+Route::resource('/register-rfid', RegisterRFIDController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
 // Mobile Feedback routes
 Route::prefix('mobile-feedback')->group(function () {
@@ -149,8 +149,8 @@ Route::prefix('feedback')->name('feedback.')->group(function () {
     Route::post('/mark-as-read/{id}', [FeedbackController::class, 'markAsRead'])->name('markAsRead');
 });
 
-// Walk-in client routes
-Route::prefix('walkin')->group(function () {
+// Walk-in client routes - Restricted: Only Admin and Cashier
+Route::prefix('walkin')->middleware(['auth', 'role:Admin,Cashier'])->group(function () {
     Route::get('/', [WalkinController::class, 'create']);
     Route::get('/clients', [WalkinController::class, 'index'])->name('walkin.index');
     Route::post('/store', [WalkinController::class, 'store'])->name('walkin.store');
@@ -163,8 +163,8 @@ Route::prefix('walkin')->group(function () {
     Route::get('/export-pdf', [WalkinController::class, 'exportPdfByDate'])->name('walkin.exportPdfByDate');
 });
 
-// Walk-in client trash-related routes
-Route::prefix('walkins')->group(function () {
+// Walk-in client trash-related routes - Restricted: Only Admin and Cashier
+Route::prefix('walkins')->middleware(['auth', 'role:Admin,Cashier'])->group(function () {
     Route::post('/move-to-trash', [WalkinController::class, 'moveToTrash'])->name('walkins.moveToTrash');
     Route::get('/trashed', [WalkinController::class, 'trashed'])->name('walkins.trashed');
     Route::post('/trashed/restore-bulk', [WalkinController::class, 'restoreBulk'])->name('walkins.restoreBulk');
@@ -173,7 +173,7 @@ Route::prefix('walkins')->group(function () {
 });
 
 
-Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index']);
+Route::get('/admin-users', [App\Http\Controllers\AdminUserController::class, 'index'])->middleware(['auth', 'role:Admin,Cashier']);
 
 Route::middleware(['auth'])->group(function () {
 
@@ -196,9 +196,9 @@ Route::middleware(['auth'])->group(function () {
 require __DIR__ . '/auth.php';
 
 
-// Announcements
-Route::resource('announcements', AnnouncementController::class);
-Route::prefix('trashed-announcement')->name('announcements.')->group(function () {
+// Announcements - Restricted: Only Admin and Cashier
+Route::resource('announcements', AnnouncementController::class)->middleware(['auth', 'role:Admin,Cashier']);
+Route::prefix('trashed-announcement')->middleware(['auth', 'role:Admin,Cashier'])->name('announcements.')->group(function () {
     Route::post('/move-to-trash', [AnnouncementController::class, 'moveToTrash'])->name('moveToTrash');
     Route::get('/trashed', [AnnouncementController::class, 'trashed'])->name('trashed');
     Route::post('{id}/restore', [AnnouncementController::class, 'restore'])->name('restore');
@@ -256,8 +256,8 @@ Route::prefix('cancelled')->group(function () {
     Route::delete('/force-delete/{id}', [CancelledAppointmentController::class, 'forceDelete'])->name('appointments.cancelled.forceDelete');
 });
 
-// StockItems routes
-Route::prefix('stock-items')->name('stock-items.')->group(function () {
+// StockItems routes - Restricted: Only Admin and Cashier
+Route::prefix('stock-items')->middleware(['auth', 'role:Admin,Cashier'])->name('stock-items.')->group(function () {
     // Main resource routes (excluding 'show')
     Route::resource('/', StockItemController::class)
         ->parameters(['' => 'stock-item'])
@@ -270,8 +270,8 @@ Route::prefix('stock-items')->name('stock-items.')->group(function () {
     });
 });
 
-// SaleItems routes
-Route::prefix('sales')->name('sales.')->group(function () {
+// SaleItems routes - Restricted: Only Admin and Cashier
+Route::prefix('sales')->middleware(['auth', 'role:Admin,Cashier'])->name('sales.')->group(function () {
     // Main resource routes (excluding 'show' only)
     Route::resource('/', SaleItemController::class)
         ->parameters(['' => 'sale'])
@@ -284,8 +284,8 @@ Route::prefix('sales')->name('sales.')->group(function () {
     });
 });
 
-// EquipmentsAdd routes
-Route::prefix('equipmentsAdd')->name('equipmentsAdd.')->group(function () {
+// EquipmentsAdd routes - Restricted: Only Admin and Cashier
+Route::prefix('equipmentsAdd')->middleware(['auth', 'role:Admin,Cashier'])->name('equipmentsAdd.')->group(function () {
     // Main resource routes
     Route::resource('/', EquipmentController::class)
         ->parameters(['' => 'equipments'])
@@ -296,8 +296,8 @@ Route::prefix('equipmentsAdd')->name('equipmentsAdd.')->group(function () {
     Route::get('/export-pdf', [EquipmentController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
-// Machines routes
-Route::prefix('machines')->name('machines.')->group(function () {
+// Machines routes - Restricted: Only Admin and Cashier
+Route::prefix('machines')->middleware(['auth', 'role:Admin,Cashier'])->name('machines.')->group(function () {
     // Main resource routes
     Route::resource('/', MachineController::class)
         ->parameters(['' => 'machines'])
@@ -308,8 +308,8 @@ Route::prefix('machines')->name('machines.')->group(function () {
     Route::get('/export-pdf', [MachineController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
-// Equipments Defect routes
-Route::prefix('equipments-defect')->name('equipments-defect.')->group(function () {
+// Equipments Defect routes - Restricted: Only Admin and Cashier
+Route::prefix('equipments-defect')->middleware(['auth', 'role:Admin,Cashier'])->name('equipments-defect.')->group(function () {
     // Main resource routes (excluding 'show' only)
     Route::resource('/', EquipmentDefectController::class)
         ->parameters(['' => 'equipments-defect'])
@@ -320,11 +320,11 @@ Route::prefix('equipments-defect')->name('equipments-defect.')->group(function (
     Route::get('/export-pdf', [EquipmentDefectController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
-// Stock Items routes
-Route::resource('stock-items', StockItemController::class);
+// Stock Items routes - Restricted: Only Admin and Cashier
+Route::resource('stock-items', StockItemController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
-// Machines Defect routes
-Route::prefix('machine-defects')->name('machine-defects.')->group(function () {
+// Machines Defect routes - Restricted: Only Admin and Cashier
+Route::prefix('machine-defects')->middleware(['auth', 'role:Admin,Cashier'])->name('machine-defects.')->group(function () {
     // Main resource routes (excluding 'show' only)
     Route::resource('/', MachineDefectController::class)
         ->parameters(['' => 'machine-defects'])
@@ -387,8 +387,8 @@ Route::prefix('membership-renewal')->name('membership-renewal.')->group(function
     Route::post('/fix-types', [MembershipRenewalController::class, 'fixMembershipTypes'])->name('fix-types');
 });
 
-// Admin Users
-Route::resource('admin-users', AdminUserController::class);
+// Admin Users - Restricted: Only Admin and Cashier
+Route::resource('admin-users', AdminUserController::class)->middleware(['auth', 'role:Admin,Cashier']);
 
 // Notifications API routes
 Route::prefix('api/notifications')->name('notifications.')->group(function () {
@@ -403,8 +403,8 @@ Route::prefix('api/notifications')->name('notifications.')->group(function () {
     Route::post('/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
 });
 
-// Expenses routes
-Route::prefix('expenses')->name('expenses.')->group(function () {
+// Expenses routes - Restricted: Only Admin and Cashier
+Route::prefix('expenses')->middleware(['auth', 'role:Admin,Cashier'])->name('expenses.')->group(function () {
     // Main resource routes (excluding 'show')
     Route::resource('/', ExpenseController::class)
         ->parameters(['' => 'expense'])

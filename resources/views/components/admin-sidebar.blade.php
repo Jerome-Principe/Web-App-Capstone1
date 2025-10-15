@@ -131,75 +131,77 @@
 
         <!-- Enhanced Navigation Menu -->
         <ul class="side-nav-menu space-y-1">
-            <li class="nav-item dropdown {{ request()->routeIs('dashboard') ? 'open' : '' }}">
-                <a href="#"
-                    class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('dashboard') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-tachometer {{ request()->routeIs('dashboard') ? 'text-white' : 'text-blue-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Dashboard</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <a href="/dashboard"
-                            class="block px-3 py-2 {{ request()->routeIs('dashboard') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                            Dashboard</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role !== 'Instructor')
+                <li class="nav-item dropdown {{ request()->routeIs('dashboard') ? 'open' : '' }}">
+                    <a href="#"
+                        class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('dashboard') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-tachometer {{ request()->routeIs('dashboard') ? 'text-white' : 'text-blue-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Dashboard</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <a href="/dashboard"
+                                class="block px-3 py-2 {{ request()->routeIs('dashboard') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                                Dashboard</a>
+                        </li>
+                    </ul>
+                </li>
 
-            <li class="nav-item dropdown {{ request()->routeIs('admin-users*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('admin-users*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-user {{ request()->routeIs('admin-users*') ? 'text-white' : 'text-purple-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Admin</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('admin-users*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('admin-users*') ? 'active' : '' }}">
-                        <a href="/admin-users"
-                            class="block px-3 py-2 {{ request()->routeIs('admin-users*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                            Admin</a>
-                    </li>
-                </ul>
-            </li>
+                <li class="nav-item dropdown {{ request()->routeIs('admin-users*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('admin-users*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-user {{ request()->routeIs('admin-users*') ? 'text-white' : 'text-purple-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Admin</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('admin-users*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('admin-users*') ? 'active' : '' }}">
+                            <a href="/admin-users"
+                                class="block px-3 py-2 {{ request()->routeIs('admin-users*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                                Admin</a>
+                        </li>
+                    </ul>
+                </li>
 
-            <li class="nav-item dropdown {{ request()->routeIs('announcements*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('announcements*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-bullhorn {{ request()->routeIs('announcements*') ? 'text-white' : 'text-orange-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Announcement</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('announcements*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('announcements*') ? 'active' : '' }}">
-                        <a href="/announcements"
-                            class="block px-3 py-2 {{ request()->routeIs('announcements*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm"
-                            style="white-space: normal; word-wrap: break-word;">Create
-                            Announcement</a>
-                    </li>
-                </ul>
-            </li>
+                <li class="nav-item dropdown {{ request()->routeIs('announcements*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('announcements*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-bullhorn {{ request()->routeIs('announcements*') ? 'text-white' : 'text-orange-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Announcement</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('announcements*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('announcements*') ? 'active' : '' }}">
+                            <a href="/announcements"
+                                class="block px-3 py-2 {{ request()->routeIs('announcements*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm"
+                                style="white-space: normal; word-wrap: break-word;">Create
+                                Announcement</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             <li
                 class="nav-item dropdown {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'open' : '' }}">
@@ -238,39 +240,41 @@
                 </ul>
             </li>
 
-            <li
-                class="nav-item dropdown {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-teal-600 hover:to-teal-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-clock-o {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'text-white' : 'text-teal-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Attendance</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('rfid*') ? 'active' : '' }}">
-                        <a href="/rfid"
-                            class="block px-3 py-2 {{ request()->routeIs('rfid*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                            Attendance</a>
-                    </li>
-                    <li class="{{ request()->routeIs('attendance-records*') ? 'active' : '' }}">
-                        <a href="/attendance-records"
-                            class="block px-3 py-2 {{ request()->routeIs('attendance-records*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Attendance
-                            Record List</a>
-                    </li>
-                    <li class="{{ request()->routeIs('register-rfid*') ? 'active' : '' }}">
-                        <a href="/register-rfid"
-                            class="block px-3 py-2 {{ request()->routeIs('register-rfid*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Attendance
-                            Register List</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role !== 'Instructor')
+                <li
+                    class="nav-item dropdown {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-teal-600 hover:to-teal-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-clock-o {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'text-white' : 'text-teal-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Attendance</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('rfid*') || request()->routeIs('attendance-records*') || request()->routeIs('register-rfid*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('rfid*') ? 'active' : '' }}">
+                            <a href="/rfid"
+                                class="block px-3 py-2 {{ request()->routeIs('rfid*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                                Attendance</a>
+                        </li>
+                        <li class="{{ request()->routeIs('attendance-records*') ? 'active' : '' }}">
+                            <a href="/attendance-records"
+                                class="block px-3 py-2 {{ request()->routeIs('attendance-records*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Attendance
+                                Record List</a>
+                        </li>
+                        <li class="{{ request()->routeIs('register-rfid*') ? 'active' : '' }}">
+                            <a href="/register-rfid"
+                                class="block px-3 py-2 {{ request()->routeIs('register-rfid*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Attendance
+                                Register List</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             <li class="nav-item dropdown {{ request()->routeIs('competitions*') ? 'open' : '' }}">
                 <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('competitions*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
@@ -295,28 +299,30 @@
                 </ul>
             </li>
 
-            <li class="nav-item dropdown {{ request()->routeIs('expenses*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('expenses*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-pink-600 hover:to-pink-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-money {{ request()->routeIs('expenses*') ? 'text-white' : 'text-pink-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Expenses</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('expenses*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('expenses*') ? 'active' : '' }}">
-                        <a href="/expenses"
-                            class="block px-3 py-2 {{ request()->routeIs('expenses*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                            Expenses</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role !== 'Instructor')
+                <li class="nav-item dropdown {{ request()->routeIs('expenses*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('expenses*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-pink-600 hover:to-pink-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-money {{ request()->routeIs('expenses*') ? 'text-white' : 'text-pink-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Expenses</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('expenses*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('expenses*') ? 'active' : '' }}">
+                            <a href="/expenses"
+                                class="block px-3 py-2 {{ request()->routeIs('expenses*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                                Expenses</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             <li
                 class="nav-item dropdown {{ request()->routeIs('feedback*') || request()->routeIs('mobile-feedback*') ? 'open' : '' }}">
@@ -370,54 +376,56 @@
                 </ul>
             </li>
 
-            <li
-                class="nav-item dropdown {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-cyan-600 hover:to-cyan-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-folder-open {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'text-white' : 'text-cyan-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Inventory</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('sales*') ? 'active' : '' }}">
-                        <a href="/sales"
-                            class="block px-3 py-2 {{ request()->routeIs('sales*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Sale
-                            Items</a>
-                    </li>
-                    <li class="{{ request()->routeIs('stock-items*') ? 'active' : '' }}">
-                        <a href="/stock-items"
-                            class="block px-3 py-2 {{ request()->routeIs('stock-items*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Stock
-                            Items</a>
-                    </li>
-                    <li class="{{ request()->routeIs('equipmentsAdd*') ? 'active' : '' }}">
-                        <a href="/equipmentsAdd"
-                            class="block px-3 py-2 {{ request()->routeIs('equipmentsAdd*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Add
-                            Equipment</a>
-                    </li>
-                    <li class="{{ request()->routeIs('machines*') ? 'active' : '' }}">
-                        <a href="/machines"
-                            class="block px-3 py-2 {{ request()->routeIs('machines*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Add
-                            Machine</a>
-                    </li>
-                    <li class="{{ request()->routeIs('equipments-defect*') ? 'active' : '' }}">
-                        <a href="/equipments-defect"
-                            class="block px-3 py-2 {{ request()->routeIs('equipments-defect*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Defect
-                            Equipment</a>
-                    </li>
-                    <li class="{{ request()->routeIs('machine-defects*') ? 'active' : '' }}">
-                        <a href="/machine-defects"
-                            class="block px-3 py-2 {{ request()->routeIs('machine-defects*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Defect
-                            Machine</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role !== 'Instructor')
+                <li
+                    class="nav-item dropdown {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-cyan-600 hover:to-cyan-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-folder-open {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'text-white' : 'text-cyan-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Inventory</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('sales*') || request()->routeIs('stock-items*') || request()->routeIs('equipmentsAdd*') || request()->routeIs('machines*') || request()->routeIs('equipments-defect*') || request()->routeIs('machine-defects*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('sales*') ? 'active' : '' }}">
+                            <a href="/sales"
+                                class="block px-3 py-2 {{ request()->routeIs('sales*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Sale
+                                Items</a>
+                        </li>
+                        <li class="{{ request()->routeIs('stock-items*') ? 'active' : '' }}">
+                            <a href="/stock-items"
+                                class="block px-3 py-2 {{ request()->routeIs('stock-items*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Stock
+                                Items</a>
+                        </li>
+                        <li class="{{ request()->routeIs('equipmentsAdd*') ? 'active' : '' }}">
+                            <a href="/equipmentsAdd"
+                                class="block px-3 py-2 {{ request()->routeIs('equipmentsAdd*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Add
+                                Equipment</a>
+                        </li>
+                        <li class="{{ request()->routeIs('machines*') ? 'active' : '' }}">
+                            <a href="/machines"
+                                class="block px-3 py-2 {{ request()->routeIs('machines*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Add
+                                Machine</a>
+                        </li>
+                        <li class="{{ request()->routeIs('equipments-defect*') ? 'active' : '' }}">
+                            <a href="/equipments-defect"
+                                class="block px-3 py-2 {{ request()->routeIs('equipments-defect*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Defect
+                                Equipment</a>
+                        </li>
+                        <li class="{{ request()->routeIs('machine-defects*') ? 'active' : '' }}">
+                            <a href="/machine-defects"
+                                class="block px-3 py-2 {{ request()->routeIs('machine-defects*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Defect
+                                Machine</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             <li
                 class="nav-item dropdown {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'open' : '' }}">
@@ -539,28 +547,30 @@
                 </ul>
             </li>
 
-            <li class="nav-item dropdown {{ request()->routeIs('walkin*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('walkin*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-lime-600 hover:to-lime-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-user {{ request()->routeIs('walkin*') ? 'text-white' : 'text-lime-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Walkin Client</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('walkin*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('walkin*') ? 'active' : '' }}">
-                        <a href="/walkin/clients"
-                            class="block px-3 py-2 {{ request()->routeIs('walkin*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                            Walkin Client</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role !== 'Instructor')
+                <li class="nav-item dropdown {{ request()->routeIs('walkin*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('walkin*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-lime-600 hover:to-lime-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-user {{ request()->routeIs('walkin*') ? 'text-white' : 'text-lime-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Walkin Client</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('walkin*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('walkin*') ? 'active' : '' }}">
+                            <a href="/walkin/clients"
+                                class="block px-3 py-2 {{ request()->routeIs('walkin*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                                Walkin Client</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
         </ul>
     </div>
 </div>
