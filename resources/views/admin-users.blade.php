@@ -132,7 +132,7 @@
                                 <tbody>
                                     @if($users->count() > 0)
                                         @foreach ($users as $index => $user)
-                                            <tr>
+                                            <tr class="{{ $user->id == $currentUserId ? 'current-user-row' : '' }}">
                                                 <td style="text-align: center;">
                                                     <div class="custom-control custom-checkbox d-flex justify-content-center">
                                                         <input type="checkbox" class="custom-control-input" name="selected[]"
@@ -186,22 +186,35 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group" role="group">
-                                                        <a href="{{ route('admin-users.edit', $user->id) }}"
-                                                            class="btn btn-sm btn-outline-primary">
-                                                            <i class="fa fa-pencil mr-1"></i>
-                                                            Update
-                                                        </a>
-                                                        <form action="{{ route('admin-users.destroy', $user->id) }}" method="POST"
-                                                            class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                onclick="return confirm('Are you sure you want to delete this user account?')"
-                                                                class="btn btn-sm btn-outline-danger">
+                                                        @if($user->id == $currentUserId)
+                                                            <!-- Current user - show active buttons -->
+                                                            <a href="{{ route('admin-users.edit', $user->id) }}"
+                                                                class="btn btn-sm btn-outline-primary">
+                                                                <i class="fa fa-pencil mr-1"></i>
+                                                                Update
+                                                            </a>
+                                                            <form action="{{ route('admin-users.destroy', $user->id) }}" method="POST"
+                                                                class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    onclick="return confirm('Are you sure you want to delete this user account?')"
+                                                                    class="btn btn-sm btn-outline-danger">
+                                                                    <i class="fa fa-trash mr-1"></i>
+                                                                    Delete
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <!-- Other users - show disabled buttons -->
+                                                            <button class="btn btn-sm btn-outline-secondary disabled" disabled>
+                                                                <i class="fa fa-pencil mr-1"></i>
+                                                                Update
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-secondary disabled" disabled>
                                                                 <i class="fa fa-trash mr-1"></i>
                                                                 Delete
                                                             </button>
-                                                        </form>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>
@@ -533,6 +546,35 @@
             color: #6c757d;
             background-color: #fff;
             border-color: #dee2e6;
+        }
+
+        /* Disabled button styling */
+        .btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-outline-secondary.disabled {
+            background-color: #f8f9fa;
+            border-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        .btn-outline-secondary.disabled:hover {
+            background-color: #f8f9fa;
+            border-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        /* Visual indicator for current user's row */
+        .current-user-row {
+            background-color: #f8f9ff !important;
+            border-left: 3px solid #007bff;
+        }
+
+        .current-user-row:hover {
+            background-color: #e6f3ff !important;
         }
     </style>
 
