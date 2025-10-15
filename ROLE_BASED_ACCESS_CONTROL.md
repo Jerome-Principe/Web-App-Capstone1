@@ -16,6 +16,10 @@ The system supports three user roles:
 
 Instructors have access to the following sections only:
 
+### Dashboard
+
+-   View Dashboard
+
 ### Resources
 
 -   Exercise Default
@@ -61,7 +65,6 @@ Instructors have access to the following sections only:
 
 Instructors **CANNOT** access the following sections:
 
--   **Dashboard** - Analytics and statistics
 -   **Admin** - User management
 -   **Announcement** - Create and manage announcements
 -   **Attendance** - RFID and attendance tracking

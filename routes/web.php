@@ -59,8 +59,8 @@ Route::get('/status', function () {
     return view('status');
 });
 
-// dashboard - Restricted: Only Admin and Cashier
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'role:Admin,Cashier'])->name('dashboard');
+// dashboard - Accessible to all authenticated users (Admin, Cashier, Instructor)
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 //Attendance - Restricted: Only Admin and Cashier
 Route::resource('/rfid', RFIDController::class)->middleware(['auth', 'role:Admin,Cashier']);

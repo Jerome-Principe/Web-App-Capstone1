@@ -131,29 +131,30 @@
 
         <!-- Enhanced Navigation Menu -->
         <ul class="side-nav-menu space-y-1">
+            <li class="nav-item dropdown {{ request()->routeIs('dashboard') ? 'open' : '' }}">
+                <a href="#"
+                    class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('dashboard') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md">
+                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                        <i
+                            class="fa fa-tachometer {{ request()->routeIs('dashboard') ? 'text-white' : 'text-blue-400 group-hover:text-white' }} transition-colors"></i>
+                    </span>
+                    <span class="title font-semibold text-sm"
+                        style="font-family: inherit; text-rendering: optimizeLegibility;">Dashboard</span>
+                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                        <i
+                            class="lni-chevron-right {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                    <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <a href="/dashboard"
+                            class="block px-3 py-2 {{ request()->routeIs('dashboard') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                            Dashboard</a>
+                    </li>
+                </ul>
+            </li>
+
             @if(auth()->user()?->role !== 'Instructor')
-                <li class="nav-item dropdown {{ request()->routeIs('dashboard') ? 'open' : '' }}">
-                    <a href="#"
-                        class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('dashboard') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md">
-                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                            <i
-                                class="fa fa-tachometer {{ request()->routeIs('dashboard') ? 'text-white' : 'text-blue-400 group-hover:text-white' }} transition-colors"></i>
-                        </span>
-                        <span class="title font-semibold text-sm"
-                            style="font-family: inherit; text-rendering: optimizeLegibility;">Dashboard</span>
-                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                            <i
-                                class="lni-chevron-right {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                        <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                            <a href="/dashboard"
-                                class="block px-3 py-2 {{ request()->routeIs('dashboard') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                                Dashboard</a>
-                        </li>
-                    </ul>
-                </li>
 
                 <li class="nav-item dropdown {{ request()->routeIs('admin-users*') ? 'open' : '' }}">
                     <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('admin-users*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
