@@ -83,8 +83,8 @@ Route::prefix('mobile-feedback')->group(function () {
     Route::delete('/{id}/force-delete', [MobileFeedbackController::class, 'forceDelete'])->name('mobile-feedback.forceDelete');
 });
 
-// Goal Routes
-Route::prefix('goals')->name('goals.')->group(function () {
+// Goal Routes - Accessible to Admin and Instructor only
+Route::prefix('goals')->middleware(['auth', 'role:Admin,Instructor'])->name('goals.')->group(function () {
     // Main resource routes (excluding 'show')
     Route::get('/', [GoalController::class, 'index'])->name('index');
     Route::get('/create', [GoalController::class, 'create'])->name('create');
@@ -103,8 +103,8 @@ Route::prefix('goals')->name('goals.')->group(function () {
     });
 });
 
-// Competition Routes
-Route::prefix('competitions')->name('competitions.')->group(function () {
+// Competition Routes - Accessible to Admin and Instructor only
+Route::prefix('competitions')->middleware(['auth', 'role:Admin,Instructor'])->name('competitions.')->group(function () {
     Route::controller(CompetitionController::class)->group(function () {
         // Archive/trash routes (specific routes first)
         Route::get('/trashed', 'trashed')->name('trashed');
@@ -206,13 +206,13 @@ Route::prefix('trashed-announcement')->middleware(['auth', 'role:Admin,Cashier']
     Route::post('/restore-bulk', [AnnouncementController::class, 'restoreBulk'])->name('restore.bulk');
 });
 
-//Instructors
-Route::resource('instructors', InstructorController::class);
+//Instructors - Accessible to Admin and Instructor only
+Route::resource('instructors', InstructorController::class)->middleware(['auth', 'role:Admin,Instructor']);
 
 
 
-// Trashed Instructors Routes
-Route::prefix('trashed-instructors')->name('instructors.')->group(function () {
+// Trashed Instructors Routes - Accessible to Admin and Instructor only
+Route::prefix('trashed-instructors')->middleware(['auth', 'role:Admin,Instructor'])->name('instructors.')->group(function () {
     Route::post('/move-to-trash', [InstructorController::class, 'moveToTrash'])->name('moveToTrash');
     Route::get('/trashed', [InstructorController::class, 'trashed'])->name('trashed');
     Route::post('{id}/restore', [InstructorController::class, 'restore'])->name('restore');
@@ -220,8 +220,8 @@ Route::prefix('trashed-instructors')->name('instructors.')->group(function () {
     Route::post('/restore-bulk', [InstructorController::class, 'restoreBulk'])->name('restore.bulk');
 });
 
-// Pending Appointments Routes
-Route::prefix('appointments')->group(function () {
+// Pending Appointments Routes - Accessible to Admin and Instructor only
+Route::prefix('appointments')->middleware(['auth', 'role:Admin,Instructor'])->group(function () {
     Route::get('/', [PendingAppointmentController::class, 'appointmentList'])->name('appointments.index');
     Route::get('/appointment-pending-list', [PendingAppointmentController::class, 'index'])->name('appointment-pending-list');
     Route::post('/store', [PendingAppointmentController::class, 'store'])->name('appointments.store');
@@ -240,8 +240,8 @@ Route::prefix('appointments')->group(function () {
     Route::delete('/force-delete/{id}', [PendingAppointmentController::class, 'forceDelete'])->name('appointments.pending.forceDelete');
 });
 
-// Cancelled Appointments Routes
-Route::prefix('cancelled')->group(function () {
+// Cancelled Appointments Routes - Accessible to Admin and Instructor only
+Route::prefix('cancelled')->middleware(['auth', 'role:Admin,Instructor'])->group(function () {
     Route::get('/', [CancelledAppointmentController::class, 'index'])->name('appointments.cancelled');
     Route::post('/store', [CancelledAppointmentController::class, 'store'])->name('appointments.cancelled.store');
     Route::get('/proof/{id}', [CancelledAppointmentController::class, 'showProof'])->name('appointments.cancelled.proof');
@@ -335,23 +335,23 @@ Route::prefix('machine-defects')->middleware(['auth', 'role:Admin,Cashier'])->na
     Route::get('/export-pdf', [MachineDefectController::class, 'exportPdfByDate'])->name('exportPdfByDate');
 });
 
-//Meal-plan
-Route::resource('meal-plan', MealPlanController::class);
+//Meal-plan - Accessible to Admin and Instructor only
+Route::resource('meal-plan', MealPlanController::class)->middleware(['auth', 'role:Admin,Instructor']);
 
-Route::resource('meal-plan-custom', MealPlanCustomController::class);
-Route::get('/meal-plan-custom-list', [MealPlanCustomController::class, 'mealPlanCustomList'])->name('meal-plan-custom.list');
+Route::resource('meal-plan-custom', MealPlanCustomController::class)->middleware(['auth', 'role:Admin,Instructor']);
+Route::get('/meal-plan-custom-list', [MealPlanCustomController::class, 'mealPlanCustomList'])->middleware(['auth', 'role:Admin,Instructor'])->name('meal-plan-custom.list');
 
-//Workout-Program
-Route::resource('workout-programs', WorkoutProgramController::class);
+//Workout-Program - Accessible to Admin and Instructor only
+Route::resource('workout-programs', WorkoutProgramController::class)->middleware(['auth', 'role:Admin,Instructor']);
 
-Route::resource('workout-program-custom', WorkoutProgramCustomController::class);
-Route::get('/workout-program-custom-list', [WorkoutProgramCustomController::class, 'workoutProgramCustomList'])->name('workout-program-custom.list');
+Route::resource('workout-program-custom', WorkoutProgramCustomController::class)->middleware(['auth', 'role:Admin,Instructor']);
+Route::get('/workout-program-custom-list', [WorkoutProgramCustomController::class, 'workoutProgramCustomList'])->middleware(['auth', 'role:Admin,Instructor'])->name('workout-program-custom.list');
 
-//Exercise
-Route::resource('exercise', ExerciseController::class);
+//Exercise - Accessible to Admin and Instructor only
+Route::resource('exercise', ExerciseController::class)->middleware(['auth', 'role:Admin,Instructor']);
 
-Route::resource('exercise-custom', ExerciseCustomController::class);
-Route::get('/exercise-custom-list', [ExerciseCustomController::class, 'exerciseCustomList'])->name('exercise-custom.list');
+Route::resource('exercise-custom', ExerciseCustomController::class)->middleware(['auth', 'role:Admin,Instructor']);
+Route::get('/exercise-custom-list', [ExerciseCustomController::class, 'exerciseCustomList'])->middleware(['auth', 'role:Admin,Instructor'])->name('exercise-custom.list');
 
 //Membership
 Route::get('/membership-request-list', [RequestMembershipController::class, 'index']);

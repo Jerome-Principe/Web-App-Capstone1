@@ -205,42 +205,44 @@
                 </li>
             @endif
 
-            <li
-                class="nav-item dropdown {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-green-600 hover:to-green-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-calendar {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'text-white' : 'text-green-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Appointment</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('appointments.index') ? 'active' : '' }}">
-                        <a href="/appointments"
-                            class="block px-3 py-2 {{ request()->routeIs('appointments.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm"
-                            style="white-space: normal; word-wrap: break-word;">View
-                            Appointment List</a>
-                    </li>
-                    <li class="{{ request()->routeIs('appointment-pending-list') ? 'active' : '' }}">
-                        <a href="/appointments/appointment-pending-list"
-                            class="block px-3 py-2 {{ request()->routeIs('appointment-pending-list') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm"
-                            style="white-space: normal; word-wrap: break-word;">Pending
-                            Appointment</a>
-                    </li>
-                    <li class="{{ request()->routeIs('appointments.cancelled*') ? 'active' : '' }}">
-                        <a href="/cancelled"
-                            class="block px-3 py-2 {{ request()->routeIs('appointments.cancelled*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm"
-                            style="white-space: normal; word-wrap: break-word;">Cancelled
-                            Appointment</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Instructor')
+                <li
+                    class="nav-item dropdown {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-green-600 hover:to-green-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-calendar {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'text-white' : 'text-green-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Appointment</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('appointments*') || request()->routeIs('appointment-pending-list') || request()->routeIs('cancelled*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('appointments.index') ? 'active' : '' }}">
+                            <a href="/appointments"
+                                class="block px-3 py-2 {{ request()->routeIs('appointments.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm"
+                                style="white-space: normal; word-wrap: break-word;">View
+                                Appointment List</a>
+                        </li>
+                        <li class="{{ request()->routeIs('appointment-pending-list') ? 'active' : '' }}">
+                            <a href="/appointments/appointment-pending-list"
+                                class="block px-3 py-2 {{ request()->routeIs('appointment-pending-list') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm"
+                                style="white-space: normal; word-wrap: break-word;">Pending
+                                Appointment</a>
+                        </li>
+                        <li class="{{ request()->routeIs('appointments.cancelled*') ? 'active' : '' }}">
+                            <a href="/cancelled"
+                                class="block px-3 py-2 {{ request()->routeIs('appointments.cancelled*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm"
+                                style="white-space: normal; word-wrap: break-word;">Cancelled
+                                Appointment</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li
@@ -278,28 +280,30 @@
                 </li>
             @endif
 
-            <li class="nav-item dropdown {{ request()->routeIs('competitions*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('competitions*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-trophy {{ request()->routeIs('competitions*') ? 'text-white' : 'text-yellow-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Competition</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('competitions*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('competitions*') ? 'active' : '' }}">
-                        <a href="/competitions"
-                            class="block px-3 py-2 {{ request()->routeIs('competitions*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                            Competition</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Instructor')
+                <li class="nav-item dropdown {{ request()->routeIs('competitions*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('competitions*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-trophy {{ request()->routeIs('competitions*') ? 'text-white' : 'text-yellow-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Competition</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('competitions*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('competitions*') ? 'active' : '' }}">
+                            <a href="/competitions"
+                                class="block px-3 py-2 {{ request()->routeIs('competitions*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                                Competition</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li class="nav-item dropdown {{ request()->routeIs('expenses*') ? 'open' : '' }}">
@@ -355,28 +359,30 @@
                 </ul>
             </li>
 
-            <li class="nav-item dropdown {{ request()->routeIs('goals*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('goals*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-emerald-600 hover:to-emerald-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-balance-scale {{ request()->routeIs('goals*') ? 'text-white' : 'text-emerald-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Goal</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('goals*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('goals*') ? 'active' : '' }}">
-                        <a href="/goals"
-                            class="block px-3 py-2 {{ request()->routeIs('goals*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                            Goal</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Instructor')
+                <li class="nav-item dropdown {{ request()->routeIs('goals*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('goals*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-emerald-600 hover:to-emerald-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-balance-scale {{ request()->routeIs('goals*') ? 'text-white' : 'text-emerald-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Goal</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('goals*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('goals*') ? 'active' : '' }}">
+                            <a href="/goals"
+                                class="block px-3 py-2 {{ request()->routeIs('goals*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                                Goal</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li
@@ -429,54 +435,56 @@
                 </li>
             @endif
 
-            <li
-                class="nav-item dropdown {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-violet-600 hover:to-violet-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-list {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'text-white' : 'text-violet-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Resources</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('exercise.index') ? 'active' : '' }}">
-                        <a href="/exercise"
-                            class="block px-3 py-2 {{ request()->routeIs('exercise.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Exercise
-                            Default</a>
-                    </li>
-                    <li class="{{ request()->routeIs('exercise-custom*') ? 'active' : '' }}">
-                        <a href="/exercise-custom"
-                            class="block px-3 py-2 {{ request()->routeIs('exercise-custom*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Exercise
-                            Custom</a>
-                    </li>
-                    <li class="{{ request()->routeIs('meal-plan.index') ? 'active' : '' }}">
-                        <a href="/meal-plan"
-                            class="block px-3 py-2 {{ request()->routeIs('meal-plan.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Meal
-                            Plan Default</a>
-                    </li>
-                    <li class="{{ request()->routeIs('meal-plan-custom*') ? 'active' : '' }}">
-                        <a href="/meal-plan-custom"
-                            class="block px-3 py-2 {{ request()->routeIs('meal-plan-custom*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Meal
-                            Plan Custom</a>
-                    </li>
-                    <li class="{{ request()->routeIs('workout-programs.index') ? 'active' : '' }}">
-                        <a href="/workout-programs"
-                            class="block px-3 py-2 {{ request()->routeIs('workout-programs.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Workout
-                            Default</a>
-                    </li>
-                    <li class="{{ request()->routeIs('workout-program-custom*') ? 'active' : '' }}">
-                        <a href="/workout-program-custom"
-                            class="block px-3 py-2 {{ request()->routeIs('workout-program-custom*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Workout
-                            Custom</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Instructor')
+                <li
+                    class="nav-item dropdown {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-violet-600 hover:to-violet-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-list {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'text-white' : 'text-violet-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Resources</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('exercise*') || request()->routeIs('meal-plan*') || request()->routeIs('workout-program*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('exercise.index') ? 'active' : '' }}">
+                            <a href="/exercise"
+                                class="block px-3 py-2 {{ request()->routeIs('exercise.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Exercise
+                                Default</a>
+                        </li>
+                        <li class="{{ request()->routeIs('exercise-custom*') ? 'active' : '' }}">
+                            <a href="/exercise-custom"
+                                class="block px-3 py-2 {{ request()->routeIs('exercise-custom*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Exercise
+                                Custom</a>
+                        </li>
+                        <li class="{{ request()->routeIs('meal-plan.index') ? 'active' : '' }}">
+                            <a href="/meal-plan"
+                                class="block px-3 py-2 {{ request()->routeIs('meal-plan.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Meal
+                                Plan Default</a>
+                        </li>
+                        <li class="{{ request()->routeIs('meal-plan-custom*') ? 'active' : '' }}">
+                            <a href="/meal-plan-custom"
+                                class="block px-3 py-2 {{ request()->routeIs('meal-plan-custom*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Meal
+                                Plan Custom</a>
+                        </li>
+                        <li class="{{ request()->routeIs('workout-programs.index') ? 'active' : '' }}">
+                            <a href="/workout-programs"
+                                class="block px-3 py-2 {{ request()->routeIs('workout-programs.index') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Workout
+                                Default</a>
+                        </li>
+                        <li class="{{ request()->routeIs('workout-program-custom*') ? 'active' : '' }}">
+                            <a href="/workout-program-custom"
+                                class="block px-3 py-2 {{ request()->routeIs('workout-program-custom*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">Workout
+                                Custom</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             <li
                 class="nav-item dropdown {{ request()->routeIs('membership-pendings*') || request()->routeIs('membership.list*') || request()->is('membership-request-list*') || request()->is('membership-emergency-medical*') || request()->is('membership-payment-list*') || request()->routeIs('membership-renewal*') ? 'open' : '' }}">
@@ -526,28 +534,30 @@
                 </ul>
             </li>
 
-            <li class="nav-item dropdown {{ request()->routeIs('instructors*') ? 'open' : '' }}">
-                <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('instructors*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-sky-600 hover:to-sky-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
-                    href="#">
-                    <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
-                        <i
-                            class="fa fa-users {{ request()->routeIs('instructors*') ? 'text-white' : 'text-sky-400 group-hover:text-white' }} transition-colors"></i>
-                    </span>
-                    <span class="title font-semibold text-sm"
-                        style="font-family: inherit; text-rendering: optimizeLegibility;">Our Team</span>
-                    <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
-                        <i
-                            class="lni-chevron-right {{ request()->routeIs('instructors*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
-                    <li class="{{ request()->routeIs('instructors*') ? 'active' : '' }}">
-                        <a href="/instructors"
-                            class="block px-3 py-2 {{ request()->routeIs('instructors*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
-                            Instructor</a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Instructor')
+                <li class="nav-item dropdown {{ request()->routeIs('instructors*') ? 'open' : '' }}">
+                    <a class="dropdown-toggle flex items-center px-3 py-2.5 {{ request()->routeIs('instructors*') ? 'text-white bg-gradient-to-r from-pink-600 to-pink-700' : 'text-gray-200 hover:bg-gradient-to-r hover:from-sky-600 hover:to-sky-700 hover:text-white' }} rounded-lg transition-all duration-300 group shadow-sm hover:shadow-md"
+                        href="#">
+                        <span class="icon-holder w-5 h-5 mr-3 flex items-center justify-center">
+                            <i
+                                class="fa fa-users {{ request()->routeIs('instructors*') ? 'text-white' : 'text-sky-400 group-hover:text-white' }} transition-colors"></i>
+                        </span>
+                        <span class="title font-semibold text-sm"
+                            style="font-family: inherit; text-rendering: optimizeLegibility;">Our Team</span>
+                        <span class="arrow ml-auto transform group-hover:rotate-90 transition-transform duration-300">
+                            <i
+                                class="lni-chevron-right {{ request()->routeIs('instructors*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} text-xs"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu sub-down ml-4 mt-1 space-y-1 pl-3">
+                        <li class="{{ request()->routeIs('instructors*') ? 'active' : '' }}">
+                            <a href="/instructors"
+                                class="block px-3 py-2 {{ request()->routeIs('instructors*') ? 'text-white bg-pink-600' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded transition-all duration-200 font-medium text-sm">View
+                                Instructor</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             @if(auth()->user()?->role === 'Admin' || auth()->user()?->role === 'Cashier')
                 <li class="nav-item dropdown {{ request()->routeIs('walkin*') ? 'open' : '' }}">
