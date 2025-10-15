@@ -498,7 +498,7 @@
                                     <small class="form-text text-muted">Choose an image file (JPG, PNG, GIF)</small>
                                     @if($instructor->profile_image)
                                         <div class="mt-2">
-                                            <img src="{{ asset('storage/' . $instructor->profile_image) }}"
+                                            <img src="{{ asset('https://limitlessfitnesstudio.com/storage/app/public/public/' . $instructor->profile_image) }}"
                                                 alt="Current Profile" class="img-thumbnail"
                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
                                             <small class="d-block text-muted">Current image</small>
