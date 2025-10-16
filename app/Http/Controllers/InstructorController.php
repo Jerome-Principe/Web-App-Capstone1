@@ -83,15 +83,15 @@ class InstructorController extends Controller
             \Log::info('Image mime type: ' . $image->getMimeType());
 
             try {
-                // Store the image in storage/app/public/public/instructor_profile folder
-                $storedPath = $image->storeAs('public/', $imageName);
+                // Store the image in storage/app/public/instructor_profile folder
+                $storedPath = $image->storeAs('public', $imageName);
 
                 if ($storedPath) {
                     // Remove 'public/' from the path for database storage
                     $profileImagePath = str_replace('public/', '', $storedPath);
 
                     // Verify the file was actually created
-                    $fullPath = storage_path('public/public/' . $profileImagePath);
+                    $fullPath = storage_path('app/public/' . $profileImagePath);
                     if (file_exists($fullPath)) {
                         \Log::info('Image successfully stored at: ' . $storedPath);
                         \Log::info('Database path: ' . $profileImagePath);
@@ -159,8 +159,8 @@ class InstructorController extends Controller
             $image = $request->file('profile_image');
             $imageName = 'instructor_profile/' . time() . '.' . $image->getClientOriginalExtension();
 
-            // Store the image in storage/app/public/public/instructor_profile folder
-            $storedPath = $image->storeAs('public/', $imageName);
+            // Store the image in storage/app/public/instructor_profile folder
+            $storedPath = $image->storeAs('public', $imageName);
 
             if ($storedPath) {
                 // Remove 'public/' from the path for database storage
