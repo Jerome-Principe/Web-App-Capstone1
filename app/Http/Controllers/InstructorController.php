@@ -124,7 +124,11 @@ class InstructorController extends Controller
             'rates' => $request->input('rates'),
         ]);
 
-
+        // Log successful creation
+        \Log::info('Instructor created successfully', [
+            'instructor_id' => $instructor->id,
+            'profile_image' => $profileImagePath
+        ]);
 
         return redirect()->back()->with('success', 'Instructor created successfully!');
     }
