@@ -75,7 +75,7 @@ class InstructorController extends Controller
                 return redirect()->back()->with('error', 'Invalid image file. Please try again.');
             }
 
-            $imageName = 'instructor_profile_' . time() . '.' . $image->getClientOriginalExtension();
+            $imageName = 'instructor_profile/' . time() . '.' . $image->getClientOriginalExtension();
 
             // Log upload attempt
             \Log::info('Attempting to upload image: ' . $imageName);
@@ -84,14 +84,14 @@ class InstructorController extends Controller
 
             try {
                 // Store the image in storage/app/public/instructor_profile folder
-                $storedPath = $image->storeAs('public/instructor_profile', $imageName);
+                $storedPath = $image->storeAs('public/', $imageName);
 
                 if ($storedPath) {
                     // Remove 'public/' from the path for database storage
                     $profileImagePath = str_replace('public/', '', $storedPath);
 
                     // Verify the file was actually created
-                    $fullPath = storage_path('https://limitlessfitnesstudio.com/storage/app/public/public/instructor_profile/' . $imageName);
+                    $fullPath = storage_path('app/public/public/public/' . $imageName);
                     if (file_exists($fullPath)) {
                         \Log::info('Image successfully stored at: ' . $storedPath);
                         \Log::info('Database path: ' . $profileImagePath);
