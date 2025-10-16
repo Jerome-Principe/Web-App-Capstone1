@@ -99,11 +99,11 @@ class InstructorController extends Controller
                         \Log::info('File size on disk: ' . filesize($fullPath) . ' bytes');
                     } else {
                         \Log::error('Image was not found on disk after upload: ' . $fullPath);
-                        $profileImagePath = null;
+                        return redirect()->back()->with('error', 'Failed to upload image. Please try again.');
                     }
                 } else {
                     \Log::error('Failed to store image - storeAs returned false');
-                    $profileImagePath = null;
+                    return redirect()->back()->with('error', 'Failed to upload image. Please try again.');
                 }
             } catch (\Exception $e) {
                 \Log::error('Exception during image upload: ' . $e->getMessage());
