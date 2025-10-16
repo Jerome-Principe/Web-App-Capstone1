@@ -84,15 +84,14 @@ class InstructorController extends Controller
 
             try {
                 // Store the image in storage/app/public/instructor_profile folder
-                $storedPath = $image->storeAs('public/instructor_profile', $imageName, 'public');
-
+                $storedPath = $image->storeAs('public/instructor_profile', $imageName);
 
                 if ($storedPath) {
                     // Remove 'public/' from the path for database storage
                     $profileImagePath = str_replace('public/', '', $storedPath);
 
                     // Verify the file was actually created
-                    $fullPath = storage_path('app/public/instructor_profile/' . $imageName);
+                    $fullPath = storage_path('https://limitlessfitnesstudio.com/storage/app/public/public/instructor_profile/' . $imageName);
                     if (file_exists($fullPath)) {
                         \Log::info('Image successfully stored at: ' . $storedPath);
                         \Log::info('Database path: ' . $profileImagePath);
