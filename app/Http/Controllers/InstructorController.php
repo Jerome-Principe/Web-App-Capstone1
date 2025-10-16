@@ -47,7 +47,11 @@ class InstructorController extends Controller
         // Debug: Log the incoming request
         \Log::info('Instructor store request received', [
             'data' => $request->except('profile_image'),
-            'has_file' => $request->hasFile('profile_image')
+            'has_file' => $request->hasFile('profile_image'),
+            'all_files' => $request->allFiles(),
+            'request_size' => $request->header('Content-Length'),
+            'max_file_size' => ini_get('upload_max_filesize'),
+            'post_max_size' => ini_get('post_max_size')
         ]);
 
         // Validate incoming request
@@ -62,8 +66,6 @@ class InstructorController extends Controller
         ]);
 
         $profileImagePath = null;
-
-
 
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
@@ -109,6 +111,8 @@ class InstructorController extends Controller
                 \Log::error('Exception during image upload: ' . $e->getMessage());
                 return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
             }
+        } else {
+            \Log::info('No profile image provided - creating instructor without image');
         }
 
 
