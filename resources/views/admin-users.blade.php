@@ -402,9 +402,45 @@
             display: table-cell;
         }
 
+        /* Ensure all table headers are centered */
+        .table thead th {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        /* Specific centering for all header columns */
+        .table th[scope="col"] {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        /* Override any conflicting styles for table headers */
+        .table thead tr th {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        /* Ensure specific header columns are centered */
+        .table thead th:nth-child(1),
+        .table thead th:nth-child(2),
+        .table thead th:nth-child(3),
+        .table thead th:nth-child(4),
+        .table thead th:nth-child(5),
+        .table thead th:nth-child(6),
+        .table thead th:nth-child(7),
+        .table thead th:nth-child(8) {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
         /* Ensure all content inside cells is centered */
         .table td *,
         .table th * {
+            text-align: center !important;
+        }
+
+        /* Override any content alignment inside headers */
+        .table thead th * {
             text-align: center !important;
         }
 
