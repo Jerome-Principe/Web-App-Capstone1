@@ -137,7 +137,7 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Amount</th>
@@ -146,7 +146,7 @@
         <tbody>
             @forelse($walkins as $index => $walkin)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <!-- <td>{{ $index + 1 }}</td> -->
                     <td>{{ $walkin->lastname }}</td>
                     <td>{{ $walkin->firstname }}</td>
                     <td class="amount">{{ number_format($walkin->amount, 2) }}</td>

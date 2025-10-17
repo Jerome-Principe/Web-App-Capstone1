@@ -180,7 +180,7 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
@@ -193,7 +193,7 @@
         <tbody>
             @foreach($memberships as $index => $membership)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <!-- <td>{{ $index + 1 }}</td> -->
                     <td>{{ $membership->first_name }}</td>
                     <td>{{ $membership->last_name }}</td>
                     <td>{{ $membership->email }}</td>

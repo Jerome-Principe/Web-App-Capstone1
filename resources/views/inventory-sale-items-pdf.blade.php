@@ -151,7 +151,7 @@
     <table>
         <thead>
             <tr>
-                <th>#</th>
+                <!-- <th>#</th> -->
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
@@ -166,7 +166,7 @@
                     $Total += $total;
                 @endphp
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <!-- <td>{{ $index + 1 }}</td> -->
                     <td>{{ $item->item_name }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td>{{ number_format($item->price, 2) }}</td>

@@ -137,7 +137,7 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>Date</th>
                 <th>Category</th>
                 <th>Description Type</th>
@@ -148,7 +148,7 @@
         <tbody>
             @forelse($expenses as $index => $expense)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <!-- <td>{{ $index + 1 }}</td> -->
                     <td>{{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}</td>
                     <td>{{ $expense->category ?? 'N/A' }}</td>
                     <td>{{ $expense->expense_description }}</td>
