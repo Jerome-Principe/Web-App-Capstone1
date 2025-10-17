@@ -254,7 +254,7 @@
 
                 <!-- Remember Me -->
                 <div class="d-flex align-items-center mb-3">
-                    <input type="checkbox" name="remember" id="remember" class="me-2">
+                    <input type="checkbox" name="remember" id="remember" class="me-2" {{ old('remember') ? 'checked' : '' }}>
                     <label for="remember" class="mb-0">Remember me</label>
                 </div>
 
@@ -305,6 +305,39 @@
                 toggleIcon?.classList.add('fa-eye');
             }
         }
+
+        // Remember Me functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const rememberCheckbox = document.getElementById('remember');
+            const emailField = document.getElementById('email');
+
+            // Load saved email if remember me was previously checked
+            const savedEmail = localStorage.getItem('rememberedEmail');
+            if (savedEmail && rememberCheckbox) {
+                emailField.value = savedEmail;
+                rememberCheckbox.checked = true;
+            }
+
+            // Save email when remember me is checked
+            if (rememberCheckbox) {
+                rememberCheckbox.addEventListener('change', function () {
+                    if (this.checked && emailField.value) {
+                        localStorage.setItem('rememberedEmail', emailField.value);
+                    } else {
+                        localStorage.removeItem('rememberedEmail');
+                    }
+                });
+            }
+
+            // Save email when typing if remember me is checked
+            if (emailField) {
+                emailField.addEventListener('input', function () {
+                    if (rememberCheckbox?.checked) {
+                        localStorage.setItem('rememberedEmail', this.value);
+                    }
+                });
+            }
+        });
     </script>
 
 </body>
