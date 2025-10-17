@@ -166,9 +166,7 @@
                                                                 {{ substr($user->name, 0, 2) }}
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <h6 class="mb-0">{{ $user->name }}</h6>
-                                                        </div>
+                                                        <h6 class="mb-0">{{ $user->name }}</h6>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -328,6 +326,35 @@
             justify-content: center;
             font-weight: 600;
             font-size: 14px;
+        }
+
+        /* Fix avatar alignment with username text */
+        .table td .d-flex.align-items-center {
+            align-items: center !important;
+            min-height: 40px;
+            /* Ensure minimum height for proper alignment */
+        }
+
+        .table td .d-flex.align-items-center h6 {
+            margin: 0 !important;
+            line-height: 1.2 !important;
+            display: flex;
+            align-items: center;
+            height: 40px;
+            /* Match avatar height */
+            font-size: 14px;
+            /* Consistent font size */
+            font-weight: 500;
+            /* Slightly lighter weight for better visual balance */
+        }
+
+        /* Ensure avatar container is properly aligned */
+        .table td .avatar-sm {
+            flex-shrink: 0;
+            /* Prevent avatar from shrinking */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .table td {
