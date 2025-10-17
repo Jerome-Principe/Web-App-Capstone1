@@ -89,6 +89,42 @@
             line-height: 1.5;
         }
 
+        /* Countdown Timer Styles */
+        .countdown-container {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px auto;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            display: none;
+        }
+
+        .countdown-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .countdown-timer {
+            font-size: 36px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+
+        .countdown-message {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .rfid-disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
         .input-box {
             margin: 20px auto;
             text-align: center;
@@ -263,6 +299,12 @@
     </style>
 
     <script>
+        // Global variables for countdown functionality
+        let countdownInterval = null;
+        let lastScannedRFID = null;
+        let cooldownEndTime = null;
+        const COOLDOWN_DURATION = 60; // 60 seconds cooldown
+
         function updateClock() {
             const now = new Date();
             const time = now.toLocaleTimeString();
@@ -271,11 +313,56 @@
             document.getElementById('date').innerText = date;
         }
 
+        function startCountdown(remainingSeconds) {
+            const countdownContainer = document.getElementById('countdown-container');
+            const countdownTimer = document.getElementById('countdown-timer');
+            const rfidInput = document.getElementById('rfid-scan');
+            const submitButton = document.querySelector('button[type="submit"]');
+            
+            // Show countdown container
+            countdownContainer.style.display = 'block';
+            
+            // Disable RFID input and submit button
+            rfidInput.classList.add('rfid-disabled');
+            submitButton.disabled = true;
+            
+            // Set cooldown end time
+            cooldownEndTime = new Date().getTime() + (remainingSeconds * 1000);
+            
+            // Start countdown
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const timeLeft = Math.max(0, Math.ceil((cooldownEndTime - now) / 1000));
+                
+                countdownTimer.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownContainer.style.display = 'none';
+                    rfidInput.classList.remove('rfid-disabled');
+                    submitButton.disabled = false;
+                    lastScannedRFID = null;
+                    cooldownEndTime = null;
+                }
+            }, 1000);
+        }
+
+        function checkRFIDCooldown(rfidValue) {
+            // If it's the same RFID and we're still in cooldown
+            if (lastScannedRFID === rfidValue && cooldownEndTime && new Date().getTime() < cooldownEndTime) {
+                const remainingSeconds = Math.ceil((cooldownEndTime - new Date().getTime()) / 1000);
+                startCountdown(remainingSeconds);
+                return true; // Block the submission
+            }
+            return false; // Allow submission
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             setInterval(updateClock, 1000);
 
             const rfidInput = document.getElementById("rfid-scan");
             const userIdInput = document.getElementById("user-id-input");
+            const rfidForm = document.getElementById("rfid-form");
 
             // Automatically focus on RFID input box when any key is pressed
             document.addEventListener("keydown", function (event) {
@@ -286,7 +373,32 @@
 
             rfidInput.addEventListener("input", function () {
                 if (rfidInput.value.length >= 10) {
-                    document.getElementById("rfid-form").submit();
+                    // Check for cooldown before submitting
+                    if (checkRFIDCooldown(rfidInput.value)) {
+                        rfidInput.value = ''; // Clear the input
+                        return;
+                    }
+                    
+                    // Store the scanned RFID and start cooldown
+                    lastScannedRFID = rfidInput.value;
+                    startCountdown(COOLDOWN_DURATION);
+                    
+                    // Submit the form
+                    rfidForm.submit();
+                }
+            });
+
+            // Handle form submission
+            rfidForm.addEventListener("submit", function(event) {
+                const rfidValue = rfidInput.value.trim();
+                
+                // Only check cooldown for RFID scans (not manual username selection)
+                if (rfidValue && rfidValue.length >= 10) {
+                    if (checkRFIDCooldown(rfidValue)) {
+                        event.preventDefault();
+                        rfidInput.value = ''; // Clear the input
+                        return false;
+                    }
                 }
             });
 
@@ -338,6 +450,13 @@
             <div class="clock" id="clock">00:00:00 AM</div>
             <div id="date" class="date-display">00/00/00</div>
             <p class="instruction-text">Place your RFID card on the reader or enter your user ID to record your time in and time out</p>
+            
+            <!-- Countdown Timer -->
+            <div class="countdown-container" id="countdown-container">
+                <div class="countdown-title">⏰ RFID Cooldown Active</div>
+                <div class="countdown-timer" id="countdown-timer">60</div>
+                <div class="countdown-message">Please wait before scanning the same RFID again</div>
+            </div>
         </div>
 
         <!-- Input Box -->

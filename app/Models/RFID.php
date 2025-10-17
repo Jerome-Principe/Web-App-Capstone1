@@ -10,5 +10,5 @@ class RFID extends Model
     use HasFactory;
 
     protected $table = 'rfids';
-    protected $fillable = ['username', 'rfid', 'time_in', 'date_logged'];
+    protected $fillable = ['username', 'rfid', 'time_in', 'date_logged', 'last_scanned_at'];
 }

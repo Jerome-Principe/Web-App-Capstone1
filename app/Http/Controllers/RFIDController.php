@@ -41,6 +41,18 @@ class RFIDController extends Controller
             $existingRfid = RFID::where('rfid', $rfid)->first();
 
             if ($existingRfid) {
+                // Check for cooldown period (60 seconds = 1 minute)
+                $cooldownPeriod = 60; // seconds
+                $lastScannedAt = $existingRfid->last_scanned_at;
+
+                if ($lastScannedAt && Carbon::now()->diffInSeconds($lastScannedAt) < $cooldownPeriod) {
+                    $remainingSeconds = $cooldownPeriod - Carbon::now()->diffInSeconds($lastScannedAt);
+                    return redirect()->back()->with('error', "Please wait {$remainingSeconds} seconds before scanning again. Same RFID cooldown active.");
+                }
+
+                // Update last_scanned_at timestamp
+                $existingRfid->update(['last_scanned_at' => Carbon::now()]);
+
                 // If RFID exists, mark as time-out and delete the existing entry
                 AttendanceRecord::create([
                     'username' => $existingRfid->username,
@@ -62,6 +74,7 @@ class RFIDController extends Controller
                 'rfid' => $rfid,
                 'time_in' => Carbon::now('Asia/Manila'),
                 'date_logged' => Carbon::now('Asia/Manila')->toDateString(),
+                'last_scanned_at' => Carbon::now(),
             ]);
 
             return redirect()->route('rfid.index')->with('success', 'Time In Successfully!');
@@ -84,6 +97,18 @@ class RFIDController extends Controller
             $existingRfid = RFID::where('rfid', $serialNumber)->first();
 
             if ($existingRfid) {
+                // Check for cooldown period (60 seconds = 1 minute)
+                $cooldownPeriod = 60; // seconds
+                $lastScannedAt = $existingRfid->last_scanned_at;
+
+                if ($lastScannedAt && Carbon::now()->diffInSeconds($lastScannedAt) < $cooldownPeriod) {
+                    $remainingSeconds = $cooldownPeriod - Carbon::now()->diffInSeconds($lastScannedAt);
+                    return redirect()->back()->with('error', "Please wait {$remainingSeconds} seconds before scanning again. Same RFID cooldown active.");
+                }
+
+                // Update last_scanned_at timestamp
+                $existingRfid->update(['last_scanned_at' => Carbon::now()]);
+
                 // Save to attendance record with time-out
                 AttendanceRecord::create([
                     'username' => $existingRfid->username,
@@ -105,6 +130,7 @@ class RFIDController extends Controller
                 'rfid' => $serialNumber,
                 'time_in' => Carbon::now('Asia/Manila'),
                 'date_logged' => Carbon::now('Asia/Manila')->toDateString(),
+                'last_scanned_at' => Carbon::now(),
             ]);
 
             return redirect()->route('rfid.index')->with('success', 'Time In Successfully!');
