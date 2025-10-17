@@ -25,10 +25,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        \Log::info('Login controller store method called', [
+            'email' => $request->email,
+            'remember' => $request->boolean('remember')
+        ]);
+
         $request->authenticate();
 
+        \Log::info('Authentication successful, regenerating session');
         $request->session()->regenerate();
 
+        \Log::info('Redirecting to intended route', ['intended' => RouteServiceProvider::HOME]);
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

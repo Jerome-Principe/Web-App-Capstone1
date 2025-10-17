@@ -5,6 +5,7 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -45,19 +46,33 @@ class LoginRequest extends FormRequest
         $credentials = $this->only('email', 'password');
         $remember = $this->boolean('remember');
 
+        // Debug logging
+        \Log::info('Login attempt', [
+            'email' => $credentials['email'],
+            'remember' => $remember,
+            'ip' => $this->ip()
+        ]);
+
         // Try to authenticate with User model first (for admin/cashier/instructor)
         if (Auth::guard('web')->attempt($credentials, $remember)) {
+            \Log::info('User authentication successful', ['email' => $credentials['email']]);
             RateLimiter::clear($this->throttleKey());
             return;
         }
 
         // If User authentication fails, try PendingMembership model (for gym members)
-        if (Auth::guard('pending_memberships')->attempt($credentials, $remember)) {
+        // First check if user exists in pending_memberships table
+        $pendingUser = \App\Models\PendingMembership::where('email', $credentials['email'])->first();
+        if ($pendingUser && Hash::check($credentials['password'], $pendingUser->password)) {
+            \Log::info('PendingMembership authentication successful', ['email' => $credentials['email']]);
+            // Manually log in the user
+            Auth::guard('pending_memberships')->login($pendingUser, $remember);
             RateLimiter::clear($this->throttleKey());
             return;
         }
 
         // If both fail, hit rate limiter and throw validation exception
+        \Log::warning('Authentication failed for both guards', ['email' => $credentials['email']]);
         RateLimiter::hit($this->throttleKey());
 
         throw ValidationException::withMessages([

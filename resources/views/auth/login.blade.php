@@ -220,8 +220,21 @@
                 </div>
             @endif
 
+            <!-- Error Messages -->
+            @if($errors->any())
+                <div class="alert-dark-danger mb-3">
+                    <i class="fa fa-exclamation-circle"></i>
+                    <strong>Login failed:</strong>
+                    <ul class="mb-0 mt-2">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <!-- Laravel Login Form -->
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login') }}" id="loginForm">
                 @csrf <!-- Include CSRF token for form security -->
 
                 <!-- Email Field -->
@@ -310,6 +323,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const rememberCheckbox = document.getElementById('remember');
             const emailField = document.getElementById('email');
+            const loginForm = document.getElementById('loginForm');
 
             // Load saved email if remember me was previously checked
             const savedEmail = localStorage.getItem('rememberedEmail');
@@ -335,6 +349,17 @@
                     if (rememberCheckbox?.checked) {
                         localStorage.setItem('rememberedEmail', this.value);
                     }
+                });
+            }
+
+            // Debug form submission
+            if (loginForm) {
+                loginForm.addEventListener('submit', function (e) {
+                    console.log('Form submitted');
+                    console.log('Email:', emailField.value);
+                    console.log('Remember me:', rememberCheckbox.checked);
+
+                    // Don't prevent default, let it submit normally
                 });
             }
         });
