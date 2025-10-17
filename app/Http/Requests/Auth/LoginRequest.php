@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
-            'remember' => ['boolean'],
+            'remember' => ['nullable', 'in:on,1,true,false'],
         ];
     }
 
@@ -44,18 +44,10 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $credentials = $this->only('email', 'password');
-        $remember = $this->boolean('remember');
-
-        // Debug logging
-        \Log::info('Login attempt', [
-            'email' => $credentials['email'],
-            'remember' => $remember,
-            'ip' => $this->ip()
-        ]);
+        $remember = $this->has('remember') && in_array($this->input('remember'), ['on', '1', 'true']);
 
         // Try to authenticate with User model first (for admin/cashier/instructor)
         if (Auth::guard('web')->attempt($credentials, $remember)) {
-            \Log::info('User authentication successful', ['email' => $credentials['email']]);
             RateLimiter::clear($this->throttleKey());
             return;
         }
@@ -64,7 +56,6 @@ class LoginRequest extends FormRequest
         // First check if user exists in pending_memberships table
         $pendingUser = \App\Models\PendingMembership::where('email', $credentials['email'])->first();
         if ($pendingUser && Hash::check($credentials['password'], $pendingUser->password)) {
-            \Log::info('PendingMembership authentication successful', ['email' => $credentials['email']]);
             // Manually log in the user
             Auth::guard('pending_memberships')->login($pendingUser, $remember);
             RateLimiter::clear($this->throttleKey());
@@ -72,7 +63,6 @@ class LoginRequest extends FormRequest
         }
 
         // If both fail, hit rate limiter and throw validation exception
-        \Log::warning('Authentication failed for both guards', ['email' => $credentials['email']]);
         RateLimiter::hit($this->throttleKey());
 
         throw ValidationException::withMessages([
