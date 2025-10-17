@@ -159,14 +159,14 @@
                                                 <td>
                                                     <span class="badge badge-secondary">#{{ $user->id }}</span>
                                                 </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm mr-3">
+                                                <td style="text-align: left; vertical-align: middle;">
+                                                    <div class="d-flex align-items-center" style="align-items: center;">
+                                                        <div class="avatar-sm" style="margin-right: 12px;">
                                                             <div class="avatar-title rounded-circle bg-primary text-white">
                                                                 {{ substr($user->name, 0, 2) }}
                                                             </div>
                                                         </div>
-                                                        <h6 class="mb-0">{{ $user->name }}</h6>
+                                                        <span class="username-text">{{ $user->name }}</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -328,33 +328,57 @@
             font-size: 14px;
         }
 
-        /* Fix avatar alignment with username text */
+        /* Fix avatar alignment with username text - Comprehensive Solution */
         .table td .d-flex.align-items-center {
             align-items: center !important;
-            min-height: 40px;
-            /* Ensure minimum height for proper alignment */
+            justify-content: flex-start !important;
+            min-height: 50px;
+            padding: 5px 0;
         }
 
         .table td .d-flex.align-items-center h6 {
             margin: 0 !important;
-            line-height: 1.2 !important;
-            display: flex;
-            align-items: center;
-            height: 40px;
-            /* Match avatar height */
-            font-size: 14px;
-            /* Consistent font size */
-            font-weight: 500;
-            /* Slightly lighter weight for better visual balance */
+            padding: 0 !important;
+            line-height: 1 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            height: auto !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            vertical-align: middle !important;
         }
 
-        /* Ensure avatar container is properly aligned */
+        /* Ensure avatar container is perfectly aligned */
         .table td .avatar-sm {
-            flex-shrink: 0;
-            /* Prevent avatar from shrinking */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-shrink: 0 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            vertical-align: middle !important;
+            margin-right: 12px !important;
+        }
+
+
+        /* Specific fix for username column */
+        .table td:nth-child(3) {
+            text-align: left !important;
+            vertical-align: middle !important;
+        }
+
+        .table td:nth-child(3) .d-flex {
+            justify-content: flex-start !important;
+            align-items: center !important;
+        }
+
+        /* Username text styling */
+        .username-text {
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            line-height: 1 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            vertical-align: middle !important;
+            display: inline-block !important;
         }
 
         .table td {
