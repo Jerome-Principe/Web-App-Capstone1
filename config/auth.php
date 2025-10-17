@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'pending_memberships' => [
+            'driver' => 'session',
+            'provider' => 'pending_memberships',
+        ],
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'pending_memberships',

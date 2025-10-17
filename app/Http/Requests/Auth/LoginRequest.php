@@ -42,15 +42,27 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        $credentials = $this->only('email', 'password');
+        $remember = $this->boolean('remember');
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
+        // Try to authenticate with User model first (for admin/cashier/instructor)
+        if (Auth::guard('web')->attempt($credentials, $remember)) {
+            RateLimiter::clear($this->throttleKey());
+            return;
         }
 
-        RateLimiter::clear($this->throttleKey());
+        // If User authentication fails, try PendingMembership model (for gym members)
+        if (Auth::guard('pending_memberships')->attempt($credentials, $remember)) {
+            RateLimiter::clear($this->throttleKey());
+            return;
+        }
+
+        // If both fail, hit rate limiter and throw validation exception
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
     }
 
     /**

@@ -86,4 +86,24 @@ class AuthenticationTest extends TestCase
         // Check that remember token was not set
         $this->assertNull($user->fresh()->remember_token);
     }
+
+    public function test_pending_memberships_can_authenticate_with_remember_me(): void
+    {
+        $pendingMembership = \App\Models\PendingMembership::factory()->create([
+            'password' => bcrypt('password'),
+            'status' => 'Approved'
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => $pendingMembership->email,
+            'password' => 'password',
+            'remember' => true,
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(RouteServiceProvider::HOME);
+
+        // Check that remember token was set
+        $this->assertNotNull($pendingMembership->fresh()->remember_token);
+    }
 }
