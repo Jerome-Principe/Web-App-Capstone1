@@ -368,7 +368,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <!-- <th>ID</th> -->
                                 <th>Username</th>
                                 <th>RFID Number</th>
                                 <th>Time In</th>
@@ -378,9 +378,9 @@
                         <tbody>
                             @foreach ($timeIns as $timein)
                                 <tr>
-                                    <td>
+                                    <!-- <td>
                                         <span class="badge bg-primary">{{ $timein->id }}</span>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <strong>{{ $timein->username }}</strong>
                                     </td>
