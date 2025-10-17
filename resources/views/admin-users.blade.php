@@ -552,6 +552,14 @@
         .table th {
             background-color: #f8f9fa;
             border-bottom: 1px solid #e1e5e9;
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        /* Force center all table headers with maximum specificity */
+        table.table thead tr th[scope="col"] {
+            text-align: center !important;
+            vertical-align: middle !important;
         }
 
         .btn-group .btn {
