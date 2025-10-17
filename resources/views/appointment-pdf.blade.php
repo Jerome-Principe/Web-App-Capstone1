@@ -179,7 +179,7 @@
     <table>
         <thead>
             <tr>
-                <!-- <th>ID</th> -->
+                <th>ID</th>
                 <th>User</th>
                 <th>Instructor</th>
                 <th>Date</th>
@@ -193,7 +193,7 @@
         <tbody>
             @forelse($appointments as $index => $appointment)
                 <tr>
-                    <!-- <td>{{ $appointment->id }}</td> -->
+                    <td>{{ $appointment->id }}</td>
                     <td>{{ $appointment->pendingMembership->name ?? 'N/A' }}</td>
                     <td>{{ $appointment->instructor->first_name ?? '' }} {{ $appointment->instructor->last_name ?? '' }}
                     </td>

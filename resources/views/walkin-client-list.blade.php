@@ -368,7 +368,9 @@
                                 <!-- Export PDF by Date -->
                                 <form method="GET" action="{{ route('walkin.exportPdfByDate') }}">
                                     <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
-                                    <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                                    <button type="submit" class="btn btn-success ms-2">
+                                        <i class="fa fa-file-pdf"></i> Export PDF
+                                    </button>
                                 </form>
                             </div>
 

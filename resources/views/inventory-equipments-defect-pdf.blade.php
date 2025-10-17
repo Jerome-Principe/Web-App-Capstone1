@@ -146,7 +146,7 @@
     <table>
         <thead>
             <tr>
-                <!-- <th>#</th> -->
+                <th>#</th>
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Defect</th>
@@ -155,7 +155,7 @@
         <tbody>
             @foreach($equipmentDefects as $equipmentDefect)
                 <tr>
-                    <!-- <td>{{ $equipmentDefect->id }}</td> -->
+                    <td>{{ $equipmentDefect->id }}</td>
                     <td>{{ $equipmentDefect->equipment->item_name}}</td>
                     <td>{{ $equipmentDefect->quantity }}</td>
                     <td>{{ $equipmentDefect->defect }}</td>
