@@ -606,6 +606,7 @@
                                         @if($currentCategory == 'Monthly expenses')
                                             <option value="Rent" {{ $currentDescription == 'Rent' ? 'selected' : '' }}>Rent</option>
                                             <option value="Staff salary" {{ $currentDescription == 'Staff salary' ? 'selected' : '' }}>Staff salary</option>
+                                            <option value="Purchased item" {{ $currentDescription == 'Purchased item' ? 'selected' : '' }}>Purchased item</option>
                                         @elseif($currentCategory == 'Incident expenses')
                                             <option value="Equipment repair" {{ $currentDescription == 'Equipment repair' ? 'selected' : '' }}>Equipment repair</option>
                                             <option value="Machine repair" {{ $currentDescription == 'Machine repair' ? 'selected' : '' }}>Machine repair</option>
@@ -822,7 +823,7 @@
 
             // Define description types for each category
             const descriptionTypes = {
-                'Monthly expenses': ['Rent', 'Staff salary'],
+                'Monthly expenses': ['Rent', 'Staff salary', 'Purchased item'],
                 'Incident expenses': ['Equipment repair', 'Machine repair', 'Facility repair', 'Staff Replacement', 'Software and Technology'],
                 'Utility expenses': ['Electricity bill', 'Water Bill', 'Gas', 'Internet provider']
             };
