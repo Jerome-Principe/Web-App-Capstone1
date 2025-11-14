@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\StockItem;
+use App\Models\Expense;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Services\CacheService;
@@ -53,6 +54,17 @@ class StockItemController extends Controller
                 'date' => $request->date,
             ]);
         }
+
+        // Automatically create an expense record for the stock purchase
+        $amount = $request->quantity * $request->price;
+
+        Expense::create([
+            'date' => $request->date,
+            'category' => 'Monthly expenses',
+            'expense_description' => 'Purchased item',
+            'amount' => $amount,
+            'payment_method' => 'Cash',
+        ]);
 
         return redirect()->route('stock-items.index')->with('success', 'Stock item added successfully!');
     }
