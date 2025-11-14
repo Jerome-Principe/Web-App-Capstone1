@@ -61,7 +61,7 @@ class StockItemController extends Controller
         Expense::create([
             'date' => $request->date,
             'category' => 'Monthly expenses',
-            'expense_description' => 'Purchased item',
+            'expense_description' => 'Purchased item (' . $request->item_name . ')',
             'amount' => $amount,
             'payment_method' => 'Cash',
         ]);
