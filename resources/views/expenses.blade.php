@@ -292,6 +292,34 @@
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
         }
+
+        /* Category Filter Button Styles */
+        .btn-group .btn.active {
+            background-color: #007bff !important;
+            border-color: #007bff !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+            z-index: 1;
+        }
+
+        .btn-group .btn.btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #ffffff;
+            border-color: #007bff;
+        }
+
+        .btn-group .btn.btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #ffffff;
+            border-color: #6c757d;
+        }
+
+        .btn-group .btn.active.btn-secondary {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+            color: #ffffff !important;
+        }
     </style>
 </head>
 @extends('layouts.master')
@@ -371,19 +399,23 @@
                                     <label class="form-label mb-0 me-2">Filter by Category:</label>
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('expenses.filterByCategory', ['category' => 'Monthly expenses', 'date' => request('date')]) }}" 
-                                           class="btn {{ request('category') == 'Monthly expenses' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                           class="btn {{ request('category') == 'Monthly expenses' ? 'btn-primary active' : 'btn-outline-primary' }}"
+                                           style="{{ request('category') == 'Monthly expenses' ? 'font-weight: 600;' : '' }}">
                                             Monthly expenses
                                         </a>
                                         <a href="{{ route('expenses.filterByCategory', ['category' => 'Incident expenses', 'date' => request('date')]) }}" 
-                                           class="btn {{ request('category') == 'Incident expenses' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                           class="btn {{ request('category') == 'Incident expenses' ? 'btn-primary active' : 'btn-outline-primary' }}"
+                                           style="{{ request('category') == 'Incident expenses' ? 'font-weight: 600;' : '' }}">
                                             Incident expenses
                                         </a>
                                         <a href="{{ route('expenses.filterByCategory', ['category' => 'Utility expenses', 'date' => request('date')]) }}" 
-                                           class="btn {{ request('category') == 'Utility expenses' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                           class="btn {{ request('category') == 'Utility expenses' ? 'btn-primary active' : 'btn-outline-primary' }}"
+                                           style="{{ request('category') == 'Utility expenses' ? 'font-weight: 600;' : '' }}">
                                             Utility expenses
                                         </a>
                                         <a href="{{ route('expenses.index', ['date' => request('date')]) }}" 
-                                           class="btn {{ !request('category') ? 'btn-secondary' : 'btn-outline-secondary' }}">
+                                           class="btn {{ !request('category') ? 'btn-secondary active' : 'btn-outline-secondary' }}"
+                                           style="{{ !request('category') ? 'font-weight: 600;' : '' }}">
                                             All
                                         </a>
                                     </div>
