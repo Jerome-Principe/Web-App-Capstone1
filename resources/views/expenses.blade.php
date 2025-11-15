@@ -354,19 +354,46 @@
                             </button>
                         </form>
 
-                        <!-- Date Filter Form -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <form id="date-filter-form" method="GET" action="{{ route('expenses.filterByDate') }}">
-                                <label for="date" class="form-label">Select Date:</label>
-                                <input type="date" name="date" id="date" class="form-control d-inline-block"
-                                    style="width: 200px;" required>
-                                <button type="submit" class="btn btn-primary ms-2">Filter</button>
-                            </form>
+                        <!-- Date Filter Form and Category Filter -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <!-- Date Filter Form -->
+                                <form id="date-filter-form" method="GET" action="{{ route('expenses.filterByDate') }}" class="d-flex align-items-center">
+                                    <label for="date" class="form-label mb-0 me-2">Select Date:</label>
+                                    <input type="date" name="date" id="date" class="form-control d-inline-block"
+                                        style="width: 200px;" value="{{ request('date') }}">
+                                    <input type="hidden" name="category" id="date-filter-category" value="{{ request('category') }}">
+                                    <button type="submit" class="btn btn-primary ms-2">Filter</button>
+                                </form>
+
+                                <!-- Category Filter Buttons -->
+                                <div class="d-flex align-items-center">
+                                    <label class="form-label mb-0 me-2">Filter by Category:</label>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ route('expenses.filterByCategory', ['category' => 'Monthly expenses', 'date' => request('date')]) }}" 
+                                           class="btn {{ request('category') == 'Monthly expenses' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                            Monthly expenses
+                                        </a>
+                                        <a href="{{ route('expenses.filterByCategory', ['category' => 'Incident expenses', 'date' => request('date')]) }}" 
+                                           class="btn {{ request('category') == 'Incident expenses' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                            Incident expenses
+                                        </a>
+                                        <a href="{{ route('expenses.filterByCategory', ['category' => 'Utility expenses', 'date' => request('date')]) }}" 
+                                           class="btn {{ request('category') == 'Utility expenses' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                            Utility expenses
+                                        </a>
+                                        <a href="{{ route('expenses.index', ['date' => request('date')]) }}" 
+                                           class="btn {{ !request('category') ? 'btn-secondary' : 'btn-outline-secondary' }}">
+                                            All
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Export PDF by Date -->
-                            <form method="GET" action="{{ route('expenses.exportPdfByDate') }}">
+                            <form method="GET" action="{{ route('expenses.exportPdfByDate') }}" class="d-flex align-items-center">
                                 <input type="hidden" name="date" id="pdf-date" value="{{ request('date') }}">
-                                <button type="submit" class="btn btn-success ms-2">Export PDF</button>
+                                <button type="submit" class="btn btn-success">Export PDF</button>
                             </form>
                         </div>
 
@@ -435,6 +462,13 @@
                         </div>
                         <div class="summary-divider"></div>
                         <div class="summary-item">
+                            <div class="summary-label">Category</div>
+                            <div class="summary-value">
+                                {{ $category ?? 'All Categories' }}
+                            </div>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-item">
                             <div class="summary-label">Total Expenses</div>
                             <div class="summary-value">{{ $expenses->total() }}</div>
                         </div>
@@ -449,17 +483,17 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-4 mb-4">
                         <li class="page-item {{ $expenses->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $expenses->previousPageUrl() }}" tabindex="-1">Previous</a>
+                            <a class="page-link" href="{{ $expenses->appends(request()->query())->previousPageUrl() }}" tabindex="-1">Previous</a>
                         </li>
 
                         @foreach(range(1, $expenses->lastPage()) as $page)
                             <li class="page-item {{ $page == $expenses->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $expenses->url($page) }}">{{ $page }}</a>
+                                <a class="page-link" href="{{ $expenses->appends(request()->query())->url($page) }}">{{ $page }}</a>
                             </li>
                         @endforeach
 
                         <li class="page-item {{ !$expenses->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $expenses->nextPageUrl() }}">Next</a>
+                            <a class="page-link" href="{{ $expenses->appends(request()->query())->nextPageUrl() }}">Next</a>
                         </li>
                     </ul>
                 </nav>
@@ -716,13 +750,29 @@
             updateSelectionCount();
         });
 
+        // Update category filter links when date changes
         document.getElementById('date').addEventListener('change', function () {
-            document.getElementById('date-filter-form').submit();
-        });
-
-        document.getElementById('date').addEventListener('change', function () {
+            const selectedDate = this.value;
             const pdfDateField = document.getElementById('pdf-date');
-            pdfDateField.value = this.value;
+            if (pdfDateField) {
+                pdfDateField.value = selectedDate;
+            }
+            
+            // Update category filter button URLs to include the selected date
+            const categoryButtons = document.querySelectorAll('.btn-group a[href*="filterByCategory"]');
+            categoryButtons.forEach(function(button) {
+                const url = new URL(button.href);
+                url.searchParams.set('date', selectedDate);
+                button.href = url.toString();
+            });
+            
+            // Update "All" button URL
+            const allButton = document.querySelector('.btn-group a[href*="expenses.index"]');
+            if (allButton) {
+                const url = new URL(allButton.href, window.location.origin);
+                url.searchParams.set('date', selectedDate);
+                allButton.href = url.toString();
+            }
         });
 
         // Modal functionality

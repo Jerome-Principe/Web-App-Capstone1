@@ -419,6 +419,7 @@ Route::prefix('expenses')->middleware(['auth', 'role:Admin,Cashier'])->name('exp
         Route::post('/restore/{id}', 'restore')->name('restore');
         Route::delete('/force-delete/{id}', 'forceDelete')->name('forceDelete');
         Route::get('/filter', 'filterByDate')->name('filterByDate');
+        Route::get('/filter-category', 'filterByCategory')->name('filterByCategory');
         Route::get('/export-pdf', 'exportPdfByDate')->name('exportPdfByDate');
     });
 });

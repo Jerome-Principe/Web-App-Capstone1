@@ -9,14 +9,28 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class ExpenseController extends Controller
 {
     // Display a paginated list of expenses with the total amount
-    public function index()
+    public function index(Request $request)
     {
-        // Order expenses by creation date, showing newest first
-        $expenses = Expense::orderBy('id', 'desc')->paginate(10); // 10 per page
-        $totalAmount = Expense::sum('amount'); // Calculate total amount of expenses
-        $date = null; // Set default date to null for index view
+        $date = $request->input('date'); // Get the selected date from query string
+        $category = $request->input('category'); // Get the selected category from query string
 
-        return view('expenses', compact('expenses', 'totalAmount', 'date'));
+        $query = Expense::query();
+
+        // Apply date filter if provided
+        if ($date) {
+            $query->where('date', $date);
+        }
+
+        // Apply category filter if provided
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        // Order expenses by creation date, showing newest first
+        $expenses = $query->orderBy('id', 'desc')->paginate(10); // 10 per page
+        $totalAmount = $query->sum('amount'); // Calculate total amount of expenses
+
+        return view('expenses', compact('expenses', 'totalAmount', 'date', 'category'));
     }
 
     // Store a new expense in the database
@@ -137,14 +151,52 @@ class ExpenseController extends Controller
         return redirect()->route('expenses.index')->with('success', 'Expense permanently deleted.');
     }
 
-    // Filter expenses by date
+    // Filter expenses by date and/or category
     public function filterByDate(Request $request)
     {
         $date = $request->input('date'); // Get the selected date
-        $expenses = Expense::where('date', $date)->paginate(10); // Filter expenses by date
-        $totalAmount = Expense::where('date', $date)->sum('amount'); // Calculate the total amount
+        $category = $request->input('category'); // Get the selected category
 
-        return view('expenses', compact('expenses', 'totalAmount', 'date'));
+        $query = Expense::query();
+
+        // Apply date filter if provided
+        if ($date) {
+            $query->where('date', $date);
+        }
+
+        // Apply category filter if provided
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        $expenses = $query->orderBy('id', 'desc')->paginate(10); // Filter expenses
+        $totalAmount = $query->sum('amount'); // Calculate the total amount
+
+        return view('expenses', compact('expenses', 'totalAmount', 'date', 'category'));
+    }
+
+    // Filter expenses by category
+    public function filterByCategory(Request $request)
+    {
+        $category = $request->input('category'); // Get the selected category
+        $date = $request->input('date'); // Get the selected date if any
+
+        $query = Expense::query();
+
+        // Apply category filter
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        // Apply date filter if provided
+        if ($date) {
+            $query->where('date', $date);
+        }
+
+        $expenses = $query->orderBy('id', 'desc')->paginate(10); // Filter expenses
+        $totalAmount = $query->sum('amount'); // Calculate the total amount
+
+        return view('expenses', compact('expenses', 'totalAmount', 'date', 'category'));
     }
 
     // Export expenses to PDF
