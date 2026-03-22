@@ -491,7 +491,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single_team text-center">
                         <div class="team_image">
-                            <img src={{asset('assets/images/kittyLuvv.jpg')}} alt="team">
+                            <img src={{asset('assets/images/fitness trainer-babi.jpg')}} alt="team">
                         </div>
                         <div class="team_content">
                             <ul class="social">
