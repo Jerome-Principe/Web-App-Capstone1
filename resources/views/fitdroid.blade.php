@@ -500,7 +500,7 @@
                                 <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-instagram-original"></i></a></li>
                             </ul>
-                            <h5 class="team_name"><i>Kitty Luvv</i></h5>
+                            <h5 class="team_name"><i>Alleli Novielyn Serapio</i></h5>
                             <p><i class="fa fa-female mx-2" aria-hidden="true"></i> Fitness Trainer</p>
                             <p><i class="fa fa-phone mx-2" aria-hidden="true"></i> 0977-095-9774
                                 <hr>
