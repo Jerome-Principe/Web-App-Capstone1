@@ -30,7 +30,7 @@ class SendOtpMail extends Mailable
     {
         return new Envelope(
             subject: 'Your OTP Code',
-            from: new Address('build@limitlessfitnesstudio.com', 'Limitless Fitness Studio'),
+            from: new Address('fitdroid@limitlessfitnesstudio.com', 'Limitless Fitness Studio'),
         );
     }
 
