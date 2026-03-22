@@ -491,16 +491,16 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single_team text-center">
                         <div class="team_image">
-                            <img src={{asset('assets/images/alleli.jpg')}} alt="team">
+                            <img src={{asset('assets/images/kittyLuvv.jpg')}} alt="team">
                         </div>
                         <div class="team_content">
                             <ul class="social">
-                                <li><a href="https://www.facebook.com/allelilee.serapio"><i
+                                <li><a href="https://www.facebook.com/sheila.venturaaldecoa"><i
                                             class="lni lni-facebook-filled"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-instagram-original"></i></a></li>
                             </ul>
-                            <h5 class="team_name"><i>Novielyn Serapio</i></h5>
+                            <h5 class="team_name"><i>Kitty Luvv</i></h5>
                             <p><i class="fa fa-female mx-2" aria-hidden="true"></i> Fitness Trainer</p>
                             <p><i class="fa fa-phone mx-2" aria-hidden="true"></i> 0977-095-9774
                                 <hr>
