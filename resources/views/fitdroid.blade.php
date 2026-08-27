@@ -9,19 +9,19 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="icon" href="{{asset('assets/images/muscle.png')}}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/images/muscle.png') }}" type="image/png">
 
-    <link rel="stylesheet" href="{{asset('assets/css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/slick.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/slick.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/LineIcons.2.0.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/LineIcons.2.0.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/bootstrap.4.5.2.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.4.5.2.min.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/default.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/default.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/fitdroidweb.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/fitdroidweb.css') }}">
 
     <!-- Bootstrap Css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -43,7 +43,7 @@
                     <div class="col-lg-12">
                         <nav class="navbar navbar-expand-lg">
                             <a class="navbar-brand" href="/">
-                                <img src="{{asset('assets/images/LogoLimit2.png')}}" alt="Logo" height="50px"
+                                <img src="{{ asset('assets/images/LogoLimit2.png') }}" alt="Logo" height="50px"
                                     width="100%">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -91,7 +91,7 @@
             </div>
         </div>
         <div id="home" class="header-hero bg_cover d-flex align-items-center"
-            style=" background-image: url('{{asset('assets/images/BGround.jpg')}}');">
+            style=" background-image: url('{{ asset('assets/images/BGround.jpg') }}');">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-9">
@@ -141,7 +141,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/strengthconditioning.png')}} alt="courses">
+                        <img src={{ asset('assets/images/strengthconditioning.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Strenght & Conditioning</i></a></h4>
                         <p>
                             Strength and conditioning is a systematic approach to physical training that aims to improve
@@ -156,7 +156,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/hightintensitytraining.png')}} alt="courses">
+                        <img src={{ asset('assets/images/hightintensitytraining.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Hight Intensity Training</i></a></h4>
                         <p>
                             High-Intensity Training (HIT) is a form of exercise that focuses on performing short bursts
@@ -168,7 +168,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/athletictraining.png1.jpg')}} alt="courses">
+                        <img src={{ asset('assets/images/athletictraining.png1.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Athletic Training</i></a></h4>
                         <p>
                             Athletic training is a healthcare profession dedicated to the prevention, diagnosis,
@@ -182,7 +182,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Crossfit.png')}} alt="courses">
+                        <img src={{ asset('assets/images/Crossfit.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Circuit Crossfit</i></a></h4>
                         <p>
                             Circuit CrossFit is a high-intensity fitness program that combines circuit training with
@@ -194,7 +194,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Weighttraining.png')}} alt="courses">
+                        <img src={{ asset('assets/images/Weighttraining.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Weight Training</i></a></h4>
                         <p>
                             Weight training, also known as resistance training or strength training, is a form of
@@ -207,7 +207,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Bodybuilding.png')}} alt="courses">
+                        <img src={{ asset('assets/images/Bodybuilding.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Body Building</i></a></h4>
                         <p>
                             Bodybuilding is a sport and a physical activity focused on developing muscle size, symmetry,
@@ -220,7 +220,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Aeroboxing.png')}} alt="courses">
+                        <img src={{ asset('assets/images/Aeroboxing.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Aeroboxing</i></a></h4>
                         <p>
                             Aeroboxing, also known as cardio boxing or aerobic boxing, is a fitness activity that
@@ -234,7 +234,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Kickboxing1.png')}} alt="courses">
+                        <img src={{ asset('assets/images/Kickboxing1.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Kick Boxing</i></a></h4>
                         <p>
                             Kickboxing is a dynamic combat sport and fitness activity that combines elements of
@@ -246,7 +246,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Taekwondo.png1.jpg')}} alt="courses">
+                        <img src={{ asset('assets/images/Taekwondo.png1.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Taekwondo</i></a></h4>
                         <p>
                             Taekwondo is a Korean martial art that emphasizes high, fast kicks, spinning kicks, jumping
@@ -259,7 +259,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/boxing1.jpg')}} alt="courses">
+                        <img src={{ asset('assets/images/boxing1.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Boxing</i></a></h4>
                         <p>
                             Boxing is a combat sport that involves two opponents, typically of similar weight, who
@@ -272,7 +272,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Cardio.jpg')}} alt="courses">
+                        <img src={{ asset('assets/images/Cardio.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Cardio</i></a></h4>
                         <p>
                             Cardio, short for cardiovascular exercise, refers to any physical activity that raises your
@@ -284,7 +284,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Weightlifting.png')}} alt="courses">
+                        <img src={{ asset('assets/images/Weightlifting.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Weight Lifting</i></a></h4>
                         <p>
                             Weightlifting, also known as weight training or resistance training, is a form of exercise
@@ -296,7 +296,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Zumba.png')}} alt="courses">
+                        <img src={{ asset('assets/images/Zumba.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Zumba</i></a></h4>
                         <p>
                             Zumba is a high-energy fitness program that combines Latin and international music with
@@ -309,7 +309,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Yoga.jpg')}} alt="courses">
+                        <img src={{ asset('assets/images/Yoga.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Yoga</i></a></h4>
                         <p>
                             Yoga is a holistic practice that originated in ancient India and encompasses physical
@@ -321,7 +321,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single_courses mt-30">
-                        <img src={{asset('assets/images/Poledancing.png')}} alt="courses">
+                        <img src={{ asset('assets/images/Poledancing.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Pole Dancing</i></a></h4>
                         <p>
                             Pole dancing is a form of performance art and fitness that involves dance and acrobatics
@@ -339,7 +339,7 @@
     <section id="about" class="about_area pt-115 pb-120">
         <div class="about_wrapper">
             <div class="about_bg bg_cover d-none d-lg-block"
-                style=" background-image: url('{{asset('assets/images/machine4.jpg')}}');">
+                style=" background-image: url('{{ asset('assets/images/machine4.jpg') }}');">
             </div>
             <div class="container">
                 <div class="row justify-content-end">
@@ -370,7 +370,7 @@
 
 
     <section id="counter" class="counter_area pt-70 pb-120 bg_cover"
-        style="background-image: url('{{asset('assets/images/machine2.jpg')}}');">
+        style="background-image: url('{{ asset('assets/images/machine2.jpg') }}');">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-6">
@@ -428,7 +428,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single_team text-center">
                         <div class="team_image">
-                            <img src={{asset('assets/images/sircholo.jpg')}} alt="team">
+                            <img src={{ asset('assets/images/sircholo.jpg') }} alt="team">
                         </div>
                         <div class="team_content">
                             <ul class="social">
@@ -448,7 +448,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single_team text-center">
                         <div class="team_image">
-                            <img src={{asset('assets/images/sircyrus.jpg')}} alt="team">
+                            <img src={{ asset('assets/images/sircyrus.jpg') }} alt="team">
                         </div>
                         <div class="team_content">
                             <ul class="social">
@@ -470,7 +470,7 @@
                     <div class="single_team text-center">
                         <div class="team_image">
                             <div class="container">
-                                <img src={{asset('assets/images/JayfrelNillosaRastica.jpg')}} alt="team">
+                                <img src={{ asset('assets/images/JayfrelNillosaRastica.jpg') }} alt="team">
                             </div>
                         </div>
                         <div class="team_content">
@@ -491,7 +491,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single_team text-center">
                         <div class="team_image">
-                            <img src={{asset('assets/images/kittyLuvv.jpg')}} alt="team">
+                            <img src={{ asset('assets/images/kittyLuvv.jpg') }} alt="team">
                         </div>
                         <div class="team_content">
                             <ul class="social">
@@ -513,7 +513,7 @@
     </section>
 
     <section id="schedules" class="schedule_area pt-105 pb-120 bg_cover"
-        style=" background-image: url('{{asset('assets/images/machine6.jpg')}}');">
+        style=" background-image: url('{{ asset('assets/images/machine6.jpg') }}');">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8">
@@ -701,13 +701,13 @@
 
 
     <section id="trainee" class="testimonial_area pt-120 pb-120 bg_cover"
-        style=" background-image: url('{{asset('assets/images/machine2.jpg')}}');">
+        style=" background-image: url('{{ asset('assets/images/machine2.jpg') }}');">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="testimonial_active">
                         <div class="single_testimonial text-center">
-                            <img src={{asset('assets/images/art.jpg')}} alt="author">
+                            <img src={{ asset('assets/images/art.jpg') }} alt="author">
                             <h5 class="author_name">Art Concerman</h5>
                             <span class="sub_title">Trainee</span>
                             <p>Limitless Fitness Studio has truly exceeded my expectations! The atmosphere is incredibly
@@ -717,7 +717,7 @@
                             </p>
                         </div>
                         <div class="single_testimonial text-center">
-                            <img src={{asset('assets/images/paler.jpg')}} alt="author">
+                            <img src={{ asset('assets/images/paler.jpg') }} alt="author">
                             <h5 class="author_name">Russel Paler</h5>
                             <span class="sub_title">Trainee</span>
                             <p> I've been a member of Limitless Fitness Studio for six months, and I've seen amazing
@@ -729,7 +729,7 @@
                             </p>
                         </div>
                         <div class="single_testimonial text-center">
-                            <img src={{asset('assets/images/borja.jpg')}} alt="author">
+                            <img src={{ asset('assets/images/borja.jpg') }} alt="author">
                             <h5 class="author_name">Johnrafael Borja</h5>
                             <span class="sub_title">Trainee</span>
                             <p>Limitless Fitness Studio stands out for its cleanliness and sense of community. The
@@ -754,7 +754,7 @@
                             <span class="line"></span>
                             <h3 class="title">GIVE US FEEDBACK</h3>
                         </div>
-                        <form action="{{route('feedback.submit')}}" method="POST">
+                        <form action="{{ route('feedback.submit') }}" method="POST">
                             @csrf
                             <div class="single_form">
                                 <input type="text" name="name" id="name" placeholder="Name" required>
@@ -769,28 +769,35 @@
                             </div>
                             <div class="single_form">
                                 <label for="rating"
-                                    style="color: #333; font-weight: 500; margin-bottom: 8px; display: block;">Rate your
+                                    style="color: #333; font-weight: 500; margin-bottom: 8px; display: block;">Rate
+                                    your
                                     experience (1-5 stars):</label>
                                 <div class="star-rating" style="display: flex; gap: 8px; margin-bottom: 10px;">
-                                    <div id="rating-display" style="margin-left: 10px; font-weight: bold; color: #333;">
+                                    <div id="rating-display"
+                                        style="margin-left: 10px; font-weight: bold; color: #333;">
                                     </div>
-                                    <input type="radio" name="rating" value="1" id="star1" style="display: none;">
+                                    <input type="radio" name="rating" value="1" id="star1"
+                                        style="display: none;">
                                     <label for="star1" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
 
-                                    <input type="radio" name="rating" value="2" id="star2" style="display: none;">
+                                    <input type="radio" name="rating" value="2" id="star2"
+                                        style="display: none;">
                                     <label for="star2" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
 
-                                    <input type="radio" name="rating" value="3" id="star3" style="display: none;">
+                                    <input type="radio" name="rating" value="3" id="star3"
+                                        style="display: none;">
                                     <label for="star3" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
 
-                                    <input type="radio" name="rating" value="4" id="star4" style="display: none;">
+                                    <input type="radio" name="rating" value="4" id="star4"
+                                        style="display: none;">
                                     <label for="star4" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
 
-                                    <input type="radio" name="rating" value="5" id="star5" style="display: none;">
+                                    <input type="radio" name="rating" value="5" id="star5"
+                                        style="display: none;">
                                     <label for="star5" class="star"
                                         style="font-size: 24px; color: #ddd; cursor: pointer; transition: color 0.2s;">★</label>
                                 </div>
@@ -802,17 +809,18 @@
                             </div>
                             <p class="form-message"></p>
                             <div class="single_form">
-                                <button class="main-btn" type="submit" onclick="return validateForm()">SUBMIT</button>
+                                <button class="main-btn" type="submit"
+                                    onclick="return validateForm()">SUBMIT</button>
                             </div>
 
-                            @if(session('success'))
+                            @if (session('success'))
                                 <div class="custom-alert-success">
                                     {{ session('success') }}
                                 </div>
                             @endif
 
                             <script>
-                                document.addEventListener("DOMContentLoaded", function () {
+                                document.addEventListener("DOMContentLoaded", function() {
                                     // Star rating functionality
                                     const stars = document.querySelectorAll('.star');
                                     const radioInputs = document.querySelectorAll('input[name="rating"]');
@@ -834,7 +842,8 @@
                                             console.log('Selected rating:', radioInputs[index].value);
 
                                             // Update the rating display
-                                            document.getElementById('rating-display').textContent = radioInputs[index].value + '/5';
+                                            document.getElementById('rating-display').textContent = radioInputs[index]
+                                                .value + '/5';
                                         });
 
                                         // Hover effects
@@ -860,7 +869,7 @@
                                     });
 
                                     // Auto-hide success message
-                                    setTimeout(function () {
+                                    setTimeout(function() {
                                         const alert = document.querySelector('.custom-alert-success');
                                         if (alert) {
                                             alert.classList.add('fade-out');
@@ -876,7 +885,7 @@
                                 }
 
                                 // Add real-time validation for name field
-                                document.getElementById('name').addEventListener('input', function () {
+                                document.getElementById('name').addEventListener('input', function() {
                                     const nameValue = this.value;
                                     const errorDiv = document.getElementById('name-error');
 
@@ -926,7 +935,7 @@
 
         <div class="contact_map">
             <div class="googlemap_limitless">
-                <img src={{asset('assets/images/maps.png')}} alt="">
+                <img src={{ asset('assets/images/maps.png') }} alt="">
             </div>
         </div>
     </section>
@@ -1014,32 +1023,31 @@
 
 
 
-    <script src="{{asset('assets/js/email-decode.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery-1.12.4.min.js')}}"></script>
-    <script src="{{asset('assets/js/modernizr-3.7.1.min.js')}}"></script>
+    <script src="{{ asset('assets/js/email-decode.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-1.12.4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/modernizr-3.7.1.min.js') }}"></script>
 
-    <script src="{{asset('assets/js/popper.min.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.4.5.2.min.js')}}"></script>
+    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.4.5.2.min.js') }}"></script>
 
-    <script src="{{asset('assets/js/slick.min.js')}}"></script>
+    <script src="{{ asset('assets/js/slick.min.js') }}"></script>
 
-    <script src="{{asset('assets/js/ajax-contact.js')}}"></script>
+    <script src="{{ asset('assets/js/ajax-contact.js') }}"></script>
 
-    <script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
-    <script src="{{asset('assets/js/waypoints.min.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery.counterup.min.js') }}"></script>
+    <script src="{{ asset('assets/js/waypoints.min.js') }}"></script>
 
-    <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
 
-    <script src="{{asset('assets/js/jquery.easing.min.js')}}"></script>
-    <script src="{{asset('assets/js/scrolling-nav.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('assets/js/scrolling-nav.js') }}"></script>
 
-    <script src="{{asset('assets/js/main.js')}}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
     <!-- <script defer=""
         src="https://static.cloudflareinsights.com/beacon.min.js/vedd3670a3b1c4e178fdfb0cc912d969e1713874337387"
         data-cf-beacon="{"
         rayid":"88768c664fe1775a","r":1,"version":"2024.4.1","token":"9a6015d415bb4773a0bff22543062d3b"}"=""
-        crossorigin="anonymous">
-    </script> -->
+        crossorigin="anonymous"></script> -->
 
 
 </body>
