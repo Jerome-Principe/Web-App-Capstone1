@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="{{asset('assets/images/muscle.png')}}" type="image/png">
+    <title>Membership Renewal</title>
+    <style>
+        /* Minimalist Global Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Minimalist Card Styles */
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid #e1e5e9;
+        }
+
+        /* Minimalist Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Filter and Export Section */
+        .filter-export-section {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .date-filter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .date-filter label {
+            font-weight: 500;
+            color: #333;
+            margin: 0;
+        }
+
+        .date-filter input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+
+
+        .btn-filter {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-filter:hover {
+            background: #0056b3;
+        }
+
+
+
+        /* Minimalist Table Styles */
+        .table-section h2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 500;
+            padding: 16px 12px;
+            text-align: center !important;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px;
+        }
+
+        td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+            text-align: center !important;
+            min-width: 100px;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-approve:hover {
+            background: #1e7e34;
+        }
+
+        .btn-decline {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-decline:hover {
+            background: #c82333;
+        }
+
+        /* Badge */
+        .badge {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .badge.bg-primary {
+            background: #007bff !important;
+            color: white;
+        }
+
+        .badge.bg-success {
+            background: #28a745 !important;
+            color: white;
+        }
+
+        .badge.bg-danger {
+            background: #dc3545 !important;
+            color: white;
+        }
+
+        .badge.bg-warning {
+            background: #ffc107 !important;
+            color: #212529;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h5 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-wrapper {
+                padding: 20px 16px;
+            }
+
+            .content-card {
+                padding: 24px 16px;
+            }
+
+            .filter-export-section {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .date-filter {
+                justify-content: center;
+            }
+
+            .search-section {
+                justify-content: center !important;
+                width: 100%;
+            }
+
+            .search-section input {
+                width: 150px !important;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+        }
+
+        /* Text utilities */
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .text-success {
+            color: #28a745 !important;
+        }
+    </style>
+</head>
+
+@extends('layouts.master')
+
+@section('content')
+    <div class="main-wrapper">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>MEMBERSHIP RENEWAL</h1>
+            <p>Review and manage membership renewal applications</p>
+        </div>
+
+        <!-- Membership Renewal Section -->
+        <div class="content-card">
+            <div class="table-section">
+                <div class="mb-4">
+                    <h1 class="card-title mb-0" style="font-size: 20px; font-weight: 500; color: #333;">Membership Renewal
+                        Applications</h1>
+                    <p class="text-muted mb-0">Review and manage membership renewal applications</p>
+                </div>
+
+                <!-- Filter and Search Section -->
+                <div class="filter-export-section">
+                    <div class="search-section" style="display: flex; align-items: center; gap: 12px;">
+                        <form method="GET" action="{{ route('membership-renewal.index') }}"
+                            style="display: flex; align-items: center; gap: 12px;">
+                            <input type="text" name="search" id="search-input" placeholder="Search members..."
+                                value="{{ request('search') }}"
+                                style="padding: 8px 12px; border: 1px solid #e1e5e9; border-radius: 4px; font-size: 14px; width: 200px;">
+                            <button type="submit" class="btn-search"
+                                style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 14px; cursor: pointer;">
+                                <i class="fa fa-search"></i> Search
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Membership Renewal Table Section -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Membership Type</th>
+                                <th>Payment Method</th>
+                                <th>GCash #</th>
+                                <th>Acc. Name</th>
+                                <th>Ref. #</th>
+                                <th>Proof of Payment</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($renewals ?? collect([]) as $renewal)
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-primary">{{ $renewal->id ?? 'N/A' }}</span>
+                                    </td>
+                                    <td>
+                                        <strong>{{ $renewal->name ?? 'N/A' }}</strong>
+                                    </td>
+                                    <td>{{ $renewal->membership_type ?? 'N/A' }}</td>
+                                    <td>{{ $renewal->payment_method ?? 'N/A' }}</td>
+                                    <td>{{ $renewal->gcash_number ?? 'N/A' }}</td>
+                                    <td>{{ $renewal->account_name ?? 'N/A' }}</td>
+                                    <td>{{ $renewal->reference_number ?? 'N/A' }}</td>
+                                    <td>
+                                        @if(isset($renewal->proof_of_payment_url) && $renewal->proof_of_payment_url)
+                                            <a href="{{ route('membership-renewal.view-proof', $renewal->id) }}" target="_blank"
+                                                class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-eye"></i> View Proof
+                                            </a>
+                                        @else
+                                            <span class="text-muted">No proof uploaded</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($renewal->status === 'Pending')
+                                            <div class="action-buttons">
+                                                <form action="{{ route('membership-renewal.approve', $renewal->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn-approve">
+                                                        <i class="fa fa-check"></i> Approve
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('membership-renewal.decline', $renewal->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn-decline">
+                                                        <i class="fa fa-times"></i> Decline
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <span class="badge {{ $renewal->status === 'Approved' ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $renewal->status }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="9">
+                                        <div class="empty-state">
+                                            <i class="fa fa-users"></i>
+                                            <h5>No renewal applications found</h5>
+                                            <p>There are no membership renewal applications to display</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+
+                    @if(isset($renewals))
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center mt-4 mb-4">
+                                <li class="page-item {{ $renewals->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $renewals->previousPageUrl() }}" tabindex="-1">Previous</a>
+                                </li>
+
+                                @foreach(range(1, $renewals->lastPage()) as $page)
+                                    <li class="page-item {{ $page == $renewals->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $renewals->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                <li class="page-item {{ !$renewals->hasMorePages() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $renewals->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to filter by date
+        function filterByDate() {
+            const dateFilter = document.getElementById('date-filter');
+            const selectedDate = dateFilter.value;
+
+            if (selectedDate) {
+                // You can implement the actual filtering logic here
+                console.log('Filtering by date:', selectedDate);
+                // Redirect to the same page with date parameter
+                window.location.href = window.location.pathname + '?date=' + selectedDate;
+            } else {
+                alert('Please select a date to filter');
+            }
+        }
+
+
+
+
+
+        // Function to search members (non-functional for now)
+        function searchMembers() {
+            const searchInput = document.getElementById('search-input');
+            const searchTerm = searchInput.value.trim();
+
+            if (searchTerm) {
+                alert(`Search functionality is temporarily disabled. You searched for: "${searchTerm}". This feature will be available soon.`);
+            } else {
+                alert('Please enter a search term.');
+            }
+        }
+
+        // Add Enter key support for search input
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function (event) {
+                    if (event.key === 'Enter') {
+                        searchMembers();
+                    }
+                });
+            }
+        });
+
+        // Initialize date filter with current date if no date is selected
+        document.addEventListener("DOMContentLoaded", function () {
+            const dateFilter = document.getElementById('date-filter');
+            if (!dateFilter.value) {
+                const today = new Date().toISOString().split('T')[0];
+                dateFilter.value = today;
+            }
+        });
+
+        // Live search functionality for membership renewals
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('search-input');
+            const tableContainer = document.querySelector('.table-container');
+            const paginationContainer = document.querySelector('.pagination');
+            let searchTimeout;
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    clearTimeout(searchTimeout);
+
+                    // Debounce search to avoid too many requests
+                    searchTimeout = setTimeout(() => {
+                        performLiveSearch(this.value);
+                    }, 300);
+                });
+            }
+
+            function performLiveSearch(searchTerm) {
+                // Show loading state
+                if (tableContainer) {
+                    tableContainer.style.opacity = '0.6';
+                }
+
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', searchTerm);
+
+                fetch(url.toString(), {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'text/html, application/xhtml+xml'
+                    }
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        // Create a temporary div to parse the HTML
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = html;
+
+                        // Extract and update the table content
+                        const newTableContainer = tempDiv.querySelector('.table-container');
+                        if (newTableContainer && tableContainer) {
+                            tableContainer.innerHTML = newTableContainer.innerHTML;
+                        }
+
+                        // Extract and update pagination
+                        const newPagination = tempDiv.querySelector('.pagination');
+                        if (newPagination && paginationContainer) {
+                            paginationContainer.innerHTML = newPagination.innerHTML;
+                        }
+
+                        // Reset opacity
+                        if (tableContainer) {
+                            tableContainer.style.opacity = '1';
+                        }
+
+                        // Update URL without page reload
+                        history.pushState(null, '', url.toString());
+                    })
+                    .catch(error => {
+                        console.error('Search error:', error);
+                        if (tableContainer) {
+                            tableContainer.style.opacity = '1';
+                        }
+                    });
+            }
+
+            // Handle pagination clicks for search results
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('.pagination a')) {
+                    e.preventDefault();
+                    const link = e.target.closest('.pagination a');
+                    const href = link.getAttribute('href');
+
+                    if (href) {
+                        fetch(href, {
+                            method: 'GET',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'text/html, application/xhtml+xml'
+                            }
+                        })
+                            .then(response => response.text())
+                            .then(html => {
+                                const tempDiv = document.createElement('div');
+                                tempDiv.innerHTML = html;
+
+                                const newTableContainer = tempDiv.querySelector('.table-container');
+                                if (newTableContainer && tableContainer) {
+                                    tableContainer.innerHTML = newTableContainer.innerHTML;
+                                }
+
+                                const newPagination = tempDiv.querySelector('.pagination');
+                                if (newPagination && paginationContainer) {
+                                    paginationContainer.innerHTML = newPagination.innerHTML;
+                                }
+
+                                // Update URL
+                                history.pushState(null, '', href);
+                            })
+                            .catch(error => {
+                                console.error('Pagination error:', error);
+                            });
+                    }
+                }
+            });
+        });
+    </script>
+@endsection

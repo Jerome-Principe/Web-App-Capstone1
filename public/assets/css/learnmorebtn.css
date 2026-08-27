@@ -1,0 +1,175 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins";
+}
+body{
+    flex: auto;
+}
+.Header{
+    text-align: center;
+    margin-top: 50px;
+}
+.Header h1{
+    font-size: 30px;
+}
+.container{
+    position: relative;
+    width: 1100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.container .mycard{
+    position: relative;
+    max-width: 300px;
+    height: 170px;
+    background: #D4A514;
+    margin: 30px 10px;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 3px 50px rgba(0,0,0,0.5);
+    transition: 0.4s ease-in-out; 
+    overflow: hidden;
+}
+.container .mycard:hover{
+    height: 460px;
+}
+.container .mycard .cimg{
+    position: relative;
+    width: 270px;
+    height: 180px;
+    top: -60px;
+    z-index: 1;
+    box-shadow: 0 3px 50px rgba(0,0,0,0.5);
+}
+.container .mycard .cimg img{
+    width: 100%;
+    height: 180px;
+    border-radius: 6px;
+}
+.container .mycard .cdetail{
+    position: relative;
+    margin-top: -140px;
+    padding: 10px 15px;
+    text-align: center;
+    color: black;
+    font-family: monospace;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+.container .mycard:hover .cdetail{
+    visibility: visible;
+    opacity: 1;
+    margin-top: -50px;
+}
+.container .text-container{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+.container .back{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1e293b;
+    color: #fff;
+    font-size: 19px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: 0.3s ease;
+}
+.container .back:hover{
+    background-color: rgb(168, 167, 167);
+}
+.cbground{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+    flex-direction: column;
+}
+.cbground img{
+    width: 1000px;
+    height: auto;
+    margin-top: 10px;
+    box-shadow: 5px 5px 10px black;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+.cbground p{
+    width: 1000px;
+    margin-bottom: 50px;
+}
+@media(max-width: 1000px){
+    .cbground img{
+        width: 80%;
+    }
+    .cbground p{
+        width: 80%;
+    }
+}
+.mainBody{
+    flex-direction: column;
+}
+.mainContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.desc{
+    text-align: center;
+}
+
+.description {
+    text-align: center;
+    margin: 30px auto;
+    width: 80%;
+    font-size: 16px;
+    line-height: 1.6;
+    position: relative;
+}
+
+
+.description .back-btn {
+    margin-top: 20px; 
+    color: #000000;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: 0.3s ease-in-out;
+    border-radius: 100%;
+}
+
+.description .back-btn:hover {
+    background-color: #aaa9a9;
+}
+
+
+.container .mycard:hover .cimg img {
+    transition: transform 0.5s ease;
+    transform: scale(1.1); 
+}
+
+.container .back {
+    background-color: #007BFF;
+    font-size: 18px;
+    padding: 12px 25px;
+}
+
+.container .back:hover {
+    background-color: #0056b3;
+}
+
+.section-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
