@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DefaultUserSeeder::class,
             NotificationSeeder::class,
+            SampleDataSeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();
