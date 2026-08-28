@@ -3,7 +3,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8">
-                    <div class="section_title section_title_2 text-center pb-25">
+                    <div class="section_title section_title_2 text-center pb-25" data-aos="fade-down"
+                        data-aos-duration="800">
                         <span class="line"></span>
                         <h3 class="title">CLASS SCHEDULES</h3>
                         <p>At Limitless Fitness Studio, we believe in providing a diverse range of classes to meet all
@@ -14,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" data-aos="zoom-in" data-aos-duration="900" data-aos-delay="150">
                 <div class="col-lg-3 col-sm-6">
                     <div class="single_schedule mt-30">
                         <span class="number">01.</span>
@@ -95,4 +96,3 @@
             </div>
         </div>
     </section>
-

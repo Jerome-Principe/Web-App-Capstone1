@@ -18,3 +18,8 @@
     <script src="{{ asset('assets/js/scrolling-nav.js') }}"></script>
 
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, offset: 100 });
+    </script>

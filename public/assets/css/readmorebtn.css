@@ -97,19 +97,31 @@ body{
     line-height: 1.5;
     color: #000000;
 }
-.readmore-content .back{
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #1e293b;
-    color: #fff;
-    font-size: 19px;
+.btn-back-home{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFB800;
+    color: #121212;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 12px 32px;
+    border-radius: 50px;
     text-decoration: none;
-    border-radius: 5px;
-    margin-top: 15px;
-    transition: 0.3s ease;
+    border: 2px solid #FFB800;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-.readmore-content .back:hover{
-    background-color: rgb(168, 167, 167);
+.btn-back-home:hover{
+    background-color: #FF9900;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 184, 0, 0.4);
+}
+.btn-back-home i{
+    transition: transform 0.3s ease;
+}
+.btn-back-home:hover i{
+    transform: translateX(-6px);
 }
 @media screen and (max-width: 768px){
     .heading{
@@ -137,7 +149,7 @@ body{
         padding: 0;
         font-size: 16px;
     }
-    .readmore .back{
+    .readmore .btn-back-home{
         font-size: 16px;
     }
 }

@@ -2,7 +2,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8">
-                    <div class="section_title text-center pb-25">
+                    <div class="section_title text-center pb-25" data-aos="zoom-in" data-aos-duration="800">
                         <span class="line"></span>
                         <h3 class="title">GYM RATES</h3>
                         <p><i>At Limitless Fitness Studio, we're committed to making fitness accessible and affordable
@@ -17,7 +17,8 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-7 col-sm-9">
-                    <div class="single_pricing mt-30">
+                    <div class="single_pricing mt-30" data-aos="flip-left" data-aos-duration="1000"
+                        data-aos-easing="ease-out-back" data-aos-delay="100">
                         <div class="pricing_wrapper">
                             <div class="pricing_header">
                                 <h4 class="title">1 Month <i class="fa fa-ticket" aria-hidden="true"
@@ -39,7 +40,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-7 col-sm-9">
-                    <div class="single_pricing mt-30">
+                    <div class="single_pricing mt-30" data-aos="flip-left" data-aos-duration="1000"
+                        data-aos-easing="ease-out-back" data-aos-delay="250">
                         <div class="pricing_wrapper">
                             <div class="pricing_header">
                                 <h4 class="title">3 Months <i class="fa fa-ticket" aria-hidden="true"
@@ -61,7 +63,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-7 col-sm-9">
-                    <div class="single_pricing mt-30">
+                    <div class="single_pricing mt-30" data-aos="flip-left" data-aos-duration="1000"
+                        data-aos-easing="ease-out-back" data-aos-delay="400">
                         <div class="pricing_wrapper">
                             <div class="pricing_header">
                                 <h4 class="title">6 Months <i class="fa fa-ticket" aria-hidden="true"
@@ -85,4 +88,3 @@
             </div>
         </div>
     </section>
-

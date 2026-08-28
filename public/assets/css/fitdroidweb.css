@@ -430,6 +430,21 @@ p {
       02.HEADER css 
 ===========================*/
 /*===== NAVBAR =====*/
+@keyframes headerSlideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.header-area {
+  animation: headerSlideDown 0.8s ease-out forwards;
+}
+
 .navbar-area {
   position: absolute;
   top: 0;

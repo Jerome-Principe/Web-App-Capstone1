@@ -1,7 +1,7 @@
     <section id="contact" class="contact_area ">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-6" data-aos="fade-right">
                     <div class="contact_form pt-105 pb-120">
                         <div class="section_title pb-25">
                             <span class="line"></span>
@@ -26,8 +26,7 @@
                                     your
                                     experience (1-5 stars):</label>
                                 <div class="star-rating" style="display: flex; gap: 8px; margin-bottom: 10px;">
-                                    <div id="rating-display"
-                                        style="margin-left: 10px; font-weight: bold; color: #333;">
+                                    <div id="rating-display" style="margin-left: 10px; font-weight: bold; color: #333;">
                                     </div>
                                     <input type="radio" name="rating" value="1" id="star1"
                                         style="display: none;">
@@ -62,8 +61,7 @@
                             </div>
                             <p class="form-message"></p>
                             <div class="single_form">
-                                <button class="main-btn" type="submit"
-                                    onclick="return validateForm()">SUBMIT</button>
+                                <button class="main-btn" type="submit" onclick="return validateForm()">SUBMIT</button>
                             </div>
 
                             @if (session('success'))
@@ -186,7 +184,7 @@
             </div>
         </div>
 
-        <div class="contact_map">
+        <div class="contact_map" data-aos="fade-left" data-aos-delay="200">
             <div class="googlemap_limitless">
                 <img src={{ asset('assets/images/maps.png') }} alt="">
             </div>
