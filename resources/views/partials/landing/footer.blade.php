@@ -1,10 +1,11 @@
-    <section id="footer" class="footer_area">
+    <section id="footer" class="footer_area" data-aos="fade-up" data-aos-duration="800">
         <div class="footer_widget pt-70 pb-120">
             <div class="container">
                 <div class="row">
 
                     <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="footer_link mt-45">
+                        <div class="footer_link mt-45" data-aos="fade-up" data-aos-duration="800"
+                            data-aos-delay="100">
                             <h4 class="footer_title">Course</h4>
                             <ul class="link">
                                 <li><a href="javascript:void(0)">Strenght & Conditioning</a></li>
@@ -26,7 +27,8 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="footer_link mt-45">
+                        <div class="footer_link mt-45" data-aos="fade-up" data-aos-duration="800"
+                            data-aos-delay="200">
                             <h4 class="footer_title">Quick Link</h4>
                             <ul class="link">
                                 <li><a href="#home">Home</a></li>
@@ -42,7 +44,8 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="footer_social mt-45">
+                        <div class="footer_social mt-45" data-aos="fade-up" data-aos-duration="800"
+                            data-aos-delay="300">
                             <h4 class="footer_title">Follow Us On</h4>
                             <ul class="social">
                                 <li><a href="https://www.facebook.com/LIMITLESSROCKSTARS"><i
@@ -53,7 +56,8 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="footer_info mt-45">
+                        <div class="footer_info mt-45" data-aos="fade-up" data-aos-duration="800"
+                            data-aos-delay="400">
                             <h4 class="footer_title">Contact</h4>
                             <ul class="info">
                                 <li><i class="fa fa-envelope"
@@ -76,7 +80,6 @@
 
 
     <a href="#" class="back-to-top"><i class="lni lni-chevron-up"></i></a>
-
 
 
 

@@ -11,6 +11,7 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <!-- Link Custom Css File -->
     <link rel="stylesheet" href="{{asset('assets/css/readmorebtn.css')}}">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
     <!-- Font-Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -18,10 +19,10 @@
 </head>
 
 <body>
-    <div class="readmore-image-content">
+    <div class="readmore-image-content" data-aos="fade-down" data-aos-duration="900">
         <img src="{{asset('assets/images/family.jpg ')}}" alt="">
     </div>
-    <div class="heading">
+    <div class="heading" data-aos="fade-down" data-aos-duration="900">
         <div class="text-container">
             <h1><b>Welcome to the limitless family</b></h1>
             <p>
@@ -52,10 +53,10 @@
             </p>
         </div>
     </div>
-    <div class="readmore-image-content">
+    <div class="readmore-image-content" data-aos="zoom-in-up" data-aos-duration="800">
         <img src="{{asset('assets/images/mission.jpg ')}}" alt="">
     </div>
-    <div class="heading">
+    <div class="heading" data-aos="zoom-in-up" data-aos-duration="800">
         <div class="text-container">
             <h1><b>Mission</b></h1>
             <p>
@@ -69,10 +70,10 @@
             </p>
         </div>
     </div>
-    <div class="readmore-image-content">
+    <div class="readmore-image-content" data-aos="zoom-in-up" data-aos-duration="800">
         <img src="{{asset('assets/images/vision.jpg ')}}" alt="">
     </div>
-    <div class="heading">
+    <div class="heading" data-aos="zoom-in-up" data-aos-duration="800">
         <div class="text-container">
             <h1><b>Vision</b></h1>
             <p>
@@ -102,10 +103,10 @@
     </div>
     <div class="container">
         <section class="readmore">
-            <div class="readmore-image">
+            <div class="readmore-image" data-aos="fade-right" data-aos-duration="800">
                 <img src="{{asset('assets/images/transform.jpg ')}}" alt="">
             </div>
-            <div class="readmore-content">
+            <div class="readmore-content" data-aos="fade-left" data-aos-duration="800">
                 <h2><b>Transform your life, one workout at a time</b></h2>
                 <p>
                     At Limitless Fitness Studio, we believe in the transformative power of consistent effort. Every
@@ -121,10 +122,10 @@
     </div>
     <div class="container">
         <section class="readmore">
-            <div class="readmore-image">
+            <div class="readmore-image" data-aos="fade-right" data-aos-duration="800">
                 <img src="{{asset('assets/images/stronger.jpg ')}}" alt="">
             </div>
-            <div class="readmore-content">
+            <div class="readmore-content" data-aos="fade-left" data-aos-duration="800">
                 <h2><b>Stronger than yesterday</b></h2>
                 <p>
                     Every day is a new opportunity to become a better version of yourself. At Limitless Fitness Studio,
@@ -140,10 +141,10 @@
     </div>
     <div class="container">
         <section class="readmore">
-            <div class="readmore-image">
+            <div class="readmore-image" data-aos="fade-right" data-aos-duration="800">
                 <img src="{{asset('assets/images/lifestyle.jpg ')}}" alt="">
             </div>
-            <div class="readmore-content">
+            <div class="readmore-content" data-aos="fade-left" data-aos-duration="800">
                 <h2><b>Fitness is not a destination, it’s a lifestyle</b></h2>
                 <p>
                     Embrace fitness as a part of your daily routine with Limitless Fitness Studio. We believe that
@@ -158,10 +159,10 @@
     </div>
     <div class="container">
         <section class="readmore">
-            <div class="readmore-image">
+            <div class="readmore-image" data-aos="fade-right" data-aos-duration="800">
                 <img src="{{asset('assets/images/champion.jpg ')}}" alt="">
             </div>
-            <div class="readmore-content">
+            <div class="readmore-content" data-aos="fade-left" data-aos-duration="800">
                 <h2><b>Unleash your inner champion</b></h2>
                 <p>
                     You have the power to achieve greatness, and at Limitless Fitness Studio, we're here to help you
@@ -171,10 +172,14 @@
                     that comes your way. Our supportive community is here to cheer you on and celebrate your victories.
                     Join us and discover the champion within you. Let's achieve greatness together!
                 </p>
-                <a href="/" class="back">Back</a>
+                <div class="text-center my-5"><a href="/" class="btn-back-home"><i class="fa fa-arrow-left me-2"></i> Back to Home</a></div>
             </div>
         </section>
     </div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, offset: 100 });
+    </script>
 </body>
 
 </html>

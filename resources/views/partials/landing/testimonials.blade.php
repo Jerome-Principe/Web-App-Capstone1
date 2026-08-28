@@ -1,9 +1,11 @@
-    <section id="trainee" class="testimonial_area pt-120 pb-120 bg_cover"
+    <section id="trainee" class="testimonial_area pt-120 pb-120 bg_cover" data-aos="fade-down"
+        data-aos-duration="800"
         style=" background-image: url('{{ asset('assets/images/machine2.jpg') }}');">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="testimonial_active">
+                    <div class="testimonial_active" data-aos="zoom-in-up" data-aos-duration="1000"
+                        data-aos-delay="200">
                         <div class="single_testimonial text-center">
                             <img src={{ asset('assets/images/art.jpg') }} alt="author">
                             <h5 class="author_name">Art Concerman</h5>
@@ -41,4 +43,3 @@
             </div>
         </div>
     </section>
-

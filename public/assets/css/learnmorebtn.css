@@ -36,6 +36,8 @@ body{
 }
 .container .mycard:hover{
     height: 460px;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 .container .mycard .cimg{
     position: relative;
@@ -49,6 +51,7 @@ body{
     width: 100%;
     height: 180px;
     border-radius: 6px;
+    transition: transform 0.4s ease;
 }
 .container .mycard .cdetail{
     position: relative;
@@ -153,8 +156,7 @@ body{
 
 
 .container .mycard:hover .cimg img {
-    transition: transform 0.5s ease;
-    transform: scale(1.1); 
+    transform: scale(1.05);
 }
 
 .container .back {

@@ -2,7 +2,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8">
-                    <div class="section_title text-center pb-55">
+                    <div class="section_title text-center pb-55" data-aos="zoom-in" data-aos-duration="800">
                         <span class="line"></span>
                         <h3 class="title">OUR TEAM</h3>
                         <p><b>START TO CHANGE YOURSELF</b></p>
@@ -18,7 +18,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-sm-6">
-                    <div class="single_team text-center">
+                    <div class="single_team text-center" data-aos="zoom-in-up" data-aos-duration="800"
+                        data-aos-delay="100">
                         <div class="team_image">
                             <img src={{ asset('assets/images/sircholo.jpg') }} alt="team">
                         </div>
@@ -38,7 +39,8 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-sm-6">
-                    <div class="single_team text-center">
+                    <div class="single_team text-center" data-aos="zoom-in-up" data-aos-duration="800"
+                        data-aos-delay="250">
                         <div class="team_image">
                             <img src={{ asset('assets/images/sircyrus.jpg') }} alt="team">
                         </div>
@@ -59,7 +61,8 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-sm-6">
-                    <div class="single_team text-center">
+                    <div class="single_team text-center" data-aos="zoom-in-up" data-aos-duration="800"
+                        data-aos-delay="400">
                         <div class="team_image">
                             <div class="container">
                                 <img src={{ asset('assets/images/JayfrelNillosaRastica.jpg') }} alt="team">
@@ -81,7 +84,8 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-sm-6">
-                    <div class="single_team text-center">
+                    <div class="single_team text-center" data-aos="zoom-in-up" data-aos-duration="800"
+                        data-aos-delay="100">
                         <div class="team_image">
                             <img src={{ asset('assets/images/kittyLuvv.jpg') }} alt="team">
                         </div>

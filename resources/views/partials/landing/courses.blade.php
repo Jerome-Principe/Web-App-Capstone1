@@ -2,7 +2,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8">
-                    <div class="section_title text-center pb-25">
+                    <div class="section_title text-center pb-25" data-aos="zoom-in" data-aos-duration="800">
                         <span class="line"></span>
                         <h3 class="title">OUR COURSES</h3>
                         <p><i>At Limitless Fitness Studio, we believe in empowering our members to achieve their fitness
@@ -18,7 +18,8 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="100">
                         <img src={{ asset('assets/images/strengthconditioning.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Strenght & Conditioning</i></a></h4>
                         <p>
@@ -33,7 +34,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="200">
                         <img src={{ asset('assets/images/hightintensitytraining.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Hight Intensity Training</i></a></h4>
                         <p>
@@ -45,7 +47,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="300">
                         <img src={{ asset('assets/images/athletictraining.png1.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Athletic Training</i></a></h4>
                         <p>
@@ -59,7 +62,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="100">
                         <img src={{ asset('assets/images/Crossfit.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Circuit Crossfit</i></a></h4>
                         <p>
@@ -71,7 +75,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="200">
                         <img src={{ asset('assets/images/Weighttraining.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Weight Training</i></a></h4>
                         <p>
@@ -84,7 +89,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="300">
                         <img src={{ asset('assets/images/Bodybuilding.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Body Building</i></a></h4>
                         <p>
@@ -97,7 +103,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="100">
                         <img src={{ asset('assets/images/Aeroboxing.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Aeroboxing</i></a></h4>
                         <p>
@@ -111,7 +118,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="200">
                         <img src={{ asset('assets/images/Kickboxing1.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Kick Boxing</i></a></h4>
                         <p>
@@ -123,7 +131,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="300">
                         <img src={{ asset('assets/images/Taekwondo.png1.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Taekwondo</i></a></h4>
                         <p>
@@ -136,7 +145,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="100">
                         <img src={{ asset('assets/images/boxing1.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Boxing</i></a></h4>
                         <p>
@@ -149,7 +159,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="200">
                         <img src={{ asset('assets/images/Cardio.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Cardio</i></a></h4>
                         <p>
@@ -161,7 +172,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="300">
                         <img src={{ asset('assets/images/Weightlifting.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Weight Lifting</i></a></h4>
                         <p>
@@ -173,7 +185,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="100">
                         <img src={{ asset('assets/images/Zumba.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Zumba</i></a></h4>
                         <p>
@@ -186,7 +199,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="200">
                         <img src={{ asset('assets/images/Yoga.jpg') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Yoga</i></a></h4>
                         <p>
@@ -198,7 +212,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="single_courses mt-30">
+                    <div class="single_courses mt-30" data-aos="flip-up" data-aos-duration="900"
+                        data-aos-easing="ease-out-back" data-aos-delay="300">
                         <img src={{ asset('assets/images/Poledancing.png') }} alt="courses">
                         <h4 class="title"><a href="javascript:void(0)"><i>Pole Dancing</i></a></h4>
                         <p>
@@ -212,4 +227,3 @@
 
         </div>
     </section>
-

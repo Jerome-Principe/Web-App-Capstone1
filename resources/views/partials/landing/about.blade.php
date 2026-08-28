@@ -1,11 +1,12 @@
     <section id="about" class="about_area pt-115 pb-120">
         <div class="about_wrapper">
-            <div class="about_bg bg_cover d-none d-lg-block"
+            <div class="about_bg bg_cover d-none d-lg-block" data-aos="flip-right" data-aos-duration="1000"
+                data-aos-easing="ease-out-back"
                 style=" background-image: url('{{ asset('assets/images/machine4.jpg') }}');">
             </div>
             <div class="container">
                 <div class="row justify-content-end">
-                    <div class="col-lg-10">
+                    <div class="col-lg-10" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
                         <div class="about_content">
                             <h2 class="about_title"> A YEARS OF EXPERIENCE </h2>
                             <div class="about_content_wrapper">
